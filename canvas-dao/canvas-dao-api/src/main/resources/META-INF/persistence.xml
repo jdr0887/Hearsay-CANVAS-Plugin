@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd" version="1.0">
+  <persistence-unit name="canvas" transaction-type="JTA">
+
+    <provider>org.apache.openjpa.persistence.PersistenceProviderImpl</provider>
+
+    <jta-data-source>aries:services/javax.sql.DataSource/(osgi.jndi.service.name=jdbc/canvasJTA)</jta-data-source>
+    <non-jta-data-source>aries:services/javax.sql.DataSource/(osgi.jndi.service.name=jdbc/canvasNoJTA)</non-jta-data-source>
+
+    <class>org.renci.hearsay.canvas.annotation.dao.model.AnnotationGene</class>
+    <class>org.renci.hearsay.canvas.annotation.dao.model.AnnotationGeneExternalIds</class>
+    <class>org.renci.hearsay.canvas.annotation.dao.model.AnnotationGeneSynonyms</class>
+    <class>org.renci.hearsay.canvas.hgnc.dao.model.HGNCGene</class>
+    <class>org.renci.hearsay.canvas.hgnc.dao.model.LocusGroup</class>
+    <class>org.renci.hearsay.canvas.hgnc.dao.model.LocusType</class>
+    <class>org.renci.hearsay.canvas.hgnc.dao.model.StatusType</class>
+    <class>org.renci.hearsay.canvas.ref.dao.model.GenomeRef</class>
+    <class>org.renci.hearsay.canvas.ref.dao.model.GenomeRefSeq</class>
+    <class>org.renci.hearsay.canvas.ref.dao.model.SeqType</class>
+    <class>org.renci.hearsay.canvas.refseq.dao.model.GroupingType</class>
+    <class>org.renci.hearsay.canvas.refseq.dao.model.RegionGroup</class>
+    <class>org.renci.hearsay.canvas.refseq.dao.model.RegionGroupRegion</class>
+    <class>org.renci.hearsay.canvas.refseq.dao.model.RefSeqCodingSequence</class>
+    <class>org.renci.hearsay.canvas.refseq.dao.model.RefSeqGene</class>
+    <class>org.renci.hearsay.canvas.refseq.dao.model.Transcript</class>
+    <class>org.renci.hearsay.canvas.refseq.dao.model.TranscriptMaps</class>
+    <class>org.renci.hearsay.canvas.refseq.dao.model.TranscriptMapsExons</class>
+    <class>org.renci.hearsay.canvas.refseq.dao.model.TranscriptMapsExonsPK</class>
+    <class>org.renci.hearsay.canvas.refseq.dao.model.TranscriptRefSeqVers</class>
+    <class>org.renci.hearsay.canvas.var.dao.model.Assembly</class>
+    <class>org.renci.hearsay.canvas.var.dao.model.AssemblyLocation</class>
+    <class>org.renci.hearsay.canvas.var.dao.model.AssemblyLocationPK</class>
+    <class>org.renci.hearsay.canvas.var.dao.model.AssemblyLocationVariant</class>
+    <class>org.renci.hearsay.canvas.var.dao.model.AssemblyLocationVariantPK</class>
+    <class>org.renci.hearsay.canvas.var.dao.model.AssemblyLocationVariantQC</class>
+    <class>org.renci.hearsay.canvas.var.dao.model.AssemblyLocationVariantQCPK</class>
+    <class>org.renci.hearsay.canvas.var.dao.model.Lab</class>
+    <class>org.renci.hearsay.canvas.var.dao.model.Library</class>
+    <class>org.renci.hearsay.canvas.var.dao.model.LocationVariant</class>
+    <class>org.renci.hearsay.canvas.var.dao.model.Project</class>
+    <class>org.renci.hearsay.canvas.var.dao.model.Sample</class>
+    <class>org.renci.hearsay.canvas.var.dao.model.VariantSet</class>
+    <class>org.renci.hearsay.canvas.var.dao.model.VariantSetLoad</class>
+    <class>org.renci.hearsay.canvas.var.dao.model.VariantSetLocation</class>
+    <class>org.renci.hearsay.canvas.var.dao.model.VariantSetLocationPK</class>
+    <class>org.renci.hearsay.canvas.var.dao.model.VariantType</class>
+
+    <exclude-unlisted-classes>true</exclude-unlisted-classes>
+
+    <properties>
+      <!-- <property name="openjpa.Log" value="DefaultLevel=TRACE, Runtime=TRACE, Tool=TRACE, SQL=TRACE" /> -->
+      <property name="openjpa.jdbc.MappingDefaults" value="ForeignKeyDeleteAction=restrict, JoinForeignKeyDeleteAction=restrict" />
+      <property name="openjpa.jdbc.SchemaFactory" value="native(ForeignKeys=true)" />
+      <property name="openjpa.jdbc.SynchronizeMappings" value="validate" />
+      <property name="openjpa.Log" value="DefaultLevel=WARN, Runtime=INFO, Tool=INFO, SQL=WARN" />
+      <property name="openjpa.Log" value="slf4j" />
+      <property name="openjpa.Multithreaded" value="true" />
+      <property name="openjpa.jdbc.DBDictionary" value="postgres(SearchStringEscape=\, SupportsXMLColumn=false)" />
+      <property name="openjpa.RemoteCommitProvider" value="sjvm" />
+      <property name="openjpa.DataCache" value="false" />
+      <property name="openjpa.QueryCache" value="false" />
+    </properties>
+
+  </persistence-unit>
+</persistence>
