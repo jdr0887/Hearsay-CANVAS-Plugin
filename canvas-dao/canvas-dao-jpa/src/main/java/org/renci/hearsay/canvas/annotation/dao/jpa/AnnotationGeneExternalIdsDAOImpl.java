@@ -35,4 +35,16 @@ public class AnnotationGeneExternalIdsDAOImpl extends BaseDAOImpl<AnnotationGene
         return ret;
     }
 
+    @Override
+    public List<AnnotationGeneExternalIds> findByNamespaceAndNamespaceVersion(String namespace, String version)
+            throws HearsayDAOException {
+        logger.debug("ENTERING findByNamespaceAndNamespaceVersion(String, String)");
+        TypedQuery<AnnotationGeneExternalIds> query = getEntityManager().createNamedQuery(
+                "AnnotationGeneExternalIds.findByNamespace", AnnotationGeneExternalIds.class);
+        query.setParameter("namespace", namespace);
+        query.setParameter("namespaceVersion", version);
+        List<AnnotationGeneExternalIds> ret = query.getResultList();
+        return ret;
+    }
+
 }

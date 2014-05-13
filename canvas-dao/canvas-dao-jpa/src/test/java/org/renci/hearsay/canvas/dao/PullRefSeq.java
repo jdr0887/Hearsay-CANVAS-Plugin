@@ -140,14 +140,14 @@ public class PullRefSeq implements Runnable {
                     List<RefSeqCodingSequence> refSeqCodingSequenceResults = refSeqCodingSequenceDAO
                             .findByRefSeqVersionAndTranscriptId(refSeqVersion, transcript.getVersionId());
 
-                    List<RefSeqGene> refSeqGeneResults = refSeqGeneDAO
-                            .findByRefSeqVersionAndAnnotationGeneExternalIdsNamespaceAndTranscriptId(refSeqVersion,
-                                    "refseq", transcript.getVersionId());
-                    if (refSeqGeneResults != null && !refSeqGeneResults.isEmpty()) {
-                        for (RefSeqGene refSeqGene : refSeqGeneResults) {
-                            
-                        }
-                    }
+//                    List<RefSeqGene> refSeqGeneResults = refSeqGeneDAO
+//                            .findByRefSeqVersionAndAnnotationGeneExternalIdsNamespaceAndTranscriptId(refSeqVersion,
+//                                    "refseq", transcript.getVersionId());
+//                    if (refSeqGeneResults != null && !refSeqGeneResults.isEmpty()) {
+//                        for (RefSeqGene refSeqGene : refSeqGeneResults) {
+//                            
+//                        }
+//                    }
 
                 }
 

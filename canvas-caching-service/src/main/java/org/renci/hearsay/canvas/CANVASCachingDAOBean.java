@@ -1,5 +1,7 @@
 package org.renci.hearsay.canvas;
 
+import org.renci.hearsay.canvas.annotation.dao.AnnotationGeneDAO;
+import org.renci.hearsay.canvas.annotation.dao.AnnotationGeneExternalIdsDAO;
 import org.renci.hearsay.canvas.hgnc.dao.HGNCGeneDAO;
 import org.renci.hearsay.canvas.refseq.dao.RefSeqCodingSequenceDAO;
 import org.renci.hearsay.canvas.refseq.dao.RefSeqGeneDAO;
@@ -9,6 +11,10 @@ import org.renci.hearsay.canvas.refseq.dao.TranscriptMapsExonsDAO;
 import org.renci.hearsay.dao.TranscriptIntervalDAO;
 
 public class CANVASCachingDAOBean {
+
+    private AnnotationGeneDAO annotationGeneDAO;
+
+    private AnnotationGeneExternalIdsDAO annotationGeneExternalIdsDAO;
 
     private org.renci.hearsay.dao.TranscriptDAO hearsayTranscriptDAO;
 
@@ -28,6 +34,22 @@ public class CANVASCachingDAOBean {
 
     public CANVASCachingDAOBean() {
         super();
+    }
+
+    public AnnotationGeneDAO getAnnotationGeneDAO() {
+        return annotationGeneDAO;
+    }
+
+    public void setAnnotationGeneDAO(AnnotationGeneDAO annotationGeneDAO) {
+        this.annotationGeneDAO = annotationGeneDAO;
+    }
+
+    public AnnotationGeneExternalIdsDAO getAnnotationGeneExternalIdsDAO() {
+        return annotationGeneExternalIdsDAO;
+    }
+
+    public void setAnnotationGeneExternalIdsDAO(AnnotationGeneExternalIdsDAO annotationGeneExternalIdsDAO) {
+        this.annotationGeneExternalIdsDAO = annotationGeneExternalIdsDAO;
     }
 
     public org.renci.hearsay.dao.TranscriptDAO getHearsayTranscriptDAO() {
