@@ -28,6 +28,8 @@ import org.renci.hearsay.canvas.refseq.dao.model.Transcript;
 import org.renci.hearsay.canvas.refseq.dao.model.TranscriptMaps;
 import org.renci.hearsay.canvas.refseq.dao.model.TranscriptMapsExons;
 import org.renci.hearsay.dao.HearsayDAOException;
+import org.renci.hearsay.dao.TranscriptDAO;
+import org.renci.hearsay.dao.TranscriptIntervalDAO;
 import org.renci.hearsay.dao.model.StrandType;
 import org.renci.hearsay.dao.model.TranscriptInterval;
 import org.slf4j.Logger;
@@ -68,6 +70,9 @@ public class CANVASCachingCallable implements Callable<List<org.renci.hearsay.da
         TranscriptMapsDAO transcriptionMapsDAO = cachingDAOBean.getTranscriptMapsDAO();
 
         TranscriptMapsExonsDAO transcriptionMapsExonsDAO = cachingDAOBean.getTranscriptMapsExonsDAO();
+
+        TranscriptDAO transcriptDAO = cachingDAOBean.getHearsayTranscriptDAO();
+        TranscriptIntervalDAO transcriptIntervalDAO = cachingDAOBean.getHearsayTranscriptIntervalDAO();
 
         try {
 
@@ -153,11 +158,11 @@ public class CANVASCachingCallable implements Callable<List<org.renci.hearsay.da
                 if (refSeqGeneResults != null && !refSeqGeneResults.isEmpty()) {
                     refSeqGene = refSeqGeneResults.get(0);
                 }
-		
-		if (refSeqGene == null) {
-		  logger.info("refSeqGene is null");
-		  return results;
-		}
+
+                if (refSeqGene == null) {
+                    logger.info("refSeqGene is null");
+                    return results;
+                }
 
                 logger.info(refSeqGene.toString());
 
@@ -184,20 +189,23 @@ public class CANVASCachingCallable implements Callable<List<org.renci.hearsay.da
                 Integer nMap = exons.size();
                 hearsayTranscript.setMapsTotal(nMap);
 
-                // try {
-                // Long id = getCachingDAOBean().getHearsayTranscriptDAO().save(hearsayTranscript);
-                // hearsayTranscript.setId(id);
-                // results.add(hearsayTranscript);
-                // } catch (HearsayDAOException e) {
-                // e.printStackTrace();
-                // }
-
                 List<RefSeqCodingSequence> refSeqCodingSequenceResults = refSeqCodingSequenceDAO
                         .findByRefSeqVersionAndTranscriptId(refSeqVersion, transcript.getVersionId());
 
                 if (refSeqCodingSequenceResults != null && !refSeqCodingSequenceResults.isEmpty()) {
                     String proteinId = refSeqCodingSequenceResults.get(0).getProteinId();
                     hearsayTranscript.setProteinRefSeqAccession(proteinId);
+                }
+
+                try {
+                    Long id = transcriptDAO.save(hearsayTranscript);
+                    hearsayTranscript.setId(id);
+                    results.add(hearsayTranscript);
+                } catch (HearsayDAOException e) {
+                    e.printStackTrace();
+                }
+
+                if (refSeqCodingSequenceResults != null && !refSeqCodingSequenceResults.isEmpty()) {
 
                     Set<RegionGroup> regionGroupSet = refSeqCodingSequenceResults.get(0).getLocations();
                     RegionGroup[] regionGroupArray = regionGroupSet.toArray(new RegionGroup[regionGroupSet.size()]);
@@ -293,6 +301,7 @@ public class CANVASCachingCallable implements Callable<List<org.renci.hearsay.da
                     for (TranscriptMapsExons exon : exons) {
 
                         TranscriptInterval tInterval = new TranscriptInterval();
+                        tInterval.setTranscript(hearsayTranscript);
                         tInterval.setTranscriptEnd(exon.getTranscrEnd());
                         tInterval.setTranscriptStart(exon.getTranscrStart());
                         tInterval.setCdsStart(exon.getContigStart());
@@ -300,7 +309,7 @@ public class CANVASCachingCallable implements Callable<List<org.renci.hearsay.da
                         tInterval.setRegionType(org.renci.hearsay.dao.model.RegionType.valueOf(exon.getRegionType()
                                 .toString()));
                         try {
-                            getCachingDAOBean().getHearsayTranscriptIntervalDAO().save(tInterval);
+                            transcriptIntervalDAO.save(tInterval);
                         } catch (HearsayDAOException e) {
                             e.printStackTrace();
                         }
@@ -311,6 +320,7 @@ public class CANVASCachingCallable implements Callable<List<org.renci.hearsay.da
                     while (iter.hasNext()) {
                         TranscriptMapsExons exon = iter.next();
                         TranscriptInterval tInterval = new TranscriptInterval();
+                        tInterval.setTranscript(hearsayTranscript);
                         tInterval.setTranscriptEnd(exon.getTranscrEnd());
                         tInterval.setTranscriptStart(exon.getTranscrStart());
                         tInterval.setCdsStart(exon.getContigStart());
@@ -318,7 +328,7 @@ public class CANVASCachingCallable implements Callable<List<org.renci.hearsay.da
                         tInterval.setRegionType(org.renci.hearsay.dao.model.RegionType.valueOf(exon.getRegionType()
                                 .toString()));
                         try {
-                            getCachingDAOBean().getHearsayTranscriptIntervalDAO().save(tInterval);
+                            transcriptIntervalDAO.save(tInterval);
                         } catch (HearsayDAOException e) {
                             e.printStackTrace();
                         }
