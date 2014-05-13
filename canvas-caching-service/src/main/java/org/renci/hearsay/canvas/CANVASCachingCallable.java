@@ -1,7 +1,5 @@
 package org.renci.hearsay.canvas;
 
-import static org.junit.Assert.assertTrue;
-
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -155,8 +153,11 @@ public class CANVASCachingCallable implements Callable<List<org.renci.hearsay.da
                 if (refSeqGeneResults != null && !refSeqGeneResults.isEmpty()) {
                     refSeqGene = refSeqGeneResults.get(0);
                 }
-
-                assertTrue(refSeqGene != null);
+		
+		if (refSeqGene == null) {
+		  logger.info("refSeqGene is null");
+		  return results;
+		}
 
                 logger.info(refSeqGene.toString());
 
