@@ -20,7 +20,9 @@ import org.renci.hearsay.canvas.dao.Persistable;
 @XmlType
 @Entity
 @Table(schema = "annot", name = "gene_external_ids")
-@NamedQueries({ @NamedQuery(name = "AnnotationGeneExternalIds.findByNamespace", query = "SELECT a FROM AnnotationGeneExternalIds a where a.namespace = :namespace") })
+@NamedQueries({
+        @NamedQuery(name = "AnnotationGeneExternalIds.findByNamespace", query = "SELECT a FROM AnnotationGeneExternalIds a where a.namespace = :namespace"),
+        @NamedQuery(name = "AnnotationGeneExternalIds.findByNamespaceAndNamespaceVersion", query = "SELECT a FROM AnnotationGeneExternalIds a where a.namespace = :namespace and a.namespaceVer = :version") })
 public class AnnotationGeneExternalIds implements Persistable {
 
     private static final long serialVersionUID = 5179600096320755261L;
