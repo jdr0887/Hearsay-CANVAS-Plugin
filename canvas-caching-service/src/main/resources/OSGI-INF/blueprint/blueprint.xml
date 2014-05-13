@@ -13,6 +13,8 @@
 
   <reference id="hearsayTranscriptDAO" interface="org.renci.hearsay.dao.TranscriptDAO" />
   <reference id="hearsayTranscriptIntervalDAO" interface="org.renci.hearsay.dao.TranscriptIntervalDAO" />
+  <reference id="annotationGeneDAO" interface="org.renci.hearsay.canvas.annotation.dao.AnnotationGeneDAO" />
+  <reference id="annotationGeneExternalIdsDAO" interface="org.renci.hearsay.canvas.annotation.dao.AnnotationGeneExternalIdsDAO" />
   <reference id="transcriptDAO" interface="org.renci.hearsay.canvas.refseq.dao.TranscriptDAO" />
   <reference id="transcriptMapsDAO" interface="org.renci.hearsay.canvas.refseq.dao.TranscriptMapsDAO" />
   <reference id="transcriptMapsExonsDAO" interface="org.renci.hearsay.canvas.refseq.dao.TranscriptMapsExonsDAO" />
@@ -28,6 +30,8 @@
   </bean>
 
   <bean id="cachingDAOBean" class="org.renci.hearsay.canvas.CANVASCachingDAOBean">
+    <property name="annotationGeneDAO" ref="annotationGeneDAO" />
+    <property name="annotationGeneExternalIdsDAO" ref="annotationGeneExternalIdsDAO" />
     <property name="hearsayTranscriptDAO" ref="hearsayTranscriptDAO" />
     <property name="hearsayTranscriptIntervalDAO" ref="hearsayTranscriptIntervalDAO" />
     <property name="transcriptDAO" ref="transcriptDAO" />
