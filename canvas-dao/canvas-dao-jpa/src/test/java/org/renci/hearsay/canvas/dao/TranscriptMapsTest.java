@@ -1,21 +1,25 @@
 package org.renci.hearsay.canvas.dao;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import static org.junit.Assert.assertTrue;
+
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-import org.apache.commons.collections4.iterators.ReverseListIterator;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.renci.hearsay.canvas.annotation.dao.jpa.AnnotationGeneExternalIdsDAOImpl;
+import org.renci.hearsay.canvas.annotation.dao.model.AnnotationGeneExternalIds;
 import org.renci.hearsay.canvas.hgnc.dao.jpa.HGNCGeneDAOImpl;
 import org.renci.hearsay.canvas.hgnc.dao.model.HGNCGene;
 import org.renci.hearsay.canvas.refseq.dao.jpa.RefSeqCodingSequenceDAOImpl;
@@ -31,9 +35,13 @@ import org.renci.hearsay.canvas.refseq.dao.model.Transcript;
 import org.renci.hearsay.canvas.refseq.dao.model.TranscriptMaps;
 import org.renci.hearsay.canvas.refseq.dao.model.TranscriptMapsExons;
 import org.renci.hearsay.dao.HearsayDAOException;
-import org.renci.hearsay.dao.model.TranscriptInterval;
+import org.renci.hearsay.dao.model.StrandType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class TranscriptMapsTest {
+
+    private final Logger logger = LoggerFactory.getLogger(TranscriptMapsTest.class);
 
     private static EntityManagerFactory emf;
 
@@ -46,10 +54,13 @@ public class TranscriptMapsTest {
     }
 
     @Test
-    public void testFindByGenomeRefIdAndRefSeqVersion() {
+    public void testFullTransform() {
 
         String refSeqVersion = "61";
         Integer genomeRefId = 2;
+
+        AnnotationGeneExternalIdsDAOImpl annotationGeneExternalIdsDAO = new AnnotationGeneExternalIdsDAOImpl();
+        annotationGeneExternalIdsDAO.setEntityManager(em);
 
         RefSeqCodingSequenceDAOImpl refSeqCodingSequenceDAO = new RefSeqCodingSequenceDAOImpl();
         refSeqCodingSequenceDAO.setEntityManager(em);
@@ -67,23 +78,31 @@ public class TranscriptMapsTest {
         transcriptionMapsExonsDAO.setEntityManager(em);
 
         try {
+
             List<TranscriptMaps> mapResults = transcriptionMapsDAO.findByGenomeRefIdAndRefSeqVersion(genomeRefId,
                     refSeqVersion);
 
-            System.out.printf("transcriptionMaps.size(): %d%n", mapResults.size());// 131857
+            logger.info("transcriptMaps.size(): {}", mapResults.size());
 
             Map<String, Integer> map = new HashMap<String, Integer>();
-
             if (mapResults != null && mapResults.size() > 0) {
-                for (TranscriptMaps transcriptionMaps : mapResults) {
-                    map.put(transcriptionMaps.getTranscript().getVersionId(), transcriptionMaps.getMapCount());
+                for (TranscriptMaps transcriptMaps : mapResults) {
+                    map.put(transcriptMaps.getTranscript().getVersionId(), transcriptMaps.getMapCount());
                 }
             }
+            logger.info("versionId/mapCount size: {}", map.size());
 
-            System.out.printf("versionId/mapCount size: %d%n", map.size());// 91179
+            Comparator<TranscriptMapsExons> exonComparator = new Comparator<TranscriptMapsExons>() {
 
-            Map<String, List<TranscriptMapsExons>> accessionExonMap = new HashMap<String, List<TranscriptMapsExons>>();
+                @Override
+                public int compare(TranscriptMapsExons first, TranscriptMapsExons second) {
+                    int ret = first.getContigStart().compareTo(second.getContigStart());
+                    return ret;
+                }
 
+            };
+
+            Map<String, TreeSet<TranscriptMapsExons>> accessionExonMap = new HashMap<String, TreeSet<TranscriptMapsExons>>();
             for (String versionId : map.keySet()) {
                 Integer mapCount = map.get(versionId);
                 List<TranscriptMapsExons> exons = transcriptionMapsExonsDAO
@@ -92,56 +111,98 @@ public class TranscriptMapsTest {
                 for (TranscriptMapsExons exon : exons) {
                     String key = exon.getTranscriptMaps().getGenomeRefSeq().getVerAccession();
                     if (!accessionExonMap.containsKey(key)) {
-                        accessionExonMap.put(key, new ArrayList<TranscriptMapsExons>());
+                        accessionExonMap.put(key, new TreeSet<TranscriptMapsExons>(exonComparator));
                     }
                     accessionExonMap.get(key).add(exon);
                 }
             }
 
-            System.out.printf("accessionExonMap.size(): %d%n", accessionExonMap.size());
-            for (String key : accessionExonMap.keySet()) {
-                System.out.println(key);
-            }
+            logger.info("accessionExonMap.size(): {}", accessionExonMap.size());
 
+            Set<TranscriptMapsExons> exonsToAdd = new HashSet<TranscriptMapsExons>();
             for (String key : accessionExonMap.keySet()) {
 
-                List<TranscriptMapsExons> exons = accessionExonMap.get(key);
-                Collections.sort(exons, new Comparator<TranscriptMapsExons>() {
+                org.renci.hearsay.dao.model.Transcript hearsayTranscript = new org.renci.hearsay.dao.model.Transcript();
 
-                    @Override
-                    public int compare(TranscriptMapsExons first, TranscriptMapsExons second) {
-                        int ret = first.getContigStart().compareTo(second.getContigStart());
-                        return ret;
+                TreeSet<TranscriptMapsExons> exons = accessionExonMap.get(key);
+
+                TranscriptMapsExons firstTranscriptMapsExons = exons.first();
+                TranscriptMapsExons lastTranscriptMapsExons = exons.last();
+                TranscriptMaps transcriptMaps = firstTranscriptMapsExons.getTranscriptMaps();
+                Transcript transcript = transcriptMaps.getTranscript();
+
+                Integer lowerBound = firstTranscriptMapsExons.toRange().getMinimumInteger();
+                hearsayTranscript.setBoundsStart(lowerBound);
+
+                Integer upperBound = lastTranscriptMapsExons.toRange().getMaximumInteger();
+                hearsayTranscript.setBoundsEnd(upperBound);
+
+                String transcriptVersionId = transcript.getVersionId();
+                hearsayTranscript.setRefSeqAccession(transcriptVersionId);
+
+                String strand = transcriptMaps.getStrand();
+                StrandType sType = StrandType.POSITIVE;
+                for (StrandType t : StrandType.values()) {
+                    if (t.getValue().equals(strand)) {
+                        sType = t;
                     }
+                }
+                hearsayTranscript.setStrandType(sType);
 
-                });
-                Transcript transcript = exons.get(0).getTranscriptMaps().getTranscript();
-                Integer lowerBound = exons.get(0).toRange().getMinimumInteger();
-                Integer upperBound = exons.get(exons.size() - 1).toRange().getMaximumInteger();
-                String rsAccession = transcript.getVersionId();
-                String strand = exons.get(0).getTranscriptMaps().getStrand();
+                logger.info(transcript.toString());
+                logger.info(hearsayTranscript.toString());
 
-                List<RefSeqGene> refSeqGeneResults = refSeqGeneDAO
-                        .findByRefSeqVersionAndAnnotationGeneExternalIdsNamespaceAndTranscriptId(refSeqVersion,
-                                "refseq", transcript.getVersionId());
+                // TODO need to add null checks
                 RefSeqGene refSeqGene = null;
+
+                List<RefSeqGene> refSeqGeneResults = refSeqGeneDAO.findByRefSeqVersionAndTranscriptId(refSeqVersion,
+                        transcript.getVersionId());
+
                 if (refSeqGeneResults != null && !refSeqGeneResults.isEmpty()) {
                     refSeqGene = refSeqGeneResults.get(0);
                 }
 
-                Long geneId = refSeqGene.getId();
-                String geneName = refSeqGene.getName();
-                HGNCGene hgncGene = hgncGeneDAO.findById(geneId.intValue());
-                String geneSymbol = hgncGene.getSymbol();
+                assertTrue(refSeqGene != null);
 
-                Integer mapCount = exons.get(0).getTranscriptMaps().getMapCount();
+                logger.info(refSeqGene.toString());
+
+                Long geneId = refSeqGene.getId();
+                hearsayTranscript.setGeneId(geneId);
+
+                String geneName = refSeqGene.getName();
+                hearsayTranscript.setGeneName(geneName);
+
+                AnnotationGeneExternalIds annotatedGene = annotationGeneExternalIdsDAO.findById(refSeqGene.getId()
+                        .intValue());
+
+                logger.info(annotatedGene.toString());
+
+                HGNCGene hgncGene = hgncGeneDAO.findById(annotatedGene.getGene().getId().intValue());
+                if (hgncGene != null) {
+                    String geneSymbol = hgncGene.getSymbol();
+                    hearsayTranscript.setHgncSymbol(geneSymbol);
+                }
+
+                Integer mapCount = transcriptMaps.getMapCount();
+                hearsayTranscript.setMapIndex(mapCount);
+
                 Integer nMap = exons.size();
+                hearsayTranscript.setMapsTotal(nMap);
+
+                // try {
+                // Long id = getCachingDAOBean().getHearsayTranscriptDAO().save(hearsayTranscript);
+                // hearsayTranscript.setId(id);
+                // results.add(hearsayTranscript);
+                // } catch (HearsayDAOException e) {
+                // e.printStackTrace();
+                // }
 
                 List<RefSeqCodingSequence> refSeqCodingSequenceResults = refSeqCodingSequenceDAO
                         .findByRefSeqVersionAndTranscriptId(refSeqVersion, transcript.getVersionId());
 
                 if (refSeqCodingSequenceResults != null && !refSeqCodingSequenceResults.isEmpty()) {
                     String proteinId = refSeqCodingSequenceResults.get(0).getProteinId();
+                    hearsayTranscript.setProteinRefSeqAccession(proteinId);
 
                     Set<RegionGroup> regionGroupSet = refSeqCodingSequenceResults.get(0).getLocations();
                     RegionGroup[] regionGroupArray = regionGroupSet.toArray(new RegionGroup[regionGroupSet.size()]);
@@ -154,114 +215,90 @@ public class TranscriptMapsTest {
 
                     // add utr
 
-                    int exonIndex1 = 0;
-                    TranscriptMapsExons firstExon = exons.get(exonIndex1);
-                    boolean foundFirst = true;
-
-                    while (regionStart < firstExon.getTranscrStart() || regionStart > firstExon.getTranscrEnd()) {
-                        firstExon.setRegionType(RegionType.UTR5);
-                        exonIndex1++;
-                        if (exonIndex1 == exons.size()) {
-                            foundFirst = false;
-                            break;
-                        }
-                        firstExon = exons.get(exonIndex1);
-                        if (foundFirst) {
-                            if (regionStart != firstExon.getTranscrStart()) {
-                                int v = regionStart - firstExon.getTranscrStart();
+                    Iterator<TranscriptMapsExons> exonsAscendingIter = exons.iterator();
+                    while (exonsAscendingIter.hasNext()) {
+                        TranscriptMapsExons exon = exonsAscendingIter.next();
+                        if (regionStart < exon.getTranscrStart() || regionStart > exon.getTranscrEnd()) {
+                            exon.setRegionType(RegionType.UTR5);
+                            if (regionStart != exon.getTranscrStart()) {
+                                int v = regionStart - exon.getTranscrStart();
                                 int nStrand = strand.equals("+") ? 1 : -1;
-                                int gc = firstExon.getContigStart() + nStrand * v;
+                                int gc = exon.getContigStart() + nStrand * v;
                                 TranscriptMapsExons utr5 = new TranscriptMapsExons(RegionType.UTR5,
-                                        firstExon.getTranscrStart(), regionStart - 1, firstExon.getContigStart(), gc
-                                                - nStrand);
-                                exons.add(exonIndex1, utr5);
-                                firstExon.setContigStart(gc);
-                                firstExon.setTranscrStart(regionStart);
+                                        exon.getTranscrStart(), regionStart - 1, exon.getContigStart(), gc - nStrand);
+                                exonsToAdd.add(utr5);
+                                exon.setContigStart(gc);
+                                exon.setTranscrStart(regionStart);
                             }
                         }
                     }
-
-                    int exonIndex2 = exons.size() - 1;
-                    TranscriptMapsExons lastExon = exons.get(exonIndex2);
-                    boolean foundLast = true;
-
-                    while (regionEnd < lastExon.getTranscrStart() || regionEnd > lastExon.getTranscrEnd()) {
-                        lastExon.setRegionType(RegionType.UTR3);
-                        exonIndex2--;
-                        if (exonIndex2 == exons.size()) {
-                            foundLast = false;
-                            break;
-                        }
-                        lastExon = exons.get(exonIndex2);
-                        if (foundLast) {
-                            int v = regionEnd - lastExon.getTranscrStart();
-                            int nStrand = strand.equals("+") ? 1 : -1;
-                            int gc = lastExon.getContigStart() + nStrand * v;
-                            TranscriptMapsExons utr3 = new TranscriptMapsExons(RegionType.UTR3, regionEnd + 1,
-                                    lastExon.getTranscrEnd(), gc + nStrand, lastExon.getContigEnd());
-                            exons.add(exonIndex2 + 1, utr3);
-                            lastExon.setContigStart(gc);
-                            lastExon.setTranscrStart(regionEnd);
-                        }
+                    if (!exonsToAdd.isEmpty()) {
+                        exons.addAll(exonsToAdd);
+                        exonsToAdd.clear();
                     }
 
-                    for (TranscriptMapsExons exon : exons) {
-                        if (exon.getRegionType().equals(RegionType.EXON)) {
-                            exon.setContigStart(exon.getTranscrStart() - regionStart + 1);
-                            exon.setContigEnd(exon.getTranscrEnd() - regionStart + 1);
+                    Iterator<TranscriptMapsExons> exonsDescendingIter = exons.descendingIterator();
+                    while (exonsDescendingIter.hasNext()) {
+                        TranscriptMapsExons exon = exonsDescendingIter.next();
+                        if (regionEnd < exon.getTranscrStart() || regionEnd > exon.getTranscrEnd()) {
+                            exon.setRegionType(RegionType.UTR3);
+
+                            if (regionStart != exon.getTranscrStart()) {
+                                int v = regionEnd - exon.getTranscrStart();
+                                int nStrand = strand.equals("+") ? 1 : -1;
+                                int gc = exon.getContigStart() + nStrand * v;
+                                TranscriptMapsExons utr3 = new TranscriptMapsExons(RegionType.UTR3, regionEnd + 1,
+                                        exon.getTranscrEnd(), gc + nStrand, exon.getContigEnd());
+                                exonsToAdd.add(utr3);
+                                exon.setContigStart(gc);
+                                exon.setTranscrStart(regionEnd);
+                            }
+                        }
+                    }
+                    if (!exonsToAdd.isEmpty()) {
+                        exons.addAll(exonsToAdd);
+                        exonsToAdd.clear();
+                    }
+
+                    for (TranscriptMapsExons e : exons) {
+                        if (e.getRegionType().equals(RegionType.EXON)) {
+                            e.setContigStart(e.getTranscrStart() - regionStart + 1);
+                            e.setContigEnd(e.getTranscrEnd() - regionStart + 1);
                         }
                     }
 
                 }
 
-                for (int i = exons.size() - 1; i > 0; --i) {
-                    TranscriptMapsExons exon = exons.get(i);
-                    if (exon.getTranscriptMaps().getStrand().equals("+")
-                            && exons.get(i - 1).getContigEnd() != exons.get(i).getContigStart()) {
-                        int g1 = exons.get(i - 1).getContigEnd() + 1;
-                        int g2 = exons.get(i).getContigStart() - 1;
-                        TranscriptMapsExons intron = new TranscriptMapsExons(RegionType.INTRON, -1, -1, g1, g2);
-                        exons.add(i, intron);
-                    } else if (exon.getTranscriptMaps().getStrand().equals("-")
-                            && exons.get(i + 1).getContigStart() != exons.get(i - 1).getContigEnd()) {
-                        int g1 = exons.get(i).getContigStart() + 1;
-                        int g2 = exons.get(i - 1).getContigEnd() - 1;
-                        TranscriptMapsExons intron = new TranscriptMapsExons(RegionType.INTRON, -1, -1, g1, g2);
-                        exons.add(i, intron);
+                Iterator<TranscriptMapsExons> exonsDescendingIter = exons.descendingIterator();
+                while (exonsDescendingIter.hasNext()) {
+                    TranscriptMapsExons original = exonsDescendingIter.next();
+                    TranscriptMapsExons previous = exons.higher(original);
+                    TranscriptMapsExons subsequent = exons.lower(original);
+                    if (previous != null) {
+                        TranscriptMapsExons intron = null;
+                        if (strand.equals("+") && previous.getContigEnd() != original.getContigStart()) {
+                            intron = new TranscriptMapsExons(RegionType.INTRON, -1, -1, previous.getContigEnd() + 1,
+                                    original.getContigStart() - 1);
+                        } else if (strand.equals("-") && subsequent != null
+                                && subsequent.getContigStart() != previous.getContigEnd()) {
+                            intron = new TranscriptMapsExons(RegionType.INTRON, -1, -1, original.getContigStart() + 1,
+                                    previous.getContigEnd() - 1);
+                        }
+                        if (intron != null) {
+                            exonsToAdd.add(intron);
+                        }
                     }
                 }
-
-                if (strand.equals("+")) {
-                    for (TranscriptMapsExons exon : exons) {
-                        
-                        TranscriptInterval tInterval = new TranscriptInterval();
-                        tInterval.setRegionType(org.renci.hearsay.dao.model.RegionType.valueOf(exon.getRegionType()
-                                .toString()));
-                        tInterval.setCdsEnd(exon.getContigEnd());
-                        tInterval.setCdsStart(exon.getContigStart());
-                        tInterval.setTranscriptEnd(exon.getTranscrEnd());
-                        tInterval.setTranscriptStart(exon.getTranscrStart());
-                        
-                    }
-                } else {
-                    ReverseListIterator<TranscriptMapsExons> iter = new ReverseListIterator<TranscriptMapsExons>(exons);
-                    while (iter.hasNext()) {
-                        TranscriptMapsExons exon = iter.next();
-                        TranscriptInterval tInterval = new TranscriptInterval();
-                        tInterval.setRegionType(org.renci.hearsay.dao.model.RegionType.valueOf(exon.getRegionType()
-                                .toString()));
-                        tInterval.setCdsEnd(exon.getContigEnd());
-                        tInterval.setCdsStart(exon.getContigStart());
-                        tInterval.setTranscriptEnd(exon.getTranscrEnd());
-                        tInterval.setTranscriptStart(exon.getTranscrStart());
-                    }
+                if (!exonsToAdd.isEmpty()) {
+                    exons.addAll(exonsToAdd);
+                    exonsToAdd.clear();
                 }
-
             }
 
         } catch (HearsayDAOException e) {
             e.printStackTrace();
         }
+
     }
 
     @AfterClass

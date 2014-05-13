@@ -37,30 +37,31 @@ public class GetGenesTest {
         HGNCGeneDAOImpl hgncGeneDAO = new HGNCGeneDAOImpl();
         hgncGeneDAO.setEntityManager(em);
 
-        try {
+        List<RefSeqGene> results = null;
+        // try {
+        // results = refSeqGeneDAO.findByRefSeqVersionAndAnnotationGeneExternalIdsNamespaceAndTranscriptId("61",
+        // "refseq","XM_005258393.1");
+        // } catch (HearsayDAOException e) {
+        // e.printStackTrace();
+        // }
 
-            List<RefSeqGene> results = refSeqGeneDAO
-                    .findByRefSeqVersionAndAnnotationGeneExternalIdsNamespaceAndTranscriptId("61", "refseq",
-                            "XM_005258393.1");
+        if (results != null && results.size() > 0) {
 
-            if (results != null && results.size() > 0) {
+            for (RefSeqGene gene : results) {
 
-                for (RefSeqGene gene : results) {
+                Set<RegionGroup> rgSet = gene.getLocations();
+                if (rgSet != null && !rgSet.isEmpty()) {
 
-                    Set<RegionGroup> rgSet = gene.getLocations();
-                    if (rgSet != null && !rgSet.isEmpty()) {
+                    for (RegionGroup rg : rgSet) {
 
-                        for (RegionGroup rg : rgSet) {
+                        Set<RegionGroupRegion> rgrSet = rg.getRegionGroupRegions();
+                        if (rgrSet != null && !rgrSet.isEmpty()) {
 
-                            Set<RegionGroupRegion> rgrSet = rg.getRegionGroupRegions();
-                            if (rgrSet != null && !rgrSet.isEmpty()) {
-
-                                for (RegionGroupRegion rgr : rgrSet) {
-                                    System.out.println(String.format("%s\t%s\t%s\t%s", gene.getName(), rg
-                                            .getTranscript().getVersionId(), rgr.getRegionStart().toString(), rgr
-                                            .getRegionEnd().toString()));
-                                }
-
+                            for (RegionGroupRegion rgr : rgrSet) {
+                                System.out
+                                        .println(String.format("%s\t%s\t%s\t%s", gene.getName(), rg.getTranscript()
+                                                .getVersionId(), rgr.getRegionStart().toString(), rgr.getRegionEnd()
+                                                .toString()));
                             }
 
                         }
@@ -71,8 +72,6 @@ public class GetGenesTest {
 
             }
 
-        } catch (HearsayDAOException e) {
-            e.printStackTrace();
         }
 
     }
