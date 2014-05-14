@@ -24,20 +24,15 @@ public class CANVASCachingTask extends TimerTask {
     @Override
     public void run() {
         logger.debug("ENTERING run()");
-
         try {
             ExecutorService executor = Executors.newSingleThreadExecutor();
             CANVASCachingCallable callable = new CANVASCachingCallable(this.cachingDAOBean, this.cachingPropertyBean);
             List<org.renci.hearsay.dao.model.Transcript> results = executor.submit(callable).get();
-            for (org.renci.hearsay.dao.model.Transcript t : results) {
-                System.out.println(t.toString());
-            }
+            logger.info("results.size(): {}", results.size());
             executor.shutdownNow();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
-
-        logger.debug("done");
     }
 
     public CANVASCachingDAOBean getCachingDAOBean() {
