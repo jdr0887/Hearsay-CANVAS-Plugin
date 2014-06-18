@@ -11,7 +11,9 @@ public class CANVASCachingService {
 
     private final Timer cacheTimer = new Timer();
 
-    private CANVASCachingPropertyBean cachingPropertyBean;
+    private Boolean active;
+
+    private Integer delayBetweenRuns;
 
     private CANVASCachingTask task;
 
@@ -22,8 +24,7 @@ public class CANVASCachingService {
     public void start() throws Exception {
         logger.info("ENTERING start()");
         long delay = 1 * 60 * 1000; // 1 minute
-        cacheTimer.scheduleAtFixedRate(this.task, delay,
-                this.cachingPropertyBean.getDelayBetweenCachingRuns() * 60 * 1000);
+        cacheTimer.scheduleAtFixedRate(this.task, delay, this.delayBetweenRuns * 60 * 1000);
     }
 
     public void stop() throws Exception {
@@ -31,12 +32,12 @@ public class CANVASCachingService {
         cacheTimer.cancel();
     }
 
-    public CANVASCachingPropertyBean getCachingPropertyBean() {
-        return cachingPropertyBean;
+    public Integer getDelayBetweenRuns() {
+        return delayBetweenRuns;
     }
 
-    public void setCachingPropertyBean(CANVASCachingPropertyBean cachingPropertyBean) {
-        this.cachingPropertyBean = cachingPropertyBean;
+    public void setDelayBetweenRuns(Integer delayBetweenRuns) {
+        this.delayBetweenRuns = delayBetweenRuns;
     }
 
     public CANVASCachingTask getTask() {
@@ -45,6 +46,14 @@ public class CANVASCachingService {
 
     public void setTask(CANVASCachingTask task) {
         this.task = task;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 
 }

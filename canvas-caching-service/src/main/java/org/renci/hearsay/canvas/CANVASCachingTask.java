@@ -13,9 +13,7 @@ public class CANVASCachingTask extends TimerTask {
 
     private final Logger logger = LoggerFactory.getLogger(CANVASCachingTask.class);
 
-    private CANVASCachingDAOBean cachingDAOBean;
-
-    private CANVASCachingPropertyBean cachingPropertyBean;
+    private CANVASCachingCallable callable;
 
     public CANVASCachingTask() {
         super();
@@ -26,7 +24,6 @@ public class CANVASCachingTask extends TimerTask {
         logger.debug("ENTERING run()");
         try {
             ExecutorService executor = Executors.newSingleThreadExecutor();
-            CANVASCachingCallable callable = new CANVASCachingCallable(this.cachingDAOBean, this.cachingPropertyBean);
             List<org.renci.hearsay.dao.model.Transcript> results = executor.submit(callable).get();
             logger.info("results.size(): {}", results.size());
             executor.shutdownNow();
@@ -35,20 +32,12 @@ public class CANVASCachingTask extends TimerTask {
         }
     }
 
-    public CANVASCachingDAOBean getCachingDAOBean() {
-        return cachingDAOBean;
+    public CANVASCachingCallable getCallable() {
+        return callable;
     }
 
-    public void setCachingDAOBean(CANVASCachingDAOBean cachingDAOBean) {
-        this.cachingDAOBean = cachingDAOBean;
-    }
-
-    public CANVASCachingPropertyBean getCachingPropertyBean() {
-        return cachingPropertyBean;
-    }
-
-    public void setCachingPropertyBean(CANVASCachingPropertyBean cachingPropertyBean) {
-        this.cachingPropertyBean = cachingPropertyBean;
+    public void setCallable(CANVASCachingCallable callable) {
+        this.callable = callable;
     }
 
 }

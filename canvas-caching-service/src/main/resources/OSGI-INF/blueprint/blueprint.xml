@@ -4,15 +4,39 @@
 
   <cm:property-placeholder persistent-id="org.renci.hearsay.canvas" update-strategy="reload">
     <cm:default-properties>
-      <cm:property name="delayBetweenCachingRuns" value="1440" />
-      <cm:property name="cachingIsOn" value="true" />
+      <cm:property name="delayBetweenRuns" value="1440" />
+      <cm:property name="active" value="true" />
       <cm:property name="refSeqVersion" value="61" />
       <cm:property name="genomeRefId" value="2" />
     </cm:default-properties>
   </cm:property-placeholder>
 
+  <reference id="hearsayGeneDAO" interface="org.renci.hearsay.dao.GeneDAO" />
+  <reference id="hearsayGenomicSequenceVariantDAO" interface="org.renci.hearsay.dao.GenomicSequenceVariantDAO" />
+  <reference id="hearsayMappedTranscriptDAO" interface="org.renci.hearsay.dao.MappedTranscriptDAO" />
+  <reference id="hearsayReferenceGenomeDAO" interface="org.renci.hearsay.dao.ReferenceGenomeDAO" />
+  <reference id="hearsayReferenceSequenceDAO" interface="org.renci.hearsay.dao.ReferenceSequenceDAO" />
   <reference id="hearsayTranscriptDAO" interface="org.renci.hearsay.dao.TranscriptDAO" />
-  <reference id="hearsayTranscriptIntervalDAO" interface="org.renci.hearsay.dao.TranscriptIntervalDAO" />
+  <reference id="hearsayTranscriptVariantDAO" interface="org.renci.hearsay.dao.TranscriptVariantDAO" />
+  <reference id="hearsayTranslationDAO" interface="org.renci.hearsay.dao.TranslationDAO" />
+  <reference id="hearsayTranslationVariantDAO" interface="org.renci.hearsay.dao.TranslationVariantDAO" />
+  <reference id="hearsayVariantDAO" interface="org.renci.hearsay.dao.VariantDAO" />
+  <reference id="hearsayVariantEffectDAO" interface="org.renci.hearsay.dao.VariantEffectDAO" />
+
+  <bean id="hearsayDAOBean" class="org.renci.hearsay.dao.HearsayDAOBean">
+    <property name="geneDAO" ref="hearsayGeneDAO" />
+    <property name="genomicSequenceVariantDAO" ref="hearsayGenomicSequenceVariantDAO" />
+    <property name="mappedTranscriptDAO" ref="hearsayMappedTranscriptDAO" />
+    <property name="referenceGenomeDAO" ref="hearsayReferenceGenomeDAO" />
+    <property name="referenceSequenceDAO" ref="hearsayReferenceSequenceDAO" />
+    <property name="transcriptDAO" ref="hearsayTranscriptDAO" />
+    <property name="transcriptVariantDAO" ref="hearsayTranscriptVariantDAO" />
+    <property name="translationDAO" ref="hearsayTranslationDAO" />
+    <property name="translationVariantDAO" ref="hearsayTranslationVariantDAO" />
+    <property name="variantDAO" ref="hearsayVariantDAO" />
+    <property name="variantEffectDAO" ref="hearsayVariantEffectDAO" />
+  </bean>
+
   <reference id="annotationGeneDAO" interface="org.renci.hearsay.canvas.annotation.dao.AnnotationGeneDAO" />
   <reference id="annotationGeneExternalIdsDAO" interface="org.renci.hearsay.canvas.annotation.dao.AnnotationGeneExternalIdsDAO" />
   <reference id="transcriptDAO" interface="org.renci.hearsay.canvas.refseq.dao.TranscriptDAO" />
@@ -22,18 +46,9 @@
   <reference id="refSeqCodingSequenceDAO" interface="org.renci.hearsay.canvas.refseq.dao.RefSeqCodingSequenceDAO" />
   <reference id="HGNCGeneDAO" interface="org.renci.hearsay.canvas.hgnc.dao.HGNCGeneDAO" />
 
-  <bean id="cachingPropertyBean" class="org.renci.hearsay.canvas.CANVASCachingPropertyBean">
-    <property name="delayBetweenCachingRuns" value="${delayBetweenCachingRuns}" />
-    <property name="cachingIsOn" value="${cachingIsOn}" />
-    <property name="refSeqVersion" value="${refSeqVersion}" />
-    <property name="genomeRefId" value="${genomeRefId}" />
-  </bean>
-
-  <bean id="cachingDAOBean" class="org.renci.hearsay.canvas.CANVASCachingDAOBean">
+  <bean id="canvasDAOBean" class="org.renci.hearsay.canvas.dao.CANVASDAOBean">
     <property name="annotationGeneDAO" ref="annotationGeneDAO" />
     <property name="annotationGeneExternalIdsDAO" ref="annotationGeneExternalIdsDAO" />
-    <property name="hearsayTranscriptDAO" ref="hearsayTranscriptDAO" />
-    <property name="hearsayTranscriptIntervalDAO" ref="hearsayTranscriptIntervalDAO" />
     <property name="transcriptDAO" ref="transcriptDAO" />
     <property name="transcriptMapsDAO" ref="transcriptMapsDAO" />
     <property name="transcriptMapsExonsDAO" ref="transcriptMapsExonsDAO" />
@@ -42,14 +57,21 @@
     <property name="HGNCGeneDAO" ref="HGNCGeneDAO" />
   </bean>
 
+  <bean id="cachingCallable" class="org.renci.hearsay.canvas.CANVASCachingCallable">
+    <property name="refSeqVersion" value="${refSeqVersion}" />
+    <property name="genomeRefId" value="${genomeRefId}" />
+    <property name="canvasDAOBean" ref="canvasDAOBean" />
+    <property name="hearsayDAOBean" ref="hearsayDAOBean" />
+  </bean>
+
   <bean id="cachingTask" class="org.renci.hearsay.canvas.CANVASCachingTask">
-    <property name="cachingPropertyBean" ref="cachingPropertyBean" />
-    <property name="cachingDAOBean" ref="cachingDAOBean" />
+    <property name="callable" ref="cachingCallable" />
   </bean>
 
   <bean id="CANVASCachingService" class="org.renci.hearsay.canvas.CANVASCachingService" init-method="start" destroy-method="stop"
     activation="eager">
-    <property name="cachingPropertyBean" ref="cachingPropertyBean" />
+    <property name="active" value="${active}" />
+    <property name="delayBetweenRuns" value="${delayBetweenRuns}" />
     <property name="task" ref="cachingTask" />
     <cm:managed-properties persistent-id="org.renci.hearsay.canvas" update-strategy="container-managed" />
   </bean>
