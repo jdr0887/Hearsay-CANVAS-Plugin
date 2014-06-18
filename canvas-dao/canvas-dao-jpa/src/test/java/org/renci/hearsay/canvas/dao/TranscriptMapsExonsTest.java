@@ -20,8 +20,15 @@ import javax.persistence.Persistence;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.renci.hearsay.canvas.dao.model.Exon;
+import org.renci.hearsay.canvas.dao.model.Mapping;
+import org.renci.hearsay.canvas.dao.model.MappingKey;
+import org.renci.hearsay.canvas.dao.model.MappingResult;
 import org.renci.hearsay.canvas.ref.dao.model.GenomeRefSeq;
 import org.renci.hearsay.canvas.refseq.dao.jpa.TranscriptMapsExonsDAOImpl;
+import org.renci.hearsay.canvas.refseq.dao.model.RefSeqCodingSequence;
+import org.renci.hearsay.canvas.refseq.dao.model.RegionGroup;
+import org.renci.hearsay.canvas.refseq.dao.model.RegionGroupRegion;
 import org.renci.hearsay.canvas.refseq.dao.model.Transcript;
 import org.renci.hearsay.canvas.refseq.dao.model.TranscriptMaps;
 import org.renci.hearsay.canvas.refseq.dao.model.TranscriptMapsExons;
@@ -98,9 +105,10 @@ public class TranscriptMapsExonsTest {
                             transcriptionMaps.getMapCount());
 
                     if (!map.containsKey(mappingKey)) {
-                        map.put(mappingKey, new Mapping(genomeRefSeq.getVerAccession()));
+//                        map.put(mappingKey, new Mapping(genomeRefSeq.getVerAccession()));
                     }
                 }
+
                 System.out.printf("map.size(): %d%n", map.size());
 
                 for (TranscriptMapsExons exon : mapsExonsResults) {
@@ -111,21 +119,21 @@ public class TranscriptMapsExonsTest {
                     MappingKey mappingKey = new MappingKey(transcriptionMaps.getTranscript().getVersionId(),
                             transcriptionMaps.getMapCount());
 
-                    map.get(mappingKey)
-                            .getExons()
-                            .add(new Exon(exon.getKey().getExonNum(), exon.getTranscrStart(), exon.getTranscrEnd(),
-                                    exon.getContigStart(), exon.getContigEnd()));
+//                    map.get(mappingKey)
+//                            .getExons()
+//                            .add(new Exon(exon.getKey().getExonNum(), exon.getTranscrStart(), exon.getTranscrEnd(),
+//                                    exon.getContigStart(), exon.getContigEnd()));
                 }
 
                 List<MappingResult> mappingResults = new ArrayList<MappingResult>();
 
                 for (MappingKey key : map.keySet()) {
                     Mapping mapping = map.get(key);
-                    List<Exon> exons = mapping.getExons();
-                    mappingResults.add(new MappingResult(mapping.getVersionAccession(), exons.get(0).toRange()
-                            .getMinimumInteger(), exons.get(exons.size() - 1).toRange().getMaximumInteger()));
-
+                    // List<Exon> exons = mapping.getExons();
+                    // mappingResults.add(new MappingResult(mapping.getVersionAccession(), exons.get(0).toRange()
+                    // .getMinimumInteger(), exons.get(exons.size() - 1).toRange().getMaximumInteger()));
                 }
+
                 System.out.printf("mappingResults.size(): %d%n", mappingResults.size());
 
                 Collections.sort(mappingResults, new Comparator<MappingResult>() {
@@ -140,10 +148,10 @@ public class TranscriptMapsExonsTest {
 
                 });
 
-                for (MappingResult result : mappingResults) {
-                    topBufferedWriter.write(result.toString());
-                    topBufferedWriter.flush();
-                }
+                // for (MappingResult result : mappingResults) {
+                // topBufferedWriter.write(result.toString());
+                // topBufferedWriter.flush();
+                // }
             }
 
         } catch (IOException e) {

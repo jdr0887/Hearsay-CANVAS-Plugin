@@ -35,6 +35,7 @@ import org.renci.hearsay.canvas.refseq.dao.model.Transcript;
 import org.renci.hearsay.canvas.refseq.dao.model.TranscriptMaps;
 import org.renci.hearsay.canvas.refseq.dao.model.TranscriptMapsExons;
 import org.renci.hearsay.dao.HearsayDAOException;
+import org.renci.hearsay.dao.model.ReferenceSequence;
 import org.renci.hearsay.dao.model.StrandType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -138,7 +139,7 @@ public class TranscriptMapsTest {
                 hearsayTranscript.setBoundsEnd(upperBound);
 
                 String transcriptVersionId = transcript.getVersionId();
-                hearsayTranscript.setRefSeqAccession(transcriptVersionId);
+                //hearsayTranscript.setRefSeqAccession(transcriptVersionId);
 
                 String strand = transcriptMaps.getStrand();
                 StrandType sType = StrandType.POSITIVE;
@@ -147,7 +148,7 @@ public class TranscriptMapsTest {
                         sType = t;
                     }
                 }
-                hearsayTranscript.setStrandType(sType);
+                //hearsayTranscript.setStrandType(sType);
 
                 logger.info(transcript.toString());
                 logger.info(hearsayTranscript.toString());
@@ -166,11 +167,11 @@ public class TranscriptMapsTest {
 
                 logger.info(refSeqGene.toString());
 
-                Long geneId = refSeqGene.getId();
-                hearsayTranscript.setGeneId(geneId);
-
-                String geneName = refSeqGene.getName();
-                hearsayTranscript.setGeneName(geneName);
+                // Long geneId = refSeqGene.getId();
+                // hearsayTranscript.setGeneId(geneId);
+                
+                // String geneName = refSeqGene.getName();
+                // hearsayTranscript.setGeneName(geneName);
 
                 AnnotationGeneExternalIds annotatedGene = annotationGeneExternalIdsDAO.findById(refSeqGene.getId()
                         .intValue());
@@ -180,14 +181,14 @@ public class TranscriptMapsTest {
                 HGNCGene hgncGene = hgncGeneDAO.findById(annotatedGene.getGene().getId().intValue());
                 if (hgncGene != null) {
                     String geneSymbol = hgncGene.getSymbol();
-                    hearsayTranscript.setHgncSymbol(geneSymbol);
+                    //hearsayTranscript.setHgncSymbol(geneSymbol);
                 }
 
                 Integer mapCount = transcriptMaps.getMapCount();
-                hearsayTranscript.setMapIndex(mapCount);
+                //hearsayTranscript.setMapIndex(mapCount);
 
                 Integer nMap = exons.size();
-                hearsayTranscript.setMapsTotal(nMap);
+                //hearsayTranscript.setMapsTotal(nMap);
 
                 // try {
                 // Long id = getCachingDAOBean().getHearsayTranscriptDAO().save(hearsayTranscript);
@@ -202,7 +203,7 @@ public class TranscriptMapsTest {
 
                 if (refSeqCodingSequenceResults != null && !refSeqCodingSequenceResults.isEmpty()) {
                     String proteinId = refSeqCodingSequenceResults.get(0).getProteinId();
-                    hearsayTranscript.setProteinRefSeqAccession(proteinId);
+                    //hearsayTranscript.setProteinRefSeqAccession(proteinId);
 
                     Set<RegionGroup> regionGroupSet = refSeqCodingSequenceResults.get(0).getLocations();
                     RegionGroup[] regionGroupArray = regionGroupSet.toArray(new RegionGroup[regionGroupSet.size()]);

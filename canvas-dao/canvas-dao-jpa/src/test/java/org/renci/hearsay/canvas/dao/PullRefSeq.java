@@ -17,6 +17,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
+import org.renci.hearsay.canvas.dao.model.Exon;
+import org.renci.hearsay.canvas.dao.model.Mapping;
+import org.renci.hearsay.canvas.dao.model.MappingKey;
+import org.renci.hearsay.canvas.dao.model.MappingResult;
 import org.renci.hearsay.canvas.hgnc.dao.jpa.HGNCGeneDAOImpl;
 import org.renci.hearsay.canvas.ref.dao.model.GenomeRefSeq;
 import org.renci.hearsay.canvas.refseq.dao.jpa.RefSeqCodingSequenceDAOImpl;
@@ -88,9 +92,9 @@ public class PullRefSeq implements Runnable {
                     MappingKey mappingKey = new MappingKey(transcriptMaps.getTranscript().getVersionId(),
                             transcriptMaps.getMapCount());
 
-                    if (!map.containsKey(mappingKey)) {
-                        map.put(mappingKey, new Mapping(genomeRefSeq.getVerAccession()));
-                    }
+                    // if (!map.containsKey(mappingKey)) {
+                    // map.put(mappingKey, new Mapping(genomeRefSeq.getVerAccession()));
+                    // }
 
                 }
 
@@ -102,19 +106,19 @@ public class PullRefSeq implements Runnable {
                     MappingKey mappingKey = new MappingKey(transcriptionMaps.getTranscript().getVersionId(),
                             transcriptionMaps.getMapCount());
 
-                    map.get(mappingKey)
-                            .getExons()
-                            .add(new Exon(exon.getKey().getExonNum(), exon.getTranscrStart(), exon.getTranscrEnd(),
-                                    exon.getContigStart(), exon.getContigEnd()));
+                    // map.get(mappingKey)
+                    // .getExons()
+                    // .add(new Exon(exon.getKey().getExonNum(), exon.getTranscrStart(), exon.getTranscrEnd(),
+                    // exon.getContigStart(), exon.getContigEnd()));
                 }
 
                 List<MappingResult> mappingResults = new ArrayList<MappingResult>();
 
                 for (MappingKey key : map.keySet()) {
                     Mapping mapping = map.get(key);
-                    List<Exon> exons = mapping.getExons();
-                    mappingResults.add(new MappingResult(mapping.getVersionAccession(), exons.get(0).toRange()
-                            .getMinimumInteger(), exons.get(exons.size() - 1).toRange().getMaximumInteger()));
+                    // List<Exon> exons = mapping.getExons();
+                    // mappingResults.add(new MappingResult(mapping.getVersionAccession(), exons.get(0).toRange()
+                    // .getMinimumInteger(), exons.get(exons.size() - 1).toRange().getMaximumInteger()));
 
                 }
 
@@ -140,14 +144,14 @@ public class PullRefSeq implements Runnable {
                     List<RefSeqCodingSequence> refSeqCodingSequenceResults = refSeqCodingSequenceDAO
                             .findByRefSeqVersionAndTranscriptId(refSeqVersion, transcript.getVersionId());
 
-//                    List<RefSeqGene> refSeqGeneResults = refSeqGeneDAO
-//                            .findByRefSeqVersionAndAnnotationGeneExternalIdsNamespaceAndTranscriptId(refSeqVersion,
-//                                    "refseq", transcript.getVersionId());
-//                    if (refSeqGeneResults != null && !refSeqGeneResults.isEmpty()) {
-//                        for (RefSeqGene refSeqGene : refSeqGeneResults) {
-//                            
-//                        }
-//                    }
+                    // List<RefSeqGene> refSeqGeneResults = refSeqGeneDAO
+                    // .findByRefSeqVersionAndAnnotationGeneExternalIdsNamespaceAndTranscriptId(refSeqVersion,
+                    // "refseq", transcript.getVersionId());
+                    // if (refSeqGeneResults != null && !refSeqGeneResults.isEmpty()) {
+                    // for (RefSeqGene refSeqGene : refSeqGeneResults) {
+                    //
+                    // }
+                    // }
 
                 }
 
