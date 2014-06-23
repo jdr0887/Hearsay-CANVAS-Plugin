@@ -58,7 +58,7 @@ public class RefSeqGeneDAOImpl extends BaseDAOImpl<RefSeqGene, Long> implements 
                 .join(RegionGroup_.transcript);
         predicates.add(critBuilder.equal(regionGroupTranscriptJoin.get(Transcript_.versionId), transcriptId));
 
-        crit.select(fromRefSeqGene).where(predicates.toArray(new Predicate[predicates.size()]));
+        crit.where(predicates.toArray(new Predicate[predicates.size()]));
 
         TypedQuery<RefSeqGene> query = getEntityManager().createQuery(crit);
         List<RefSeqGene> ret = query.getResultList();
