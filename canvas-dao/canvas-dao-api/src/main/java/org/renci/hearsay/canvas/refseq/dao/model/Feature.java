@@ -2,24 +2,33 @@ package org.renci.hearsay.canvas.refseq.dao.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import org.renci.hearsay.canvas.dao.Persistable;
+
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "Feature")
 @Entity
 @Table(schema = "refseq", name = "feature")
-public class Feature {
+public class Feature implements Persistable {
 
+    private static final long serialVersionUID = -3021365878092927482L;
+
+    @Id
     @Column(name = "refseq_feature_id")
     private Long refseqFeatureId;
 
-    @Column(name = "feature_type_type_name", length = 31)
-    private String featureTypeTypeName;
+    @ManyToOne
+    @JoinColumn(name = "feature_type_type_name")
+    private FeatureTypes featureTypes;
 
     @Column(name = "refseq_ver")
     private String refseqVer;
@@ -27,11 +36,106 @@ public class Feature {
     @Column(name = "note", length = 1023)
     private String note;
 
-    @Column(name = "loc_region_group_id")
-    private Integer locRegionGroupId;
+    @ManyToOne
+    @JoinColumn(name = "loc_region_group_id")
+    private RegionGroup regionGroup;
 
     public Feature() {
         super();
+    }
+
+    public Long getRefseqFeatureId() {
+        return refseqFeatureId;
+    }
+
+    public void setRefseqFeatureId(Long refseqFeatureId) {
+        this.refseqFeatureId = refseqFeatureId;
+    }
+
+    public FeatureTypes getFeatureTypes() {
+        return featureTypes;
+    }
+
+    public void setFeatureTypes(FeatureTypes featureTypes) {
+        this.featureTypes = featureTypes;
+    }
+
+    public String getRefseqVer() {
+        return refseqVer;
+    }
+
+    public void setRefseqVer(String refseqVer) {
+        this.refseqVer = refseqVer;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+
+    public RegionGroup getRegionGroup() {
+        return regionGroup;
+    }
+
+    public void setRegionGroup(RegionGroup regionGroup) {
+        this.regionGroup = regionGroup;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Feature [refseqFeatureId=%s, refseqVer=%s, note=%s]", refseqFeatureId, refseqVer, note);
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((featureTypes == null) ? 0 : featureTypes.hashCode());
+        result = prime * result + ((note == null) ? 0 : note.hashCode());
+        result = prime * result + ((refseqFeatureId == null) ? 0 : refseqFeatureId.hashCode());
+        result = prime * result + ((refseqVer == null) ? 0 : refseqVer.hashCode());
+        result = prime * result + ((regionGroup == null) ? 0 : regionGroup.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Feature other = (Feature) obj;
+        if (featureTypes == null) {
+            if (other.featureTypes != null)
+                return false;
+        } else if (!featureTypes.equals(other.featureTypes))
+            return false;
+        if (note == null) {
+            if (other.note != null)
+                return false;
+        } else if (!note.equals(other.note))
+            return false;
+        if (refseqFeatureId == null) {
+            if (other.refseqFeatureId != null)
+                return false;
+        } else if (!refseqFeatureId.equals(other.refseqFeatureId))
+            return false;
+        if (refseqVer == null) {
+            if (other.refseqVer != null)
+                return false;
+        } else if (!refseqVer.equals(other.refseqVer))
+            return false;
+        if (regionGroup == null) {
+            if (other.regionGroup != null)
+                return false;
+        } else if (!regionGroup.equals(other.regionGroup))
+            return false;
+        return true;
     }
 
 }

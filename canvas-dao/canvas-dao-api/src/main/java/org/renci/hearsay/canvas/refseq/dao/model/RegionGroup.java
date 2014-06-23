@@ -42,6 +42,9 @@ public class RegionGroup implements Persistable {
     @OneToMany(mappedBy = "regionGroup", fetch = FetchType.EAGER)
     protected Set<RegionGroupRegion> regionGroupRegions;
 
+    @OneToMany(mappedBy = "regionGroup", fetch = FetchType.EAGER)
+    protected Set<Feature> features;
+
     @ManyToMany(mappedBy = "locations")
     private Set<RefSeqGene> refSeqGenes;
 
@@ -89,6 +92,14 @@ public class RegionGroup implements Persistable {
         this.regionGroupRegions = regionGroupRegions;
     }
 
+    public Set<Feature> getFeatures() {
+        return features;
+    }
+
+    public void setFeatures(Set<Feature> features) {
+        this.features = features;
+    }
+
     @Override
     public String toString() {
         return String.format("RegionGroup [regionGroupId=%s]", regionGroupId);
@@ -98,6 +109,7 @@ public class RegionGroup implements Persistable {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
+        result = prime * result + ((features == null) ? 0 : features.hashCode());
         result = prime * result + ((groupingType == null) ? 0 : groupingType.hashCode());
         result = prime * result + ((regionGroupId == null) ? 0 : regionGroupId.hashCode());
         result = prime * result + ((transcript == null) ? 0 : transcript.hashCode());
@@ -113,6 +125,11 @@ public class RegionGroup implements Persistable {
         if (getClass() != obj.getClass())
             return false;
         RegionGroup other = (RegionGroup) obj;
+        if (features == null) {
+            if (other.features != null)
+                return false;
+        } else if (!features.equals(other.features))
+            return false;
         if (groupingType == null) {
             if (other.groupingType != null)
                 return false;
