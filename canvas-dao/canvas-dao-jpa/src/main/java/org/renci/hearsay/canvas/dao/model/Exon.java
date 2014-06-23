@@ -15,21 +15,30 @@ public class Exon {
 
     private Integer contigEnd;
 
+    private Integer genomeStart;
+
+    private Integer genomeEnd;
+
     private RegionType regionType;
 
     public Exon() {
         super();
     }
 
-    public Exon(Integer number, Integer transcriptStart, Integer transcriptEnd, Integer contigStart, Integer contigEnd,
-            RegionType regionType) {
-        super();
-        this.number = number;
-        this.transcriptStart = transcriptStart;
-        this.transcriptEnd = transcriptEnd;
-        this.contigStart = contigStart;
-        this.contigEnd = contigEnd;
-        this.regionType = regionType;
+    public Integer getGenomeStart() {
+        return genomeStart;
+    }
+
+    public void setGenomeStart(Integer genomeStart) {
+        this.genomeStart = genomeStart;
+    }
+
+    public Integer getGenomeEnd() {
+        return genomeEnd;
+    }
+
+    public void setGenomeEnd(Integer genomeEnd) {
+        this.genomeEnd = genomeEnd;
     }
 
     public RegionType getRegionType() {
@@ -81,13 +90,15 @@ public class Exon {
     }
 
     public IntRange toRange() {
-        return new IntRange(this.contigStart, this.contigEnd);
+        return new IntRange(this.genomeStart, this.genomeEnd);
     }
 
     @Override
     public String toString() {
-        return "Exon [number=" + number + ", transcriptStart=" + transcriptStart + ", transcriptEnd=" + transcriptEnd
-                + ", contigStart=" + contigStart + ", contigEnd=" + contigEnd + "]";
+        return String
+                .format("Exon [number=%s, transcriptStart=%s, transcriptEnd=%s, contigStart=%s, contigEnd=%s, genomeStart=%s, genomeEnd=%s, regionType=%s]",
+                        number, transcriptStart, transcriptEnd, contigStart, contigEnd, genomeStart, genomeEnd,
+                        regionType.toString());
     }
 
 }
