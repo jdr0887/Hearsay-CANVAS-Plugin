@@ -112,4 +112,40 @@ public class TranscriptMapsExonsDAOImpl extends BaseDAOImpl<TranscriptMapsExons,
         return ret;
     }
 
+    @Override
+    public List<TranscriptMapsExons> findByGenomeRefIdAndRefSeqVersionAndAccession(Integer genomeRefId,
+            String refSeqVersion, String accession) throws HearsayDAOException {
+        logger.debug("ENTERING findByGenomeRefIdAndRefSeqVersionAndAccession(Integer, String, String)");
+
+        CriteriaBuilder critBuilder = getEntityManager().getCriteriaBuilder();
+        CriteriaQuery<TranscriptMapsExons> crit = critBuilder.createQuery(getPersistentClass());
+
+        List<Predicate> predicates = new ArrayList<Predicate>();
+
+        Root<TranscriptMapsExons> root = crit.from(getPersistentClass());
+        Join<TranscriptMapsExons, TranscriptMaps> transcriptMapsExonsTranscriptMapsJoin = root
+                .join(TranscriptMapsExons_.transcriptMaps);
+
+        predicates.add(critBuilder.equal(transcriptMapsExonsTranscriptMapsJoin.get(TranscriptMaps_.genomeRefId),
+                genomeRefId));
+
+        Join<TranscriptMaps, Transcript> transcriptMapsTranscriptJoin = transcriptMapsExonsTranscriptMapsJoin
+                .join(TranscriptMaps_.transcript);
+
+        predicates.add(critBuilder.equal(transcriptMapsTranscriptJoin.get(Transcript_.versionId), accession));
+
+        Join<Transcript, TranscriptRefSeqVers> transcriptTranscriptRefseqVersJoin = transcriptMapsTranscriptJoin
+                .join(Transcript_.refseqVersions);
+
+        predicates.add(critBuilder.equal(transcriptTranscriptRefseqVersJoin.get(TranscriptRefSeqVers_.refseqVer),
+                refSeqVersion));
+
+        crit.where(predicates.toArray(new Predicate[predicates.size()]));
+        // crit.distinct(true);
+
+        TypedQuery<TranscriptMapsExons> query = getEntityManager().createQuery(crit);
+        List<TranscriptMapsExons> ret = query.getResultList();
+        return ret;
+    }
+
 }
