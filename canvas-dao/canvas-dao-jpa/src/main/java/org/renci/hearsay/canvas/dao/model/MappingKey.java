@@ -38,7 +38,7 @@ public class MappingKey implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("Mapping [versionId=%s, mapCount=%s]", versionId, mapCount);
+        return String.format("MappingKey [versionId=%s, mapCount=%s]", versionId, mapCount);
     }
 
     @Override
