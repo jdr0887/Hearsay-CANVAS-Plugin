@@ -15,6 +15,8 @@
     <class>org.renci.hearsay.canvas.ref.dao.model.GenomeRef</class>
     <class>org.renci.hearsay.canvas.ref.dao.model.GenomeRefSeq</class>
     <class>org.renci.hearsay.canvas.ref.dao.model.SeqType</class>
+    <class>org.renci.hearsay.canvas.refseq.dao.model.Feature</class>
+    <class>org.renci.hearsay.canvas.refseq.dao.model.FeatureTypes</class>
     <class>org.renci.hearsay.canvas.refseq.dao.model.GroupingType</class>
     <class>org.renci.hearsay.canvas.refseq.dao.model.RegionGroup</class>
     <class>org.renci.hearsay.canvas.refseq.dao.model.RegionGroupRegion</class>
