@@ -85,10 +85,10 @@ public class Mapping implements Serializable {
 
         if (foundFirst && regionStart > firstExon.getTranscriptStart()) {
             int v = regionStart - firstExon.getTranscriptStart();
-            int gc = firstExon.getContigStart() + strand * v;
+            int gc = firstExon.getGenomeStart() + strand * v;
             Exon utr5 = new Exon();
-            utr5.setContigEnd(gc - strand);
-            utr5.setContigStart(firstExon.getContigStart());
+            utr5.setGenomeEnd(gc - strand);
+            utr5.setGenomeStart(firstExon.getGenomeStart());
             utr5.setTranscriptEnd(regionStart - 1);
             utr5.setTranscriptStart(firstExon.getTranscriptStart());
             utr5.setRegionType(org.renci.hearsay.dao.model.RegionType.UTR5);
@@ -101,7 +101,7 @@ public class Mapping implements Serializable {
 
         Exon lastExon = getExons().last();
         boolean foundLast = true;
-        while (regionEnd < lastExon.getTranscriptEnd() || regionEnd > lastExon.getTranscriptEnd()) {
+        while (regionEnd < lastExon.getTranscriptStart() || regionEnd > lastExon.getTranscriptEnd()) {
             lastExon.setRegionType(org.renci.hearsay.dao.model.RegionType.UTR3);
             --exonIndex;
             if (exonIndex == -1) {
@@ -113,10 +113,13 @@ public class Mapping implements Serializable {
 
         if (foundLast) {
             int v = regionEnd - lastExon.getTranscriptStart();
-            int gc = lastExon.getContigStart() + strand * v;
+            int gc = lastExon.getGenomeStart() + strand * v;
             Exon utr3 = new Exon();
-            utr3.setContigEnd(lastExon.getContigEnd());
-            utr3.setContigStart(gc + strand);
+
+            // TODO ensure that this is right....
+            utr3.setGenomeStart(gc + strand);
+            utr3.setGenomeEnd(lastExon.getGenomeEnd());
+
             utr3.setTranscriptEnd(lastExon.getTranscriptEnd());
             utr3.setTranscriptStart(regionEnd + 1);
             utr3.setRegionType(org.renci.hearsay.dao.model.RegionType.UTR3);
@@ -139,11 +142,11 @@ public class Mapping implements Serializable {
 
             if (previous != null) {
                 if (getStrandType().equals(StrandType.POSITIVE)
-                        && previous.getContigEnd() + 1 != current.getContigStart()) {
+                        && previous.getGenomeEnd() + 1 != current.getGenomeStart()) {
 
                     Exon exon = new Exon();
-                    exon.setContigStart(previous.getContigEnd() + 1);
-                    exon.setContigEnd(current.getContigStart() - 1);
+                    exon.setGenomeStart(previous.getGenomeEnd() + 1);
+                    exon.setGenomeEnd(current.getGenomeStart() - 1);
                     exon.setTranscriptStart(-1);
                     exon.setTranscriptEnd(-1);
                     exon.setRegionType(RegionType.INTRON);
@@ -151,11 +154,11 @@ public class Mapping implements Serializable {
                 }
 
                 if (getStrandType().equals(StrandType.NEGATIVE)
-                        && current.getContigStart() + 1 != previous.getContigEnd()) {
+                        && current.getGenomeStart() + 1 != previous.getGenomeEnd()) {
 
                     Exon exon = new Exon();
-                    exon.setContigStart(current.getContigStart() + 1);
-                    exon.setContigEnd(previous.getContigEnd() - 1);
+                    exon.setGenomeStart(current.getGenomeStart() + 1);
+                    exon.setGenomeEnd(previous.getGenomeEnd() - 1);
                     exon.setTranscriptStart(-1);
                     exon.setTranscriptEnd(-1);
                     exon.setRegionType(RegionType.INTRON);
