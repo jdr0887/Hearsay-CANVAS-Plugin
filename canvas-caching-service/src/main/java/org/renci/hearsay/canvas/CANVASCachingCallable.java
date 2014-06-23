@@ -27,6 +27,7 @@ import org.renci.hearsay.dao.HearsayDAOException;
 import org.renci.hearsay.dao.model.Gene;
 import org.renci.hearsay.dao.model.MappedTranscript;
 import org.renci.hearsay.dao.model.ReferenceSequence;
+import org.renci.hearsay.dao.model.RegionType;
 import org.renci.hearsay.dao.model.StrandType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,16 +60,7 @@ public class CANVASCachingCallable implements Callable<List<org.renci.hearsay.da
 
             List<TranscriptMapsExons> mapsExonsResults = canvasDAOBean.getTranscriptMapsExonsDAO()
                     .findByGenomeRefIdAndRefSeqVersion(genomeRefId, refSeqVersion);
-
-            Set<Transcript> transcriptSet = new HashSet<Transcript>();
-
-            logger.info("mapsExonsResults.size(): {}", mapsExonsResults.size());
             if (mapsExonsResults != null && mapsExonsResults.size() > 0) {
-                for (TranscriptMapsExons exon : mapsExonsResults) {
-                    TranscriptMaps transcriptionMaps = exon.getTranscriptMaps();
-                    transcriptSet.add(transcriptionMaps.getTranscript());
-                }
-                logger.info("transcriptSet.size(): {}", transcriptSet.size());
                 persistTranscripts(mapsExonsResults);
             }
 
@@ -97,16 +89,19 @@ public class CANVASCachingCallable implements Callable<List<org.renci.hearsay.da
             }
         }
 
-        logger.info("map.size(): {}", map.size());
-
         for (TranscriptMapsExons exon : mapsExonsResults) {
             TranscriptMaps transcriptionMaps = exon.getTranscriptMaps();
             MappingKey mappingKey = new MappingKey(transcriptionMaps.getTranscript().getVersionId(),
                     transcriptionMaps.getMapCount());
-            map.get(mappingKey)
-                    .getExons()
-                    .add(new Exon(exon.getKey().getExonNum(), exon.getTranscrStart(), exon.getTranscrEnd(), exon
-                            .getContigStart(), exon.getContigEnd(), null));
+
+            Exon e = new Exon();
+            e.setNumber(exon.getKey().getExonNum());
+            e.setTranscriptStart(exon.getTranscrStart());
+            e.setTranscriptEnd(exon.getTranscrEnd());
+            e.setGenomeStart(exon.getContigStart());
+            e.setGenomeEnd(exon.getContigEnd());
+            e.setRegionType(RegionType.EXON);
+            map.get(mappingKey).getExons().add(e);
         }
 
         for (MappingKey key : map.keySet()) {
@@ -132,9 +127,9 @@ public class CANVASCachingCallable implements Callable<List<org.renci.hearsay.da
 
             org.renci.hearsay.dao.model.Transcript transcript = new org.renci.hearsay.dao.model.Transcript();
             transcript.setGene(gene);
-            transcript.setAccession(mapping.getVersionAccession());
-            transcript.setBoundsStart(exons.first().toRange().getMinimumInteger());
-            transcript.setBoundsEnd(exons.last().toRange().getMaximumInteger());
+            transcript.setGenomicAccession(mapping.getVersionAccession());
+            transcript.setGenomicStart(exons.first().toRange().getMinimumInteger());
+            transcript.setGenomicEnd(exons.last().toRange().getMaximumInteger());
 
             List<org.renci.hearsay.dao.model.Transcript> alreadyPersistedTranscriptList = hearsayDAOBean
                     .getTranscriptDAO().findByExample(transcript);
@@ -146,7 +141,7 @@ public class CANVASCachingCallable implements Callable<List<org.renci.hearsay.da
             }
 
             List<RefSeqCodingSequence> refSeqCodingSequenceResults = canvasDAOBean.getRefSeqCodingSequenceDAO()
-                    .findByRefSeqVersionAndTranscriptId(refSeqVersion, mapping.getVersionAccession());
+                    .findByRefSeqVersionAndTranscriptId(refSeqVersion, key.getVersionId());
 
             if (refSeqCodingSequenceResults == null
                     || (refSeqCodingSequenceResults != null && refSeqCodingSequenceResults.isEmpty())) {
@@ -177,9 +172,13 @@ public class CANVASCachingCallable implements Callable<List<org.renci.hearsay.da
                 mappedTranscript.setCdsEnd(exon.getContigEnd());
                 mappedTranscript.setTranscriptStart(exon.getTranscriptStart());
                 mappedTranscript.setTranscriptEnd(exon.getTranscriptEnd());
+                mappedTranscript.setRegionStart(exon.getGenomeStart());
+                mappedTranscript.setRegionEnd(exon.getGenomeEnd());
+                mappedTranscript.setStrandType(mapping.getStrandType());
                 mappedTranscript.setRegionType(exon.getRegionType());
                 hearsayDAOBean.getMappedTranscriptDAO().save(mappedTranscript);
             }
+
         }
 
     }
