@@ -93,11 +93,9 @@ public class Feature implements Persistable {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((featureTypes == null) ? 0 : featureTypes.hashCode());
         result = prime * result + ((note == null) ? 0 : note.hashCode());
         result = prime * result + ((refseqFeatureId == null) ? 0 : refseqFeatureId.hashCode());
         result = prime * result + ((refseqVer == null) ? 0 : refseqVer.hashCode());
-        result = prime * result + ((regionGroup == null) ? 0 : regionGroup.hashCode());
         return result;
     }
 
@@ -110,11 +108,6 @@ public class Feature implements Persistable {
         if (getClass() != obj.getClass())
             return false;
         Feature other = (Feature) obj;
-        if (featureTypes == null) {
-            if (other.featureTypes != null)
-                return false;
-        } else if (!featureTypes.equals(other.featureTypes))
-            return false;
         if (note == null) {
             if (other.note != null)
                 return false;
@@ -129,11 +122,6 @@ public class Feature implements Persistable {
             if (other.refseqVer != null)
                 return false;
         } else if (!refseqVer.equals(other.refseqVer))
-            return false;
-        if (regionGroup == null) {
-            if (other.regionGroup != null)
-                return false;
-        } else if (!regionGroup.equals(other.regionGroup))
             return false;
         return true;
     }
