@@ -1,10 +1,9 @@
 package org.renci.hearsay.canvas.dao.model;
 
 import java.io.Serializable;
-import java.util.Comparator;
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Set;
+import java.util.List;
 import java.util.TreeSet;
 
 import org.renci.hearsay.dao.model.RegionType;
@@ -18,14 +17,7 @@ public class Mapping implements Serializable {
 
     private StrandType strandType;
 
-    private TreeSet<Exon> exons = new TreeSet<Exon>(new Comparator<Exon>() {
-
-        @Override
-        public int compare(Exon o1, Exon o2) {
-            return o1.getTranscriptStart().compareTo(o2.getTranscriptStart());
-        }
-
-    });
+    private final TreeSet<Exon> exons = new TreeSet<Exon>();
 
     public Mapping(String versionAccession, StrandType strandType) {
         super();
@@ -53,10 +45,6 @@ public class Mapping implements Serializable {
         return exons;
     }
 
-    public void setExons(TreeSet<Exon> exons) {
-        this.exons = exons;
-    }
-
     public void addCDSCoordinates(Integer regionStart) {
         for (Exon exon : getExons()) {
             if (exon.getRegionType() == RegionType.EXON) {
@@ -68,22 +56,11 @@ public class Mapping implements Serializable {
 
     public void addUTRs(Integer regionStart, Integer regionEnd) {
 
-        int exonIndex = 0;
-        Exon firstExon = exons.first();
-        boolean foundFirst = true;
-
-        while (regionStart > firstExon.getTranscriptEnd()) {
-            firstExon.setRegionType(org.renci.hearsay.dao.model.RegionType.UTR5);
-            ++exonIndex;
-            if (exonIndex == exons.size()) {
-                foundFirst = false;
-                break;
-            }
-            firstExon = exons.higher(firstExon);
-        }
         int strand = getStrandType().equals(StrandType.POSITIVE) ? 1 : -1;
 
-        if (foundFirst && regionStart > firstExon.getTranscriptStart()) {
+        Exon firstExon = exons.first();
+
+        if (regionStart > firstExon.getTranscriptStart()) {
             int v = regionStart - firstExon.getTranscriptStart();
             int gc = firstExon.getGenomeStart() + strand * v;
             Exon utr5 = new Exon();
@@ -93,38 +70,23 @@ public class Mapping implements Serializable {
             utr5.setTranscriptStart(firstExon.getTranscriptStart());
             utr5.setRegionType(org.renci.hearsay.dao.model.RegionType.UTR5);
             getExons().add(utr5);
-            firstExon.setContigStart(gc);
+            firstExon.setGenomeStart(gc);
             firstExon.setTranscriptStart(regionStart);
         }
 
-        exonIndex = getExons().size() - 1;
-
         Exon lastExon = getExons().last();
-        boolean foundLast = true;
-        while (regionEnd < lastExon.getTranscriptStart() || regionEnd > lastExon.getTranscriptEnd()) {
-            lastExon.setRegionType(org.renci.hearsay.dao.model.RegionType.UTR3);
-            --exonIndex;
-            if (exonIndex == -1) {
-                foundLast = false;
-                break;
-            }
-            lastExon = exons.lower(lastExon);
-        }
 
-        if (foundLast) {
+        if (regionEnd < lastExon.getTranscriptEnd()) {
             int v = regionEnd - lastExon.getTranscriptStart();
             int gc = lastExon.getGenomeStart() + strand * v;
             Exon utr3 = new Exon();
-
-            // TODO ensure that this is right....
             utr3.setGenomeStart(gc + strand);
             utr3.setGenomeEnd(lastExon.getGenomeEnd());
-
             utr3.setTranscriptEnd(lastExon.getTranscriptEnd());
             utr3.setTranscriptStart(regionEnd + 1);
             utr3.setRegionType(org.renci.hearsay.dao.model.RegionType.UTR3);
             getExons().add(utr3);
-            lastExon.setContigEnd(gc);
+            lastExon.setGenomeEnd(gc);
             lastExon.setTranscriptEnd(regionEnd);
         }
 
@@ -132,7 +94,7 @@ public class Mapping implements Serializable {
 
     public void addIntrons() {
 
-        Set<Exon> exonsToAdd = new HashSet<Exon>();
+        List<Exon> exonsToAdd = new ArrayList<Exon>();
 
         Iterator<Exon> iter = getExons().descendingIterator();
         while (iter.hasNext()) {
