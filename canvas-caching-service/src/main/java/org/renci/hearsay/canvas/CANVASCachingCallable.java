@@ -60,12 +60,13 @@ public class CANVASCachingCallable implements Callable<List<org.renci.hearsay.da
 
             List<TranscriptMapsExons> mapsExonsResults = canvasDAOBean.getTranscriptMapsExonsDAO()
                     .findByGenomeRefIdAndRefSeqVersion(genomeRefId, refSeqVersion);
+
             if (mapsExonsResults != null && mapsExonsResults.size() > 0) {
                 persistTranscripts(mapsExonsResults);
             }
 
         } catch (HearsayDAOException e) {
-            e.printStackTrace();
+            logger.error("error", e);
         }
 
         return results;
@@ -74,7 +75,6 @@ public class CANVASCachingCallable implements Callable<List<org.renci.hearsay.da
     private void persistTranscripts(List<TranscriptMapsExons> mapsExonsResults) throws HearsayDAOException {
 
         Map<MappingKey, Mapping> map = new HashMap<MappingKey, Mapping>();
-
         for (TranscriptMapsExons exon : mapsExonsResults) {
             TranscriptMaps transcriptionMaps = exon.getTranscriptMaps();
             GenomeRefSeq genomeRefSeq = transcriptionMaps.getGenomeRefSeq();
@@ -88,6 +88,7 @@ public class CANVASCachingCallable implements Callable<List<org.renci.hearsay.da
                 map.put(mappingKey, new Mapping(genomeRefSeq.getVerAccession(), sType));
             }
         }
+        logger.info("map.size()", map.size());
 
         for (TranscriptMapsExons exon : mapsExonsResults) {
             TranscriptMaps transcriptionMaps = exon.getTranscriptMaps();
@@ -106,6 +107,7 @@ public class CANVASCachingCallable implements Callable<List<org.renci.hearsay.da
 
         for (MappingKey key : map.keySet()) {
             Mapping mapping = map.get(key);
+            logger.info(mapping.toString());
 
             List<RefSeqGene> refSeqGeneList = canvasDAOBean.getRefSeqGeneDAO().findByRefSeqVersionAndTranscriptId(
                     refSeqVersion, key.getVersionId());
@@ -122,6 +124,7 @@ public class CANVASCachingCallable implements Callable<List<org.renci.hearsay.da
                     gene = alreadyPersistedGeneList.get(0);
                 }
             }
+            logger.info(gene.toString());
 
             TreeSet<Exon> exons = mapping.getExons();
 
@@ -131,14 +134,15 @@ public class CANVASCachingCallable implements Callable<List<org.renci.hearsay.da
             transcript.setGenomicStart(exons.first().toRange().getMinimumInteger());
             transcript.setGenomicEnd(exons.last().toRange().getMaximumInteger());
 
-            List<org.renci.hearsay.dao.model.Transcript> alreadyPersistedTranscriptList = hearsayDAOBean
-                    .getTranscriptDAO().findByExample(transcript);
-            if (alreadyPersistedTranscriptList != null && alreadyPersistedTranscriptList.isEmpty()) {
-                Long id = hearsayDAOBean.getTranscriptDAO().save(transcript);
-                transcript.setId(id);
-            } else {
-                transcript = alreadyPersistedTranscriptList.get(0);
-            }
+            // List<org.renci.hearsay.dao.model.Transcript> alreadyPersistedTranscriptList = hearsayDAOBean
+            // .getTranscriptDAO().findByExample(transcript);
+            // if (alreadyPersistedTranscriptList != null && alreadyPersistedTranscriptList.isEmpty()) {
+            Long id = hearsayDAOBean.getTranscriptDAO().save(transcript);
+            transcript.setId(id);
+            // } else {
+            // transcript = alreadyPersistedTranscriptList.get(0);
+            // }
+            logger.info(transcript.toString());
 
             List<RefSeqCodingSequence> refSeqCodingSequenceResults = canvasDAOBean.getRefSeqCodingSequenceDAO()
                     .findByRefSeqVersionAndTranscriptId(refSeqVersion, key.getVersionId());
@@ -176,6 +180,7 @@ public class CANVASCachingCallable implements Callable<List<org.renci.hearsay.da
                 mappedTranscript.setRegionEnd(exon.getGenomeEnd());
                 mappedTranscript.setStrandType(mapping.getStrandType());
                 mappedTranscript.setRegionType(exon.getRegionType());
+                logger.info(mappedTranscript.toString());
                 hearsayDAOBean.getMappedTranscriptDAO().save(mappedTranscript);
             }
 
