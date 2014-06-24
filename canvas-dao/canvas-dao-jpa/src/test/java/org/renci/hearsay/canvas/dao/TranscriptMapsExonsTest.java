@@ -101,13 +101,7 @@ public class TranscriptMapsExonsTest {
             List<TranscriptMapsExons> mapsExonsResults = canvasDAOBean.getTranscriptMapsExonsDAO()
                     .findByGenomeRefIdAndRefSeqVersionAndAccession(genomeRefId, refSeqVersion, "NM_007298.3");
 
-            Set<Transcript> transcriptSet = new HashSet<Transcript>();
-
             if (mapsExonsResults != null && mapsExonsResults.size() > 0) {
-                for (TranscriptMapsExons exon : mapsExonsResults) {
-                    TranscriptMaps transcriptionMaps = exon.getTranscriptMaps();
-                    transcriptSet.add(transcriptionMaps.getTranscript());
-                }
                 Map<MappingKey, Mapping> map = new HashMap<MappingKey, Mapping>();
 
                 for (TranscriptMapsExons exon : mapsExonsResults) {
