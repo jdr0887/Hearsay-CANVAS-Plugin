@@ -107,7 +107,6 @@ public class CANVASCachingCallable implements Callable<List<org.renci.hearsay.da
 
         for (MappingKey key : map.keySet()) {
             Mapping mapping = map.get(key);
-            logger.info(mapping.toString());
 
             List<RefSeqGene> refSeqGeneList = canvasDAOBean.getRefSeqGeneDAO().findByRefSeqVersionAndTranscriptId(
                     refSeqVersion, key.getVersionId());
@@ -124,7 +123,7 @@ public class CANVASCachingCallable implements Callable<List<org.renci.hearsay.da
                     gene = alreadyPersistedGeneList.get(0);
                 }
             }
-            logger.info(gene.toString());
+            logger.debug(gene.toString());
 
             TreeSet<Exon> exons = mapping.getExons();
 
@@ -142,7 +141,7 @@ public class CANVASCachingCallable implements Callable<List<org.renci.hearsay.da
             // } else {
             // transcript = alreadyPersistedTranscriptList.get(0);
             // }
-            logger.info(transcript.toString());
+            logger.debug(transcript.toString());
 
             List<RefSeqCodingSequence> refSeqCodingSequenceResults = canvasDAOBean.getRefSeqCodingSequenceDAO()
                     .findByRefSeqVersionAndTranscriptId(refSeqVersion, key.getVersionId());
@@ -180,7 +179,7 @@ public class CANVASCachingCallable implements Callable<List<org.renci.hearsay.da
                 mappedTranscript.setRegionEnd(exon.getGenomeEnd());
                 mappedTranscript.setStrandType(mapping.getStrandType());
                 mappedTranscript.setRegionType(exon.getRegionType());
-                logger.info(mappedTranscript.toString());
+                logger.debug(mappedTranscript.toString());
                 hearsayDAOBean.getMappedTranscriptDAO().save(mappedTranscript);
             }
 
