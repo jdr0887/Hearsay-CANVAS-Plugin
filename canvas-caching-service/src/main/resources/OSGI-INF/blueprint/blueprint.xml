@@ -4,8 +4,7 @@
 
   <cm:property-placeholder persistent-id="org.renci.hearsay.canvas" update-strategy="reload">
     <cm:default-properties>
-      <cm:property name="delayBetweenRuns" value="1440" />
-      <cm:property name="active" value="true" />
+      <cm:property name="delayBetweenRuns" value="2880" />
       <cm:property name="refSeqVersion" value="61" />
       <cm:property name="genomeRefId" value="2" />
     </cm:default-properties>
@@ -70,7 +69,6 @@
 
   <bean id="CANVASCachingService" class="org.renci.hearsay.canvas.CANVASCachingService" init-method="start" destroy-method="stop"
     activation="eager">
-    <property name="active" value="${active}" />
     <property name="delayBetweenRuns" value="${delayBetweenRuns}" />
     <property name="task" ref="cachingTask" />
     <cm:managed-properties persistent-id="org.renci.hearsay.canvas" update-strategy="container-managed" />
