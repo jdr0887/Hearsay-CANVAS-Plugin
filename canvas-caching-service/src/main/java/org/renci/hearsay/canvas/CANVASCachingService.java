@@ -11,8 +11,6 @@ public class CANVASCachingService {
 
     private final Timer cacheTimer = new Timer();
 
-    private Boolean active;
-
     private Integer delayBetweenRuns;
 
     private CANVASCachingTask task;
@@ -46,14 +44,6 @@ public class CANVASCachingService {
 
     public void setTask(CANVASCachingTask task) {
         this.task = task;
-    }
-
-    public Boolean getActive() {
-        return active;
-    }
-
-    public void setActive(Boolean active) {
-        this.active = active;
     }
 
 }
