@@ -5,6 +5,7 @@ import java.util.TimerTask;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,9 +27,10 @@ public class CANVASCachingTask extends TimerTask {
             ExecutorService executor = Executors.newSingleThreadExecutor();
             List<org.renci.hearsay.dao.model.Transcript> results = executor.submit(callable).get();
             logger.info("results.size(): {}", results.size());
+            executor.awaitTermination(1L, TimeUnit.DAYS);
             executor.shutdownNow();
         } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
+            logger.warn("Error", e);
         }
     }
 
