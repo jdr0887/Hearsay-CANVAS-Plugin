@@ -2,7 +2,6 @@ package org.renci.hearsay.canvas;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -19,14 +18,12 @@ import org.renci.hearsay.canvas.refseq.dao.model.RefSeqCodingSequence;
 import org.renci.hearsay.canvas.refseq.dao.model.RefSeqGene;
 import org.renci.hearsay.canvas.refseq.dao.model.RegionGroup;
 import org.renci.hearsay.canvas.refseq.dao.model.RegionGroupRegion;
-import org.renci.hearsay.canvas.refseq.dao.model.Transcript;
 import org.renci.hearsay.canvas.refseq.dao.model.TranscriptMaps;
 import org.renci.hearsay.canvas.refseq.dao.model.TranscriptMapsExons;
 import org.renci.hearsay.dao.HearsayDAOBean;
 import org.renci.hearsay.dao.HearsayDAOException;
 import org.renci.hearsay.dao.model.Gene;
 import org.renci.hearsay.dao.model.MappedTranscript;
-import org.renci.hearsay.dao.model.ReferenceSequence;
 import org.renci.hearsay.dao.model.RegionType;
 import org.renci.hearsay.dao.model.StrandType;
 import org.slf4j.Logger;
@@ -50,7 +47,7 @@ public class CANVASCachingCallable implements Callable<List<org.renci.hearsay.da
 
     @Override
     public List<org.renci.hearsay.dao.model.Transcript> call() {
-        logger.debug("ENTERING call()");
+        logger.info("ENTERING call()");
         List<org.renci.hearsay.dao.model.Transcript> results = new ArrayList<org.renci.hearsay.dao.model.Transcript>();
 
         logger.info(refSeqVersion);
@@ -69,10 +66,12 @@ public class CANVASCachingCallable implements Callable<List<org.renci.hearsay.da
             logger.error("error", e);
         }
 
+        logger.info("LEAVING call()");
         return results;
     }
 
     private void persistTranscripts(List<TranscriptMapsExons> mapsExonsResults) throws HearsayDAOException {
+        logger.info("ENTERING persistTranscripts(List<TranscriptMapsExons>)");
 
         Map<MappingKey, Mapping> map = new HashMap<MappingKey, Mapping>();
         for (TranscriptMapsExons exon : mapsExonsResults) {
@@ -133,14 +132,17 @@ public class CANVASCachingCallable implements Callable<List<org.renci.hearsay.da
             transcript.setGenomicStart(exons.first().toRange().getMinimumInteger());
             transcript.setGenomicEnd(exons.last().toRange().getMaximumInteger());
 
-            // List<org.renci.hearsay.dao.model.Transcript> alreadyPersistedTranscriptList = hearsayDAOBean
-            // .getTranscriptDAO().findByExample(transcript);
-            // if (alreadyPersistedTranscriptList != null && alreadyPersistedTranscriptList.isEmpty()) {
-            Long id = hearsayDAOBean.getTranscriptDAO().save(transcript);
-            transcript.setId(id);
-            // } else {
-            // transcript = alreadyPersistedTranscriptList.get(0);
-            // }
+            List<org.renci.hearsay.dao.model.Transcript> alreadyPersistedTranscriptList = hearsayDAOBean
+                    .getTranscriptDAO().findByExample(transcript);
+            if (alreadyPersistedTranscriptList != null && alreadyPersistedTranscriptList.isEmpty()) {
+                Long id = hearsayDAOBean.getTranscriptDAO().save(transcript);
+                transcript.setId(id);
+            } else {
+                transcript = alreadyPersistedTranscriptList.get(0);
+                for (MappedTranscript exon : transcript.getExons()) {
+                    hearsayDAOBean.getMappedTranscriptDAO().delete(exon);
+                }
+            }
             logger.debug(transcript.toString());
 
             List<RefSeqCodingSequence> refSeqCodingSequenceResults = canvasDAOBean.getRefSeqCodingSequenceDAO()
@@ -183,29 +185,10 @@ public class CANVASCachingCallable implements Callable<List<org.renci.hearsay.da
                 hearsayDAOBean.getMappedTranscriptDAO().save(mappedTranscript);
             }
 
+            logger.info(transcript.toString());
+
         }
-
-    }
-
-    private void persistReferenceSequence(Set<Transcript> transcriptSet) throws HearsayDAOException {
-        Set<String> refSeqAccessionSet = new HashSet<String>();
-        // for (Transcript transcript : transcriptSet) {
-        // Set<TranscriptRefSeqVers> refSeqVersionSet = transcript.getRefseqVersions();
-        // for (TranscriptRefSeqVers vers : refSeqVersionSet) {
-        // refSeqAccessionSet.add(vers.getRefseqVer());
-        // }
-        // }
-
-        for (String refSeqAccession : refSeqAccessionSet) {
-            List<ReferenceSequence> foundReferenceSequenceList = hearsayDAOBean.getReferenceSequenceDAO()
-                    .findByAccession(refSeqAccession);
-            ReferenceSequence rs = new ReferenceSequence(refSeqAccession);
-            if (foundReferenceSequenceList == null
-                    || (foundReferenceSequenceList != null && !foundReferenceSequenceList.contains(rs))) {
-                hearsayDAOBean.getReferenceSequenceDAO().save(rs);
-            }
-        }
-
+        logger.info("LEAVING persistTranscripts(List<TranscriptMapsExons>)");
     }
 
     public CANVASDAOBean getCanvasDAOBean() {
