@@ -132,17 +132,22 @@ public class CANVASCachingCallable implements Callable<List<org.renci.hearsay.da
             transcript.setGenomicStart(exons.first().toRange().getMinimumInteger());
             transcript.setGenomicEnd(exons.last().toRange().getMaximumInteger());
 
-            List<org.renci.hearsay.dao.model.Transcript> alreadyPersistedTranscriptList = hearsayDAOBean
-                    .getTranscriptDAO().findByExample(transcript);
-            if (alreadyPersistedTranscriptList != null && alreadyPersistedTranscriptList.isEmpty()) {
-                Long id = hearsayDAOBean.getTranscriptDAO().save(transcript);
-                transcript.setId(id);
-            } else {
-                transcript = alreadyPersistedTranscriptList.get(0);
-                for (MappedTranscript exon : transcript.getExons()) {
-                    hearsayDAOBean.getMappedTranscriptDAO().delete(exon);
-                }
-            }
+            // List<org.renci.hearsay.dao.model.Transcript> alreadyPersistedTranscriptList = hearsayDAOBean
+            // .getTranscriptDAO().findByExample(transcript);
+            // if (alreadyPersistedTranscriptList != null && alreadyPersistedTranscriptList.isEmpty()) {
+            Long id = hearsayDAOBean.getTranscriptDAO().save(transcript);
+            transcript.setId(id);
+            // } else {
+            // org.renci.hearsay.dao.model.Transcript tmpTranscript = alreadyPersistedTranscriptList.get(0);
+            // if (tmpTranscript.getExons() != null && !tmpTranscript.getExons().isEmpty()) {
+            // for (MappedTranscript exon : tmpTranscript.getExons()) {
+            // hearsayDAOBean.getMappedTranscriptDAO().delete(exon);
+            // }
+            // }
+            // hearsayDAOBean.getTranscriptDAO().delete(tmpTranscript);
+            // Long id = hearsayDAOBean.getTranscriptDAO().save(transcript);
+            // transcript.setId(id);
+            // }
             logger.debug(transcript.toString());
 
             List<RefSeqCodingSequence> refSeqCodingSequenceResults = canvasDAOBean.getRefSeqCodingSequenceDAO()
