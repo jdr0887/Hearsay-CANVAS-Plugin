@@ -10,7 +10,7 @@ import java.util.TreeSet;
 import java.util.concurrent.Callable;
 
 import org.renci.hearsay.canvas.dao.CANVASDAOBean;
-import org.renci.hearsay.canvas.dao.model.Exon;
+import org.renci.hearsay.canvas.dao.model.Region;
 import org.renci.hearsay.canvas.dao.model.Mapping;
 import org.renci.hearsay.canvas.dao.model.MappingKey;
 import org.renci.hearsay.canvas.ref.dao.model.GenomeRefSeq;
@@ -87,21 +87,21 @@ public class CANVASCachingCallable implements Callable<List<org.renci.hearsay.da
                 map.put(mappingKey, new Mapping(genomeRefSeq.getVerAccession(), sType));
             }
         }
-        logger.info("map.size()", map.size());
+        logger.info("map.size(): {}", map.size());
 
         for (TranscriptMapsExons exon : mapsExonsResults) {
             TranscriptMaps transcriptionMaps = exon.getTranscriptMaps();
             MappingKey mappingKey = new MappingKey(transcriptionMaps.getTranscript().getVersionId(),
                     transcriptionMaps.getMapCount());
 
-            Exon e = new Exon();
+            Region e = new Region();
             e.setNumber(exon.getKey().getExonNum());
             e.setTranscriptStart(exon.getTranscrStart());
             e.setTranscriptEnd(exon.getTranscrEnd());
             e.setGenomeStart(exon.getContigStart());
             e.setGenomeEnd(exon.getContigEnd());
             e.setRegionType(RegionType.EXON);
-            map.get(mappingKey).getExons().add(e);
+            map.get(mappingKey).getRegions().add(e);
         }
 
         for (MappingKey key : map.keySet()) {
@@ -124,13 +124,13 @@ public class CANVASCachingCallable implements Callable<List<org.renci.hearsay.da
             }
             logger.debug(gene.toString());
 
-            TreeSet<Exon> exons = mapping.getExons();
+            TreeSet<Region> regions = mapping.getRegions();
 
             org.renci.hearsay.dao.model.Transcript transcript = new org.renci.hearsay.dao.model.Transcript();
             transcript.setGene(gene);
-            transcript.setGenomicAccession(mapping.getVersionAccession());
-            transcript.setGenomicStart(exons.first().toRange().getMinimumInteger());
-            transcript.setGenomicEnd(exons.last().toRange().getMaximumInteger());
+            transcript.setAccession(key.getVersionId());
+            transcript.setGenomicStart(regions.first().toRange().getMinimumInteger());
+            transcript.setGenomicEnd(regions.last().toRange().getMaximumInteger());
 
             // List<org.renci.hearsay.dao.model.Transcript> alreadyPersistedTranscriptList = hearsayDAOBean
             // .getTranscriptDAO().findByExample(transcript);
@@ -155,9 +155,9 @@ public class CANVASCachingCallable implements Callable<List<org.renci.hearsay.da
 
             if (refSeqCodingSequenceResults == null
                     || (refSeqCodingSequenceResults != null && refSeqCodingSequenceResults.isEmpty())) {
-                Iterator<Exon> exonsAscendingIter = exons.iterator();
+                Iterator<Region> exonsAscendingIter = regions.iterator();
                 while (exonsAscendingIter.hasNext()) {
-                    Exon exon = exonsAscendingIter.next();
+                    Region exon = exonsAscendingIter.next();
                     exon.setRegionType(org.renci.hearsay.dao.model.RegionType.UTR);
                 }
             }
@@ -175,22 +175,42 @@ public class CANVASCachingCallable implements Callable<List<org.renci.hearsay.da
             }
             mapping.addIntrons();
 
-            for (Exon exon : mapping.getExons()) {
+            for (Region exon : mapping.getRegions()) {
                 MappedTranscript mappedTranscript = new MappedTranscript();
                 mappedTranscript.setTranscript(transcript);
-                mappedTranscript.setCdsStart(exon.getContigStart());
-                mappedTranscript.setCdsEnd(exon.getContigEnd());
-                mappedTranscript.setTranscriptStart(exon.getTranscriptStart());
-                mappedTranscript.setTranscriptEnd(exon.getTranscriptEnd());
-                mappedTranscript.setRegionStart(exon.getGenomeStart());
-                mappedTranscript.setRegionEnd(exon.getGenomeEnd());
                 mappedTranscript.setStrandType(mapping.getStrandType());
                 mappedTranscript.setRegionType(exon.getRegionType());
+                if (exon.getGenomeStart() < exon.getGenomeEnd()) {
+                    mappedTranscript.setRegionStart(exon.getGenomeStart());
+                    mappedTranscript.setRegionEnd(exon.getGenomeEnd());
+                } else {
+                    mappedTranscript.setRegionStart(exon.getGenomeEnd());
+                    mappedTranscript.setRegionEnd(exon.getGenomeStart());
+                }
+
+                if (exon.getRegionType() != RegionType.INTRON) {
+                    if (exon.getGenomeStart() < exon.getGenomeEnd()) {
+                        mappedTranscript.setTranscriptStart(exon.getTranscriptStart());
+                        mappedTranscript.setTranscriptEnd(exon.getTranscriptEnd());
+                    } else {
+                        mappedTranscript.setTranscriptStart(exon.getTranscriptEnd());
+                        mappedTranscript.setTranscriptEnd(exon.getTranscriptStart());
+                    }
+                }
+
+                if (exon.getRegionType() == RegionType.EXON) {
+                    if (exon.getGenomeStart() < exon.getGenomeEnd()) {
+                        mappedTranscript.setCdsStart(exon.getContigStart());
+                        mappedTranscript.setCdsEnd(exon.getContigEnd());
+                    } else {
+                        mappedTranscript.setCdsStart(exon.getContigEnd());
+                        mappedTranscript.setCdsEnd(exon.getContigStart());
+                    }
+                }
+
                 logger.debug(mappedTranscript.toString());
                 hearsayDAOBean.getMappedTranscriptDAO().save(mappedTranscript);
             }
-
-            logger.info(transcript.toString());
 
         }
         logger.info("LEAVING persistTranscripts(List<TranscriptMapsExons>)");
