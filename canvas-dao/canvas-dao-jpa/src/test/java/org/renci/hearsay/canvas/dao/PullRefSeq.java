@@ -17,7 +17,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-import org.renci.hearsay.canvas.dao.model.Exon;
+import org.renci.hearsay.canvas.dao.model.Region;
 import org.renci.hearsay.canvas.dao.model.Mapping;
 import org.renci.hearsay.canvas.dao.model.MappingKey;
 import org.renci.hearsay.canvas.dao.model.MappingResult;
