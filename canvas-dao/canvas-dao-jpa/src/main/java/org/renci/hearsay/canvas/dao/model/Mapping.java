@@ -17,7 +17,7 @@ public class Mapping implements Serializable {
 
     private StrandType strandType;
 
-    private final TreeSet<Exon> exons = new TreeSet<Exon>();
+    private final TreeSet<Region> regions = new TreeSet<Region>();
 
     public Mapping(String versionAccession, StrandType strandType) {
         super();
@@ -41,12 +41,12 @@ public class Mapping implements Serializable {
         this.versionAccession = versionAccession;
     }
 
-    public TreeSet<Exon> getExons() {
-        return exons;
+    public TreeSet<Region> getRegions() {
+        return regions;
     }
 
     public void addCDSCoordinates(Integer regionStart) {
-        for (Exon exon : getExons()) {
+        for (Region exon : getRegions()) {
             if (exon.getRegionType() == RegionType.EXON) {
                 exon.setContigStart(exon.getTranscriptStart() - regionStart + 1);
                 exon.setContigEnd(exon.getTranscriptEnd() - regionStart + 1);
@@ -58,34 +58,34 @@ public class Mapping implements Serializable {
 
         int strand = getStrandType().equals(StrandType.POSITIVE) ? 1 : -1;
 
-        Exon firstExon = exons.first();
+        Region firstExon = getRegions().first();
 
         if (regionStart > firstExon.getTranscriptStart()) {
             int v = regionStart - firstExon.getTranscriptStart();
             int gc = firstExon.getGenomeStart() + strand * v;
-            Exon utr5 = new Exon();
+            Region utr5 = new Region();
             utr5.setGenomeEnd(gc - strand);
             utr5.setGenomeStart(firstExon.getGenomeStart());
             utr5.setTranscriptEnd(regionStart - 1);
             utr5.setTranscriptStart(firstExon.getTranscriptStart());
             utr5.setRegionType(org.renci.hearsay.dao.model.RegionType.UTR5);
-            getExons().add(utr5);
+            getRegions().add(utr5);
             firstExon.setGenomeStart(gc);
             firstExon.setTranscriptStart(regionStart);
         }
 
-        Exon lastExon = getExons().last();
+        Region lastExon = getRegions().last();
 
         if (regionEnd < lastExon.getTranscriptEnd()) {
             int v = regionEnd - lastExon.getTranscriptStart();
             int gc = lastExon.getGenomeStart() + strand * v;
-            Exon utr3 = new Exon();
+            Region utr3 = new Region();
             utr3.setGenomeStart(gc + strand);
             utr3.setGenomeEnd(lastExon.getGenomeEnd());
             utr3.setTranscriptEnd(lastExon.getTranscriptEnd());
             utr3.setTranscriptStart(regionEnd + 1);
             utr3.setRegionType(org.renci.hearsay.dao.model.RegionType.UTR3);
-            getExons().add(utr3);
+            getRegions().add(utr3);
             lastExon.setGenomeEnd(gc);
             lastExon.setTranscriptEnd(regionEnd);
         }
@@ -94,23 +94,21 @@ public class Mapping implements Serializable {
 
     public void addIntrons() {
 
-        List<Exon> exonsToAdd = new ArrayList<Exon>();
+        List<Region> exonsToAdd = new ArrayList<Region>();
 
-        Iterator<Exon> iter = getExons().descendingIterator();
+        Iterator<Region> iter = getRegions().descendingIterator();
         while (iter.hasNext()) {
-            Exon current = iter.next();
-            Exon next = getExons().higher(current);
-            Exon previous = getExons().lower(current);
+            Region current = iter.next();
+            Region next = getRegions().higher(current);
+            Region previous = getRegions().lower(current);
 
             if (previous != null) {
                 if (getStrandType().equals(StrandType.POSITIVE)
                         && previous.getGenomeEnd() + 1 != current.getGenomeStart()) {
 
-                    Exon exon = new Exon();
+                    Region exon = new Region();
                     exon.setGenomeStart(previous.getGenomeEnd() + 1);
                     exon.setGenomeEnd(current.getGenomeStart() - 1);
-                    exon.setTranscriptStart(-1);
-                    exon.setTranscriptEnd(-1);
                     exon.setRegionType(RegionType.INTRON);
                     exonsToAdd.add(exon);
                 }
@@ -118,11 +116,9 @@ public class Mapping implements Serializable {
                 if (getStrandType().equals(StrandType.NEGATIVE)
                         && current.getGenomeStart() + 1 != previous.getGenomeEnd()) {
 
-                    Exon exon = new Exon();
+                    Region exon = new Region();
                     exon.setGenomeStart(current.getGenomeStart() + 1);
                     exon.setGenomeEnd(previous.getGenomeEnd() - 1);
-                    exon.setTranscriptStart(-1);
-                    exon.setTranscriptEnd(-1);
                     exon.setRegionType(RegionType.INTRON);
                     exonsToAdd.add(exon);
 
@@ -130,7 +126,7 @@ public class Mapping implements Serializable {
             }
 
         }
-        getExons().addAll(exonsToAdd);
+        getRegions().addAll(exonsToAdd);
 
     }
 
