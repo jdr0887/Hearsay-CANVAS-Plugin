@@ -188,25 +188,10 @@ public class CANVASCachingCallable implements Callable<List<org.renci.hearsay.da
                     mappedTranscript.setRegionEnd(exon.getGenomeStart());
                 }
 
-                if (exon.getRegionType() != RegionType.INTRON) {
-                    if (exon.getGenomeStart() < exon.getGenomeEnd()) {
-                        mappedTranscript.setTranscriptStart(exon.getTranscriptStart());
-                        mappedTranscript.setTranscriptEnd(exon.getTranscriptEnd());
-                    } else {
-                        mappedTranscript.setTranscriptStart(exon.getTranscriptEnd());
-                        mappedTranscript.setTranscriptEnd(exon.getTranscriptStart());
-                    }
-                }
-
-                if (exon.getRegionType() == RegionType.EXON) {
-                    if (exon.getGenomeStart() < exon.getGenomeEnd()) {
-                        mappedTranscript.setCdsStart(exon.getContigStart());
-                        mappedTranscript.setCdsEnd(exon.getContigEnd());
-                    } else {
-                        mappedTranscript.setCdsStart(exon.getContigEnd());
-                        mappedTranscript.setCdsEnd(exon.getContigStart());
-                    }
-                }
+                mappedTranscript.setTranscriptStart(exon.getTranscriptStart());
+                mappedTranscript.setTranscriptEnd(exon.getTranscriptEnd());
+                mappedTranscript.setCdsStart(exon.getContigStart());
+                mappedTranscript.setCdsEnd(exon.getContigEnd());
 
                 logger.debug(mappedTranscript.toString());
                 hearsayDAOBean.getMappedTranscriptDAO().save(mappedTranscript);
