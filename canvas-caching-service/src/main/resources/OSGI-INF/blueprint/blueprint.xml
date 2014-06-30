@@ -15,6 +15,7 @@
   <reference id="hearsayMappedTranscriptDAO" interface="org.renci.hearsay.dao.MappedTranscriptDAO" />
   <reference id="hearsayReferenceGenomeDAO" interface="org.renci.hearsay.dao.ReferenceGenomeDAO" />
   <reference id="hearsayReferenceSequenceDAO" interface="org.renci.hearsay.dao.ReferenceSequenceDAO" />
+  <reference id="hearsayRegionDAO" interface="org.renci.hearsay.dao.RegionDAO" />
   <reference id="hearsayTranscriptDAO" interface="org.renci.hearsay.dao.TranscriptDAO" />
   <reference id="hearsayTranscriptVariantDAO" interface="org.renci.hearsay.dao.TranscriptVariantDAO" />
   <reference id="hearsayTranslationDAO" interface="org.renci.hearsay.dao.TranslationDAO" />
@@ -28,6 +29,7 @@
     <property name="mappedTranscriptDAO" ref="hearsayMappedTranscriptDAO" />
     <property name="referenceGenomeDAO" ref="hearsayReferenceGenomeDAO" />
     <property name="referenceSequenceDAO" ref="hearsayReferenceSequenceDAO" />
+    <property name="regionDAO" ref="hearsayRegionDAO" />
     <property name="transcriptDAO" ref="hearsayTranscriptDAO" />
     <property name="transcriptVariantDAO" ref="hearsayTranscriptVariantDAO" />
     <property name="translationDAO" ref="hearsayTranslationDAO" />
