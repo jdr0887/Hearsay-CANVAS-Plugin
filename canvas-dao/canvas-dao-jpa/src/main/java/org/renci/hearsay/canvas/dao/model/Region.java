@@ -9,15 +9,15 @@ public class Region implements Comparable<Region> {
 
     private Integer transcriptStart;
 
-    private Integer transcriptEnd;
+    private Integer transcriptStop;
 
     private Integer contigStart;
 
-    private Integer contigEnd;
+    private Integer contigStop;
 
     private Integer genomeStart;
 
-    private Integer genomeEnd;
+    private Integer genomeStop;
 
     private RegionType regionType;
 
@@ -33,12 +33,12 @@ public class Region implements Comparable<Region> {
         this.genomeStart = genomeStart;
     }
 
-    public Integer getGenomeEnd() {
-        return genomeEnd;
+    public Integer getGenomeStop() {
+        return genomeStop;
     }
 
-    public void setGenomeEnd(Integer genomeEnd) {
-        this.genomeEnd = genomeEnd;
+    public void setGenomeStop(Integer genomeStop) {
+        this.genomeStop = genomeStop;
     }
 
     public RegionType getRegionType() {
@@ -65,12 +65,12 @@ public class Region implements Comparable<Region> {
         this.transcriptStart = transcriptStart;
     }
 
-    public Integer getTranscriptEnd() {
-        return transcriptEnd;
+    public Integer getTranscriptStop() {
+        return transcriptStop;
     }
 
-    public void setTranscriptEnd(Integer transcriptEnd) {
-        this.transcriptEnd = transcriptEnd;
+    public void setTranscriptStop(Integer transcriptStop) {
+        this.transcriptStop = transcriptStop;
     }
 
     public Integer getContigStart() {
@@ -81,37 +81,39 @@ public class Region implements Comparable<Region> {
         this.contigStart = contigStart;
     }
 
-    public Integer getContigEnd() {
-        return contigEnd;
+    public Integer getContigStop() {
+        return contigStop;
     }
 
-    public void setContigEnd(Integer contigEnd) {
-        this.contigEnd = contigEnd;
+    public void setContigStop(Integer contigStop) {
+        this.contigStop = contigStop;
     }
 
     public IntRange toRange() {
-        return new IntRange(this.genomeStart, this.genomeEnd);
+        return new IntRange(this.genomeStart, this.genomeStop);
     }
 
     @Override
     public String toString() {
         return String
-                .format("Exon [number=%s, transcriptStart=%s, transcriptEnd=%s, contigStart=%s, contigEnd=%s, genomeStart=%s, genomeEnd=%s, regionType=%s]",
-                        number, transcriptStart, transcriptEnd, contigStart, contigEnd, genomeStart, genomeEnd,
+                .format("Region [number=%s, genomeStart=%s, genomeStop=%s, transcriptStart=%s, transcriptStop=%s, contigStart=%s, contigStop=%s, regionType=%s]",
+                        number, genomeStart, genomeStop, transcriptStart, transcriptStop, contigStart, contigStop,
                         regionType.toString());
+        // return String.format("%d\t%d\t%s\t%d\t%d", genomeStart, genomeStop, regionType.toString(), transcriptStart,
+        // transcriptStop);
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((contigEnd == null) ? 0 : contigEnd.hashCode());
+        result = prime * result + ((contigStop == null) ? 0 : contigStop.hashCode());
         result = prime * result + ((contigStart == null) ? 0 : contigStart.hashCode());
-        result = prime * result + ((genomeEnd == null) ? 0 : genomeEnd.hashCode());
+        result = prime * result + ((genomeStop == null) ? 0 : genomeStop.hashCode());
         result = prime * result + ((genomeStart == null) ? 0 : genomeStart.hashCode());
         result = prime * result + ((number == null) ? 0 : number.hashCode());
         result = prime * result + ((regionType == null) ? 0 : regionType.hashCode());
-        result = prime * result + ((transcriptEnd == null) ? 0 : transcriptEnd.hashCode());
+        result = prime * result + ((transcriptStop == null) ? 0 : transcriptStop.hashCode());
         result = prime * result + ((transcriptStart == null) ? 0 : transcriptStart.hashCode());
         return result;
     }
@@ -125,20 +127,20 @@ public class Region implements Comparable<Region> {
         if (getClass() != obj.getClass())
             return false;
         Region other = (Region) obj;
-        if (contigEnd == null) {
-            if (other.contigEnd != null)
+        if (contigStop == null) {
+            if (other.contigStop != null)
                 return false;
-        } else if (!contigEnd.equals(other.contigEnd))
+        } else if (!contigStop.equals(other.contigStop))
             return false;
         if (contigStart == null) {
             if (other.contigStart != null)
                 return false;
         } else if (!contigStart.equals(other.contigStart))
             return false;
-        if (genomeEnd == null) {
-            if (other.genomeEnd != null)
+        if (genomeStop == null) {
+            if (other.genomeStop != null)
                 return false;
-        } else if (!genomeEnd.equals(other.genomeEnd))
+        } else if (!genomeStop.equals(other.genomeStop))
             return false;
         if (genomeStart == null) {
             if (other.genomeStart != null)
@@ -152,10 +154,10 @@ public class Region implements Comparable<Region> {
             return false;
         if (regionType != other.regionType)
             return false;
-        if (transcriptEnd == null) {
-            if (other.transcriptEnd != null)
+        if (transcriptStop == null) {
+            if (other.transcriptStop != null)
                 return false;
-        } else if (!transcriptEnd.equals(other.transcriptEnd))
+        } else if (!transcriptStop.equals(other.transcriptStop))
             return false;
         if (transcriptStart == null) {
             if (other.transcriptStart != null)
@@ -167,29 +169,31 @@ public class Region implements Comparable<Region> {
 
     @Override
     public int compareTo(Region e) {
-        int ret = e.getGenomeStart().compareTo(this.genomeStart);
-        if (this.transcriptStart != null && e.getTranscriptStart() != null) {
-            if (ret == 0) {
-                switch (this.regionType) {
-                    case UTR3:
-                        ret = 1;
-                        break;
-                    case EXON:
-                    case INTRON:
-                    case UTR:
-                        ret = e.getTranscriptStart().compareTo(this.transcriptStart);
-                        break;
-                    case UTR5:
-                        ret = -1;
-                        break;
-                }
-            }
-            if (ret == 0) {
-                ret = e.getTranscriptStart().compareTo(this.transcriptStart);
-            }
+        int ret = 0;
+        if (ret == 0) {
+            ret = this.genomeStart.compareTo(e.getGenomeStart());
         }
         if (ret == 0 && this.contigStart != null && e.getContigStart() != null) {
-            ret = e.getContigStart().compareTo(this.contigStart);
+            ret = this.contigStart.compareTo(e.getContigStart());
+        }
+        if (ret == 0 && this.transcriptStart != null && e.getTranscriptStart() != null) {
+            ret = this.transcriptStart.compareTo(e.getTranscriptStart());
+        }
+        if (ret == 0) {
+            switch (this.regionType) {
+                case UTR3:
+                    ret -= 10;
+                    break;
+                case EXON:
+                    ret -= 1;
+                    break;
+                case INTRON:
+                    ret += 1;
+                    break;
+                case UTR5:
+                    ret += 10;
+                    break;
+            }
         }
         return ret;
     }
