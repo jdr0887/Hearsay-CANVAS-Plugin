@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.NavigableSet;
 import java.util.TreeSet;
 
 import org.renci.hearsay.dao.model.RegionType;
@@ -17,12 +18,13 @@ public class Mapping implements Serializable {
 
     private StrandType strandType;
 
-    private final TreeSet<Region> regions = new TreeSet<Region>();
+    private TreeSet<Region> regions;
 
     public Mapping(String versionAccession, StrandType strandType) {
         super();
         this.versionAccession = versionAccession;
         this.strandType = strandType;
+        this.regions = new TreeSet<Region>();
     }
 
     public StrandType getStrandType() {
@@ -49,79 +51,90 @@ public class Mapping implements Serializable {
         for (Region exon : getRegions()) {
             if (exon.getRegionType() == RegionType.EXON) {
                 exon.setContigStart(exon.getTranscriptStart() - regionStart + 1);
-                exon.setContigEnd(exon.getTranscriptEnd() - regionStart + 1);
+                exon.setContigStop(exon.getTranscriptStop() - regionStart + 1);
             }
         }
     }
 
-    public void addUTRs(Integer regionStart, Integer regionEnd) {
+    public void addUTRs(Integer regionStart, Integer regionStop) {
 
-        int strand = getStrandType().equals(StrandType.POSITIVE) ? 1 : -1;
+        int strand = getStrandType().equals(StrandType.PLUS) ? 1 : -1;
 
-        Region firstExon = getRegions().first();
+        NavigableSet<Region> navigableRegionSet = getRegions();
+        if (getStrandType().equals(StrandType.MINUS)) {
+            navigableRegionSet = getRegions().descendingSet();
+        }
+        Region firstRegion = navigableRegionSet.first();
 
-        if (regionStart > firstExon.getTranscriptStart()) {
-            int v = regionStart - firstExon.getTranscriptStart();
-            int gc = firstExon.getGenomeStart() + strand * v;
+        if (regionStart > firstRegion.getTranscriptStart()) {
+            int previousGenomeStop = getRegions().lower(firstRegion).getGenomeStop();
+            int adjustment = ((firstRegion.getTranscriptStart() + 1) - (regionStart - 1));
+            getRegions().lower(firstRegion).setGenomeStop(previousGenomeStop + adjustment - 1);
+            getRegions().lower(firstRegion).setTranscriptStop(regionStart);
             Region utr5 = new Region();
-            utr5.setGenomeEnd(gc - strand);
-            utr5.setGenomeStart(firstExon.getGenomeStart());
-            utr5.setTranscriptEnd(regionStart - 1);
-            utr5.setTranscriptStart(firstExon.getTranscriptStart());
+            utr5.setGenomeStart(previousGenomeStop + adjustment);
+            utr5.setGenomeStop(previousGenomeStop);
+            utr5.setTranscriptStart(regionStart - 1);
+            utr5.setTranscriptStop(firstRegion.getTranscriptStart() + 1);
             utr5.setRegionType(org.renci.hearsay.dao.model.RegionType.UTR5);
             getRegions().add(utr5);
-            firstExon.setGenomeStart(gc);
-            firstExon.setTranscriptStart(regionStart);
+            firstRegion.setRegionType(org.renci.hearsay.dao.model.RegionType.UTR5);
         }
 
-        Region lastExon = getRegions().last();
+        Region lastRegion = navigableRegionSet.last();
 
-        if (regionEnd < lastExon.getTranscriptEnd()) {
-            int v = regionEnd - lastExon.getTranscriptStart();
-            int gc = lastExon.getGenomeStart() + strand * v;
+        if (regionStop < lastRegion.getTranscriptStart() || regionStop > lastRegion.getTranscriptStop()) {
+            int v = regionStop - lastRegion.getTranscriptStart();
+            int gc = lastRegion.getGenomeStart() + strand * v;
+
             Region utr3 = new Region();
-            utr3.setGenomeStart(gc + strand);
-            utr3.setGenomeEnd(lastExon.getGenomeEnd());
-            utr3.setTranscriptEnd(lastExon.getTranscriptEnd());
-            utr3.setTranscriptStart(regionEnd + 1);
+            utr3.setGenomeStart(lastRegion.getGenomeStart());
+            utr3.setGenomeStop(gc - 1);
+            utr3.setTranscriptStart(lastRegion.getTranscriptStart());
+            utr3.setTranscriptStop(regionStop + 1);
             utr3.setRegionType(org.renci.hearsay.dao.model.RegionType.UTR3);
             getRegions().add(utr3);
-            lastExon.setGenomeEnd(gc);
-            lastExon.setTranscriptEnd(regionEnd);
+            lastRegion.setTranscriptStart(regionStop);
+            lastRegion.setGenomeStart(gc);
         }
 
+        for (Region region : getRegions()) {
+            System.out.println(region.toString());
+        }
     }
 
     public void addIntrons() {
 
         List<Region> exonsToAdd = new ArrayList<Region>();
 
-        Iterator<Region> iter = getRegions().descendingIterator();
+        Iterator<Region> iter = getRegions().iterator();
         while (iter.hasNext()) {
             Region current = iter.next();
-            Region next = getRegions().higher(current);
             Region previous = getRegions().lower(current);
+            Region next = getRegions().higher(current);
 
             if (previous != null) {
-                if (getStrandType().equals(StrandType.POSITIVE)
-                        && previous.getGenomeEnd() + 1 != current.getGenomeStart()) {
+                
+                if (current == previous && next == null) {
+                    continue;
+                }
 
+                if (getStrandType().equals(StrandType.PLUS) && previous.getGenomeStop() + 1 != current.getGenomeStart()) {
                     Region exon = new Region();
-                    exon.setGenomeStart(previous.getGenomeEnd() + 1);
-                    exon.setGenomeEnd(current.getGenomeStart() - 1);
+                    exon.setGenomeStart(previous.getGenomeStop() + 1);
+                    exon.setGenomeStop(current.getGenomeStart() - 1);
                     exon.setRegionType(RegionType.INTRON);
                     exonsToAdd.add(exon);
                 }
 
-                if (getStrandType().equals(StrandType.NEGATIVE)
-                        && current.getGenomeStart() + 1 != previous.getGenomeEnd()) {
+                if (getStrandType().equals(StrandType.MINUS)
+                        && current.getGenomeStart() - 1 != previous.getGenomeStop()) {
 
                     Region exon = new Region();
-                    exon.setGenomeStart(current.getGenomeStart() + 1);
-                    exon.setGenomeEnd(previous.getGenomeEnd() - 1);
+                    exon.setGenomeStart(previous.getGenomeStop() + 1);
+                    exon.setGenomeStop(current.getGenomeStart() - 1);
                     exon.setRegionType(RegionType.INTRON);
                     exonsToAdd.add(exon);
-
                 }
             }
 
