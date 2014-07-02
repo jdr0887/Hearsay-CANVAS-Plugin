@@ -1,9 +1,12 @@
 package org.renci.hearsay.canvas;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 import java.util.NavigableSet;
 import java.util.Set;
@@ -264,7 +267,7 @@ public class CreateTranscriptListCallable implements Callable<List<org.renci.hea
             int strand = 1;
 
             for (Region region : mapping.getRegions()) {
-                if (regionStart > region.getTranscriptStart()) {
+                if (regionStart > region.getTranscriptStop()) {
                     region.setRegionType(org.renci.hearsay.dao.model.RegionType.UTR5);
                 }
             }
@@ -290,9 +293,7 @@ public class CreateTranscriptListCallable implements Callable<List<org.renci.hea
                 utr5.setTranscriptStart(startTranscript);
                 utr5.setTranscriptStop(stopTranscript);
                 utr5.setRegionType(org.renci.hearsay.dao.model.RegionType.UTR5);
-                synchronized (this) {
-                    mapping.getRegions().add(utr5);
-                }
+                mapping.getRegions().add(utr5);
 
                 nextRegion.setGenomeStart(utr5.getGenomeStop() + 1);
                 nextRegion.setTranscriptStart(regionStart);
@@ -345,8 +346,9 @@ public class CreateTranscriptListCallable implements Callable<List<org.renci.hea
                 lastRegion.setGenomeStart(utr3.getGenomeStop() + 1);
                 lastRegion.setTranscriptStart(regionStop);
 
+                Integer genomeStop = nextRegion.getGenomeStop();
                 nextRegion.setGenomeStop(nextRegion.getGenomeStart());
-                nextRegion.setGenomeStart(nextRegion.getGenomeStop()
+                nextRegion.setGenomeStart(genomeStop
                         - (nextRegion.getTranscriptStart() - nextRegion.getTranscriptStop()));
             }
 
@@ -399,42 +401,49 @@ public class CreateTranscriptListCallable implements Callable<List<org.renci.hea
 
         List<Region> exonsToAdd = new ArrayList<Region>();
 
-        Iterator<Region> iter = mapping.getRegions().iterator();
+        List<Region> regions = new ArrayList<Region>();
+        regions.addAll(mapping.getRegions());
+        Collections.sort(regions, new Comparator<Region>() {
 
-        while (iter.hasNext()) {
-            Region previous = iter.next();
-            if (!iter.hasNext()) {
-                break;
+            @Override
+            public int compare(Region a, Region b) {
+                return a.getGenomeStart().compareTo(b.getGenomeStart());
             }
-            Region current = iter.next();
 
-            if (previous != null) {
+        });
 
-                if (mapping.getStrandType().equals(StrandType.PLUS)) {
+        for (int i = regions.size() - 1; i >= 0; --i) {
 
-                    if (!Integer.valueOf(previous.getGenomeStop() + 1).equals(current.getGenomeStart())) {
-                        Region exon = new Region();
-                        exon.setGenomeStart(previous.getGenomeStop() + 1);
-                        exon.setGenomeStop(current.getGenomeStop() - 1);
-                        exon.setRegionType(RegionType.INTRON);
-                        exonsToAdd.add(exon);
-                    }
-                } else {
+            if (i == 0 || i + 1 == regions.size()) {
+                continue;
+            }
 
-                    if (current.getGenomeStart().equals(148346582)) {
-                        System.out.println("");
-                    }
+            Region previous = regions.get(i - 1);
+            Region current = regions.get(i);
+            Region next = regions.get(i + 1);
 
-                    if (!Integer.valueOf(previous.getGenomeStop() + 1).equals(current.getGenomeStart())) {
-                        Region exon = new Region();
-                        exon.setGenomeStart(current.getGenomeStart() + 1);
-                        exon.setGenomeStop(previous.getGenomeStart() - 1);
-                        exon.setRegionType(RegionType.INTRON);
-                        exonsToAdd.add(exon);
-                    }
-
+            if (mapping.getStrandType().equals(StrandType.MINUS)) {
+                    
+                if (previous.getGenomeStart() + 1 != current.getGenomeStop()) {
+                    Region exon = new Region();
+                    exon.setGenomeStart(previous.getGenomeStart() + 1);
+                    exon.setGenomeStop(current.getGenomeStop() - 1);
+                    exon.setRegionType(RegionType.INTRON);
+                    exonsToAdd.add(exon);
                 }
+
+            } else {
+
+                if (previous.getGenomeStop() + 1 != current.getGenomeStart()) {
+                    Region exon = new Region();
+                    exon.setGenomeStart(previous.getGenomeStop() + 1);
+                    exon.setGenomeStop(current.getGenomeStart() - 1);
+                    exon.setRegionType(RegionType.INTRON);
+                    exonsToAdd.add(exon);
+                }
+
             }
+
         }
 
         mapping.getRegions().addAll(exonsToAdd);

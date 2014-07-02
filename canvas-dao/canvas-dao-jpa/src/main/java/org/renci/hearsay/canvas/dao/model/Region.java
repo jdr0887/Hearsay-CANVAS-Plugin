@@ -173,9 +173,6 @@ public class Region implements Comparable<Region> {
         if (ret == 0) {
             ret = this.genomeStart.compareTo(e.getGenomeStart());
         }
-        if (ret == 0 && this.contigStart != null && e.getContigStart() != null) {
-            ret = this.contigStart.compareTo(e.getContigStart());
-        }
         if (ret == 0 && this.transcriptStart != null && e.getTranscriptStart() != null) {
             ret = this.transcriptStart.compareTo(e.getTranscriptStart());
         }
@@ -194,6 +191,9 @@ public class Region implements Comparable<Region> {
                     ret += 10;
                     break;
             }
+        }
+        if (ret == 0 && this.contigStart != null && e.getContigStart() != null) {
+            ret = this.contigStart.compareTo(e.getContigStart());
         }
         return ret;
     }
