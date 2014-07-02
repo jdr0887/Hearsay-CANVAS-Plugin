@@ -95,12 +95,12 @@ public class Region implements Comparable<Region> {
 
     @Override
     public String toString() {
-        return String
-                .format("Region [number=%s, genomeStart=%s, genomeStop=%s, transcriptStart=%s, transcriptStop=%s, contigStart=%s, contigStop=%s, regionType=%s]",
-                        number, genomeStart, genomeStop, transcriptStart, transcriptStop, contigStart, contigStop,
-                        regionType.toString());
-        // return String.format("%d\t%d\t%s\t%d\t%d", genomeStart, genomeStop, regionType.toString(), transcriptStart,
-        // transcriptStop);
+        // return String
+        // .format("Region [number=%s, genomeStart=%s, genomeStop=%s, transcriptStart=%s, transcriptStop=%s, contigStart=%s, contigStop=%s, regionType=%s]",
+        // number, genomeStart, genomeStop, transcriptStart, transcriptStop, contigStart, contigStop,
+        // regionType.toString());
+        return String.format("%d\t%d\t%s\t%d\t%d", genomeStart, genomeStop, regionType.toString(), transcriptStart,
+                transcriptStop);
     }
 
     @Override
