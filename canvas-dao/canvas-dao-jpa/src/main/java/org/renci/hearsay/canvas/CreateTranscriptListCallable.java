@@ -6,7 +6,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Map;
 import java.util.NavigableSet;
 import java.util.Set;
@@ -45,13 +44,8 @@ public class CreateTranscriptListCallable implements Callable<List<org.renci.hea
 
     private List<TranscriptMapsExons> mapsExonsResults;
 
-    public CreateTranscriptListCallable(String refSeqVersion, CANVASDAOBean canvasDAOBean,
-            HearsayDAOBean hearsayDAOBean, List<TranscriptMapsExons> mapsExonsResults) {
+    public CreateTranscriptListCallable() {
         super();
-        this.refSeqVersion = refSeqVersion;
-        this.canvasDAOBean = canvasDAOBean;
-        this.hearsayDAOBean = hearsayDAOBean;
-        this.mapsExonsResults = mapsExonsResults;
     }
 
     @Override
@@ -110,15 +104,15 @@ public class CreateTranscriptListCallable implements Callable<List<org.renci.hea
                     Gene gene = null;
                     if (refSeqGeneList != null && !refSeqGeneList.isEmpty()) {
                         RefSeqGene refSeqGene = refSeqGeneList.get(0);
-                        // List<Gene> alreadyPersistedGeneList = hearsayDAOBean.getGeneDAO().findByName(
-                        // refSeqGene.getName());
-                        // if (alreadyPersistedGeneList != null && alreadyPersistedGeneList.isEmpty()) {
-                        gene = new Gene(refSeqGene.getName(), refSeqGene.getDescription());
-                        // Long id = hearsayDAOBean.getGeneDAO().save(gene);
-                        // gene.setId(id);
-                        // } else {
-                        // gene = alreadyPersistedGeneList.get(0);
-                        // }
+                        List<Gene> alreadyPersistedGeneList = hearsayDAOBean.getGeneDAO().findByName(
+                                refSeqGene.getName());
+                        if (alreadyPersistedGeneList != null && alreadyPersistedGeneList.isEmpty()) {
+                            gene = new Gene(refSeqGene.getName(), refSeqGene.getDescription());
+                            Long id = hearsayDAOBean.getGeneDAO().save(gene);
+                            gene.setId(id);
+                        } else {
+                            gene = alreadyPersistedGeneList.get(0);
+                        }
                     }
                     logger.debug(gene.toString());
 
@@ -127,14 +121,14 @@ public class CreateTranscriptListCallable implements Callable<List<org.renci.hea
                     org.renci.hearsay.dao.model.Transcript transcript = new org.renci.hearsay.dao.model.Transcript();
                     transcript.setGene(gene);
                     transcript.setAccession(key.getVersionId());
-                    // List<org.renci.hearsay.dao.model.Transcript> alreadyPersistedTranscriptList = hearsayDAOBean
-                    // .getTranscriptDAO().findByExample(transcript);
-                    // if (alreadyPersistedTranscriptList != null && alreadyPersistedTranscriptList.isEmpty()) {
-                    // Long id = hearsayDAOBean.getTranscriptDAO().save(transcript);
-                    // transcript.setId(id);
-                    // } else {
-                    // transcript = alreadyPersistedTranscriptList.get(0);
-                    // }
+                    List<org.renci.hearsay.dao.model.Transcript> alreadyPersistedTranscriptList = hearsayDAOBean
+                            .getTranscriptDAO().findByExample(transcript);
+                    if (alreadyPersistedTranscriptList != null && alreadyPersistedTranscriptList.isEmpty()) {
+                        Long id = hearsayDAOBean.getTranscriptDAO().save(transcript);
+                        transcript.setId(id);
+                    } else {
+                        transcript = alreadyPersistedTranscriptList.get(0);
+                    }
                     logger.info(transcript.toString());
 
                     MappedTranscript mappedTranscript = new MappedTranscript();
@@ -143,8 +137,8 @@ public class CreateTranscriptListCallable implements Callable<List<org.renci.hea
                     mappedTranscript.setGenomicAccession(mapping.getVersionAccession());
                     mappedTranscript.setGenomicStart(regions.first().toRange().getMinimumInteger());
                     mappedTranscript.setGenomicStop(regions.last().toRange().getMaximumInteger());
-                    // Long mappedTranscriptId = hearsayDAOBean.getMappedTranscriptDAO().save(mappedTranscript);
-                    // mappedTranscript.setId(mappedTranscriptId);
+                    Long mappedTranscriptId = hearsayDAOBean.getMappedTranscriptDAO().save(mappedTranscript);
+                    mappedTranscript.setId(mappedTranscriptId);
                     logger.info(mappedTranscript.toString());
 
                     List<RefSeqCodingSequence> refSeqCodingSequenceResults = canvasDAOBean.getRefSeqCodingSequenceDAO()
@@ -191,10 +185,10 @@ public class CreateTranscriptListCallable implements Callable<List<org.renci.hea
                         hearsayRegion.setCdsStop(region.getContigStop());
 
                         logger.debug(region.toString());
-                        mappedTranscript.getRegions().add(hearsayRegion);
-                        // hearsayDAOBean.getRegionDAO().save(hearsayRegion);
+                        // mappedTranscript.getRegions().add(hearsayRegion);
+                        hearsayDAOBean.getRegionDAO().save(hearsayRegion);
                     }
-                    transcript.getMappedTranscripts().add(mappedTranscript);
+                    // transcript.getMappedTranscripts().add(mappedTranscript);
 
                     results.add(transcript);
                 }
@@ -423,7 +417,7 @@ public class CreateTranscriptListCallable implements Callable<List<org.renci.hea
             Region next = regions.get(i + 1);
 
             if (mapping.getStrandType().equals(StrandType.MINUS)) {
-                    
+
                 if (previous.getGenomeStart() + 1 != current.getGenomeStop()) {
                     Region exon = new Region();
                     exon.setGenomeStart(previous.getGenomeStart() + 1);
@@ -448,6 +442,38 @@ public class CreateTranscriptListCallable implements Callable<List<org.renci.hea
 
         mapping.getRegions().addAll(exonsToAdd);
 
+    }
+
+    public String getRefSeqVersion() {
+        return refSeqVersion;
+    }
+
+    public void setRefSeqVersion(String refSeqVersion) {
+        this.refSeqVersion = refSeqVersion;
+    }
+
+    public CANVASDAOBean getCanvasDAOBean() {
+        return canvasDAOBean;
+    }
+
+    public void setCanvasDAOBean(CANVASDAOBean canvasDAOBean) {
+        this.canvasDAOBean = canvasDAOBean;
+    }
+
+    public HearsayDAOBean getHearsayDAOBean() {
+        return hearsayDAOBean;
+    }
+
+    public void setHearsayDAOBean(HearsayDAOBean hearsayDAOBean) {
+        this.hearsayDAOBean = hearsayDAOBean;
+    }
+
+    public List<TranscriptMapsExons> getMapsExonsResults() {
+        return mapsExonsResults;
+    }
+
+    public void setMapsExonsResults(List<TranscriptMapsExons> mapsExonsResults) {
+        this.mapsExonsResults = mapsExonsResults;
     }
 
 }

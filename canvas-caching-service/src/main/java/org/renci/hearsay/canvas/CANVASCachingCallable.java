@@ -40,8 +40,11 @@ public class CANVASCachingCallable implements Callable<List<org.renci.hearsay.da
                     .findByGenomeRefIdAndRefSeqVersion(genomeRefId, refSeqVersion);
 
             if (mapsExonsResults != null && mapsExonsResults.size() > 0) {
-                Callable<List<org.renci.hearsay.dao.model.Transcript>> persistTranscriptRunnable = new CreateTranscriptListCallable(
-                        refSeqVersion, canvasDAOBean, null, mapsExonsResults);
+                CreateTranscriptListCallable persistTranscriptRunnable = new CreateTranscriptListCallable();
+                persistTranscriptRunnable.setCanvasDAOBean(canvasDAOBean);
+                persistTranscriptRunnable.setHearsayDAOBean(hearsayDAOBean);
+                persistTranscriptRunnable.setMapsExonsResults(mapsExonsResults);
+                persistTranscriptRunnable.setRefSeqVersion(refSeqVersion);
                 results.addAll(persistTranscriptRunnable.call());
             }
 

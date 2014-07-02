@@ -66,8 +66,11 @@ public class TranscriptMapsExonsTest {
             mapsExonsResults.addAll(canvasDAOBean.getTranscriptMapsExonsDAO()
                     .findByGenomeRefIdAndRefSeqVersionAndAccession(genomeRefId, refSeqVersion, "XM_005277470.1"));
 
-            Callable<List<org.renci.hearsay.dao.model.Transcript>> persistTranscriptRunnable = new CreateTranscriptListCallable(
-                    refSeqVersion, canvasDAOBean, null, mapsExonsResults);
+            CreateTranscriptListCallable persistTranscriptRunnable = new CreateTranscriptListCallable();
+            persistTranscriptRunnable.setCanvasDAOBean(canvasDAOBean);
+            persistTranscriptRunnable.setHearsayDAOBean(null);
+            persistTranscriptRunnable.setMapsExonsResults(mapsExonsResults);
+            persistTranscriptRunnable.setRefSeqVersion(refSeqVersion);
             List<org.renci.hearsay.dao.model.Transcript> results = persistTranscriptRunnable.call();
 
             for (org.renci.hearsay.dao.model.Transcript transcript : results) {
@@ -136,8 +139,11 @@ public class TranscriptMapsExonsTest {
             mapsExonsResults.addAll(canvasDAOBean.getTranscriptMapsExonsDAO()
                     .findByGenomeRefIdAndRefSeqVersionAndAccession(genomeRefId, refSeqVersion, "NM_033663.3"));
 
-            Callable<List<org.renci.hearsay.dao.model.Transcript>> persistTranscriptRunnable = new CreateTranscriptListCallable(
-                    refSeqVersion, canvasDAOBean, null, mapsExonsResults);
+            CreateTranscriptListCallable persistTranscriptRunnable = new CreateTranscriptListCallable();
+            persistTranscriptRunnable.setCanvasDAOBean(canvasDAOBean);
+            persistTranscriptRunnable.setHearsayDAOBean(null);
+            persistTranscriptRunnable.setMapsExonsResults(mapsExonsResults);
+            persistTranscriptRunnable.setRefSeqVersion(refSeqVersion);
             List<org.renci.hearsay.dao.model.Transcript> results = persistTranscriptRunnable.call();
 
             for (org.renci.hearsay.dao.model.Transcript transcript : results) {
