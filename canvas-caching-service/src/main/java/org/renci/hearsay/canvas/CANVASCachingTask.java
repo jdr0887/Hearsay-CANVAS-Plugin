@@ -14,7 +14,7 @@ public class CANVASCachingTask extends TimerTask {
 
     private final Logger logger = LoggerFactory.getLogger(CANVASCachingTask.class);
 
-    private CreateTranscriptListCallable callable;
+    private CANVASCachingCallable callable;
 
     public CANVASCachingTask() {
         super();
@@ -34,11 +34,11 @@ public class CANVASCachingTask extends TimerTask {
         }
     }
 
-    public CreateTranscriptListCallable getCallable() {
+    public CANVASCachingCallable getCallable() {
         return callable;
     }
 
-    public void setCallable(CreateTranscriptListCallable callable) {
+    public void setCallable(CANVASCachingCallable callable) {
         this.callable = callable;
     }
 
