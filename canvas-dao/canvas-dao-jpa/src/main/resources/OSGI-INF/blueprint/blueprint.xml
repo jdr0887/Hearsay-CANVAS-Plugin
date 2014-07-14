@@ -16,6 +16,13 @@
 
   <service ref="annotationGeneExternalIdsDAOImpl" interface="org.renci.hearsay.canvas.annotation.dao.AnnotationGeneExternalIdsDAO" />
 
+  <bean id="genomeRefDAOImpl" class="org.renci.hearsay.canvas.ref.dao.jpa.GenomeRefDAOImpl">
+    <tx:transaction method="*" value="Required" />
+    <jpa:context property="entityManager" unitname="canvas" />
+  </bean>
+
+  <service ref="genomeRefDAOImpl" interface="org.renci.hearsay.canvas.ref.dao.GenomeRefDAO" />
+
   <bean id="hgncGeneDAOImpl" class="org.renci.hearsay.canvas.hgnc.dao.jpa.HGNCGeneDAOImpl">
     <tx:transaction method="*" value="Required" />
     <jpa:context property="entityManager" unitname="canvas" />
