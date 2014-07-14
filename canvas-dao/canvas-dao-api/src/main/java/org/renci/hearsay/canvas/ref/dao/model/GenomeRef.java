@@ -21,22 +21,22 @@ public class GenomeRef implements Persistable {
 
     @Id
     @Column(name = "ref_id")
-    private Long refId;
+    protected Long id;
 
     @Column(name = "ref_source")
-    private String refSource;
+    protected String refSource;
 
     @Column(name = "ref_ver")
-    private String refVer;
+    protected String refVer;
 
     @Column(name = "ref_shortname", length = 50)
-    private String refShortname;
+    protected String refShortname;
 
     @Column(name = "basic_fasta_url", length = 1023)
-    private String basicFastaUrl;
+    protected String basicFastaUrl;
 
     @Column(name = "extras_fasta_url", length = 1023)
-    private String extrasFastaUrl;
+    protected String extrasFastaUrl;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(schema = "ref", name = "genome_ref_seqs", joinColumns = @JoinColumn(name = "ref_id"), inverseJoinColumns = @JoinColumn(name = "seq_ver_accession"))
@@ -46,12 +46,12 @@ public class GenomeRef implements Persistable {
         super();
     }
 
-    public Long getRefId() {
-        return refId;
+    public Long getId() {
+        return id;
     }
 
-    public void setRefId(Long refId) {
-        this.refId = refId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getRefSource() {
@@ -96,8 +96,9 @@ public class GenomeRef implements Persistable {
 
     @Override
     public String toString() {
-        return "GenomeRef [refId=" + refId + ", refSource=" + refSource + ", refVer=" + refVer + ", refShortname="
-                + refShortname + ", basicFastaUrl=" + basicFastaUrl + ", extrasFastaUrl=" + extrasFastaUrl + "]";
+        return String.format(
+                "GenomeRef [id=%s, refSource=%s, refVer=%s, refShortname=%s, basicFastaUrl=%s, extrasFastaUrl=%s]", id,
+                refSource, refVer, refShortname, basicFastaUrl, extrasFastaUrl);
     }
 
     @Override
@@ -106,7 +107,7 @@ public class GenomeRef implements Persistable {
         int result = 1;
         result = prime * result + ((basicFastaUrl == null) ? 0 : basicFastaUrl.hashCode());
         result = prime * result + ((extrasFastaUrl == null) ? 0 : extrasFastaUrl.hashCode());
-        result = prime * result + ((refId == null) ? 0 : refId.hashCode());
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
         result = prime * result + ((refShortname == null) ? 0 : refShortname.hashCode());
         result = prime * result + ((refSource == null) ? 0 : refSource.hashCode());
         result = prime * result + ((refVer == null) ? 0 : refVer.hashCode());
@@ -132,10 +133,10 @@ public class GenomeRef implements Persistable {
                 return false;
         } else if (!extrasFastaUrl.equals(other.extrasFastaUrl))
             return false;
-        if (refId == null) {
-            if (other.refId != null)
+        if (id == null) {
+            if (other.id != null)
                 return false;
-        } else if (!refId.equals(other.refId))
+        } else if (!id.equals(other.id))
             return false;
         if (refShortname == null) {
             if (other.refShortname != null)
