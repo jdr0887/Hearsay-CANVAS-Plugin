@@ -16,7 +16,7 @@ public class CANVASCachingCallable implements Callable<List<org.renci.hearsay.da
 
     private String refSeqVersion;
 
-    private Integer genomeRefId;
+    private String genomeRefId;
 
     private CANVASDAOBean canvasDAOBean;
 
@@ -32,12 +32,12 @@ public class CANVASCachingCallable implements Callable<List<org.renci.hearsay.da
         List<org.renci.hearsay.dao.model.Transcript> results = new ArrayList<org.renci.hearsay.dao.model.Transcript>();
 
         logger.info(refSeqVersion);
-        logger.info(genomeRefId.toString());
+        logger.info(genomeRefId);
 
         try {
 
             List<TranscriptMapsExons> mapsExonsResults = canvasDAOBean.getTranscriptMapsExonsDAO()
-                    .findByGenomeRefIdAndRefSeqVersion(genomeRefId, refSeqVersion);
+                    .findByGenomeRefIdAndRefSeqVersion(Integer.valueOf(genomeRefId), refSeqVersion);
 
             if (mapsExonsResults != null && mapsExonsResults.size() > 0) {
                 CreateTranscriptListCallable persistTranscriptRunnable = new CreateTranscriptListCallable();
@@ -45,6 +45,7 @@ public class CANVASCachingCallable implements Callable<List<org.renci.hearsay.da
                 persistTranscriptRunnable.setHearsayDAOBean(hearsayDAOBean);
                 persistTranscriptRunnable.setMapsExonsResults(mapsExonsResults);
                 persistTranscriptRunnable.setRefSeqVersion(refSeqVersion);
+                persistTranscriptRunnable.setGenomeRefId(Long.valueOf(genomeRefId));
                 results.addAll(persistTranscriptRunnable.call());
             }
 
@@ -80,11 +81,11 @@ public class CANVASCachingCallable implements Callable<List<org.renci.hearsay.da
         this.refSeqVersion = refSeqVersion;
     }
 
-    public Integer getGenomeRefId() {
+    public String getGenomeRefId() {
         return genomeRefId;
     }
 
-    public void setGenomeRefId(Integer genomeRefId) {
+    public void setGenomeRefId(String genomeRefId) {
         this.genomeRefId = genomeRefId;
     }
 
