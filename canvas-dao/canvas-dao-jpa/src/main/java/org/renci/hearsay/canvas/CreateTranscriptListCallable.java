@@ -16,6 +16,7 @@ import org.renci.hearsay.canvas.dao.CANVASDAOBean;
 import org.renci.hearsay.canvas.dao.model.Mapping;
 import org.renci.hearsay.canvas.dao.model.MappingKey;
 import org.renci.hearsay.canvas.dao.model.Region;
+import org.renci.hearsay.canvas.ref.dao.model.GenomeRef;
 import org.renci.hearsay.canvas.ref.dao.model.GenomeRefSeq;
 import org.renci.hearsay.canvas.refseq.dao.model.RefSeqCodingSequence;
 import org.renci.hearsay.canvas.refseq.dao.model.RefSeqGene;
@@ -27,6 +28,8 @@ import org.renci.hearsay.dao.HearsayDAOBean;
 import org.renci.hearsay.dao.HearsayDAOException;
 import org.renci.hearsay.dao.model.Gene;
 import org.renci.hearsay.dao.model.MappedTranscript;
+import org.renci.hearsay.dao.model.ReferenceGenome;
+import org.renci.hearsay.dao.model.ReferenceSequence;
 import org.renci.hearsay.dao.model.RegionType;
 import org.renci.hearsay.dao.model.StrandType;
 import org.slf4j.Logger;
@@ -37,6 +40,8 @@ public class CreateTranscriptListCallable implements Callable<List<org.renci.hea
     private final Logger logger = LoggerFactory.getLogger(CreateTranscriptListCallable.class);
 
     private String refSeqVersion;
+
+    private Long genomeRefId;
 
     private CANVASDAOBean canvasDAOBean;
 
@@ -51,8 +56,25 @@ public class CreateTranscriptListCallable implements Callable<List<org.renci.hea
     @Override
     public List<org.renci.hearsay.dao.model.Transcript> call() {
         logger.info("ENTERING call()");
+
         List<org.renci.hearsay.dao.model.Transcript> results = new ArrayList<org.renci.hearsay.dao.model.Transcript>();
         try {
+
+            GenomeRef genomeRef = canvasDAOBean.getGenomeRefDAO().findById(genomeRefId);
+
+            ReferenceGenome referenceGenome = null;
+            ReferenceGenome tmpReferenceGenome = new ReferenceGenome(genomeRef.getRefSource(), genomeRef.getRefVer());
+            List<ReferenceGenome> referenceGenomeList = hearsayDAOBean.getReferenceGenomeDAO().findByExample(
+                    tmpReferenceGenome);
+
+            if (referenceGenomeList != null && referenceGenomeList.size() > 0) {
+                referenceGenome = referenceGenomeList.get(0);
+            } else {
+                Long id = hearsayDAOBean.getReferenceGenomeDAO().save(tmpReferenceGenome);
+                tmpReferenceGenome.setId(id);
+                referenceGenome = tmpReferenceGenome;
+            }
+
             if (mapsExonsResults != null && mapsExonsResults.size() > 0) {
                 Map<MappingKey, Mapping> map = new HashMap<MappingKey, Mapping>();
                 for (TranscriptMapsExons exon : mapsExonsResults) {
@@ -93,6 +115,18 @@ public class CreateTranscriptListCallable implements Callable<List<org.renci.hea
                     e.setGenomeStart(exon.getContigStart());
                     e.setGenomeStop(exon.getContigEnd());
                     map.get(mappingKey).getRegions().add(e);
+                }
+
+                for (MappingKey key : map.keySet()) {
+                    List<ReferenceSequence> referenceSequenceList = hearsayDAOBean.getReferenceSequenceDAO()
+                            .findByAccession(key.getVersionId());
+                    if (referenceSequenceList == null
+                            || (referenceSequenceList != null && referenceSequenceList.size() > 0)) {
+                        ReferenceSequence referenceSequence = new ReferenceSequence(key.getVersionId());
+                        Long id = hearsayDAOBean.getReferenceSequenceDAO().save(referenceSequence);
+                        referenceSequence.setId(id);
+                        referenceGenome.getReferenceSequences().add(referenceSequence);
+                    }
                 }
 
                 for (MappingKey key : map.keySet()) {
@@ -138,6 +172,8 @@ public class CreateTranscriptListCallable implements Callable<List<org.renci.hea
                     logger.info(transcript.toString());
 
                     MappedTranscript mappedTranscript = new MappedTranscript();
+                    mappedTranscript.setReferenceSequence(hearsayDAOBean.getReferenceSequenceDAO()
+                            .findByAccession(key.getVersionId()).get(0));
                     mappedTranscript.setTranscript(transcript);
                     mappedTranscript.setStrandType(mapping.getStrandType());
                     mappedTranscript.setGenomicAccession(mapping.getVersionAccession());
@@ -496,6 +532,14 @@ public class CreateTranscriptListCallable implements Callable<List<org.renci.hea
 
     public void setMapsExonsResults(List<TranscriptMapsExons> mapsExonsResults) {
         this.mapsExonsResults = mapsExonsResults;
+    }
+
+    public Long getGenomeRefId() {
+        return genomeRefId;
+    }
+
+    public void setGenomeRefId(Long genomeRefId) {
+        this.genomeRefId = genomeRefId;
     }
 
 }
