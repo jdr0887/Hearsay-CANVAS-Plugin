@@ -3,6 +3,7 @@ package org.renci.hearsay.canvas.dao;
 import org.renci.hearsay.canvas.annotation.dao.AnnotationGeneDAO;
 import org.renci.hearsay.canvas.annotation.dao.AnnotationGeneExternalIdsDAO;
 import org.renci.hearsay.canvas.hgnc.dao.HGNCGeneDAO;
+import org.renci.hearsay.canvas.ref.dao.GenomeRefDAO;
 import org.renci.hearsay.canvas.refseq.dao.RefSeqCodingSequenceDAO;
 import org.renci.hearsay.canvas.refseq.dao.RefSeqGeneDAO;
 import org.renci.hearsay.canvas.refseq.dao.TranscriptDAO;
@@ -20,6 +21,8 @@ public class CANVASDAOBean {
     private RefSeqGeneDAO refSeqGeneDAO;
 
     private HGNCGeneDAO HGNCGeneDAO;
+
+    private GenomeRefDAO genomeRefDAO;
 
     private TranscriptDAO transcriptDAO;
 
@@ -69,6 +72,14 @@ public class CANVASDAOBean {
 
     public void setHGNCGeneDAO(HGNCGeneDAO hGNCGeneDAO) {
         HGNCGeneDAO = hGNCGeneDAO;
+    }
+
+    public GenomeRefDAO getGenomeRefDAO() {
+        return genomeRefDAO;
+    }
+
+    public void setGenomeRefDAO(GenomeRefDAO genomeRefDAO) {
+        this.genomeRefDAO = genomeRefDAO;
     }
 
     public TranscriptDAO getTranscriptDAO() {
