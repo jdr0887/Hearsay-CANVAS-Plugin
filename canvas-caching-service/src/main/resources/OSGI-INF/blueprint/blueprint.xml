@@ -4,7 +4,7 @@
 
   <cm:property-placeholder persistent-id="org.renci.hearsay.canvas" update-strategy="reload">
     <cm:default-properties>
-      <cm:property name="delayBetweenRuns" value="2880" />
+      <cm:property name="delayBetweenRuns" value="336" />
       <cm:property name="refSeqVersion" value="61" />
       <cm:property name="genomeRefId" value="2" />
     </cm:default-properties>

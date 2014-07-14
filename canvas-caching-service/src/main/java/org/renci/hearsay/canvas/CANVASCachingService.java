@@ -21,8 +21,8 @@ public class CANVASCachingService {
 
     public void start() throws Exception {
         logger.info("ENTERING start()");
-        long delay = 1 * 60 * 1000; // 1 minute
-        cacheTimer.scheduleAtFixedRate(this.task, delay, this.delayBetweenRuns * 60 * 1000);
+        long delay = 30 * 1000; // 30 seconds
+        cacheTimer.scheduleAtFixedRate(this.task, delay, this.delayBetweenRuns * 60 * 60 * 1000);
     }
 
     public void stop() throws Exception {
