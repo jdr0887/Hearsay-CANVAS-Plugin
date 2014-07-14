@@ -118,11 +118,10 @@ public class CreateTranscriptListCallable implements Callable<List<org.renci.hea
                 }
 
                 for (MappingKey key : map.keySet()) {
-                    List<ReferenceSequence> referenceSequenceList = hearsayDAOBean.getReferenceSequenceDAO()
-                            .findByAccession(key.getVersionId());
-                    if (referenceSequenceList == null
-                            || (referenceSequenceList != null && referenceSequenceList.size() > 0)) {
-                        ReferenceSequence referenceSequence = new ReferenceSequence(key.getVersionId());
+                    ReferenceSequence referenceSequence = hearsayDAOBean.getReferenceSequenceDAO().findByAccession(
+                            key.getVersionId());
+                    if (referenceSequence == null) {
+                        referenceSequence = new ReferenceSequence(key.getVersionId());
                         Long id = hearsayDAOBean.getReferenceSequenceDAO().save(referenceSequence);
                         referenceSequence.setId(id);
                         referenceGenome.getReferenceSequences().add(referenceSequence);
@@ -172,8 +171,8 @@ public class CreateTranscriptListCallable implements Callable<List<org.renci.hea
                     logger.info(transcript.toString());
 
                     MappedTranscript mappedTranscript = new MappedTranscript();
-                    mappedTranscript.setReferenceSequence(hearsayDAOBean.getReferenceSequenceDAO()
-                            .findByAccession(key.getVersionId()).get(0));
+                    mappedTranscript.setReferenceSequence(hearsayDAOBean.getReferenceSequenceDAO().findByAccession(
+                            key.getVersionId()));
                     mappedTranscript.setTranscript(transcript);
                     mappedTranscript.setStrandType(mapping.getStrandType());
                     mappedTranscript.setGenomicAccession(mapping.getVersionAccession());
