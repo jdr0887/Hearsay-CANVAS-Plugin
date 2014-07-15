@@ -84,8 +84,10 @@ public class CreateTranscriptListCallable implements Callable<List<org.renci.hea
                 referenceGenome = tmpReferenceGenome;
             }
         } catch (HearsayDAOException e) {
-            logger.error("Persistence Erorr", e);
+            logger.error("Persistence Error", e);
         }
+
+        logger.info(referenceGenome.toString());
 
         if (mapsExonsResults != null && mapsExonsResults.size() > 0) {
             Map<MappingKey, Mapping> map = new HashMap<MappingKey, Mapping>();
@@ -142,7 +144,7 @@ public class CreateTranscriptListCallable implements Callable<List<org.renci.hea
                         referenceGenome.getReferenceSequences().add(referenceSequence);
                     }
                 } catch (HearsayDAOException e) {
-                    logger.error("Persistence Erorr", e);
+                    logger.error("Persistence Error", e);
                 }
 
             }
@@ -150,7 +152,7 @@ public class CreateTranscriptListCallable implements Callable<List<org.renci.hea
             try {
                 hearsayDAOBean.getReferenceGenomeDAO().save(referenceGenome);
             } catch (HearsayDAOException e) {
-                logger.error("Persistence Erorr", e);
+                logger.error("Persistence Error", e);
             }
 
             for (MappingKey key : map.keySet()) {
@@ -161,7 +163,7 @@ public class CreateTranscriptListCallable implements Callable<List<org.renci.hea
                     refSeqGeneList = canvasDAOBean.getRefSeqGeneDAO().findByRefSeqVersionAndTranscriptId(refSeqVersion,
                             key.getVersionId());
                 } catch (HearsayDAOException e) {
-                    logger.error("Persistence Erorr", e);
+                    logger.error("Persistence Error", e);
                 }
 
                 Gene gene = null;
@@ -182,7 +184,7 @@ public class CreateTranscriptListCallable implements Callable<List<org.renci.hea
                             gene = new Gene(refSeqGene.getName(), refSeqGene.getDescription());
                         }
                     } catch (HearsayDAOException e) {
-                        logger.error("Persistence Erorr", e);
+                        logger.error("Persistence Error", e);
                     }
                 }
                 logger.debug(gene.toString());
@@ -203,7 +205,7 @@ public class CreateTranscriptListCallable implements Callable<List<org.renci.hea
                             transcript = alreadyPersistedTranscriptList.get(0);
                         }
                     } catch (HearsayDAOException e) {
-                        logger.error("Persistence Erorr", e);
+                        logger.error("Persistence Error", e);
                     }
                 }
                 logger.info(transcript.toString());
@@ -217,7 +219,7 @@ public class CreateTranscriptListCallable implements Callable<List<org.renci.hea
                         mappedTranscript.setReferenceSequence(referenceSequenceList.get(0));
                     }
                 } catch (HearsayDAOException e) {
-                    logger.error("Persistence Erorr", e);
+                    logger.error("Persistence Error", e);
                 }
 
                 mappedTranscript.setTranscript(transcript);
@@ -230,7 +232,7 @@ public class CreateTranscriptListCallable implements Callable<List<org.renci.hea
                         Long mappedTranscriptId = hearsayDAOBean.getMappedTranscriptDAO().save(mappedTranscript);
                         mappedTranscript.setId(mappedTranscriptId);
                     } catch (HearsayDAOException e) {
-                        logger.error("Persistence Erorr", e);
+                        logger.error("Persistence Error", e);
                     }
                 }
                 logger.info(mappedTranscript.toString());
@@ -240,7 +242,7 @@ public class CreateTranscriptListCallable implements Callable<List<org.renci.hea
                     refSeqCodingSequenceResults = canvasDAOBean.getRefSeqCodingSequenceDAO()
                             .findByRefSeqVersionAndTranscriptId(refSeqVersion, key.getVersionId());
                 } catch (HearsayDAOException e) {
-                    logger.error("Persistence Erorr", e);
+                    logger.error("Persistence Error", e);
                 }
 
                 if (refSeqCodingSequenceResults == null
