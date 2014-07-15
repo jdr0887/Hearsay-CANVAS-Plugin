@@ -71,25 +71,20 @@ public class CreateTranscriptListCallable implements Callable<List<org.renci.hea
         }
 
         ReferenceGenome referenceGenome = null;
-        ReferenceGenome tmpReferenceGenome = new ReferenceGenome(genomeRef.getRefSource(), genomeRef.getRefVer());
 
-        List<ReferenceGenome> referenceGenomeList = null;
         try {
-            referenceGenomeList = hearsayDAOBean.getReferenceGenomeDAO().findByExample(tmpReferenceGenome);
-        } catch (HearsayDAOException e1) {
-            e1.printStackTrace();
-        }
-
-        if (referenceGenomeList != null && referenceGenomeList.size() > 0) {
-            referenceGenome = referenceGenomeList.get(0);
-        } else {
-            try {
+            ReferenceGenome tmpReferenceGenome = new ReferenceGenome(genomeRef.getRefSource(), genomeRef.getRefVer());
+            List<ReferenceGenome> referenceGenomeList = hearsayDAOBean.getReferenceGenomeDAO().findByExample(
+                    tmpReferenceGenome);
+            if (referenceGenomeList != null && !referenceGenomeList.isEmpty()) {
+                referenceGenome = referenceGenomeList.get(0);
+            } else {
                 Long id = hearsayDAOBean.getReferenceGenomeDAO().save(tmpReferenceGenome);
                 tmpReferenceGenome.setId(id);
                 referenceGenome = tmpReferenceGenome;
-            } catch (HearsayDAOException e) {
-                e.printStackTrace();
             }
+        } catch (HearsayDAOException e) {
+            logger.error("Persistence Erorr", e);
         }
 
         if (mapsExonsResults != null && mapsExonsResults.size() > 0) {
