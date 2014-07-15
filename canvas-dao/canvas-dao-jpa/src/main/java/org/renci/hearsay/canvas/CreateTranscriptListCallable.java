@@ -135,21 +135,27 @@ public class CreateTranscriptListCallable implements Callable<List<org.renci.hea
             }
 
             for (MappingKey key : map.keySet()) {
-                ReferenceSequence referenceSequence = null;
+
                 try {
-                    referenceSequence = hearsayDAOBean.getReferenceSequenceDAO().findByAccession(key.getVersionId());
-                } catch (HearsayDAOException e) {
-                }
-                if (referenceSequence == null) {
-                    referenceSequence = new ReferenceSequence(key.getVersionId());
-                    try {
+                    List<ReferenceSequence> referenceSequenceList = hearsayDAOBean.getReferenceSequenceDAO()
+                            .findByAccession(key.getVersionId());
+                    if (referenceSequenceList == null
+                            || (referenceSequenceList != null && referenceSequenceList.isEmpty())) {
+                        ReferenceSequence referenceSequence = new ReferenceSequence(key.getVersionId());
                         Long id = hearsayDAOBean.getReferenceSequenceDAO().save(referenceSequence);
                         referenceSequence.setId(id);
                         referenceGenome.getReferenceSequences().add(referenceSequence);
-                    } catch (HearsayDAOException e) {
-                        logger.error("Persistence Erorr", e);
                     }
+                } catch (HearsayDAOException e) {
+                    logger.error("Persistence Erorr", e);
                 }
+
+            }
+
+            try {
+                hearsayDAOBean.getReferenceGenomeDAO().save(referenceGenome);
+            } catch (HearsayDAOException e) {
+                logger.error("Persistence Erorr", e);
             }
 
             for (MappingKey key : map.keySet()) {
@@ -208,14 +214,15 @@ public class CreateTranscriptListCallable implements Callable<List<org.renci.hea
                 logger.info(transcript.toString());
 
                 MappedTranscript mappedTranscript = new MappedTranscript();
-                ReferenceSequence referenceSequence = null;
-                try {
-                    referenceSequence = hearsayDAOBean.getReferenceSequenceDAO().findByAccession(key.getVersionId());
-                } catch (HearsayDAOException e) {
-                }
 
-                if (referenceSequence != null) {
-                    mappedTranscript.setReferenceSequence(referenceSequence);
+                try {
+                    List<ReferenceSequence> referenceSequenceList = hearsayDAOBean.getReferenceSequenceDAO()
+                            .findByAccession(key.getVersionId());
+                    if (referenceSequenceList != null && !referenceSequenceList.isEmpty()) {
+                        mappedTranscript.setReferenceSequence(referenceSequenceList.get(0));
+                    }
+                } catch (HearsayDAOException e) {
+                    logger.error("Persistence Erorr", e);
                 }
 
                 mappedTranscript.setTranscript(transcript);
