@@ -14,7 +14,7 @@
     <karaf.version>2.3.5</karaf.version>
     <cxf.version>2.7.8</cxf.version>
     <jackson.version>2.3.1</jackson.version>
-    <hearsay.version>0.0.11</hearsay.version>
+    <hearsay.version>0.0.12</hearsay.version>
   </properties>
   <licenses>    
     <license>
