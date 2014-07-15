@@ -42,9 +42,10 @@ public class RefSeqGeneTest {
             List<RefSeqGene> refSeqGeneList = refSeqGeneDAO.findByRefSeqVersionAndTranscriptId("61", "NM_001013354.1");
             assertTrue(refSeqGeneList != null);
             assertTrue(refSeqGeneList.size() > 0);
-            AnnotationGeneExternalIds annotatedGene = annotationGeneExternalIdsDAO.findById(refSeqGeneList.get(0).getId().intValue()); 
+            AnnotationGeneExternalIds annotatedGene = annotationGeneExternalIdsDAO.findById(refSeqGeneList.get(0)
+                    .getId().intValue());
             assertTrue(annotatedGene != null);
-            
+
         } catch (HearsayDAOException e) {
             e.printStackTrace();
         }

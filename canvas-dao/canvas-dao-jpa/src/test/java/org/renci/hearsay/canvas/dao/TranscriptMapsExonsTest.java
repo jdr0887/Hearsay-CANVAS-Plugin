@@ -7,7 +7,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.concurrent.Callable;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -21,10 +20,8 @@ import org.renci.hearsay.canvas.refseq.dao.jpa.RefSeqCodingSequenceDAOImpl;
 import org.renci.hearsay.canvas.refseq.dao.jpa.RefSeqGeneDAOImpl;
 import org.renci.hearsay.canvas.refseq.dao.jpa.TranscriptMapsExonsDAOImpl;
 import org.renci.hearsay.canvas.refseq.dao.model.TranscriptMapsExons;
-import org.renci.hearsay.dao.HearsayDAOException;
 import org.renci.hearsay.dao.model.MappedTranscript;
 import org.renci.hearsay.dao.model.Region;
-import org.renci.hearsay.dao.model.RegionType;
 import org.renci.hearsay.dao.model.StrandType;
 
 public class TranscriptMapsExonsTest {
