@@ -15,7 +15,6 @@ import org.renci.hearsay.canvas.refseq.dao.jpa.RefSeqGeneDAOImpl;
 import org.renci.hearsay.canvas.refseq.dao.model.RefSeqGene;
 import org.renci.hearsay.canvas.refseq.dao.model.RegionGroup;
 import org.renci.hearsay.canvas.refseq.dao.model.RegionGroupRegion;
-import org.renci.hearsay.dao.HearsayDAOException;
 
 public class GetGenesTest {
 

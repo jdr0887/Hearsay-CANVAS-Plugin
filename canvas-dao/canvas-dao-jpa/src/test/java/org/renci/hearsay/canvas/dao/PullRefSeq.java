@@ -17,7 +17,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-import org.renci.hearsay.canvas.dao.model.Region;
 import org.renci.hearsay.canvas.dao.model.Mapping;
 import org.renci.hearsay.canvas.dao.model.MappingKey;
 import org.renci.hearsay.canvas.dao.model.MappingResult;
@@ -29,7 +28,6 @@ import org.renci.hearsay.canvas.refseq.dao.jpa.TranscriptDAOImpl;
 import org.renci.hearsay.canvas.refseq.dao.jpa.TranscriptMapsDAOImpl;
 import org.renci.hearsay.canvas.refseq.dao.jpa.TranscriptMapsExonsDAOImpl;
 import org.renci.hearsay.canvas.refseq.dao.model.RefSeqCodingSequence;
-import org.renci.hearsay.canvas.refseq.dao.model.RefSeqGene;
 import org.renci.hearsay.canvas.refseq.dao.model.Transcript;
 import org.renci.hearsay.canvas.refseq.dao.model.TranscriptMaps;
 import org.renci.hearsay.canvas.refseq.dao.model.TranscriptMapsExons;

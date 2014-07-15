@@ -6,7 +6,8 @@ import org.renci.hearsay.canvas.var.dao.model.AssemblyLocationVariantQC;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class AssemblyLocationVariantQCDAOImpl extends BaseDAOImpl<AssemblyLocationVariantQC, Long> implements AssemblyLocationVariantQCDAO {
+public class AssemblyLocationVariantQCDAOImpl extends BaseDAOImpl<AssemblyLocationVariantQC, Long> implements
+        AssemblyLocationVariantQCDAO {
 
     private final Logger logger = LoggerFactory.getLogger(AssemblyLocationVariantQCDAOImpl.class);
 

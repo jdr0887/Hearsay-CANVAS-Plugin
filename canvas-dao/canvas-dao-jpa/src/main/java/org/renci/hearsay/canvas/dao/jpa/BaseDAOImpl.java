@@ -11,8 +11,7 @@ import org.renci.hearsay.dao.HearsayDAOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public abstract class BaseDAOImpl<T extends Persistable, ID extends Serializable> implements
-        BaseDAO<T, ID> {
+public abstract class BaseDAOImpl<T extends Persistable, ID extends Serializable> implements BaseDAO<T, ID> {
 
     private final Logger logger = LoggerFactory.getLogger(BaseDAOImpl.class);
 

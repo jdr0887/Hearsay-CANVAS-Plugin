@@ -42,7 +42,8 @@ public class RefSeqGeneDAOImpl extends BaseDAOImpl<RefSeqGene, Long> implements 
     }
 
     @Override
-    public List<RefSeqGene> findByRefSeqVersionAndTranscriptId(String refSeqVersion, String transcriptId) throws HearsayDAOException {
+    public List<RefSeqGene> findByRefSeqVersionAndTranscriptId(String refSeqVersion, String transcriptId)
+            throws HearsayDAOException {
         logger.debug("ENTERING findByRefSeqVersionAndTranscriptId(String, String)");
         CriteriaBuilder critBuilder = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<RefSeqGene> crit = critBuilder.createQuery(getPersistentClass());

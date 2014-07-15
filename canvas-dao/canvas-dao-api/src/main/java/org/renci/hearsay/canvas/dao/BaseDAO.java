@@ -5,7 +5,7 @@ import java.io.Serializable;
 import org.renci.hearsay.dao.HearsayDAOException;
 
 public interface BaseDAO<T extends Persistable, ID extends Serializable> {
-    
+
     /**
      * 
      * @param id

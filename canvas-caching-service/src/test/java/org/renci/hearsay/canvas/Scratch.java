@@ -17,5 +17,5 @@ public class Scratch {
         System.out.println(raf.readLine());
         raf.close();
     }
-    
+
 }
