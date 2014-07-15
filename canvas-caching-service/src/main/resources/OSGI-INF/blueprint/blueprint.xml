@@ -40,6 +40,7 @@
 
   <reference id="annotationGeneDAO" interface="org.renci.hearsay.canvas.annotation.dao.AnnotationGeneDAO" />
   <reference id="annotationGeneExternalIdsDAO" interface="org.renci.hearsay.canvas.annotation.dao.AnnotationGeneExternalIdsDAO" />
+  <reference id="genomeRefDAO" interface="org.renci.hearsay.canvas.ref.dao.GenomeRefDAO" />
   <reference id="transcriptDAO" interface="org.renci.hearsay.canvas.refseq.dao.TranscriptDAO" />
   <reference id="transcriptMapsDAO" interface="org.renci.hearsay.canvas.refseq.dao.TranscriptMapsDAO" />
   <reference id="transcriptMapsExonsDAO" interface="org.renci.hearsay.canvas.refseq.dao.TranscriptMapsExonsDAO" />
@@ -50,6 +51,7 @@
   <bean id="canvasDAOBean" class="org.renci.hearsay.canvas.dao.CANVASDAOBean">
     <property name="annotationGeneDAO" ref="annotationGeneDAO" />
     <property name="annotationGeneExternalIdsDAO" ref="annotationGeneExternalIdsDAO" />
+    <property name="genomeRefDAO" ref="genomeRefDAO" />
     <property name="transcriptDAO" ref="transcriptDAO" />
     <property name="transcriptMapsDAO" ref="transcriptMapsDAO" />
     <property name="transcriptMapsExonsDAO" ref="transcriptMapsExonsDAO" />
