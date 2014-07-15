@@ -58,85 +58,115 @@ public class CreateTranscriptListCallable implements Callable<List<org.renci.hea
         logger.info("ENTERING call()");
 
         List<org.renci.hearsay.dao.model.Transcript> results = new ArrayList<org.renci.hearsay.dao.model.Transcript>();
+        GenomeRef genomeRef = null;
         try {
+            genomeRef = canvasDAOBean.getGenomeRefDAO().findById(genomeRefId);
+        } catch (HearsayDAOException e1) {
+            e1.printStackTrace();
+        }
 
-            GenomeRef genomeRef = canvasDAOBean.getGenomeRefDAO().findById(genomeRefId);
+        if (genomeRef == null) {
+            logger.warn("No GenomeRef was found");
+            return results;
+        }
 
-            ReferenceGenome referenceGenome = null;
-            ReferenceGenome tmpReferenceGenome = new ReferenceGenome(genomeRef.getRefSource(), genomeRef.getRefVer());
-            List<ReferenceGenome> referenceGenomeList = hearsayDAOBean.getReferenceGenomeDAO().findByExample(
-                    tmpReferenceGenome);
+        ReferenceGenome referenceGenome = null;
+        ReferenceGenome tmpReferenceGenome = new ReferenceGenome(genomeRef.getRefSource(), genomeRef.getRefVer());
 
-            if (referenceGenomeList != null && referenceGenomeList.size() > 0) {
-                referenceGenome = referenceGenomeList.get(0);
-            } else {
+        List<ReferenceGenome> referenceGenomeList = null;
+        try {
+            referenceGenomeList = hearsayDAOBean.getReferenceGenomeDAO().findByExample(tmpReferenceGenome);
+        } catch (HearsayDAOException e1) {
+            e1.printStackTrace();
+        }
+
+        if (referenceGenomeList != null && referenceGenomeList.size() > 0) {
+            referenceGenome = referenceGenomeList.get(0);
+        } else {
+            try {
                 Long id = hearsayDAOBean.getReferenceGenomeDAO().save(tmpReferenceGenome);
                 tmpReferenceGenome.setId(id);
                 referenceGenome = tmpReferenceGenome;
+            } catch (HearsayDAOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (mapsExonsResults != null && mapsExonsResults.size() > 0) {
+            Map<MappingKey, Mapping> map = new HashMap<MappingKey, Mapping>();
+            for (TranscriptMapsExons exon : mapsExonsResults) {
+                TranscriptMaps transcriptionMaps = exon.getTranscriptMaps();
+                GenomeRefSeq genomeRefSeq = transcriptionMaps.getGenomeRefSeq();
+                MappingKey mappingKey = new MappingKey(transcriptionMaps.getTranscript().getVersionId(),
+                        transcriptionMaps.getMapCount());
+                StrandType sType = StrandType.PLUS;
+                if ("-".equals(transcriptionMaps.getStrand())) {
+                    sType = StrandType.MINUS;
+                }
+                if (!map.containsKey(mappingKey)) {
+                    map.put(mappingKey, new Mapping(genomeRefSeq.getVerAccession(), sType));
+                }
+            }
+            logger.info("map.size(): {}", map.size());
+
+            for (TranscriptMapsExons exon : mapsExonsResults) {
+                TranscriptMaps transcriptionMaps = exon.getTranscriptMaps();
+                MappingKey mappingKey = new MappingKey(transcriptionMaps.getTranscript().getVersionId(),
+                        transcriptionMaps.getMapCount());
+
+                StrandType sType = StrandType.PLUS;
+                if ("-".equals(transcriptionMaps.getStrand())) {
+                    sType = StrandType.MINUS;
+                }
+
+                Region e = new Region();
+                e.setNumber(exon.getKey().getExonNum());
+                e.setRegionType(RegionType.EXON);
+                if (sType.equals(StrandType.PLUS)) {
+                    e.setTranscriptStart(exon.getTranscrStart());
+                    e.setTranscriptStop(exon.getTranscrEnd());
+                } else {
+                    e.setTranscriptStart(exon.getTranscrEnd());
+                    e.setTranscriptStop(exon.getTranscrStart());
+                }
+                e.setGenomeStart(exon.getContigStart());
+                e.setGenomeStop(exon.getContigEnd());
+                map.get(mappingKey).getRegions().add(e);
             }
 
-            if (mapsExonsResults != null && mapsExonsResults.size() > 0) {
-                Map<MappingKey, Mapping> map = new HashMap<MappingKey, Mapping>();
-                for (TranscriptMapsExons exon : mapsExonsResults) {
-                    TranscriptMaps transcriptionMaps = exon.getTranscriptMaps();
-                    GenomeRefSeq genomeRefSeq = transcriptionMaps.getGenomeRefSeq();
-                    MappingKey mappingKey = new MappingKey(transcriptionMaps.getTranscript().getVersionId(),
-                            transcriptionMaps.getMapCount());
-                    StrandType sType = StrandType.PLUS;
-                    if ("-".equals(transcriptionMaps.getStrand())) {
-                        sType = StrandType.MINUS;
-                    }
-                    if (!map.containsKey(mappingKey)) {
-                        map.put(mappingKey, new Mapping(genomeRefSeq.getVerAccession(), sType));
-                    }
+            for (MappingKey key : map.keySet()) {
+                ReferenceSequence referenceSequence = null;
+                try {
+                    referenceSequence = hearsayDAOBean.getReferenceSequenceDAO().findByAccession(key.getVersionId());
+                } catch (HearsayDAOException e) {
                 }
-                logger.info("map.size(): {}", map.size());
-
-                for (TranscriptMapsExons exon : mapsExonsResults) {
-                    TranscriptMaps transcriptionMaps = exon.getTranscriptMaps();
-                    MappingKey mappingKey = new MappingKey(transcriptionMaps.getTranscript().getVersionId(),
-                            transcriptionMaps.getMapCount());
-
-                    StrandType sType = StrandType.PLUS;
-                    if ("-".equals(transcriptionMaps.getStrand())) {
-                        sType = StrandType.MINUS;
-                    }
-
-                    Region e = new Region();
-                    e.setNumber(exon.getKey().getExonNum());
-                    e.setRegionType(RegionType.EXON);
-                    if (sType.equals(StrandType.PLUS)) {
-                        e.setTranscriptStart(exon.getTranscrStart());
-                        e.setTranscriptStop(exon.getTranscrEnd());
-                    } else {
-                        e.setTranscriptStart(exon.getTranscrEnd());
-                        e.setTranscriptStop(exon.getTranscrStart());
-                    }
-                    e.setGenomeStart(exon.getContigStart());
-                    e.setGenomeStop(exon.getContigEnd());
-                    map.get(mappingKey).getRegions().add(e);
-                }
-
-                for (MappingKey key : map.keySet()) {
-                    ReferenceSequence referenceSequence = hearsayDAOBean.getReferenceSequenceDAO().findByAccession(
-                            key.getVersionId());
-                    if (referenceSequence == null) {
-                        referenceSequence = new ReferenceSequence(key.getVersionId());
+                if (referenceSequence == null) {
+                    referenceSequence = new ReferenceSequence(key.getVersionId());
+                    try {
                         Long id = hearsayDAOBean.getReferenceSequenceDAO().save(referenceSequence);
                         referenceSequence.setId(id);
                         referenceGenome.getReferenceSequences().add(referenceSequence);
+                    } catch (HearsayDAOException e) {
+                        logger.error("Persistence Erorr", e);
                     }
                 }
+            }
 
-                for (MappingKey key : map.keySet()) {
-                    Mapping mapping = map.get(key);
+            for (MappingKey key : map.keySet()) {
+                Mapping mapping = map.get(key);
 
-                    List<RefSeqGene> refSeqGeneList = canvasDAOBean.getRefSeqGeneDAO()
-                            .findByRefSeqVersionAndTranscriptId(refSeqVersion, key.getVersionId());
+                List<RefSeqGene> refSeqGeneList = null;
+                try {
+                    refSeqGeneList = canvasDAOBean.getRefSeqGeneDAO().findByRefSeqVersionAndTranscriptId(refSeqVersion,
+                            key.getVersionId());
+                } catch (HearsayDAOException e) {
+                    logger.error("Persistence Erorr", e);
+                }
 
-                    Gene gene = null;
-                    if (refSeqGeneList != null && !refSeqGeneList.isEmpty()) {
-                        RefSeqGene refSeqGene = refSeqGeneList.get(0);
+                Gene gene = null;
+                if (refSeqGeneList != null && !refSeqGeneList.isEmpty()) {
+                    RefSeqGene refSeqGene = refSeqGeneList.get(0);
+                    try {
                         if (hearsayDAOBean != null) {
                             List<Gene> alreadyPersistedGeneList = hearsayDAOBean.getGeneDAO().findByName(
                                     refSeqGene.getName());
@@ -150,15 +180,19 @@ public class CreateTranscriptListCallable implements Callable<List<org.renci.hea
                         } else {
                             gene = new Gene(refSeqGene.getName(), refSeqGene.getDescription());
                         }
+                    } catch (HearsayDAOException e) {
+                        logger.error("Persistence Erorr", e);
                     }
-                    logger.debug(gene.toString());
+                }
+                logger.debug(gene.toString());
 
-                    TreeSet<Region> regions = mapping.getRegions();
+                TreeSet<Region> regions = mapping.getRegions();
 
-                    org.renci.hearsay.dao.model.Transcript transcript = new org.renci.hearsay.dao.model.Transcript();
-                    transcript.setGene(gene);
-                    transcript.setAccession(key.getVersionId());
-                    if (hearsayDAOBean != null) {
+                org.renci.hearsay.dao.model.Transcript transcript = new org.renci.hearsay.dao.model.Transcript();
+                transcript.setGene(gene);
+                transcript.setAccession(key.getVersionId());
+                if (hearsayDAOBean != null) {
+                    try {
                         List<org.renci.hearsay.dao.model.Transcript> alreadyPersistedTranscriptList = hearsayDAOBean
                                 .getTranscriptDAO().findByExample(transcript);
                         if (alreadyPersistedTranscriptList != null && alreadyPersistedTranscriptList.isEmpty()) {
@@ -167,79 +201,99 @@ public class CreateTranscriptListCallable implements Callable<List<org.renci.hea
                         } else {
                             transcript = alreadyPersistedTranscriptList.get(0);
                         }
+                    } catch (HearsayDAOException e) {
+                        logger.error("Persistence Erorr", e);
                     }
-                    logger.info(transcript.toString());
+                }
+                logger.info(transcript.toString());
 
-                    MappedTranscript mappedTranscript = new MappedTranscript();
-                    mappedTranscript.setReferenceSequence(hearsayDAOBean.getReferenceSequenceDAO().findByAccession(
-                            key.getVersionId()));
-                    mappedTranscript.setTranscript(transcript);
-                    mappedTranscript.setStrandType(mapping.getStrandType());
-                    mappedTranscript.setGenomicAccession(mapping.getVersionAccession());
-                    mappedTranscript.setGenomicStart(regions.first().toRange().getMinimumInteger());
-                    mappedTranscript.setGenomicStop(regions.last().toRange().getMaximumInteger());
-                    if (hearsayDAOBean != null) {
+                MappedTranscript mappedTranscript = new MappedTranscript();
+                ReferenceSequence referenceSequence = null;
+                try {
+                    referenceSequence = hearsayDAOBean.getReferenceSequenceDAO().findByAccession(key.getVersionId());
+                } catch (HearsayDAOException e) {
+                }
+
+                if (referenceSequence != null) {
+                    mappedTranscript.setReferenceSequence(referenceSequence);
+                }
+
+                mappedTranscript.setTranscript(transcript);
+                mappedTranscript.setStrandType(mapping.getStrandType());
+                mappedTranscript.setGenomicAccession(mapping.getVersionAccession());
+                mappedTranscript.setGenomicStart(regions.first().toRange().getMinimumInteger());
+                mappedTranscript.setGenomicStop(regions.last().toRange().getMaximumInteger());
+                if (hearsayDAOBean != null) {
+                    try {
                         Long mappedTranscriptId = hearsayDAOBean.getMappedTranscriptDAO().save(mappedTranscript);
                         mappedTranscript.setId(mappedTranscriptId);
+                    } catch (HearsayDAOException e) {
+                        logger.error("Persistence Erorr", e);
                     }
-                    logger.info(mappedTranscript.toString());
-
-                    List<RefSeqCodingSequence> refSeqCodingSequenceResults = canvasDAOBean.getRefSeqCodingSequenceDAO()
-                            .findByRefSeqVersionAndTranscriptId(refSeqVersion, key.getVersionId());
-
-                    if (refSeqCodingSequenceResults == null
-                            || (refSeqCodingSequenceResults != null && refSeqCodingSequenceResults.isEmpty())) {
-                        Iterator<Region> exonsAscendingIter = regions.iterator();
-                        while (exonsAscendingIter.hasNext()) {
-                            Region exon = exonsAscendingIter.next();
-                            exon.setRegionType(org.renci.hearsay.dao.model.RegionType.UTR);
-                        }
-                    }
-
-                    if (refSeqCodingSequenceResults != null && !refSeqCodingSequenceResults.isEmpty()) {
-                        Set<RegionGroup> regionGroupSet = refSeqCodingSequenceResults.get(0).getLocations();
-                        RegionGroup[] regionGroupArray = regionGroupSet.toArray(new RegionGroup[regionGroupSet.size()]);
-                        Set<RegionGroupRegion> regionGroupRegionSet = regionGroupArray[0].getRegionGroupRegions();
-                        RegionGroupRegion[] regionGroupRegionArray = regionGroupRegionSet
-                                .toArray(new RegionGroupRegion[regionGroupRegionSet.size()]);
-                        Integer regionStart = regionGroupRegionArray[0].getRegionStart();
-                        Integer regionEnd = regionGroupRegionArray[regionGroupRegionSet.size() - 1].getRegionEnd();
-                        addUTR5s(mapping, regionStart);
-                        addUTR3s(mapping, regionEnd);
-                        addCDSCoordinates(mapping, regionStart);
-                    }
-                    addIntrons(mapping);
-
-                    for (Region region : mapping.getRegions()) {
-                        org.renci.hearsay.dao.model.Region hearsayRegion = new org.renci.hearsay.dao.model.Region();
-                        hearsayRegion.setMappedTranscript(mappedTranscript);
-                        hearsayRegion.setRegionType(region.getRegionType());
-                        if (region.getGenomeStart() < region.getGenomeStop()) {
-                            hearsayRegion.setRegionStart(region.getGenomeStart());
-                            hearsayRegion.setRegionStop(region.getGenomeStop());
-                        } else {
-                            hearsayRegion.setRegionStop(region.getGenomeStart());
-                            hearsayRegion.setRegionStart(region.getGenomeStop());
-                        }
-                        hearsayRegion.setTranscriptStart(region.getTranscriptStart());
-                        hearsayRegion.setTranscriptStop(region.getTranscriptStop());
-
-                        hearsayRegion.setCdsStart(region.getContigStart());
-                        hearsayRegion.setCdsStop(region.getContigStop());
-
-                        logger.debug(region.toString());
-                        mappedTranscript.getRegions().add(hearsayRegion);
-                        if (hearsayDAOBean != null) {
-                            hearsayDAOBean.getRegionDAO().save(hearsayRegion);
-                        }
-                    }
-                    transcript.getMappedTranscripts().add(mappedTranscript);
-
-                    results.add(transcript);
                 }
+                logger.info(mappedTranscript.toString());
+
+                List<RefSeqCodingSequence> refSeqCodingSequenceResults = null;
+                try {
+                    refSeqCodingSequenceResults = canvasDAOBean.getRefSeqCodingSequenceDAO()
+                            .findByRefSeqVersionAndTranscriptId(refSeqVersion, key.getVersionId());
+                } catch (HearsayDAOException e) {
+                    logger.error("Persistence Erorr", e);
+                }
+
+                if (refSeqCodingSequenceResults == null
+                        || (refSeqCodingSequenceResults != null && refSeqCodingSequenceResults.isEmpty())) {
+                    Iterator<Region> exonsAscendingIter = regions.iterator();
+                    while (exonsAscendingIter.hasNext()) {
+                        Region exon = exonsAscendingIter.next();
+                        exon.setRegionType(org.renci.hearsay.dao.model.RegionType.UTR);
+                    }
+                }
+
+                if (refSeqCodingSequenceResults != null && !refSeqCodingSequenceResults.isEmpty()) {
+                    Set<RegionGroup> regionGroupSet = refSeqCodingSequenceResults.get(0).getLocations();
+                    RegionGroup[] regionGroupArray = regionGroupSet.toArray(new RegionGroup[regionGroupSet.size()]);
+                    Set<RegionGroupRegion> regionGroupRegionSet = regionGroupArray[0].getRegionGroupRegions();
+                    RegionGroupRegion[] regionGroupRegionArray = regionGroupRegionSet
+                            .toArray(new RegionGroupRegion[regionGroupRegionSet.size()]);
+                    Integer regionStart = regionGroupRegionArray[0].getRegionStart();
+                    Integer regionEnd = regionGroupRegionArray[regionGroupRegionSet.size() - 1].getRegionEnd();
+                    addUTR5s(mapping, regionStart);
+                    addUTR3s(mapping, regionEnd);
+                    addCDSCoordinates(mapping, regionStart);
+                }
+                addIntrons(mapping);
+
+                for (Region region : mapping.getRegions()) {
+                    org.renci.hearsay.dao.model.Region hearsayRegion = new org.renci.hearsay.dao.model.Region();
+                    hearsayRegion.setMappedTranscript(mappedTranscript);
+                    hearsayRegion.setRegionType(region.getRegionType());
+                    if (region.getGenomeStart() < region.getGenomeStop()) {
+                        hearsayRegion.setRegionStart(region.getGenomeStart());
+                        hearsayRegion.setRegionStop(region.getGenomeStop());
+                    } else {
+                        hearsayRegion.setRegionStop(region.getGenomeStart());
+                        hearsayRegion.setRegionStart(region.getGenomeStop());
+                    }
+                    hearsayRegion.setTranscriptStart(region.getTranscriptStart());
+                    hearsayRegion.setTranscriptStop(region.getTranscriptStop());
+
+                    hearsayRegion.setCdsStart(region.getContigStart());
+                    hearsayRegion.setCdsStop(region.getContigStop());
+
+                    logger.debug(region.toString());
+                    mappedTranscript.getRegions().add(hearsayRegion);
+                    if (hearsayDAOBean != null) {
+                        try {
+                            hearsayDAOBean.getRegionDAO().save(hearsayRegion);
+                        } catch (HearsayDAOException e) {
+                        }
+                    }
+                }
+                transcript.getMappedTranscripts().add(mappedTranscript);
+
+                results.add(transcript);
             }
-        } catch (HearsayDAOException e) {
-            logger.error("error", e);
         }
         logger.info("LEAVING call()");
         return results;
