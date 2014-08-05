@@ -16,10 +16,12 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.renci.hearsay.canvas.CreateTranscriptListCallable;
+import org.renci.hearsay.canvas.ref.dao.jpa.GenomeRefDAOImpl;
 import org.renci.hearsay.canvas.refseq.dao.jpa.RefSeqCodingSequenceDAOImpl;
 import org.renci.hearsay.canvas.refseq.dao.jpa.RefSeqGeneDAOImpl;
 import org.renci.hearsay.canvas.refseq.dao.jpa.TranscriptMapsExonsDAOImpl;
 import org.renci.hearsay.canvas.refseq.dao.model.TranscriptMapsExons;
+import org.renci.hearsay.dao.HearsayDAOBean;
 import org.renci.hearsay.dao.model.MappedTranscript;
 import org.renci.hearsay.dao.model.Region;
 import org.renci.hearsay.dao.model.StrandType;
@@ -48,10 +50,14 @@ public class TranscriptMapsExonsTest {
         RefSeqCodingSequenceDAOImpl refSeqCodingSequenceDAO = new RefSeqCodingSequenceDAOImpl();
         refSeqCodingSequenceDAO.setEntityManager(em);
 
+        GenomeRefDAOImpl genomeRefDAO = new GenomeRefDAOImpl();
+        genomeRefDAO.setEntityManager(em);
+
         CANVASDAOBean canvasDAOBean = new CANVASDAOBean();
         canvasDAOBean.setTranscriptMapsExonsDAO(transcriptMapsExonsDAO);
         canvasDAOBean.setRefSeqGeneDAO(refSeqGeneDAO);
         canvasDAOBean.setRefSeqCodingSequenceDAO(refSeqCodingSequenceDAO);
+        canvasDAOBean.setGenomeRefDAO(genomeRefDAO);
 
         String refSeqVersion = "61";
         Integer genomeRefId = 2;
@@ -68,6 +74,7 @@ public class TranscriptMapsExonsTest {
             persistTranscriptRunnable.setHearsayDAOBean(null);
             persistTranscriptRunnable.setMapsExonsResults(mapsExonsResults);
             persistTranscriptRunnable.setRefSeqVersion(refSeqVersion);
+            persistTranscriptRunnable.setGenomeRefId(genomeRefId.longValue());
             List<org.renci.hearsay.dao.model.Transcript> results = persistTranscriptRunnable.call();
 
             for (org.renci.hearsay.dao.model.Transcript transcript : results) {
@@ -121,10 +128,14 @@ public class TranscriptMapsExonsTest {
         RefSeqCodingSequenceDAOImpl refSeqCodingSequenceDAO = new RefSeqCodingSequenceDAOImpl();
         refSeqCodingSequenceDAO.setEntityManager(em);
 
+        GenomeRefDAOImpl genomeRefDAO = new GenomeRefDAOImpl();
+        genomeRefDAO.setEntityManager(em);
+
         CANVASDAOBean canvasDAOBean = new CANVASDAOBean();
         canvasDAOBean.setTranscriptMapsExonsDAO(transcriptMapsExonsDAO);
         canvasDAOBean.setRefSeqGeneDAO(refSeqGeneDAO);
         canvasDAOBean.setRefSeqCodingSequenceDAO(refSeqCodingSequenceDAO);
+        canvasDAOBean.setGenomeRefDAO(genomeRefDAO);
 
         String refSeqVersion = "61";
         Integer genomeRefId = 2;
@@ -141,6 +152,8 @@ public class TranscriptMapsExonsTest {
             persistTranscriptRunnable.setHearsayDAOBean(null);
             persistTranscriptRunnable.setMapsExonsResults(mapsExonsResults);
             persistTranscriptRunnable.setRefSeqVersion(refSeqVersion);
+            persistTranscriptRunnable.setGenomeRefId(genomeRefId.longValue());
+            
             List<org.renci.hearsay.dao.model.Transcript> results = persistTranscriptRunnable.call();
 
             for (org.renci.hearsay.dao.model.Transcript transcript : results) {
