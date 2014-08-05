@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -74,13 +75,17 @@ public class CreateTranscriptListCallable implements Callable<List<org.renci.hea
 
         try {
             ReferenceGenome tmpReferenceGenome = new ReferenceGenome(genomeRef.getRefSource(), genomeRef.getRefVer());
-            List<ReferenceGenome> referenceGenomeList = hearsayDAOBean.getReferenceGenomeDAO().findByExample(
-                    tmpReferenceGenome);
-            if (referenceGenomeList != null && !referenceGenomeList.isEmpty()) {
-                referenceGenome = referenceGenomeList.get(0);
+            if (hearsayDAOBean != null) {
+                List<ReferenceGenome> referenceGenomeList = hearsayDAOBean.getReferenceGenomeDAO().findByExample(
+                        tmpReferenceGenome);
+                if (referenceGenomeList != null && !referenceGenomeList.isEmpty()) {
+                    referenceGenome = referenceGenomeList.get(0);
+                } else {
+                    Long id = hearsayDAOBean.getReferenceGenomeDAO().save(tmpReferenceGenome);
+                    tmpReferenceGenome.setId(id);
+                    referenceGenome = tmpReferenceGenome;
+                }
             } else {
-                Long id = hearsayDAOBean.getReferenceGenomeDAO().save(tmpReferenceGenome);
-                tmpReferenceGenome.setId(id);
                 referenceGenome = tmpReferenceGenome;
             }
         } catch (HearsayDAOException e) {
@@ -131,17 +136,21 @@ public class CreateTranscriptListCallable implements Callable<List<org.renci.hea
                 map.get(mappingKey).getRegions().add(e);
             }
 
+            Set<ReferenceSequence> referenceSequencesToAddToReferenceGenomeReferenceSequences = new HashSet<>();
             for (MappingKey key : map.keySet()) {
+                Mapping mapping = map.get(key);
 
                 try {
-                    List<ReferenceSequence> referenceSequenceList = hearsayDAOBean.getReferenceSequenceDAO()
-                            .findByAccession(key.getVersionId());
-                    if (referenceSequenceList == null
-                            || (referenceSequenceList != null && referenceSequenceList.isEmpty())) {
-                        ReferenceSequence referenceSequence = new ReferenceSequence(key.getVersionId());
-                        Long id = hearsayDAOBean.getReferenceSequenceDAO().save(referenceSequence);
-                        referenceSequence.setId(id);
-                        referenceGenome.getReferenceSequences().add(referenceSequence);
+                    if (hearsayDAOBean != null) {
+                        List<ReferenceSequence> referenceSequenceList = hearsayDAOBean.getReferenceSequenceDAO()
+                                .findByAccession(mapping.getVersionAccession());
+                        if (referenceSequenceList == null
+                                || (referenceSequenceList != null && referenceSequenceList.isEmpty())) {
+                            ReferenceSequence referenceSequence = new ReferenceSequence(mapping.getVersionAccession());
+                            Long id = hearsayDAOBean.getReferenceSequenceDAO().save(referenceSequence);
+                            referenceSequence.setId(id);
+                            referenceSequencesToAddToReferenceGenomeReferenceSequences.add(referenceSequence);
+                        }
                     }
                 } catch (HearsayDAOException e) {
                     logger.error("Persistence Error", e);
@@ -150,7 +159,11 @@ public class CreateTranscriptListCallable implements Callable<List<org.renci.hea
             }
 
             try {
-                hearsayDAOBean.getReferenceGenomeDAO().save(referenceGenome);
+                if (hearsayDAOBean != null) {
+                    referenceGenome.getReferenceSequences().addAll(
+                            referenceSequencesToAddToReferenceGenomeReferenceSequences);
+                    hearsayDAOBean.getReferenceGenomeDAO().save(referenceGenome);
+                }
             } catch (HearsayDAOException e) {
                 logger.error("Persistence Error", e);
             }
@@ -212,21 +225,23 @@ public class CreateTranscriptListCallable implements Callable<List<org.renci.hea
 
                 MappedTranscript mappedTranscript = new MappedTranscript();
 
-                try {
-                    List<ReferenceSequence> referenceSequenceList = hearsayDAOBean.getReferenceSequenceDAO()
-                            .findByAccession(key.getVersionId());
-                    if (referenceSequenceList != null && !referenceSequenceList.isEmpty()) {
-                        mappedTranscript.setReferenceSequence(referenceSequenceList.get(0));
+                if (hearsayDAOBean != null) {
+                    try {
+                        List<ReferenceSequence> referenceSequenceList = hearsayDAOBean.getReferenceSequenceDAO()
+                                .findByAccession(mapping.getVersionAccession());
+                        if (referenceSequenceList != null && !referenceSequenceList.isEmpty()) {
+                            mappedTranscript.setReferenceSequence(referenceSequenceList.get(0));
+                        }
+                    } catch (HearsayDAOException e) {
+                        logger.error("Persistence Error", e);
                     }
-                } catch (HearsayDAOException e) {
-                    logger.error("Persistence Error", e);
                 }
 
                 mappedTranscript.setTranscript(transcript);
                 mappedTranscript.setStrandType(mapping.getStrandType());
-                mappedTranscript.setGenomicAccession(mapping.getVersionAccession());
                 mappedTranscript.setGenomicStart(regions.first().toRange().getMinimumInteger());
                 mappedTranscript.setGenomicStop(regions.last().toRange().getMaximumInteger());
+
                 if (hearsayDAOBean != null) {
                     try {
                         Long mappedTranscriptId = hearsayDAOBean.getMappedTranscriptDAO().save(mappedTranscript);
@@ -286,15 +301,31 @@ public class CreateTranscriptListCallable implements Callable<List<org.renci.hea
                     hearsayRegion.setCdsStop(region.getContigStop());
 
                     logger.debug(region.toString());
-                    mappedTranscript.getRegions().add(hearsayRegion);
                     if (hearsayDAOBean != null) {
                         try {
                             hearsayDAOBean.getRegionDAO().save(hearsayRegion);
                         } catch (HearsayDAOException e) {
                         }
                     }
+                    mappedTranscript.getRegions().add(hearsayRegion);
                 }
+                if (hearsayDAOBean != null) {
+                    try {
+                        hearsayDAOBean.getMappedTranscriptDAO().save(mappedTranscript);
+                    } catch (HearsayDAOException e) {
+                        logger.error("Persistence Error", e);
+                    }
+                }
+
                 transcript.getMappedTranscripts().add(mappedTranscript);
+
+                if (hearsayDAOBean != null) {
+                    try {
+                        hearsayDAOBean.getTranscriptDAO().save(transcript);
+                    } catch (HearsayDAOException e) {
+                        logger.error("Persistence Error", e);
+                    }
+                }
 
                 results.add(transcript);
             }
