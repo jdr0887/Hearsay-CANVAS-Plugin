@@ -7,12 +7,13 @@ import java.util.concurrent.Callable;
 import org.renci.hearsay.canvas.dao.CANVASDAOBean;
 import org.renci.hearsay.canvas.refseq.dao.model.TranscriptMapsExons;
 import org.renci.hearsay.dao.HearsayDAOBean;
+import org.renci.hearsay.dao.model.TranscriptRefSeq;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class CANVASCachingCallable implements Callable<List<org.renci.hearsay.dao.model.Transcript>> {
+public class CANVASCachingCallable implements Callable<List<TranscriptRefSeq>> {
 
-    private final Logger logger = LoggerFactory.getLogger(CreateTranscriptListCallable.class);
+    private final Logger logger = LoggerFactory.getLogger(CANVASCachingCallable.class);
 
     private String refSeqVersion;
 
@@ -27,9 +28,9 @@ public class CANVASCachingCallable implements Callable<List<org.renci.hearsay.da
     }
 
     @Override
-    public List<org.renci.hearsay.dao.model.Transcript> call() {
+    public List<TranscriptRefSeq> call() {
         logger.info("ENTERING call()");
-        List<org.renci.hearsay.dao.model.Transcript> results = new ArrayList<org.renci.hearsay.dao.model.Transcript>();
+        List<TranscriptRefSeq> results = new ArrayList<TranscriptRefSeq>();
 
         logger.info(refSeqVersion);
         logger.info(genomeRefId);
