@@ -2,31 +2,37 @@ package org.renci.hearsay.canvas.clinbin.dao.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
+import javax.persistence.UniqueConstraint;
 
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "DiagnosticGene")
-@XmlRootElement(name = "diagnosticGene")
+import org.renci.hearsay.canvas.annotation.dao.model.AnnotationGene;
+import org.renci.hearsay.canvas.dao.Persistable;
+
 @Entity
-@Table(name = "diagnostic_gene")
-public class DiagnosticGene {
+@Table(schema = "clinbin", name = "diagnostic_gene", uniqueConstraints = { @UniqueConstraint(columnNames = {
+        "diagnostic_list_version", "dx_id", "gene_id", "tier", "inheritance" }) })
+public class DiagnosticGene implements Persistable {
 
+    private static final long serialVersionUID = -6562946115355893577L;
+
+    @Id
     @Column(name = "diagnostic_gene_id")
-    private Long diagnosticGeneId;
+    private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "gene_id")
+    private AnnotationGene gene;
 
     @Column(name = "diagnostic_list_version")
     private Integer diagnosticListVersion;
 
-    @Column(name = "dx_id")
-    private Integer dxId;
-
-    @Column(name = "gene_id")
-    private Integer geneId;
+    @ManyToOne
+    @JoinColumn(name = "dx_id")
+    private DX dx;
 
     @Lob
     @Column(name = "tier")
@@ -38,6 +44,103 @@ public class DiagnosticGene {
 
     public DiagnosticGene() {
         super();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public AnnotationGene getGene() {
+        return gene;
+    }
+
+    public void setGene(AnnotationGene gene) {
+        this.gene = gene;
+    }
+
+    public Integer getDiagnosticListVersion() {
+        return diagnosticListVersion;
+    }
+
+    public void setDiagnosticListVersion(Integer diagnosticListVersion) {
+        this.diagnosticListVersion = diagnosticListVersion;
+    }
+
+    public DX getDx() {
+        return dx;
+    }
+
+    public void setDx(DX dx) {
+        this.dx = dx;
+    }
+
+    public String getTier() {
+        return tier;
+    }
+
+    public void setTier(String tier) {
+        this.tier = tier;
+    }
+
+    public String getInheritance() {
+        return inheritance;
+    }
+
+    public void setInheritance(String inheritance) {
+        this.inheritance = inheritance;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("DiagnosticGene [id=%s, diagnosticListVersion=%s, tier=%s, inheritance=%s]", id,
+                diagnosticListVersion, tier, inheritance);
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((diagnosticListVersion == null) ? 0 : diagnosticListVersion.hashCode());
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        result = prime * result + ((inheritance == null) ? 0 : inheritance.hashCode());
+        result = prime * result + ((tier == null) ? 0 : tier.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        DiagnosticGene other = (DiagnosticGene) obj;
+        if (diagnosticListVersion == null) {
+            if (other.diagnosticListVersion != null)
+                return false;
+        } else if (!diagnosticListVersion.equals(other.diagnosticListVersion))
+            return false;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
+        if (inheritance == null) {
+            if (other.inheritance != null)
+                return false;
+        } else if (!inheritance.equals(other.inheritance))
+            return false;
+        if (tier == null) {
+            if (other.tier != null)
+                return false;
+        } else if (!tier.equals(other.tier))
+            return false;
+        return true;
     }
 
 }

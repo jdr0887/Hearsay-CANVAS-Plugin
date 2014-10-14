@@ -9,12 +9,18 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 import org.renci.hearsay.canvas.dao.Persistable;
 
 @Entity
 @Table(schema = "ref", name = "genome_ref")
+@NamedQueries({
+        @NamedQuery(name = "GenomeRef.findByShortName", query = "SELECT a FROM GenomeRef a where a.shortName = :shortName"),
+        @NamedQuery(name = "GenomeRef.findByName", query = "SELECT a FROM GenomeRef a where a.name = :name"),
+        @NamedQuery(name = "GenomeRef.findBySeqTypeAndContig", query = "SELECT a FROM GenomeRef a where a.genomeRefSeqs.seqType = :seqType and a.genomeRefSeqs.contig = :contig") })
 public class GenomeRef implements Persistable {
 
     private static final long serialVersionUID = -6241264265732175194L;
@@ -30,13 +36,13 @@ public class GenomeRef implements Persistable {
     protected String refVer;
 
     @Column(name = "ref_shortname", length = 50)
-    protected String refShortname;
+    protected String shortName;
 
     @Column(name = "basic_fasta_url", length = 1023)
-    protected String basicFastaUrl;
+    protected String basicFastaURL;
 
     @Column(name = "extras_fasta_url", length = 1023)
-    protected String extrasFastaUrl;
+    protected String extrasFastaURL;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(schema = "ref", name = "genome_ref_seqs", joinColumns = @JoinColumn(name = "ref_id"), inverseJoinColumns = @JoinColumn(name = "seq_ver_accession"))
@@ -70,47 +76,55 @@ public class GenomeRef implements Persistable {
         this.refVer = refVer;
     }
 
-    public String getRefShortname() {
-        return refShortname;
+    public String getShortName() {
+        return shortName;
     }
 
-    public void setRefShortname(String refShortname) {
-        this.refShortname = refShortname;
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
     }
 
-    public String getBasicFastaUrl() {
-        return basicFastaUrl;
+    public String getBasicFastaURL() {
+        return basicFastaURL;
     }
 
-    public void setBasicFastaUrl(String basicFastaUrl) {
-        this.basicFastaUrl = basicFastaUrl;
+    public void setBasicFastaURL(String basicFastaURL) {
+        this.basicFastaURL = basicFastaURL;
     }
 
-    public String getExtrasFastaUrl() {
-        return extrasFastaUrl;
+    public String getExtrasFastaURL() {
+        return extrasFastaURL;
     }
 
-    public void setExtrasFastaUrl(String extrasFastaUrl) {
-        this.extrasFastaUrl = extrasFastaUrl;
+    public void setExtrasFastaURL(String extrasFastaURL) {
+        this.extrasFastaURL = extrasFastaURL;
+    }
+
+    public Set<GenomeRefSeq> getGenomeRefSeqs() {
+        return genomeRefSeqs;
+    }
+
+    public void setGenomeRefSeqs(Set<GenomeRefSeq> genomeRefSeqs) {
+        this.genomeRefSeqs = genomeRefSeqs;
     }
 
     @Override
     public String toString() {
         return String.format(
-                "GenomeRef [id=%s, refSource=%s, refVer=%s, refShortname=%s, basicFastaUrl=%s, extrasFastaUrl=%s]", id,
-                refSource, refVer, refShortname, basicFastaUrl, extrasFastaUrl);
+                "GenomeRef [id=%s, refSource=%s, refVer=%s, shortName=%s, basicFastaURL=%s, extrasFastaURL=%s]", id,
+                refSource, refVer, shortName, basicFastaURL, extrasFastaURL);
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((basicFastaUrl == null) ? 0 : basicFastaUrl.hashCode());
-        result = prime * result + ((extrasFastaUrl == null) ? 0 : extrasFastaUrl.hashCode());
+        result = prime * result + ((basicFastaURL == null) ? 0 : basicFastaURL.hashCode());
+        result = prime * result + ((extrasFastaURL == null) ? 0 : extrasFastaURL.hashCode());
         result = prime * result + ((id == null) ? 0 : id.hashCode());
-        result = prime * result + ((refShortname == null) ? 0 : refShortname.hashCode());
         result = prime * result + ((refSource == null) ? 0 : refSource.hashCode());
         result = prime * result + ((refVer == null) ? 0 : refVer.hashCode());
+        result = prime * result + ((shortName == null) ? 0 : shortName.hashCode());
         return result;
     }
 
@@ -123,25 +137,20 @@ public class GenomeRef implements Persistable {
         if (getClass() != obj.getClass())
             return false;
         GenomeRef other = (GenomeRef) obj;
-        if (basicFastaUrl == null) {
-            if (other.basicFastaUrl != null)
+        if (basicFastaURL == null) {
+            if (other.basicFastaURL != null)
                 return false;
-        } else if (!basicFastaUrl.equals(other.basicFastaUrl))
+        } else if (!basicFastaURL.equals(other.basicFastaURL))
             return false;
-        if (extrasFastaUrl == null) {
-            if (other.extrasFastaUrl != null)
+        if (extrasFastaURL == null) {
+            if (other.extrasFastaURL != null)
                 return false;
-        } else if (!extrasFastaUrl.equals(other.extrasFastaUrl))
+        } else if (!extrasFastaURL.equals(other.extrasFastaURL))
             return false;
         if (id == null) {
             if (other.id != null)
                 return false;
         } else if (!id.equals(other.id))
-            return false;
-        if (refShortname == null) {
-            if (other.refShortname != null)
-                return false;
-        } else if (!refShortname.equals(other.refShortname))
             return false;
         if (refSource == null) {
             if (other.refSource != null)
@@ -152,6 +161,11 @@ public class GenomeRef implements Persistable {
             if (other.refVer != null)
                 return false;
         } else if (!refVer.equals(other.refVer))
+            return false;
+        if (shortName == null) {
+            if (other.shortName != null)
+                return false;
+        } else if (!shortName.equals(other.shortName))
             return false;
         return true;
     }

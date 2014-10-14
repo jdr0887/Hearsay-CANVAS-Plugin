@@ -10,16 +10,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
 
 import org.renci.hearsay.canvas.dao.Persistable;
 
-@XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType
 @Entity
 @Table(schema = "hgnc", name = "gene")
 @NamedQueries({ @NamedQuery(name = "HGNCGene.findByName", query = "SELECT a FROM HGNCGene a where a.name = :name") })

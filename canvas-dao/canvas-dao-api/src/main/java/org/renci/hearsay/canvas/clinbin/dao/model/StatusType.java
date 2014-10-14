@@ -2,26 +2,63 @@ package org.renci.hearsay.canvas.clinbin.dao.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
 
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "StatusType")
-@XmlRootElement(name = "statusType")
+import org.renci.hearsay.canvas.dao.Persistable;
+
 @Entity
-@Table(name = "status_type")
-public class StatusType {
+@Table(schema = "clinbin", name = "status_type")
+public class StatusType implements Persistable {
 
+    private static final long serialVersionUID = 4080512941895052375L;
+
+    @Id
     @Lob
     @Column(name = "status")
     private String status;
 
     public StatusType() {
         super();
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("StatusType [status=%s]", status);
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((status == null) ? 0 : status.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        StatusType other = (StatusType) obj;
+        if (status == null) {
+            if (other.status != null)
+                return false;
+        } else if (!status.equals(other.status))
+            return false;
+        return true;
     }
 
 }

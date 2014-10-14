@@ -2,38 +2,123 @@ package org.renci.hearsay.canvas.clinbin.dao.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Lob;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
+import javax.persistence.UniqueConstraint;
 
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "IncidentalBin")
-@XmlRootElement(name = "incidentalBin")
+import org.renci.hearsay.canvas.dao.Persistable;
+
 @Entity
-@Table(name = "incidental_bin")
-public class IncidentalBin {
+@Table(schema = "clinbin", name = "incidental_bin", uniqueConstraints = { @UniqueConstraint(columnNames = {
+        "bin_version", "bin_name" }) })
+public class IncidentalBin implements Persistable {
 
+    private static final long serialVersionUID = 8180106062083474626L;
+
+    @Id
     @Column(name = "incidental_bin_id")
-    private Long incidentalBinId;
+    private Long id;
 
-    @Column(name = "incidental_list_version")
-    private Integer incidentalListVersion;
+    @Column(name = "bin_version")
+    private Integer version;
 
     @Column(name = "bin_name", length = 1024)
-    private String binName;
+    private String name;
 
-    @Lob
-    @Column(name = "zygosity_mode")
-    private String zygosityMode;
+    @ManyToOne
+    @JoinColumn(name = "zygosity_mode")
+    private ZygosityModeType zygosityMode;
 
-    @Column(name = "incidental_bin", length = 15)
-    private String incidentalBin;
+    @ManyToOne
+    @JoinColumn(name = "incidental_bin")
+    private IncidentalBinType type;
 
     public IncidentalBin() {
         super();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public ZygosityModeType getZygosityMode() {
+        return zygosityMode;
+    }
+
+    public void setZygosityMode(ZygosityModeType zygosityMode) {
+        this.zygosityMode = zygosityMode;
+    }
+
+    public IncidentalBinType getType() {
+        return type;
+    }
+
+    public void setType(IncidentalBinType type) {
+        this.type = type;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("IncidentalBin [id=%s, version=%s, name=%s]", id, version, name);
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        result = prime * result + ((name == null) ? 0 : name.hashCode());
+        result = prime * result + ((version == null) ? 0 : version.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        IncidentalBin other = (IncidentalBin) obj;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
+        if (name == null) {
+            if (other.name != null)
+                return false;
+        } else if (!name.equals(other.name))
+            return false;
+        if (version == null) {
+            if (other.version != null)
+                return false;
+        } else if (!version.equals(other.version))
+            return false;
+        return true;
     }
 
 }
