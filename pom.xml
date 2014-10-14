@@ -11,10 +11,10 @@
   <version>0.0.23-SNAPSHOT</version>
   <packaging>pom</packaging>
   <properties>
-    <karaf.version>2.3.5</karaf.version>
-    <cxf.version>2.7.8</cxf.version>
-    <jackson.version>2.3.1</jackson.version>
-    <hearsay.version>0.0.14</hearsay.version>
+    <karaf.version>3.0.1</karaf.version>
+    <cxf.version>2.7.12</cxf.version>
+    <jackson.version>2.4.1</jackson.version>
+    <hearsay.version>0.0.16-SNAPSHOT</hearsay.version>
   </properties>
   <licenses>    
     <license>
