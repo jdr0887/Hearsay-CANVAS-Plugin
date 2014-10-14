@@ -7,6 +7,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import org.renci.hearsay.dao.model.TranscriptRefSeq;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,7 +26,7 @@ public class CANVASCachingTask extends TimerTask {
         logger.debug("ENTERING run()");
         try {
             ExecutorService executor = Executors.newSingleThreadExecutor();
-            List<org.renci.hearsay.dao.model.Transcript> results = executor.submit(callable).get();
+            List<TranscriptRefSeq> results = executor.submit(callable).get();
             logger.info("results.size(): {}", results.size());
             executor.awaitTermination(1L, TimeUnit.DAYS);
             executor.shutdownNow();
