@@ -1,0 +1,136 @@
+<?xml version="1.0"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd" version="1.0">
+  <persistence-unit name="test-canvas" transaction-type="RESOURCE_LOCAL">
+
+    <provider>org.apache.openjpa.persistence.PersistenceProviderImpl</provider>
+
+    <class>org.renci.hearsay.canvas.annotation.dao.model.AnnotationGene</class>
+    <class>org.renci.hearsay.canvas.annotation.dao.model.AnnotationGeneExternalIds</class>
+    <class>org.renci.hearsay.canvas.annotation.dao.model.AnnotationGeneSynonyms</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.AnalysisClass</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.AnalysisClassIncidental</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.AnalysisClassIncidentalPK</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.AnalysisClassPK</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.BinGeneSymbol</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.BinGeneSymbolPK</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.BinningJob</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.BinResultsFinalDiagnostic</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.BinResultsFinalDiagnosticPK</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.BinResultsFinalIncidental</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.BinResultsFinalIncidentalPK</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.BinResultsFinalIncidentalX</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.BinResultsFinalIncidentalXPK</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.BinResultsFinalRiskX</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.BinResultsFinalRiskXPK</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.CarrierStatus</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.DiagnosticBinResults</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.DiagnosticBinResultsPK</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.DiagnosticGene</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.DiagnosticGeneGroupVersion</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.DiagnosticGeneGroupVersionPK</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.DiagnosticResultVersion</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.DiseaseClass</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.DX</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.DXCoverage</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.DXCoveragePK</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.DXExons</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.IncidentalBin</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.IncidentalBinGene</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.IncidentalBinGenePK</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.IncidentalBinGroupVersion</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.IncidentalBinGroupVersionPK</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.IncidentalBinResults</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.IncidentalBinResultsPK</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.IncidentalBinType</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.IncidentalBinX</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.IncidentalResultVersion</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.IncidentalResultVersionX</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.MaxFreq</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.MaxFreqPK</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.MaxFreqSource</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.PhenotypeX</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.RsVariants</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.RsVariantsPK</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.StatusType</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.UnimportantExon</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.UnimportantExonPK</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.UnimportantFeature</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.UnimportantFeaturePK</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.ZygosityModeType</class>
+    <class>org.renci.hearsay.canvas.clinvar.dao.model.ReferenceClinicalAssertions</class>
+    <class>org.renci.hearsay.canvas.clinvar.dao.model.TraitSets</class>
+    <class>org.renci.hearsay.canvas.clinvar.dao.model.Versions</class>
+    <class>org.renci.hearsay.canvas.esp.dao.model.SNPFrequencyPopulation</class>
+    <class>org.renci.hearsay.canvas.esp.dao.model.SNPFrequencyPopulationPK</class>
+    <class>org.renci.hearsay.canvas.genome1k.dao.model.IndelFrequency</class>
+    <class>org.renci.hearsay.canvas.genome1k.dao.model.IndelFrequencyPK</class>
+    <class>org.renci.hearsay.canvas.genome1k.dao.model.SNPFrequencyPopulation</class>
+    <class>org.renci.hearsay.canvas.genome1k.dao.model.SNPFrequencyPopulationPK</class>
+    <class>org.renci.hearsay.canvas.genome1k.dao.model.SNPFrequencySubpopulation</class>
+    <class>org.renci.hearsay.canvas.genome1k.dao.model.SNPFrequencySubpopulationPK</class>
+    <class>org.renci.hearsay.canvas.hgnc.dao.model.HGNCGene</class>
+    <class>org.renci.hearsay.canvas.hgnc.dao.model.LocusGroup</class>
+    <class>org.renci.hearsay.canvas.hgnc.dao.model.LocusType</class>
+    <class>org.renci.hearsay.canvas.hgnc.dao.model.StatusType</class>
+    <class>org.renci.hearsay.canvas.ref.dao.model.GenomeRef</class>
+    <class>org.renci.hearsay.canvas.ref.dao.model.GenomeRefSeq</class>
+    <class>org.renci.hearsay.canvas.ref.dao.model.SeqType</class>
+    <class>org.renci.hearsay.canvas.refseq.dao.model.Feature</class>
+    <class>org.renci.hearsay.canvas.refseq.dao.model.FeatureTypes</class>
+    <class>org.renci.hearsay.canvas.refseq.dao.model.GroupingType</class>
+    <class>org.renci.hearsay.canvas.refseq.dao.model.LocationType</class>
+    <class>org.renci.hearsay.canvas.refseq.dao.model.RegionGroup</class>
+    <class>org.renci.hearsay.canvas.refseq.dao.model.RegionGroupRegion</class>
+    <class>org.renci.hearsay.canvas.refseq.dao.model.RefSeqCodingSequence</class>
+    <class>org.renci.hearsay.canvas.refseq.dao.model.RefSeqGene</class>
+    <class>org.renci.hearsay.canvas.refseq.dao.model.Transcript</class>
+    <class>org.renci.hearsay.canvas.refseq.dao.model.TranscriptMaps</class>
+    <class>org.renci.hearsay.canvas.refseq.dao.model.TranscriptMapsExons</class>
+    <class>org.renci.hearsay.canvas.refseq.dao.model.TranscriptMapsExonsPK</class>
+    <class>org.renci.hearsay.canvas.refseq.dao.model.TranscriptRefSeqVers</class>
+    <class>org.renci.hearsay.canvas.refseq.dao.model.VariantEffect</class>
+    <class>org.renci.hearsay.canvas.refseq.dao.model.Variants_48_2</class>
+    <class>org.renci.hearsay.canvas.refseq.dao.model.Variants_48_2PK</class>
+    <class>org.renci.hearsay.canvas.refseq.dao.model.Variants_61_2</class>
+    <class>org.renci.hearsay.canvas.refseq.dao.model.Variants_61_2PK</class>
+    <class>org.renci.hearsay.canvas.var.dao.model.Assembly</class>
+    <class>org.renci.hearsay.canvas.var.dao.model.AssemblyLocation</class>
+    <class>org.renci.hearsay.canvas.var.dao.model.AssemblyLocationPK</class>
+    <class>org.renci.hearsay.canvas.var.dao.model.AssemblyLocationVariant</class>
+    <class>org.renci.hearsay.canvas.var.dao.model.AssemblyLocationVariantPK</class>
+    <class>org.renci.hearsay.canvas.var.dao.model.AssemblyLocationVariantQC</class>
+    <class>org.renci.hearsay.canvas.var.dao.model.AssemblyLocationVariantQCPK</class>
+    <class>org.renci.hearsay.canvas.var.dao.model.Lab</class>
+    <class>org.renci.hearsay.canvas.var.dao.model.Library</class>
+    <class>org.renci.hearsay.canvas.var.dao.model.LocationVariant</class>
+    <class>org.renci.hearsay.canvas.var.dao.model.Project</class>
+    <class>org.renci.hearsay.canvas.var.dao.model.Sample</class>
+    <class>org.renci.hearsay.canvas.var.dao.model.VariantSet</class>
+    <class>org.renci.hearsay.canvas.var.dao.model.VariantSetLoad</class>
+    <class>org.renci.hearsay.canvas.var.dao.model.VariantSetLocation</class>
+    <class>org.renci.hearsay.canvas.var.dao.model.VariantSetLocationPK</class>
+    <class>org.renci.hearsay.canvas.var.dao.model.VariantType</class>
+
+    <properties>
+      <!-- <property name="openjpa.ConnectionProperties" -->
+      <!-- value="DriverClassName=org.postgresql.Driver,Url=jdbc:postgresql://localhost:5432/canvas,MaxActive=10,MaxWait=1000,TestOnBorrow=true,RemoveAbandoned=true,RemoveAbandonedTimeout=60,LogAbandoned=60,Username=canvas,Password=canvas" 
+        /> -->
+      <property name="openjpa.ConnectionProperties"
+        value="DriverClassName=org.postgresql.Driver,Url=jdbc:postgresql://genomicsdb.renci.unc.edu:5432/vardb_berg,MaxActive=10,MaxWait=1000,TestOnBorrow=true,RemoveAbandoned=true,RemoveAbandonedTimeout=60,LogAbandoned=60,Username=jdr0887,Password=jfi101.Q" />
+      <property name="openjpa.ConnectionDriverName" value="org.apache.commons.dbcp.BasicDataSource" />
+      <property name="openjpa.ConnectionFactoryProperties" value="printParameters=true" />
+      <property name="openjpa.jdbc.SchemaFactory" value="native(ForeignKeys=true)" />
+      <!-- <property name="openjpa.jdbc.MappingDefaults" value="ForeignKeyDeleteAction=restrict, JoinForeignKeyDeleteAction=restrict" /> -->
+      <!-- <property name="openjpa.jdbc.SynchronizeMappings" value="buildSchema(SchemaAction='add',ForeignKeys=true)" /> -->
+      <property name="openjpa.jdbc.SynchronizeMappings" value="validate" />
+      <property name="openjpa.Multithreaded" value="true" />
+      <property name="openjpa.Log" value="DefaultLevel=INFO, Runtime=INFO, Tool=INFO, SQL=TRACE" />
+      <property name="openjpa.jdbc.DBDictionary" value="postgres(SearchStringEscape=\, SupportsXMLColumn=false)" />
+      <property name="openjpa.RemoteCommitProvider" value="sjvm" />
+      <property name="openjpa.DataCache" value="false" />
+      <property name="openjpa.QueryCache" value="false" />
+    </properties>
+
+  </persistence-unit>
+</persistence>
