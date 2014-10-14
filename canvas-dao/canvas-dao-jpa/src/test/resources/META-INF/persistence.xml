@@ -8,6 +8,67 @@
     <class>org.renci.hearsay.canvas.annotation.dao.model.AnnotationGene</class>
     <class>org.renci.hearsay.canvas.annotation.dao.model.AnnotationGeneExternalIds</class>
     <class>org.renci.hearsay.canvas.annotation.dao.model.AnnotationGeneSynonyms</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.AnalysisClass</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.AnalysisClassIncidental</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.AnalysisClassIncidentalPK</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.AnalysisClassPK</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.BinGeneSymbol</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.BinGeneSymbolPK</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.BinningJob</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.BinResultsFinalDiagnostic</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.BinResultsFinalDiagnosticPK</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.BinResultsFinalIncidental</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.BinResultsFinalIncidentalPK</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.BinResultsFinalIncidentalX</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.BinResultsFinalIncidentalXPK</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.BinResultsFinalRiskX</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.BinResultsFinalRiskXPK</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.CarrierStatus</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.DiagnosticBinResults</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.DiagnosticBinResultsPK</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.DiagnosticGene</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.DiagnosticGeneGroupVersion</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.DiagnosticGeneGroupVersionPK</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.DiagnosticResultVersion</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.DiseaseClass</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.DX</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.DXCoverage</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.DXCoveragePK</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.DXExons</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.IncidentalBin</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.IncidentalBinGene</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.IncidentalBinGenePK</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.IncidentalBinGroupVersion</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.IncidentalBinGroupVersionPK</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.IncidentalBinResults</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.IncidentalBinResultsPK</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.IncidentalBinType</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.IncidentalBinX</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.IncidentalResultVersion</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.IncidentalResultVersionX</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.MaxFreq</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.MaxFreqPK</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.MaxFreqSource</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.PhenotypeX</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.RsVariants</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.RsVariantsPK</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.StatusType</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.UnimportantExon</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.UnimportantExonPK</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.UnimportantFeature</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.UnimportantFeaturePK</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.ZygosityModeType</class>
+    <class>org.renci.hearsay.canvas.clinvar.dao.model.ReferenceClinicalAssertions</class>
+    <class>org.renci.hearsay.canvas.clinvar.dao.model.TraitSets</class>
+    <class>org.renci.hearsay.canvas.clinvar.dao.model.Versions</class>
+    <class>org.renci.hearsay.canvas.esp.dao.model.SNPFrequencyPopulation</class>
+    <class>org.renci.hearsay.canvas.esp.dao.model.SNPFrequencyPopulationPK</class>
+    <class>org.renci.hearsay.canvas.genome1k.dao.model.IndelFrequency</class>
+    <class>org.renci.hearsay.canvas.genome1k.dao.model.IndelFrequencyPK</class>
+    <class>org.renci.hearsay.canvas.genome1k.dao.model.SNPFrequencyPopulation</class>
+    <class>org.renci.hearsay.canvas.genome1k.dao.model.SNPFrequencyPopulationPK</class>
+    <class>org.renci.hearsay.canvas.genome1k.dao.model.SNPFrequencySubpopulation</class>
+    <class>org.renci.hearsay.canvas.genome1k.dao.model.SNPFrequencySubpopulationPK</class>
     <class>org.renci.hearsay.canvas.hgnc.dao.model.HGNCGene</class>
     <class>org.renci.hearsay.canvas.hgnc.dao.model.LocusGroup</class>
     <class>org.renci.hearsay.canvas.hgnc.dao.model.LocusType</class>
@@ -18,6 +79,7 @@
     <class>org.renci.hearsay.canvas.refseq.dao.model.Feature</class>
     <class>org.renci.hearsay.canvas.refseq.dao.model.FeatureTypes</class>
     <class>org.renci.hearsay.canvas.refseq.dao.model.GroupingType</class>
+    <class>org.renci.hearsay.canvas.refseq.dao.model.LocationType</class>
     <class>org.renci.hearsay.canvas.refseq.dao.model.RegionGroup</class>
     <class>org.renci.hearsay.canvas.refseq.dao.model.RegionGroupRegion</class>
     <class>org.renci.hearsay.canvas.refseq.dao.model.RefSeqCodingSequence</class>
@@ -27,6 +89,11 @@
     <class>org.renci.hearsay.canvas.refseq.dao.model.TranscriptMapsExons</class>
     <class>org.renci.hearsay.canvas.refseq.dao.model.TranscriptMapsExonsPK</class>
     <class>org.renci.hearsay.canvas.refseq.dao.model.TranscriptRefSeqVers</class>
+    <class>org.renci.hearsay.canvas.refseq.dao.model.VariantEffect</class>
+    <class>org.renci.hearsay.canvas.refseq.dao.model.Variants_48_2</class>
+    <class>org.renci.hearsay.canvas.refseq.dao.model.Variants_48_2PK</class>
+    <class>org.renci.hearsay.canvas.refseq.dao.model.Variants_61_2</class>
+    <class>org.renci.hearsay.canvas.refseq.dao.model.Variants_61_2PK</class>
     <class>org.renci.hearsay.canvas.var.dao.model.Assembly</class>
     <class>org.renci.hearsay.canvas.var.dao.model.AssemblyLocation</class>
     <class>org.renci.hearsay.canvas.var.dao.model.AssemblyLocationPK</class>
