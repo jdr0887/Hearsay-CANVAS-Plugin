@@ -4,43 +4,53 @@
 
   <cm:property-placeholder persistent-id="org.renci.hearsay.canvas" update-strategy="reload">
     <cm:default-properties>
-      <cm:property name="delayBetweenRuns" value="336" />
       <cm:property name="refSeqVersion" value="61" />
       <cm:property name="genomeRefId" value="2" />
     </cm:default-properties>
   </cm:property-placeholder>
 
+  <reference id="hearsayCanonicalVariantDAO" interface="org.renci.hearsay.dao.CanonicalVariantDAO" />
+  <reference id="hearsayFeatureDAO" interface="org.renci.hearsay.dao.FeatureDAO" />
+  <reference id="hearsayGeneConditionAssertionDAO" interface="org.renci.hearsay.dao.GeneConditionAssertionDAO" />
+  <reference id="hearsayGeneConditionDAO" interface="org.renci.hearsay.dao.GeneConditionDAO" />
   <reference id="hearsayGeneDAO" interface="org.renci.hearsay.dao.GeneDAO" />
-  <reference id="hearsayGenomicSequenceVariantDAO" interface="org.renci.hearsay.dao.GenomicSequenceVariantDAO" />
-  <reference id="hearsayMappedTranscriptDAO" interface="org.renci.hearsay.dao.MappedTranscriptDAO" />
-  <reference id="hearsayReferenceGenomeDAO" interface="org.renci.hearsay.dao.ReferenceGenomeDAO" />
-  <reference id="hearsayReferenceSequenceDAO" interface="org.renci.hearsay.dao.ReferenceSequenceDAO" />
+  <reference id="hearsayGenomicRefSeqDAO" interface="org.renci.hearsay.dao.GenomicRefSeqDAO" />
+  <reference id="hearsayGenomicVariantDAO" interface="org.renci.hearsay.dao.GenomicVariantDAO" />
+  <reference id="hearsayIndividualDAO" interface="org.renci.hearsay.dao.IndividualDAO" />
+  <reference id="hearsayIndividualVariantDAO" interface="org.renci.hearsay.dao.IndividualVariantDAO" />
+  <reference id="hearsayMolecularConsequenceDAO" interface="org.renci.hearsay.dao.MolecularConsequenceDAO" />
   <reference id="hearsayRegionDAO" interface="org.renci.hearsay.dao.RegionDAO" />
-  <reference id="hearsayTranscriptDAO" interface="org.renci.hearsay.dao.TranscriptDAO" />
+  <reference id="hearsayResolvedConditionDAO" interface="org.renci.hearsay.dao.ResolvedConditionDAO" />
+  <reference id="hearsayTranscriptAlignmentDAO" interface="org.renci.hearsay.dao.TranscriptAlignmentDAO" />
+  <reference id="hearsayTranscriptRefSeqDAO" interface="org.renci.hearsay.dao.TranscriptRefSeqDAO" />
   <reference id="hearsayTranscriptVariantDAO" interface="org.renci.hearsay.dao.TranscriptVariantDAO" />
-  <reference id="hearsayTranslationDAO" interface="org.renci.hearsay.dao.TranslationDAO" />
+  <reference id="hearsayTranslationRefSeqDAO" interface="org.renci.hearsay.dao.TranslationRefSeqDAO" />
   <reference id="hearsayTranslationVariantDAO" interface="org.renci.hearsay.dao.TranslationVariantDAO" />
-  <reference id="hearsayVariantDAO" interface="org.renci.hearsay.dao.VariantDAO" />
-  <reference id="hearsayVariantEffectDAO" interface="org.renci.hearsay.dao.VariantEffectDAO" />
 
   <bean id="hearsayDAOBean" class="org.renci.hearsay.dao.HearsayDAOBean">
+    <property name="canonicalVariantDAO" ref="hearsayCanonicalVariantDAO" />
+    <property name="featureDAO" ref="hearsayFeatureDAO" />
+    <property name="geneConditionAssertionDAO" ref="hearsayGeneConditionAssertionDAO" />
+    <property name="geneConditionDAO" ref="hearsayGeneConditionDAO" />
     <property name="geneDAO" ref="hearsayGeneDAO" />
-    <property name="genomicSequenceVariantDAO" ref="hearsayGenomicSequenceVariantDAO" />
-    <property name="mappedTranscriptDAO" ref="hearsayMappedTranscriptDAO" />
-    <property name="referenceGenomeDAO" ref="hearsayReferenceGenomeDAO" />
-    <property name="referenceSequenceDAO" ref="hearsayReferenceSequenceDAO" />
+    <property name="genomicRefSeqDAO" ref="hearsayGenomicRefSeqDAO" />
+    <property name="genomicVariantDAO" ref="hearsayGenomicVariantDAO" />
+    <property name="individualDAO" ref="hearsayIndividualDAO" />
+    <property name="individualVariantDAO" ref="hearsayIndividualVariantDAO" />
+    <property name="molecularConsequenceDAO" ref="hearsayMolecularConsequenceDAO" />
     <property name="regionDAO" ref="hearsayRegionDAO" />
-    <property name="transcriptDAO" ref="hearsayTranscriptDAO" />
+    <property name="resolvedConditionDAO" ref="hearsayResolvedConditionDAO" />
+    <property name="transcriptAlignmentDAO" ref="hearsayTranscriptAlignmentDAO" />
+    <property name="transcriptRefSeqDAO" ref="hearsayTranscriptRefSeqDAO" />
     <property name="transcriptVariantDAO" ref="hearsayTranscriptVariantDAO" />
-    <property name="translationDAO" ref="hearsayTranslationDAO" />
+    <property name="translationRefSeqDAO" ref="hearsayTranslationRefSeqDAO" />
     <property name="translationVariantDAO" ref="hearsayTranslationVariantDAO" />
-    <property name="variantDAO" ref="hearsayVariantDAO" />
-    <property name="variantEffectDAO" ref="hearsayVariantEffectDAO" />
   </bean>
 
   <reference id="annotationGeneDAO" interface="org.renci.hearsay.canvas.annotation.dao.AnnotationGeneDAO" />
   <reference id="annotationGeneExternalIdsDAO" interface="org.renci.hearsay.canvas.annotation.dao.AnnotationGeneExternalIdsDAO" />
   <reference id="genomeRefDAO" interface="org.renci.hearsay.canvas.ref.dao.GenomeRefDAO" />
+  <reference id="featureDAO" interface="org.renci.hearsay.canvas.refseq.dao.FeatureDAO" />
   <reference id="transcriptDAO" interface="org.renci.hearsay.canvas.refseq.dao.TranscriptDAO" />
   <reference id="transcriptMapsDAO" interface="org.renci.hearsay.canvas.refseq.dao.TranscriptMapsDAO" />
   <reference id="transcriptMapsExonsDAO" interface="org.renci.hearsay.canvas.refseq.dao.TranscriptMapsExonsDAO" />
@@ -52,6 +62,7 @@
     <property name="annotationGeneDAO" ref="annotationGeneDAO" />
     <property name="annotationGeneExternalIdsDAO" ref="annotationGeneExternalIdsDAO" />
     <property name="genomeRefDAO" ref="genomeRefDAO" />
+    <property name="featureDAO" ref="featureDAO" />
     <property name="transcriptDAO" ref="transcriptDAO" />
     <property name="transcriptMapsDAO" ref="transcriptMapsDAO" />
     <property name="transcriptMapsExonsDAO" ref="transcriptMapsExonsDAO" />
@@ -60,21 +71,16 @@
     <property name="HGNCGeneDAO" ref="HGNCGeneDAO" />
   </bean>
 
-  <bean id="cachingCallable" class="org.renci.hearsay.canvas.CANVASCachingCallable">
+  <bean id="cachingRunnable" class="org.renci.hearsay.canvas.CANVASCachingRunnable">
     <property name="refSeqVersion" value="${refSeqVersion}" />
     <property name="genomeRefId" value="${genomeRefId}" />
     <property name="canvasDAOBean" ref="canvasDAOBean" />
     <property name="hearsayDAOBean" ref="hearsayDAOBean" />
   </bean>
 
-  <bean id="cachingTask" class="org.renci.hearsay.canvas.CANVASCachingTask">
-    <property name="callable" ref="cachingCallable" />
-  </bean>
-
   <bean id="CANVASCachingService" class="org.renci.hearsay.canvas.CANVASCachingService" init-method="start" destroy-method="stop"
     activation="eager">
-    <property name="delayBetweenRuns" value="${delayBetweenRuns}" />
-    <property name="task" ref="cachingTask" />
+    <property name="cachingRunnable" ref="cachingRunnable" />
     <cm:managed-properties persistent-id="org.renci.hearsay.canvas" update-strategy="container-managed" />
   </bean>
 
