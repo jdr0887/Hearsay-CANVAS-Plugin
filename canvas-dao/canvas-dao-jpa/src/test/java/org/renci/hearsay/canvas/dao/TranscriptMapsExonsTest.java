@@ -1,8 +1,6 @@
 package org.renci.hearsay.canvas.dao;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -16,8 +14,6 @@ import org.renci.hearsay.canvas.refseq.dao.jpa.RegionGroupDAOImpl;
 import org.renci.hearsay.canvas.refseq.dao.jpa.TranscriptMapsDAOImpl;
 import org.renci.hearsay.canvas.refseq.dao.jpa.TranscriptMapsExonsDAOImpl;
 import org.renci.hearsay.canvas.refseq.dao.model.Feature;
-import org.renci.hearsay.canvas.refseq.dao.model.RegionGroup;
-import org.renci.hearsay.canvas.refseq.dao.model.Transcript;
 import org.renci.hearsay.canvas.refseq.dao.model.TranscriptMaps;
 import org.renci.hearsay.canvas.refseq.dao.model.TranscriptMapsExons;
 import org.renci.hearsay.dao.HearsayDAOException;
