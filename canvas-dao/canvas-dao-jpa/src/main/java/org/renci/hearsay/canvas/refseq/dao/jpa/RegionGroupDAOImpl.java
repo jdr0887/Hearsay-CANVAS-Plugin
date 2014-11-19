@@ -46,7 +46,7 @@ public class RegionGroupDAOImpl extends BaseDAOImpl<RegionGroup, Long> implement
         List<Predicate> predicates = new ArrayList<Predicate>();
 
         Root<RegionGroup> fromRegionGroup = crit.from(getPersistentClass());
-        
+
         Join<RegionGroup, Transcript> regionGroupTranscriptJoin = fromRegionGroup.join(RegionGroup_.transcript);
         predicates.add(critBuilder.equal(regionGroupTranscriptJoin.get(Transcript_.versionId), transcriptId));
 
