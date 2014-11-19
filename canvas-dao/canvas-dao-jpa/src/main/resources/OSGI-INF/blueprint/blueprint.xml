@@ -16,13 +16,6 @@
 
   <service ref="annotationGeneExternalIdsDAOImpl" interface="org.renci.hearsay.canvas.annotation.dao.AnnotationGeneExternalIdsDAO" />
 
-  <bean id="featureDAOImpl" class="org.renci.hearsay.canvas.ref.dao.jpa.FeatureDAOImpl">
-    <tx:transaction method="*" value="Required" />
-    <jpa:context property="entityManager" unitname="canvas" />
-  </bean>
-
-  <service ref="featureDAOImpl" interface="org.renci.hearsay.canvas.ref.dao.FeatureDAO" />
-
   <bean id="genomeRefDAOImpl" class="org.renci.hearsay.canvas.ref.dao.jpa.GenomeRefDAOImpl">
     <tx:transaction method="*" value="Required" />
     <jpa:context property="entityManager" unitname="canvas" />
@@ -36,6 +29,13 @@
   </bean>
 
   <service ref="hgncGeneDAOImpl" interface="org.renci.hearsay.canvas.hgnc.dao.HGNCGeneDAO" />
+
+  <bean id="featureDAOImpl" class="org.renci.hearsay.canvas.refseq.dao.jpa.FeatureDAOImpl">
+    <tx:transaction method="*" value="Required" />
+    <jpa:context property="entityManager" unitname="canvas" />
+  </bean>
+
+  <service ref="featureDAOImpl" interface="org.renci.hearsay.canvas.refseq.dao.FeatureDAO" />
 
   <bean id="refSeqCodingSequenceDAOImpl" class="org.renci.hearsay.canvas.refseq.dao.jpa.RefSeqCodingSequenceDAOImpl">
     <tx:transaction method="*" value="Required" />
