@@ -2,13 +2,13 @@
   <parent>
     <groupId>org.renci.hearsay.plugin</groupId>
     <artifactId>canvas</artifactId>
-    <version>0.0.25</version>
+    <version>0.0.26-SNAPSHOT</version>
   </parent>
   <name>Hearsay :: Plugin :: CANVAS :: Caching Service</name>
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.renci.hearsay.plugin.canvas</groupId>
   <artifactId>canvas-caching-service</artifactId>
-  <version>0.0.25</version>
+  <version>0.0.26-SNAPSHOT</version>
   <packaging>bundle</packaging>
   <dependencies>
     <dependency>
