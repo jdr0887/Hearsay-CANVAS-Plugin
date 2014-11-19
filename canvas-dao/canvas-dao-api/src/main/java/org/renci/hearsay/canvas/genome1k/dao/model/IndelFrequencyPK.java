@@ -49,8 +49,8 @@ public class IndelFrequencyPK implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("IndelFrequencyPK [locationVariant=%s, version=%s, population=%s]",
-                locationVariant, version, population);
+        return String.format("IndelFrequencyPK [locationVariant=%s, version=%s, population=%s]", locationVariant,
+                version, population);
     }
 
     @Override
