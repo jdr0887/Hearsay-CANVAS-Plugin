@@ -4,6 +4,7 @@ import org.renci.hearsay.canvas.annotation.dao.AnnotationGeneDAO;
 import org.renci.hearsay.canvas.annotation.dao.AnnotationGeneExternalIdsDAO;
 import org.renci.hearsay.canvas.hgnc.dao.HGNCGeneDAO;
 import org.renci.hearsay.canvas.ref.dao.GenomeRefDAO;
+import org.renci.hearsay.canvas.refseq.dao.FeatureDAO;
 import org.renci.hearsay.canvas.refseq.dao.RefSeqCodingSequenceDAO;
 import org.renci.hearsay.canvas.refseq.dao.RefSeqGeneDAO;
 import org.renci.hearsay.canvas.refseq.dao.TranscriptDAO;
@@ -20,6 +21,8 @@ public class CANVASDAOBean {
 
     private RefSeqGeneDAO refSeqGeneDAO;
 
+    private FeatureDAO featureDAO;
+
     private HGNCGeneDAO HGNCGeneDAO;
 
     private GenomeRefDAO genomeRefDAO;
@@ -32,6 +35,14 @@ public class CANVASDAOBean {
 
     public CANVASDAOBean() {
         super();
+    }
+
+    public FeatureDAO getFeatureDAO() {
+        return featureDAO;
+    }
+
+    public void setFeatureDAO(FeatureDAO featureDAO) {
+        this.featureDAO = featureDAO;
     }
 
     public AnnotationGeneDAO getAnnotationGeneDAO() {
