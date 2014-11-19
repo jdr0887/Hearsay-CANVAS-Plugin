@@ -1,6 +1,7 @@
 package org.renci.hearsay.canvas;
 
-import java.util.Timer;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,11 +10,9 @@ public class CANVASCachingService {
 
     private final Logger logger = LoggerFactory.getLogger(CANVASCachingService.class);
 
-    private final Timer cacheTimer = new Timer();
+    private CANVASCachingRunnable runnable;
 
-    private Integer delayBetweenRuns;
-
-    private CANVASCachingTask task;
+    private final ExecutorService es = Executors.newSingleThreadExecutor();
 
     public CANVASCachingService() {
         super();
@@ -21,29 +20,13 @@ public class CANVASCachingService {
 
     public void start() throws Exception {
         logger.info("ENTERING start()");
-        long delay = 30 * 1000; // 30 seconds
-        cacheTimer.scheduleAtFixedRate(this.task, delay, this.delayBetweenRuns * 60 * 60 * 1000);
+        es.execute(runnable);
+        es.shutdown();
     }
 
     public void stop() throws Exception {
         logger.info("ENTERING stop()");
-        cacheTimer.cancel();
-    }
-
-    public Integer getDelayBetweenRuns() {
-        return delayBetweenRuns;
-    }
-
-    public void setDelayBetweenRuns(Integer delayBetweenRuns) {
-        this.delayBetweenRuns = delayBetweenRuns;
-    }
-
-    public CANVASCachingTask getTask() {
-        return task;
-    }
-
-    public void setTask(CANVASCachingTask task) {
-        this.task = task;
+        es.shutdownNow();
     }
 
 }
