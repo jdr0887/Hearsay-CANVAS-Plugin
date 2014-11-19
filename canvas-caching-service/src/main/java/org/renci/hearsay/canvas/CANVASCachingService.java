@@ -29,4 +29,12 @@ public class CANVASCachingService {
         es.shutdownNow();
     }
 
+    public CANVASCachingRunnable getRunnable() {
+        return runnable;
+    }
+
+    public void setRunnable(CANVASCachingRunnable runnable) {
+        this.runnable = runnable;
+    }
+
 }
