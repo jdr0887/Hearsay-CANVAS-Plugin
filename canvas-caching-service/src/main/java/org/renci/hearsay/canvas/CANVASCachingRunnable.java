@@ -65,7 +65,7 @@ public class CANVASCachingRunnable implements Runnable {
             if (pulledExons != null && !pulledExons.isEmpty()) {
                 mapsExonsResults.addAll(pulledExons);
             }
-            logger.info("pulledExons.size() = %s", pulledExons.size());
+            logger.info("pulledExons.size() = {}", pulledExons.size());
         } catch (HearsayDAOException e2) {
             e2.printStackTrace();
         }
@@ -102,7 +102,7 @@ public class CANVASCachingRunnable implements Runnable {
 
             }
 
-            logger.info("map.size(): {}%n", map.size());
+            logger.info("map.size(): {}", map.size());
 
             for (TranscriptMapsExons exon : mapsExonsResults) {
                 TranscriptMaps transcriptionMaps = exon.getTranscriptMaps();
@@ -172,6 +172,28 @@ public class CANVASCachingRunnable implements Runnable {
                     if (alreadyPersistedTranscriptList != null && alreadyPersistedTranscriptList.isEmpty()) {
                         Long id = hearsayDAOBean.getTranscriptRefSeqDAO().save(transcriptRefSeq);
                         transcriptRefSeq.setId(id);
+
+                        List<Feature> canvasFeatures = canvasDAOBean.getFeatureDAO()
+                                .findByRefSeqVersionAndTranscriptId(refSeqVersion, key.getVersionId());
+                        if (canvasFeatures != null && !canvasFeatures.isEmpty()) {
+                            for (Feature canvasFeature : canvasFeatures) {
+                                RegionGroup regionGroup = canvasFeature.getRegionGroup();
+                                if (regionGroup != null) {
+                                    Set<RegionGroupRegion> regionGroupRegions = regionGroup.getRegionGroupRegions();
+                                    if (regionGroupRegions != null && !regionGroupRegions.isEmpty()) {
+                                        RegionGroupRegion[] regionGroupRegionArray = regionGroupRegions
+                                                .toArray(new RegionGroupRegion[regionGroupRegions.size()]);
+                                        org.renci.hearsay.dao.model.Feature hearsayFeature = new org.renci.hearsay.dao.model.Feature();
+                                        hearsayFeature.setNote(canvasFeature.getNote());
+                                        hearsayFeature.setRegionStart(regionGroupRegionArray[0].getRegionStart());
+                                        hearsayFeature.setRegionStop(regionGroupRegionArray[0].getRegionEnd());
+                                        hearsayFeature.setTranscriptRefSeq(transcriptRefSeq);
+                                        hearsayDAOBean.getFeatureDAO().save(hearsayFeature);
+                                    }
+                                }
+                            }
+                        }
+
                     } else {
                         transcriptRefSeq = alreadyPersistedTranscriptList.get(0);
                     }
@@ -232,31 +254,6 @@ public class CANVASCachingRunnable implements Runnable {
                     logger.info(transcriptAlignment.toString());
                 } catch (HearsayDAOException e) {
                     e.printStackTrace();
-                }
-
-                try {
-                    List<Feature> canvasFeatures = canvasDAOBean.getFeatureDAO().findByRefSeqVersionAndTranscriptId(
-                            refSeqVersion, key.getVersionId());
-                    if (canvasFeatures != null && !canvasFeatures.isEmpty()) {
-                        for (Feature canvasFeature : canvasFeatures) {
-                            RegionGroup regionGroup = canvasFeature.getRegionGroup();
-                            if (regionGroup != null) {
-                                Set<RegionGroupRegion> regionGroupRegions = regionGroup.getRegionGroupRegions();
-                                if (regionGroupRegions != null && !regionGroupRegions.isEmpty()) {
-                                    RegionGroupRegion[] regionGroupRegionArray = regionGroupRegions
-                                            .toArray(new RegionGroupRegion[regionGroupRegions.size()]);
-                                    org.renci.hearsay.dao.model.Feature hearsayFeature = new org.renci.hearsay.dao.model.Feature();
-                                    hearsayFeature.setNote(canvasFeature.getNote());
-                                    hearsayFeature.setRegionStart(regionGroupRegionArray[0].getRegionStart());
-                                    hearsayFeature.setRegionStop(regionGroupRegionArray[0].getRegionEnd());
-                                    hearsayFeature.setTranscriptAlignment(transcriptAlignment);
-                                    hearsayDAOBean.getFeatureDAO().save(hearsayFeature);
-                                }
-                            }
-                        }
-                    }
-                } catch (HearsayDAOException e1) {
-                    e1.printStackTrace();
                 }
 
                 for (Region region : mapping.getRegions()) {
