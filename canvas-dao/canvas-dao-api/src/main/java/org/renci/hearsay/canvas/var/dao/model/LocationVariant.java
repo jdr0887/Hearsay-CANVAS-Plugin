@@ -119,9 +119,8 @@ public class LocationVariant implements Persistable {
 
     @Override
     public String toString() {
-        return "LocationVariant [id=" + id + ", genomeRef=" + genomeRef + ", referenceVersionAccession="
-                + referenceVersionAccession + ", position=" + position + ", ref=" + ref + ", endPosition="
-                + endPosition + ", type=" + type + ", seq=" + seq + "]";
+        return String.format("LocationVariant [id=%s, position=%s, ref=%s, endPosition=%s, seq=%s]", id, position, ref,
+                endPosition, seq);
     }
 
     @Override
@@ -129,13 +128,10 @@ public class LocationVariant implements Persistable {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((endPosition == null) ? 0 : endPosition.hashCode());
-        result = prime * result + ((genomeRef == null) ? 0 : genomeRef.hashCode());
         result = prime * result + ((id == null) ? 0 : id.hashCode());
         result = prime * result + ((position == null) ? 0 : position.hashCode());
         result = prime * result + ((ref == null) ? 0 : ref.hashCode());
-        result = prime * result + ((referenceVersionAccession == null) ? 0 : referenceVersionAccession.hashCode());
         result = prime * result + ((seq == null) ? 0 : seq.hashCode());
-        result = prime * result + ((type == null) ? 0 : type.hashCode());
         return result;
     }
 
@@ -153,11 +149,6 @@ public class LocationVariant implements Persistable {
                 return false;
         } else if (!endPosition.equals(other.endPosition))
             return false;
-        if (genomeRef == null) {
-            if (other.genomeRef != null)
-                return false;
-        } else if (!genomeRef.equals(other.genomeRef))
-            return false;
         if (id == null) {
             if (other.id != null)
                 return false;
@@ -173,20 +164,10 @@ public class LocationVariant implements Persistable {
                 return false;
         } else if (!ref.equals(other.ref))
             return false;
-        if (referenceVersionAccession == null) {
-            if (other.referenceVersionAccession != null)
-                return false;
-        } else if (!referenceVersionAccession.equals(other.referenceVersionAccession))
-            return false;
         if (seq == null) {
             if (other.seq != null)
                 return false;
         } else if (!seq.equals(other.seq))
-            return false;
-        if (type == null) {
-            if (other.type != null)
-                return false;
-        } else if (!type.equals(other.type))
             return false;
         return true;
     }
