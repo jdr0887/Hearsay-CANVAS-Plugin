@@ -18,4 +18,20 @@ public class TranscriptMapsWarnings {
         super();
     }
 
+    public Integer getRefseqTranscrMapsId() {
+        return refseqTranscrMapsId;
+    }
+
+    public void setRefseqTranscrMapsId(Integer refseqTranscrMapsId) {
+        this.refseqTranscrMapsId = refseqTranscrMapsId;
+    }
+
+    public String getWarningWarningName() {
+        return warningWarningName;
+    }
+
+    public void setWarningWarningName(String warningWarningName) {
+        this.warningWarningName = warningWarningName;
+    }
+
 }
