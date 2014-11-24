@@ -129,6 +129,5 @@
     <module>canvas-datasource</module>
     <module>canvas-dao</module>
     <module>canvas-features</module>
-    <module>canvas-caching-service</module>
   </modules>
 </project>
