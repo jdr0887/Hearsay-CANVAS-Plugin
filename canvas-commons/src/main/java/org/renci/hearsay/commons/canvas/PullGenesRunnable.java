@@ -1,6 +1,8 @@
 package org.renci.hearsay.commons.canvas;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.renci.hearsay.canvas.dao.CANVASDAOBean;
 import org.renci.hearsay.canvas.refseq.dao.model.RefSeqGene;
@@ -35,10 +37,19 @@ public class PullGenesRunnable implements Runnable {
             List<Transcript> transcripts = canvasDAOBean.getTranscriptDAO().findByRefSeqVersionAndGenomeRefId(
                     refSeqVersion, genomeRefId);
             if (transcripts != null && !transcripts.isEmpty()) {
+
+                Set<String> versionIdSet = new HashSet<String>();
+
                 for (Transcript transcript : transcripts) {
+                    if (!versionIdSet.contains(transcript.getVersionId())) {
+                        versionIdSet.add(transcript.getVersionId());
+                    }
+                }
+                
+                for (String versionId : versionIdSet) {
 
                     List<RefSeqGene> refSeqGenes = canvasDAOBean.getRefSeqGeneDAO().findByRefSeqVersionAndTranscriptId(
-                            refSeqVersion, transcript.getVersionId());
+                            refSeqVersion, versionId);
                     if (refSeqGenes != null && !refSeqGenes.isEmpty()) {
                         RefSeqGene refSeqGene = refSeqGenes.get(0);
                         try {
