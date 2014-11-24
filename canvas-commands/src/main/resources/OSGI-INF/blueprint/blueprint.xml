@@ -8,11 +8,6 @@
       </action>
     </command>
     <command>
-      <action class="org.renci.hearsay.commands.canvas.PullGenesAction">
-        <property name="runnable" ref="genesRunnable" />
-      </action>
-    </command>
-    <command>
       <action class="org.renci.hearsay.commands.canvas.PullVariantsAction">
         <property name="runnable" ref="variantsRunnable" />
       </action>
@@ -94,11 +89,6 @@
   </bean>
 
   <bean id="featuresRunnable" class="org.renci.hearsay.commons.canvas.PullFeaturesRunnable">
-    <property name="canvasDAOBean" ref="canvasDAOBean" />
-    <property name="hearsayDAOBean" ref="hearsayDAOBean" />
-  </bean>
-
-  <bean id="genesRunnable" class="org.renci.hearsay.commons.canvas.PullGenesRunnable">
     <property name="canvasDAOBean" ref="canvasDAOBean" />
     <property name="hearsayDAOBean" ref="hearsayDAOBean" />
   </bean>

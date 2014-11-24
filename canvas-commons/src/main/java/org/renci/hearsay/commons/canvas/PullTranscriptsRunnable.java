@@ -58,6 +58,9 @@ public class PullTranscriptsRunnable implements Runnable {
         try {
             List<TranscriptMapsExons> pulledExons = canvasDAOBean.getTranscriptMapsExonsDAO()
                     .findByGenomeRefIdAndRefSeqVersion(Integer.valueOf(genomeRefId), refSeqVersion);
+            // List<TranscriptMapsExons> pulledExons = canvasDAOBean.getTranscriptMapsExonsDAO()
+            // .findByGenomeRefIdAndRefSeqVersionAndAccession(genomeRefId, refSeqVersion, "XM_005277470.1");
+
             if (pulledExons != null && !pulledExons.isEmpty()) {
                 mapsExonsResults.addAll(pulledExons);
             }
@@ -138,19 +141,21 @@ public class PullTranscriptsRunnable implements Runnable {
 
                 Gene gene = null;
                 if (refSeqGeneList != null && !refSeqGeneList.isEmpty()) {
+                    RefSeqGene refSeqGene = refSeqGeneList.get(0);
                     try {
-                        List<Gene> genes = hearsayDAOBean.getGeneDAO().findByName(refSeqGeneList.get(0).getName());
-                        if (genes != null && !genes.isEmpty()) {
-                            gene = genes.get(0);
+                        List<Gene> alreadyPersistedGeneList = hearsayDAOBean.getGeneDAO().findByName(
+                                refSeqGene.getName());
+                        if (alreadyPersistedGeneList != null && alreadyPersistedGeneList.isEmpty()) {
+                            gene = new Gene();
+                            gene.setName(refSeqGene.getName());
+                            gene.setDescription(refSeqGene.getDescription());
+                            gene.setId(hearsayDAOBean.getGeneDAO().save(gene));
+                        } else {
+                            gene = alreadyPersistedGeneList.get(0);
                         }
                     } catch (HearsayDAOException e) {
                         e.printStackTrace();
                     }
-                }
-
-                if (gene == null) {
-                    logger.info(mapping.toString());
-                    logger.error("Could not find Gene");
                 }
                 logger.info(gene.toString());
 
