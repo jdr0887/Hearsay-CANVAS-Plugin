@@ -72,4 +72,11 @@
 
   <service ref="transcriptMapsExonsDAOImpl" interface="org.renci.hearsay.canvas.refseq.dao.TranscriptMapsExonsDAO" />
 
+  <bean id="variants_61_2_DAOImpl" class="org.renci.hearsay.canvas.refseq.dao.jpa.Variants_61_2_DAOImpl">
+    <tx:transaction method="*" value="Required" />
+    <jpa:context property="entityManager" unitname="canvas" />
+  </bean>
+
+  <service ref="variants_61_2_DAOImpl" interface="org.renci.hearsay.canvas.refseq.dao.Variants_61_2_DAO" />
+
 </blueprint>
