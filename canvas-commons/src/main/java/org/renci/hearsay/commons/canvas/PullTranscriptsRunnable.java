@@ -1,4 +1,4 @@
-package org.renci.hearsay.canvas;
+package org.renci.hearsay.commons.canvas;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -17,7 +17,6 @@ import org.renci.hearsay.canvas.dao.model.MappingKey;
 import org.renci.hearsay.canvas.dao.model.Region;
 import org.renci.hearsay.canvas.ref.dao.model.GenomeRef;
 import org.renci.hearsay.canvas.ref.dao.model.GenomeRefSeq;
-import org.renci.hearsay.canvas.refseq.dao.model.Feature;
 import org.renci.hearsay.canvas.refseq.dao.model.RefSeqCodingSequence;
 import org.renci.hearsay.canvas.refseq.dao.model.RefSeqGene;
 import org.renci.hearsay.canvas.refseq.dao.model.RegionGroup;
@@ -34,9 +33,9 @@ import org.renci.hearsay.dao.model.TranscriptRefSeq;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class CANVASCachingRunnable implements Runnable {
+public class PullTranscriptsRunnable implements Runnable {
 
-    private final Logger logger = LoggerFactory.getLogger(CANVASCachingRunnable.class);
+    private final Logger logger = LoggerFactory.getLogger(PullTranscriptsRunnable.class);
 
     private String refSeqVersion;
 
@@ -46,7 +45,7 @@ public class CANVASCachingRunnable implements Runnable {
 
     private HearsayDAOBean hearsayDAOBean;
 
-    public CANVASCachingRunnable() {
+    public PullTranscriptsRunnable() {
         super();
     }
 
@@ -59,9 +58,6 @@ public class CANVASCachingRunnable implements Runnable {
         try {
             List<TranscriptMapsExons> pulledExons = canvasDAOBean.getTranscriptMapsExonsDAO()
                     .findByGenomeRefIdAndRefSeqVersion(Integer.valueOf(genomeRefId), refSeqVersion);
-            // List<TranscriptMapsExons> pulledExons = canvasDAOBean.getTranscriptMapsExonsDAO()
-            // .findByGenomeRefIdAndRefSeqVersionAndAccession(genomeRefId, refSeqVersion, "XM_005277470.1");
-
             if (pulledExons != null && !pulledExons.isEmpty()) {
                 mapsExonsResults.addAll(pulledExons);
             }
@@ -142,22 +138,19 @@ public class CANVASCachingRunnable implements Runnable {
 
                 Gene gene = null;
                 if (refSeqGeneList != null && !refSeqGeneList.isEmpty()) {
-                    RefSeqGene refSeqGene = refSeqGeneList.get(0);
                     try {
-                        List<Gene> alreadyPersistedGeneList = hearsayDAOBean.getGeneDAO().findByName(
-                                refSeqGene.getName());
-                        if (alreadyPersistedGeneList != null && alreadyPersistedGeneList.isEmpty()) {
-                            gene = new Gene();
-                            gene.setName(refSeqGene.getName());
-                            gene.setDescription(refSeqGene.getDescription());
-                            Long id = hearsayDAOBean.getGeneDAO().save(gene);
-                            gene.setId(id);
-                        } else {
-                            gene = alreadyPersistedGeneList.get(0);
+                        List<Gene> genes = hearsayDAOBean.getGeneDAO().findByName(refSeqGeneList.get(0).getName());
+                        if (genes != null && !genes.isEmpty()) {
+                            gene = genes.get(0);
                         }
                     } catch (HearsayDAOException e) {
                         e.printStackTrace();
                     }
+                }
+
+                if (gene == null) {
+                    logger.info(mapping.toString());
+                    logger.error("Could not find Gene");
                 }
                 logger.info(gene.toString());
 
@@ -172,28 +165,6 @@ public class CANVASCachingRunnable implements Runnable {
                     if (alreadyPersistedTranscriptList != null && alreadyPersistedTranscriptList.isEmpty()) {
                         Long id = hearsayDAOBean.getTranscriptRefSeqDAO().save(transcriptRefSeq);
                         transcriptRefSeq.setId(id);
-
-                        List<Feature> canvasFeatures = canvasDAOBean.getFeatureDAO()
-                                .findByRefSeqVersionAndTranscriptId(refSeqVersion, key.getVersionId());
-                        if (canvasFeatures != null && !canvasFeatures.isEmpty()) {
-                            for (Feature canvasFeature : canvasFeatures) {
-                                RegionGroup regionGroup = canvasFeature.getRegionGroup();
-                                if (regionGroup != null) {
-                                    Set<RegionGroupRegion> regionGroupRegions = regionGroup.getRegionGroupRegions();
-                                    if (regionGroupRegions != null && !regionGroupRegions.isEmpty()) {
-                                        RegionGroupRegion[] regionGroupRegionArray = regionGroupRegions
-                                                .toArray(new RegionGroupRegion[regionGroupRegions.size()]);
-                                        org.renci.hearsay.dao.model.Feature hearsayFeature = new org.renci.hearsay.dao.model.Feature();
-                                        hearsayFeature.setNote(canvasFeature.getNote());
-                                        hearsayFeature.setRegionStart(regionGroupRegionArray[0].getRegionStart());
-                                        hearsayFeature.setRegionStop(regionGroupRegionArray[0].getRegionEnd());
-                                        hearsayFeature.setTranscriptRefSeq(transcriptRefSeq);
-                                        hearsayDAOBean.getFeatureDAO().save(hearsayFeature);
-                                    }
-                                }
-                            }
-                        }
-
                     } else {
                         transcriptRefSeq = alreadyPersistedTranscriptList.get(0);
                     }
