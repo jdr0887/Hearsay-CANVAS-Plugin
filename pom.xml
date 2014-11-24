@@ -14,7 +14,7 @@
     <karaf.version>3.0.1</karaf.version>
     <cxf.version>2.7.12</cxf.version>
     <jackson.version>2.4.1</jackson.version>
-    <hearsay.version>0.0.22</hearsay.version>
+    <hearsay.version>0.0.23-SNAPSHOT</hearsay.version>
   </properties>
   <issueManagement>
     <system>GitHub Issues</system>
@@ -66,6 +66,11 @@
 	<version>${hearsay.version}</version>
       </dependency>
       <dependency>
+	<groupId>org.renci.hearsay.plugin.canvas</groupId>
+	<artifactId>canvas-commons</artifactId>
+	<version>0.0.29-SNAPSHOT</version>
+      </dependency>
+      <dependency>
 	<groupId>org.renci.hearsay.plugin.canvas.canvas-dao</groupId>
 	<artifactId>canvas-dao-api</artifactId>
 	<version>0.0.29-SNAPSHOT</version>
@@ -105,9 +110,22 @@
       	<artifactId>geronimo-jpa_2.0_spec</artifactId>
       	<version>1.1</version>
       </dependency>
+      <dependency>
+      	<groupId>org.osgi</groupId>
+      	<artifactId>org.osgi.compendium</artifactId>
+      	<version>4.3.1</version>
+      </dependency>
+      <dependency>
+      	<groupId>org.osgi</groupId>
+      	<artifactId>org.osgi.core</artifactId>
+      	<version>4.3.1</version>
+      	<scope>provided</scope>
+      </dependency>
     </dependencies>
   </dependencyManagement>
   <modules>
+    <module>canvas-commons</module>
+    <module>canvas-commands</module>
     <module>canvas-datasource</module>
     <module>canvas-dao</module>
     <module>canvas-features</module>
