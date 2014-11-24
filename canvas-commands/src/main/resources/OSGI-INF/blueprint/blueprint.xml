@@ -3,22 +3,22 @@
 
   <command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.1.0">
     <command>
-      <action class="org.renci.hearsay.commands.PullFeaturesAction">
+      <action class="org.renci.hearsay.commands.canvas.PullFeaturesAction">
         <property name="runnable" ref="featuresRunnable" />
       </action>
     </command>
     <command>
-      <action class="org.renci.hearsay.commands.PullGenesAction">
+      <action class="org.renci.hearsay.commands.canvas.PullGenesAction">
         <property name="runnable" ref="genesRunnable" />
       </action>
     </command>
     <command>
-      <action class="org.renci.hearsay.commands.PullVariantsAction">
+      <action class="org.renci.hearsay.commands.canvas.PullVariantsAction">
         <property name="runnable" ref="variantsRunnable" />
       </action>
     </command>
     <command>
-      <action class="org.renci.hearsay.commands.PullTranscriptsAction">
+      <action class="org.renci.hearsay.commands.canvas.PullTranscriptsAction">
         <property name="runnable" ref="transcriptsRunnable" />
       </action>
     </command>
