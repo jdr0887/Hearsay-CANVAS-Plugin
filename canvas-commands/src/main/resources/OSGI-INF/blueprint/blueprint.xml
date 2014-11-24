@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0" default-activation="lazy">
+
+  <command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.1.0">
+    <command>
+      <action class="org.renci.hearsay.commands.PullFeaturesAction">
+        <property name="runnable" ref="featuresRunnable" />
+      </action>
+    </command>
+    <command>
+      <action class="org.renci.hearsay.commands.PullGenesAction">
+        <property name="runnable" ref="genesRunnable" />
+      </action>
+    </command>
+    <command>
+      <action class="org.renci.hearsay.commands.PullVariantsAction">
+        <property name="runnable" ref="variantsRunnable" />
+      </action>
+    </command>
+    <command>
+      <action class="org.renci.hearsay.commands.PullTranscriptsAction">
+        <property name="runnable" ref="transcriptsRunnable" />
+      </action>
+    </command>
+  </command-bundle>
+
+  <reference id="hearsayCanonicalVariantDAO" interface="org.renci.hearsay.dao.CanonicalVariantDAO" />
+  <reference id="hearsayFeatureDAO" interface="org.renci.hearsay.dao.FeatureDAO" />
+  <reference id="hearsayGeneConditionAssertionDAO" interface="org.renci.hearsay.dao.GeneConditionAssertionDAO" />
+  <reference id="hearsayGeneConditionDAO" interface="org.renci.hearsay.dao.GeneConditionDAO" />
+  <reference id="hearsayGeneDAO" interface="org.renci.hearsay.dao.GeneDAO" />
+  <reference id="hearsayGenomicRefSeqDAO" interface="org.renci.hearsay.dao.GenomicRefSeqDAO" />
+  <reference id="hearsayGenomicVariantDAO" interface="org.renci.hearsay.dao.GenomicVariantDAO" />
+  <reference id="hearsayIndividualDAO" interface="org.renci.hearsay.dao.IndividualDAO" />
+  <reference id="hearsayIndividualVariantDAO" interface="org.renci.hearsay.dao.IndividualVariantDAO" />
+  <reference id="hearsayMolecularConsequenceDAO" interface="org.renci.hearsay.dao.MolecularConsequenceDAO" />
+  <reference id="hearsayRegionDAO" interface="org.renci.hearsay.dao.RegionDAO" />
+  <reference id="hearsayResolvedConditionDAO" interface="org.renci.hearsay.dao.ResolvedConditionDAO" />
+  <reference id="hearsayTranscriptAlignmentDAO" interface="org.renci.hearsay.dao.TranscriptAlignmentDAO" />
+  <reference id="hearsayTranscriptRefSeqDAO" interface="org.renci.hearsay.dao.TranscriptRefSeqDAO" />
+  <reference id="hearsayTranscriptVariantDAO" interface="org.renci.hearsay.dao.TranscriptVariantDAO" />
+  <reference id="hearsayTranslationRefSeqDAO" interface="org.renci.hearsay.dao.TranslationRefSeqDAO" />
+  <reference id="hearsayTranslationVariantDAO" interface="org.renci.hearsay.dao.TranslationVariantDAO" />
+
+  <bean id="hearsayDAOBean" class="org.renci.hearsay.dao.HearsayDAOBean">
+    <property name="canonicalVariantDAO" ref="hearsayCanonicalVariantDAO" />
+    <property name="featureDAO" ref="hearsayFeatureDAO" />
+    <property name="geneConditionAssertionDAO" ref="hearsayGeneConditionAssertionDAO" />
+    <property name="geneConditionDAO" ref="hearsayGeneConditionDAO" />
+    <property name="geneDAO" ref="hearsayGeneDAO" />
+    <property name="genomicRefSeqDAO" ref="hearsayGenomicRefSeqDAO" />
+    <property name="genomicVariantDAO" ref="hearsayGenomicVariantDAO" />
+    <property name="individualDAO" ref="hearsayIndividualDAO" />
+    <property name="individualVariantDAO" ref="hearsayIndividualVariantDAO" />
+    <property name="molecularConsequenceDAO" ref="hearsayMolecularConsequenceDAO" />
+    <property name="regionDAO" ref="hearsayRegionDAO" />
+    <property name="resolvedConditionDAO" ref="hearsayResolvedConditionDAO" />
+    <property name="transcriptAlignmentDAO" ref="hearsayTranscriptAlignmentDAO" />
+    <property name="transcriptRefSeqDAO" ref="hearsayTranscriptRefSeqDAO" />
+    <property name="transcriptVariantDAO" ref="hearsayTranscriptVariantDAO" />
+    <property name="translationRefSeqDAO" ref="hearsayTranslationRefSeqDAO" />
+    <property name="translationVariantDAO" ref="hearsayTranslationVariantDAO" />
+  </bean>
+
+  <reference id="annotationGeneDAO" interface="org.renci.hearsay.canvas.annotation.dao.AnnotationGeneDAO" />
+  <reference id="annotationGeneExternalIdsDAO" interface="org.renci.hearsay.canvas.annotation.dao.AnnotationGeneExternalIdsDAO" />
+  <reference id="genomeRefDAO" interface="org.renci.hearsay.canvas.ref.dao.GenomeRefDAO" />
+  <reference id="featureDAO" interface="org.renci.hearsay.canvas.refseq.dao.FeatureDAO" />
+  <reference id="transcriptDAO" interface="org.renci.hearsay.canvas.refseq.dao.TranscriptDAO" />
+  <reference id="transcriptMapsDAO" interface="org.renci.hearsay.canvas.refseq.dao.TranscriptMapsDAO" />
+  <reference id="transcriptMapsExonsDAO" interface="org.renci.hearsay.canvas.refseq.dao.TranscriptMapsExonsDAO" />
+  <reference id="refSeqGeneDAO" interface="org.renci.hearsay.canvas.refseq.dao.RefSeqGeneDAO" />
+  <reference id="refSeqCodingSequenceDAO" interface="org.renci.hearsay.canvas.refseq.dao.RefSeqCodingSequenceDAO" />
+  <reference id="HGNCGeneDAO" interface="org.renci.hearsay.canvas.hgnc.dao.HGNCGeneDAO" />
+  <reference id="variants_61_2_DAO" interface="org.renci.hearsay.canvas.refseq.dao.Variants_61_2_DAO" />
+
+  <bean id="canvasDAOBean" class="org.renci.hearsay.canvas.dao.CANVASDAOBean">
+    <property name="annotationGeneDAO" ref="annotationGeneDAO" />
+    <property name="annotationGeneExternalIdsDAO" ref="annotationGeneExternalIdsDAO" />
+    <property name="genomeRefDAO" ref="genomeRefDAO" />
+    <property name="featureDAO" ref="featureDAO" />
+    <property name="transcriptDAO" ref="transcriptDAO" />
+    <property name="transcriptMapsDAO" ref="transcriptMapsDAO" />
+    <property name="transcriptMapsExonsDAO" ref="transcriptMapsExonsDAO" />
+    <property name="refSeqGeneDAO" ref="refSeqGeneDAO" />
+    <property name="refSeqCodingSequenceDAO" ref="refSeqCodingSequenceDAO" />
+    <property name="HGNCGeneDAO" ref="HGNCGeneDAO" />
+    <property name="variants_61_2_DAO" ref="variants_61_2_DAO" />
+  </bean>
+
+  <bean id="transcriptRunnable" class="org.renci.hearsay.commons.canvas.PullTranscriptsRunnable">
+    <property name="canvasDAOBean" ref="canvasDAOBean" />
+    <property name="hearsayDAOBean" ref="hearsayDAOBean" />
+  </bean>
+
+  <bean id="featureRunnable" class="org.renci.hearsay.commons.canvas.PullFeaturesRunnable">
+    <property name="canvasDAOBean" ref="canvasDAOBean" />
+    <property name="hearsayDAOBean" ref="hearsayDAOBean" />
+  </bean>
+
+  <bean id="featureRunnable" class="org.renci.hearsay.commons.canvas.PullGenesRunnable">
+    <property name="canvasDAOBean" ref="canvasDAOBean" />
+    <property name="hearsayDAOBean" ref="hearsayDAOBean" />
+  </bean>
+
+  <bean id="variantRunnable" class="org.renci.hearsay.commons.canvas.PullVariantsRunnable">
+    <property name="canvasDAOBean" ref="canvasDAOBean" />
+    <property name="hearsayDAOBean" ref="hearsayDAOBean" />
+  </bean>
+
+</blueprint>
