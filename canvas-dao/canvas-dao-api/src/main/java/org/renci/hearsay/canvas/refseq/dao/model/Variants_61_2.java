@@ -19,7 +19,10 @@ import org.renci.hearsay.canvas.var.dao.model.VariantType;
 
 @Entity
 @Table(schema = "refseq", name = "variants_61_2")
-@NamedQueries({ @NamedQuery(name = "Variants_61_2.findByLocationVariantId", query = "SELECT a FROM Variants_61_2 a where a.locationVariant.id = :locationVariantId") })
+@NamedQueries({
+        @NamedQuery(name = "Variants_61_2.findByLocationVariantId", query = "SELECT a FROM Variants_61_2 a where a.locationVariant.id = :locationVariantId"),
+        @NamedQuery(name = "Variants_61_2.findByGeneName", query = "SELECT a FROM Variants_61_2 a where a.hgncGene = :geneName"), 
+        @NamedQuery(name = "Variants_61_2.findByTranscriptAccession", query = "SELECT a FROM Variants_61_2 a where a.transcr = :transcr")})
 public class Variants_61_2 implements Persistable {
 
     private static final long serialVersionUID = 7532101830529403701L;
@@ -387,9 +390,9 @@ public class Variants_61_2 implements Persistable {
     @Override
     public String toString() {
         return String
-                .format("Variants_61_2 [pos=%s, type=%s, transcr=%s, mapnum=%s, refseqGene=%s, hgncGene=%s, transcrPos=%s, cdsPos=%s, aaStart=%s, aaEnd=%s, originalAa=%s, finalAa=%s, frameshift=%s, inframe=%s, intronExonDist=%s, strand=%s, nummaps=%s, referenceAllele=%s, alternateAllele=%s, hgvsGenomic=%s, hgvsCodingSequence=%s, hgvsTranscript=%s, hgvsProtein=%s, noncanExon=%s, featureId=%s]",
-                        pos, type, transcr, mapnum, refseqGene, hgncGene, transcrPos, cdsPos, aaStart, aaEnd,
-                        originalAa, finalAa, frameshift, inframe, intronExonDist, strand, nummaps, referenceAllele,
+                .format("Variants_61_2 [pos=%s, transcr=%s, mapnum=%s, refseqGene=%s, hgncGene=%s, transcrPos=%s, cdsPos=%s, aaStart=%s, aaEnd=%s, originalAa=%s, finalAa=%s, frameshift=%s, inframe=%s, intronExonDist=%s, strand=%s, nummaps=%s, referenceAllele=%s, alternateAllele=%s, hgvsGenomic=%s, hgvsCodingSequence=%s, hgvsTranscript=%s, hgvsProtein=%s, noncanExon=%s, featureId=%s]",
+                        pos, transcr, mapnum, refseqGene, hgncGene, transcrPos, cdsPos, aaStart, aaEnd, originalAa,
+                        finalAa, frameshift, inframe, intronExonDist, strand, nummaps, referenceAllele,
                         alternateAllele, hgvsGenomic, hgvsCodingSequence, hgvsTranscript, hgvsProtein, noncanExon,
                         featureId);
     }
