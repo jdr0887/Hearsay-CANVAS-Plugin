@@ -88,12 +88,12 @@
     <property name="variants_61_2_DAO" ref="variants_61_2_DAO" />
   </bean>
 
-  <bean id="transcriptRunnable" class="org.renci.hearsay.commons.canvas.PullTranscriptsRunnable">
+  <bean id="transcriptsRunnable" class="org.renci.hearsay.commons.canvas.PullTranscriptsRunnable">
     <property name="canvasDAOBean" ref="canvasDAOBean" />
     <property name="hearsayDAOBean" ref="hearsayDAOBean" />
   </bean>
 
-  <bean id="featureRunnable" class="org.renci.hearsay.commons.canvas.PullFeaturesRunnable">
+  <bean id="featuresRunnable" class="org.renci.hearsay.commons.canvas.PullFeaturesRunnable">
     <property name="canvasDAOBean" ref="canvasDAOBean" />
     <property name="hearsayDAOBean" ref="hearsayDAOBean" />
   </bean>
@@ -103,7 +103,7 @@
     <property name="hearsayDAOBean" ref="hearsayDAOBean" />
   </bean>
 
-  <bean id="variantRunnable" class="org.renci.hearsay.commons.canvas.PullVariantsRunnable">
+  <bean id="variantsRunnable" class="org.renci.hearsay.commons.canvas.PullVariantsRunnable">
     <property name="canvasDAOBean" ref="canvasDAOBean" />
     <property name="hearsayDAOBean" ref="hearsayDAOBean" />
   </bean>
