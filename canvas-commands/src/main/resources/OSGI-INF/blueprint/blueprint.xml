@@ -98,7 +98,7 @@
     <property name="hearsayDAOBean" ref="hearsayDAOBean" />
   </bean>
 
-  <bean id="featureRunnable" class="org.renci.hearsay.commons.canvas.PullGenesRunnable">
+  <bean id="genesRunnable" class="org.renci.hearsay.commons.canvas.PullGenesRunnable">
     <property name="canvasDAOBean" ref="canvasDAOBean" />
     <property name="hearsayDAOBean" ref="hearsayDAOBean" />
   </bean>
