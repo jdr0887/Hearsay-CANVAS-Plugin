@@ -10,6 +10,7 @@ import org.renci.hearsay.canvas.refseq.dao.RefSeqGeneDAO;
 import org.renci.hearsay.canvas.refseq.dao.TranscriptDAO;
 import org.renci.hearsay.canvas.refseq.dao.TranscriptMapsDAO;
 import org.renci.hearsay.canvas.refseq.dao.TranscriptMapsExonsDAO;
+import org.renci.hearsay.canvas.refseq.dao.Variants_61_2_DAO;
 
 public class CANVASDAOBean {
 
@@ -32,6 +33,8 @@ public class CANVASDAOBean {
     private TranscriptMapsDAO transcriptMapsDAO;
 
     private TranscriptMapsExonsDAO transcriptMapsExonsDAO;
+
+    private Variants_61_2_DAO variants_61_2_DAO;
 
     public CANVASDAOBean() {
         super();
@@ -115,6 +118,14 @@ public class CANVASDAOBean {
 
     public void setTranscriptMapsExonsDAO(TranscriptMapsExonsDAO transcriptMapsExonsDAO) {
         this.transcriptMapsExonsDAO = transcriptMapsExonsDAO;
+    }
+
+    public Variants_61_2_DAO getVariants_61_2_DAO() {
+        return variants_61_2_DAO;
+    }
+
+    public void setVariants_61_2_DAO(Variants_61_2_DAO variants_61_2_DAO) {
+        this.variants_61_2_DAO = variants_61_2_DAO;
     }
 
 }
