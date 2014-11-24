@@ -4,7 +4,7 @@
     <artifactId>canvas</artifactId>
     <version>0.0.29-SNAPSHOT</version>
   </parent>
-  <name>Hearsay :: Plugin :: CANVAS :: Commands</name>
+  <name>Hearsay :: Plugin :: CANVAS :: Commons</name>
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.renci.hearsay.plugin.canvas</groupId>
   <artifactId>canvas-commons</artifactId>
