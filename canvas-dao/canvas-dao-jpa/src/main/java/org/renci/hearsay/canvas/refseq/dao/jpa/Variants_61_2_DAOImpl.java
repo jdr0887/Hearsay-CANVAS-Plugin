@@ -26,10 +26,30 @@ public class Variants_61_2_DAOImpl extends BaseDAOImpl<Variants_61_2, Long> impl
 
     @Override
     public List<Variants_61_2> findByLocationVariantId(Long id) throws HearsayDAOException {
-        logger.debug("ENTERING findByName()");
+        logger.debug("ENTERING findByLocationVariantId(Long)");
         TypedQuery<Variants_61_2> query = getEntityManager().createNamedQuery("Variants_61_2.findByLocationVariantId",
                 Variants_61_2.class);
         query.setParameter("locationVariantId", id);
+        List<Variants_61_2> ret = query.getResultList();
+        return ret;
+    }
+
+    @Override
+    public List<Variants_61_2> findByGeneName(String name) throws HearsayDAOException {
+        logger.debug("ENTERING findByGeneName(String)");
+        TypedQuery<Variants_61_2> query = getEntityManager().createNamedQuery("Variants_61_2.findByGeneName",
+                Variants_61_2.class);
+        query.setParameter("geneName", name);
+        List<Variants_61_2> ret = query.getResultList();
+        return ret;
+    }
+
+    @Override
+    public List<Variants_61_2> findByTranscriptAccession(String accession) throws HearsayDAOException {
+        logger.debug("ENTERING findByTranscriptAccession(String)");
+        TypedQuery<Variants_61_2> query = getEntityManager().createNamedQuery(
+                "Variants_61_2.findByTranscriptAccession", Variants_61_2.class);
+        query.setParameter("transcr", accession);
         List<Variants_61_2> ret = query.getResultList();
         return ret;
     }
