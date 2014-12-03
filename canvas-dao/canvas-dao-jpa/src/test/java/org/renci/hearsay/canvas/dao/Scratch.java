@@ -1,8 +1,6 @@
 package org.renci.hearsay.canvas.dao;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -126,17 +124,20 @@ public class Scratch {
 
             List<TranscriptMapsExons> mapsExonsResults = new ArrayList<TranscriptMapsExons>();
 
+            // List<TranscriptMapsExons> pulledExons = canvasDAOBean.getTranscriptMapsExonsDAO()
+            // .findByGenomeRefIdAndRefSeqVersion(Integer.valueOf(genomeRefId), refSeqVersion);
+
             List<TranscriptMapsExons> pulledExons = canvasDAOBean.getTranscriptMapsExonsDAO()
-                    .findByGenomeRefIdAndRefSeqVersion(Integer.valueOf(genomeRefId), refSeqVersion);
+                    .findByGenomeRefIdAndRefSeqVersionAndAccession(genomeRefId, refSeqVersion, "XM_005277470.1");
 
             // List<TranscriptMapsExons> pulledExons = canvasDAOBean.getTranscriptMapsExonsDAO()
-            // .findByGenomeRefIdAndRefSeqVersionAndAccession(genomeRefId, refSeqVersion, "XM_005277470.1");
+            // .findByGenomeRefIdAndRefSeqVersionAndAccession(genomeRefId, refSeqVersion, "NM_000059.3");
 
             if (pulledExons != null && !pulledExons.isEmpty()) {
                 mapsExonsResults.addAll(pulledExons);
             }
 
-            System.out.printf("pulledExons.size() = %s", pulledExons.size());
+            System.out.printf("pulledExons.size() = %s%n", pulledExons.size());
 
             GenomeRef genomeRef = null;
             try {
@@ -170,7 +171,7 @@ public class Scratch {
 
                 }
 
-                System.out.printf("map.size(): {}%n", map.size());
+                System.out.printf("map.size(): %s%n", map.size());
 
                 for (TranscriptMapsExons exon : mapsExonsResults) {
                     TranscriptMaps transcriptionMaps = exon.getTranscriptMaps();
@@ -188,12 +189,14 @@ public class Scratch {
                     if (sType.equals(StrandType.PLUS)) {
                         e.setTranscriptStart(exon.getTranscrStart());
                         e.setTranscriptStop(exon.getTranscrEnd());
+                        e.setGenomeStart(exon.getContigStart());
+                        e.setGenomeStop(exon.getContigEnd());
                     } else {
                         e.setTranscriptStart(exon.getTranscrEnd());
                         e.setTranscriptStop(exon.getTranscrStart());
+                        e.setGenomeStart(exon.getContigEnd());
+                        e.setGenomeStop(exon.getContigStart());
                     }
-                    e.setGenomeStart(exon.getContigStart());
-                    e.setGenomeStop(exon.getContigEnd());
                     map.get(mappingKey).getRegions().add(e);
                 }
 
@@ -218,10 +221,9 @@ public class Scratch {
                                 gene = new Gene();
                                 gene.setName(refSeqGene.getName());
                                 gene.setDescription(refSeqGene.getDescription());
-                                hearsayEM.getTransaction().begin();
-                                Long id = hearsayDAOBean.getGeneDAO().save(gene);
-                                hearsayEM.getTransaction().commit();
-                                gene.setId(id);
+                                // hearsayEM.getTransaction().begin();
+                                // gene.setId(hearsayDAOBean.getGeneDAO().save(gene));
+                                // hearsayEM.getTransaction().commit();
                             } else {
                                 gene = alreadyPersistedGeneList.get(0);
                             }
@@ -260,9 +262,9 @@ public class Scratch {
                                             hearsayFeature.setRegionStart(regionGroupRegionArray[0].getRegionStart());
                                             hearsayFeature.setRegionStop(regionGroupRegionArray[0].getRegionEnd());
                                             hearsayFeature.setTranscriptRefSeq(transcriptRefSeq);
-                                            hearsayEM.getTransaction().begin();
-                                            hearsayDAOBean.getFeatureDAO().save(hearsayFeature);
-                                            hearsayEM.getTransaction().commit();
+                                            // hearsayEM.getTransaction().begin();
+                                            // hearsayDAOBean.getFeatureDAO().save(hearsayFeature);
+                                            // hearsayEM.getTransaction().commit();
                                         }
                                     }
                                 }
@@ -316,33 +318,56 @@ public class Scratch {
                         Integer regionEnd = regionGroupRegionArray[regionGroupRegionSet.size() - 1].getRegionEnd();
                         transcriptAlignment.setProteinRegionStart(regionStart);
                         transcriptAlignment.setProteinRegionStop(regionEnd);
+
+                        Iterator<Region> navigableRegionIter = mapping.getRegions().iterator();
+                        while (navigableRegionIter.hasNext()) {
+                            System.out.println(navigableRegionIter.next().toString());
+                        }
+                        System.out.println();
+                        System.out.println();
+
                         addUTR5s(mapping, regionStart);
+                        
+                        navigableRegionIter = mapping.getRegions().iterator();
+                        while (navigableRegionIter.hasNext()) {
+                            System.out.println(navigableRegionIter.next().toString());
+                        }
+                        System.out.println();
+                        System.out.println();
+                        
                         addUTR3s(mapping, regionEnd);
                         addCDSCoordinates(mapping, regionStart);
                     }
                     addIntrons(mapping);
 
-                    try {
-                        hearsayEM.getTransaction().begin();
-                        Long mappedTranscriptId = hearsayDAOBean.getTranscriptAlignmentDAO().save(transcriptAlignment);
-                        hearsayEM.getTransaction().commit();
-                        transcriptAlignment.setId(mappedTranscriptId);
-                        System.out.println(transcriptAlignment.toString());
-                    } catch (HearsayDAOException e) {
-                        e.printStackTrace();
+                    Iterator<Region> navigableRegionIter = mapping.getRegions().iterator();
+                    while (navigableRegionIter.hasNext()) {
+                        System.out.println(navigableRegionIter.next().toString());
                     }
+                    System.out.println();
+                    System.out.println();
+
+                    // try {
+                    // hearsayEM.getTransaction().begin();
+                    // Long mappedTranscriptId = hearsayDAOBean.getTranscriptAlignmentDAO().save(transcriptAlignment);
+                    // hearsayEM.getTransaction().commit();
+                    // transcriptAlignment.setId(mappedTranscriptId);
+                    // System.out.println(transcriptAlignment.toString());
+                    // } catch (HearsayDAOException e) {
+                    // e.printStackTrace();
+                    // }
 
                     for (Region region : mapping.getRegions()) {
                         org.renci.hearsay.dao.model.Region hearsayRegion = new org.renci.hearsay.dao.model.Region();
                         hearsayRegion.setTranscriptAlignment(transcriptAlignment);
                         hearsayRegion.setRegionType(region.getRegionType());
-                        if (region.getGenomeStart() < region.getGenomeStop()) {
-                            hearsayRegion.setRegionStart(region.getGenomeStart());
-                            hearsayRegion.setRegionStop(region.getGenomeStop());
-                        } else {
-                            hearsayRegion.setRegionStop(region.getGenomeStart());
-                            hearsayRegion.setRegionStart(region.getGenomeStop());
-                        }
+                        // if (region.getGenomeStart() < region.getGenomeStop()) {
+                        hearsayRegion.setRegionStart(region.getGenomeStart());
+                        hearsayRegion.setRegionStop(region.getGenomeStop());
+                        // } else {
+                        // hearsayRegion.setRegionStop(region.getGenomeStart());
+                        // hearsayRegion.setRegionStart(region.getGenomeStop());
+                        // }
                         hearsayRegion.setTranscriptStart(region.getTranscriptStart());
                         hearsayRegion.setTranscriptStop(region.getTranscriptStop());
 
@@ -351,23 +376,23 @@ public class Scratch {
 
                         System.out.println(region.toString());
 
-                        try {
-                            hearsayEM.getTransaction().begin();
-                            Long id = hearsayDAOBean.getRegionDAO().save(hearsayRegion);
-                            hearsayEM.getTransaction().commit();
-                            hearsayRegion.setId(id);
-                        } catch (HearsayDAOException e) {
-                            e.printStackTrace();
-                        }
+                        // try {
+                        // hearsayEM.getTransaction().begin();
+                        // Long id = hearsayDAOBean.getRegionDAO().save(hearsayRegion);
+                        // hearsayEM.getTransaction().commit();
+                        // hearsayRegion.setId(id);
+                        // } catch (HearsayDAOException e) {
+                        // e.printStackTrace();
+                        // }
                         transcriptAlignment.getRegions().add(hearsayRegion);
                     }
-                    try {
-                        hearsayEM.getTransaction().begin();
-                        transcriptAlignmentDAO.save(transcriptAlignment);
-                        hearsayEM.getTransaction().commit();
-                    } catch (HearsayDAOException e) {
-                        e.printStackTrace();
-                    }
+                    // try {
+                    // hearsayEM.getTransaction().begin();
+                    // transcriptAlignmentDAO.save(transcriptAlignment);
+                    // hearsayEM.getTransaction().commit();
+                    // } catch (HearsayDAOException e) {
+                    // e.printStackTrace();
+                    // }
 
                 }
             }
@@ -380,7 +405,7 @@ public class Scratch {
     public void addCDSCoordinates(Mapping mapping, Integer regionStart) {
         for (Region exon : mapping.getRegions()) {
             if (exon.getRegionType() == RegionType.EXON) {
-                exon.setContigStart(exon.getTranscriptStart() - regionStart + 1);
+                exon.setContigStart(Math.max(1, exon.getTranscriptStart() - regionStart + 1));
                 exon.setContigStop(exon.getTranscriptStop() - regionStart + 1);
             }
         }
@@ -390,8 +415,6 @@ public class Scratch {
         StrandType strandType = mapping.getStrandType();
 
         if (strandType.equals(StrandType.MINUS)) {
-
-            int strand = -1;
 
             for (Region region : mapping.getRegions()) {
                 if (regionStart > region.getTranscriptStart()) {
@@ -409,30 +432,21 @@ public class Scratch {
                 }
             }
 
-            if (navigableRegionIter.hasNext()) {
-                Region nextRegion = navigableRegionIter.next();
+            if (regionStart > firstRegion.getTranscriptStop()) {
+                Region utr5 = new Region();
+                utr5.setRegionType(org.renci.hearsay.dao.model.RegionType.UTR5);
+                int startTranscript = firstRegion.getTranscriptStop();
+                int stopTranscript = regionStart - 1;
+                int diff = startTranscript - stopTranscript;
+                utr5.setGenomeStart(firstRegion.getGenomeStop() + diff);
+                utr5.setGenomeStop(firstRegion.getGenomeStop());
+                utr5.setTranscriptStart(regionStart - 1);
+                utr5.setTranscriptStop(firstRegion.getTranscriptStop());
+                mapping.getRegions().add(utr5);
 
-                if (regionStart > firstRegion.getTranscriptStop()) {
-                    Region utr5 = new Region();
-                    int startTranscript = firstRegion.getTranscriptStop();
-                    int stopTranscript = regionStart - 1;
-                    int diff = startTranscript - stopTranscript;
-                    utr5.setGenomeStart(firstRegion.getGenomeStart() - (strand * diff));
-                    utr5.setGenomeStop(firstRegion.getGenomeStart());
-                    utr5.setTranscriptStart(regionStart - 1);
-                    utr5.setTranscriptStop(firstRegion.getTranscriptStop());
-                    utr5.setRegionType(org.renci.hearsay.dao.model.RegionType.UTR5);
-                    mapping.getRegions().add(utr5);
+                firstRegion.setGenomeStop(utr5.getGenomeStart() - 1);
+                firstRegion.setTranscriptStop(regionStart);
 
-                    firstRegion.setGenomeStart(firstRegion.getGenomeStop());
-                    firstRegion.setGenomeStop(utr5.getGenomeStart() - 1);
-                    firstRegion.setTranscriptStop(regionStart);
-
-                    Integer genomeStart = nextRegion.getGenomeStart();
-                    nextRegion.setGenomeStart(nextRegion.getGenomeStop());
-                    nextRegion.setGenomeStop(genomeStart);
-
-                }
             }
 
         } else {
@@ -446,7 +460,7 @@ public class Scratch {
             }
 
             Region firstRegion = null;
-            Iterator<Region> navigableRegionIter = mapping.getRegions().descendingIterator();
+            Iterator<Region> navigableRegionIter = mapping.getRegions().iterator();
             while (navigableRegionIter.hasNext()) {
                 Region r = navigableRegionIter.next();
                 if (regionStart > r.getTranscriptStop()) {
@@ -455,23 +469,23 @@ public class Scratch {
                 }
             }
 
-            if (navigableRegionIter.hasNext()) {
-                Region nextRegion = navigableRegionIter.next();
-                if (regionStart > firstRegion.getTranscriptStart()) {
-                    Region utr5 = new Region();
-                    utr5.setGenomeStart(nextRegion.getGenomeStart());
-                    int startTranscript = firstRegion.getTranscriptStop() + 1;
-                    int stopTranscript = regionStart - 1;
-                    int diff = startTranscript - stopTranscript;
-                    utr5.setGenomeStop(nextRegion.getGenomeStart() - (strand * diff));
-                    utr5.setTranscriptStart(startTranscript);
-                    utr5.setTranscriptStop(stopTranscript);
-                    utr5.setRegionType(org.renci.hearsay.dao.model.RegionType.UTR5);
-                    mapping.getRegions().add(utr5);
+            Region nextRegion = mapping.getRegions().ceiling(firstRegion);
 
-                    nextRegion.setGenomeStart(utr5.getGenomeStop() + 1);
-                    nextRegion.setTranscriptStart(regionStart);
-                }
+            if (regionStart > firstRegion.getTranscriptStop()) {
+                Region utr5 = new Region();
+                utr5.setRegionType(org.renci.hearsay.dao.model.RegionType.UTR5);
+                utr5.setGenomeStart(nextRegion.getGenomeStart());
+                int startTranscript = firstRegion.getTranscriptStop() + 1;
+                utr5.setTranscriptStart(startTranscript);
+                int stopTranscript = regionStart - 1;
+                utr5.setTranscriptStop(stopTranscript);
+                int diff = startTranscript - stopTranscript;
+                utr5.setGenomeStop(nextRegion.getGenomeStart() - (strand * diff));
+                mapping.getRegions().add(utr5);
+
+                nextRegion.setGenomeStart(utr5.getGenomeStop() + 1);
+                nextRegion.setTranscriptStart(regionStart);
+                System.out.println();
             }
 
         }
@@ -482,8 +496,6 @@ public class Scratch {
         StrandType strandType = mapping.getStrandType();
 
         if (strandType.equals(StrandType.MINUS)) {
-
-            int strand = -1;
 
             NavigableSet<Region> navigableRegionSet = mapping.getRegions();
             for (Region region : navigableRegionSet) {
@@ -502,38 +514,26 @@ public class Scratch {
                 }
             }
 
-            if (navigableRegionIter.hasNext()) {
+            if (regionStop > lastRegion.getTranscriptStop()) {
 
-                Region nextRegion = navigableRegionIter.next();
+                Region utr3 = new Region();
+                utr3.setRegionType(org.renci.hearsay.dao.model.RegionType.UTR3);
+                utr3.setGenomeStart(lastRegion.getGenomeStop());
+                int startTranscript = lastRegion.getTranscriptStart();
+                utr3.setTranscriptStart(startTranscript);
+                int stopTranscript = regionStop + 1;
+                utr3.setTranscriptStop(stopTranscript);
+                int diff = startTranscript - stopTranscript;
+                utr3.setGenomeStop(utr3.getGenomeStart() + diff);
+                mapping.getRegions().add(utr3);
 
-                if (regionStop > lastRegion.getTranscriptStop()) {
-
-                    Region utr3 = new Region();
-                    utr3.setGenomeStart(lastRegion.getGenomeStop());
-                    int startTranscript = lastRegion.getTranscriptStart();
-                    int stopTranscript = regionStop + 1;
-                    int diff = startTranscript - stopTranscript;
-                    utr3.setGenomeStop(utr3.getGenomeStart() + diff);
-                    utr3.setTranscriptStart(startTranscript);
-                    utr3.setTranscriptStop(stopTranscript);
-                    utr3.setRegionType(org.renci.hearsay.dao.model.RegionType.UTR3);
-                    mapping.getRegions().add(utr3);
-
-                    lastRegion.setGenomeStop(lastRegion.getGenomeStart());
-                    lastRegion.setGenomeStart(utr3.getGenomeStop() + 1);
-                    lastRegion.setTranscriptStart(regionStop);
-
-                    Integer genomeStop = nextRegion.getGenomeStop();
-                    nextRegion.setGenomeStop(nextRegion.getGenomeStart());
-                    nextRegion.setGenomeStart(genomeStop
-                            - (nextRegion.getTranscriptStart() - nextRegion.getTranscriptStop()));
-                }
+                lastRegion.setGenomeStop(lastRegion.getGenomeStart());
+                lastRegion.setGenomeStart(utr3.getGenomeStop() + 1);
+                lastRegion.setTranscriptStart(regionStop);
 
             }
 
         } else {
-
-            int strand = -1;
 
             NavigableSet<Region> navigableRegionSet = mapping.getRegions().descendingSet();
             for (Region region : navigableRegionSet) {
@@ -555,23 +555,21 @@ public class Scratch {
             if (lastRegion != null) {
 
                 if (lastRegion.getTranscriptStop() > regionStop) {
-
-                    int v = regionStop - lastRegion.getTranscriptStart();
-                    int gc = lastRegion.getGenomeStart() - strand * v;
-
                     Region utr3 = new Region();
-                    utr3.setGenomeStart(gc + 1);
-                    int startTranscript = lastRegion.getTranscriptStop();
-                    int stopTranscript = regionStop + 1;
-                    int diff = startTranscript - stopTranscript;
-                    utr3.setGenomeStop(utr3.getGenomeStart() + diff);
-                    utr3.setTranscriptStart(stopTranscript);
-                    utr3.setTranscriptStop(startTranscript);
                     utr3.setRegionType(org.renci.hearsay.dao.model.RegionType.UTR3);
+                    int startTranscript = lastRegion.getTranscriptStop();
+                    utr3.setTranscriptStop(startTranscript);
+                    int stopTranscript = regionStop + 1;
+                    utr3.setTranscriptStart(stopTranscript);
+                    int diff = startTranscript - stopTranscript;
+                    utr3.setGenomeStop(lastRegion.getGenomeStop());
+                    utr3.setGenomeStart(lastRegion.getGenomeStop() - diff);
                     mapping.getRegions().add(utr3);
 
-                    lastRegion.setGenomeStop(gc);
+                    lastRegion.setGenomeStop(lastRegion.getGenomeStart()
+                            + (regionStop - lastRegion.getTranscriptStart()));
                     lastRegion.setTranscriptStop(regionStop);
+                    System.out.println();
                 }
 
             }
@@ -582,54 +580,56 @@ public class Scratch {
 
     public void addIntrons(Mapping mapping) {
 
-        List<Region> exonsToAdd = new ArrayList<Region>();
-
         List<Region> regions = new ArrayList<Region>();
-        regions.addAll(mapping.getRegions());
-        Collections.sort(regions, new Comparator<Region>() {
 
-            @Override
-            public int compare(Region a, Region b) {
-                return a.getGenomeStart().compareTo(b.getGenomeStart());
-            }
+        if (mapping.getStrandType().equals(StrandType.MINUS)) {
 
-        });
-
-        for (int i = regions.size() - 1; i >= 0; --i) {
-
-            if (i == 0 || i + 1 == regions.size()) {
-                continue;
-            }
-
-            Region previous = regions.get(i - 1);
-            Region current = regions.get(i);
-            Region next = regions.get(i + 1);
-
-            if (mapping.getStrandType().equals(StrandType.MINUS)) {
-
-                if (previous.getGenomeStart() + 1 != current.getGenomeStop()) {
-                    Region exon = new Region();
-                    exon.setGenomeStart(previous.getGenomeStart() + 1);
-                    exon.setGenomeStop(current.getGenomeStop() - 1);
-                    exon.setRegionType(RegionType.INTRON);
-                    exonsToAdd.add(exon);
+            Iterator<Region> regionIter = mapping.getRegions().iterator();
+            while (regionIter.hasNext()) {
+                Region current = regionIter.next();
+                if (current.equals(mapping.getRegions().first())) {
+                    continue;
                 }
+                Region previous = mapping.getRegions().floor(current);
 
-            } else {
+                if (previous == null || current.equals(previous)) {
+                    continue;
+                }
 
                 if (previous.getGenomeStop() + 1 != current.getGenomeStart()) {
                     Region exon = new Region();
+                    exon.setRegionType(RegionType.INTRON);
                     exon.setGenomeStart(previous.getGenomeStop() + 1);
                     exon.setGenomeStop(current.getGenomeStart() - 1);
-                    exon.setRegionType(RegionType.INTRON);
-                    exonsToAdd.add(exon);
+                    regions.add(exon);
                 }
+            }
 
+        } else {
+
+            Iterator<Region> regionIter = mapping.getRegions().iterator();
+            while (regionIter.hasNext()) {
+                Region current = regionIter.next();
+                if (current.equals(mapping.getRegions().first())) {
+                    continue;
+                }
+                Region previous = mapping.getRegions().floor(current);
+
+                if (current.equals(previous)) {
+                    continue;
+                }
+                if (previous.getGenomeStop() + 1 != current.getGenomeStart()) {
+                    Region exon = new Region();
+                    exon.setRegionType(RegionType.INTRON);
+                    exon.setGenomeStart(previous.getGenomeStop() + 1);
+                    exon.setGenomeStop(current.getGenomeStart() - 1);
+                    regions.add(exon);
+                }
             }
 
         }
 
-        mapping.getRegions().addAll(exonsToAdd);
+        mapping.getRegions().addAll(regions);
 
     }
 
