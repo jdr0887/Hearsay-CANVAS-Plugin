@@ -377,7 +377,7 @@ public class PullTranscriptsRunnable implements Runnable {
 
                 Region utr3 = new Region();
                 utr3.setRegionType(org.renci.hearsay.dao.model.RegionType.UTR3);
-                utr3.setGenomeStart(lastRegion.getGenomeStop());
+                utr3.setGenomeStart(lastRegion.getGenomeStart());
                 int startTranscript = lastRegion.getTranscriptStart();
                 utr3.setTranscriptStart(startTranscript);
                 int stopTranscript = regionStop + 1;
@@ -386,7 +386,6 @@ public class PullTranscriptsRunnable implements Runnable {
                 utr3.setGenomeStop(utr3.getGenomeStart() + diff);
                 mapping.getRegions().add(utr3);
 
-                lastRegion.setGenomeStop(lastRegion.getGenomeStart());
                 lastRegion.setGenomeStart(utr3.getGenomeStop() + 1);
                 lastRegion.setTranscriptStart(regionStop);
 
@@ -442,23 +441,23 @@ public class PullTranscriptsRunnable implements Runnable {
 
         if (mapping.getStrandType().equals(StrandType.MINUS)) {
 
-            Iterator<Region> regionIter = mapping.getRegions().iterator();
+            Iterator<Region> regionIter = mapping.getRegions().descendingIterator();
             while (regionIter.hasNext()) {
                 Region current = regionIter.next();
                 if (current.equals(mapping.getRegions().first())) {
                     continue;
                 }
-                Region previous = mapping.getRegions().floor(current);
+                Region previous = mapping.getRegions().higher(current);
 
-                if (current.equals(previous)) {
+                if (previous == null || current.equals(previous)) {
                     continue;
                 }
 
-                if (previous.getGenomeStop() + 1 != current.getGenomeStart()) {
+                if (current.getGenomeStop() + 1 != previous.getGenomeStart()) {
                     Region exon = new Region();
                     exon.setRegionType(RegionType.INTRON);
-                    exon.setGenomeStart(previous.getGenomeStop() + 1);
-                    exon.setGenomeStop(current.getGenomeStart() - 1);
+                    exon.setGenomeStart(current.getGenomeStop() + 1);
+                    exon.setGenomeStop(previous.getGenomeStart() - 1);
                     regions.add(exon);
                 }
             }
@@ -476,6 +475,7 @@ public class PullTranscriptsRunnable implements Runnable {
                 if (current.equals(previous)) {
                     continue;
                 }
+
                 if (previous.getGenomeStop() + 1 != current.getGenomeStart()) {
                     Region exon = new Region();
                     exon.setRegionType(RegionType.INTRON);
