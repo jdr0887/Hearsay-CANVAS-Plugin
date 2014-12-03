@@ -313,8 +313,6 @@ public class PullTranscriptsRunnable implements Runnable {
 
         } else {
 
-            int strand = 1;
-
             for (Region region : mapping.getRegions()) {
                 if (regionStart > region.getTranscriptStop()) {
                     region.setRegionType(org.renci.hearsay.dao.model.RegionType.UTR5);
@@ -331,7 +329,7 @@ public class PullTranscriptsRunnable implements Runnable {
                 }
             }
 
-            Region nextRegion = mapping.getRegions().ceiling(firstRegion);
+            Region nextRegion = mapping.getRegions().higher(firstRegion);
 
             if (regionStart > firstRegion.getTranscriptStop()) {
                 Region utr5 = new Region();
@@ -342,7 +340,7 @@ public class PullTranscriptsRunnable implements Runnable {
                 int stopTranscript = regionStart - 1;
                 utr5.setTranscriptStop(stopTranscript);
                 int diff = startTranscript - stopTranscript;
-                utr5.setGenomeStop(nextRegion.getGenomeStart() - (strand * diff));
+                utr5.setGenomeStop(nextRegion.getGenomeStart() - (1 * diff));
                 mapping.getRegions().add(utr5);
 
                 nextRegion.setGenomeStart(utr5.getGenomeStop() + 1);
@@ -452,7 +450,7 @@ public class PullTranscriptsRunnable implements Runnable {
                 }
                 Region previous = mapping.getRegions().floor(current);
 
-                if (previous == null || current.equals(previous)) {
+                if (current.equals(previous)) {
                     continue;
                 }
 
@@ -473,7 +471,7 @@ public class PullTranscriptsRunnable implements Runnable {
                 if (current.equals(mapping.getRegions().first())) {
                     continue;
                 }
-                Region previous = mapping.getRegions().floor(current);
+                Region previous = mapping.getRegions().lower(current);
 
                 if (current.equals(previous)) {
                     continue;

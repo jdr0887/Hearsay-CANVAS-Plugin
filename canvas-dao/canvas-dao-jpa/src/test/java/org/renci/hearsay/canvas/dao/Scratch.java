@@ -127,11 +127,11 @@ public class Scratch {
             // List<TranscriptMapsExons> pulledExons = canvasDAOBean.getTranscriptMapsExonsDAO()
             // .findByGenomeRefIdAndRefSeqVersion(Integer.valueOf(genomeRefId), refSeqVersion);
 
-            List<TranscriptMapsExons> pulledExons = canvasDAOBean.getTranscriptMapsExonsDAO()
-                    .findByGenomeRefIdAndRefSeqVersionAndAccession(genomeRefId, refSeqVersion, "XM_005277470.1");
-
             // List<TranscriptMapsExons> pulledExons = canvasDAOBean.getTranscriptMapsExonsDAO()
-            // .findByGenomeRefIdAndRefSeqVersionAndAccession(genomeRefId, refSeqVersion, "NM_000059.3");
+            // .findByGenomeRefIdAndRefSeqVersionAndAccession(genomeRefId, refSeqVersion, "XM_005277470.1");
+
+            List<TranscriptMapsExons> pulledExons = canvasDAOBean.getTranscriptMapsExonsDAO()
+                    .findByGenomeRefIdAndRefSeqVersionAndAccession(genomeRefId, refSeqVersion, "NM_000059.3");
 
             if (pulledExons != null && !pulledExons.isEmpty()) {
                 mapsExonsResults.addAll(pulledExons);
@@ -327,14 +327,6 @@ public class Scratch {
                         System.out.println();
 
                         addUTR5s(mapping, regionStart);
-                        
-                        navigableRegionIter = mapping.getRegions().iterator();
-                        while (navigableRegionIter.hasNext()) {
-                            System.out.println(navigableRegionIter.next().toString());
-                        }
-                        System.out.println();
-                        System.out.println();
-                        
                         addUTR3s(mapping, regionEnd);
                         addCDSCoordinates(mapping, regionStart);
                     }
@@ -451,8 +443,6 @@ public class Scratch {
 
         } else {
 
-            int strand = 1;
-
             for (Region region : mapping.getRegions()) {
                 if (regionStart > region.getTranscriptStop()) {
                     region.setRegionType(org.renci.hearsay.dao.model.RegionType.UTR5);
@@ -469,7 +459,7 @@ public class Scratch {
                 }
             }
 
-            Region nextRegion = mapping.getRegions().ceiling(firstRegion);
+            Region nextRegion = mapping.getRegions().higher(firstRegion);
 
             if (regionStart > firstRegion.getTranscriptStop()) {
                 Region utr5 = new Region();
@@ -480,7 +470,7 @@ public class Scratch {
                 int stopTranscript = regionStart - 1;
                 utr5.setTranscriptStop(stopTranscript);
                 int diff = startTranscript - stopTranscript;
-                utr5.setGenomeStop(nextRegion.getGenomeStart() - (strand * diff));
+                utr5.setGenomeStop(nextRegion.getGenomeStart() - (1 * diff));
                 mapping.getRegions().add(utr5);
 
                 nextRegion.setGenomeStart(utr5.getGenomeStop() + 1);
@@ -592,7 +582,7 @@ public class Scratch {
                 }
                 Region previous = mapping.getRegions().floor(current);
 
-                if (previous == null || current.equals(previous)) {
+                if (current.equals(previous)) {
                     continue;
                 }
 
@@ -613,11 +603,12 @@ public class Scratch {
                 if (current.equals(mapping.getRegions().first())) {
                     continue;
                 }
-                Region previous = mapping.getRegions().floor(current);
+                Region previous = mapping.getRegions().lower(current);
 
                 if (current.equals(previous)) {
                     continue;
                 }
+                
                 if (previous.getGenomeStop() + 1 != current.getGenomeStart()) {
                     Region exon = new Region();
                     exon.setRegionType(RegionType.INTRON);
