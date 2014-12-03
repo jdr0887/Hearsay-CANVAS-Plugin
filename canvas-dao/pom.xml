@@ -2,13 +2,13 @@
   <parent>
     <groupId>org.renci.hearsay.plugin</groupId>
     <artifactId>canvas</artifactId>
-    <version>0.0.30-SNAPSHOT</version>
+    <version>0.0.30</version>
   </parent>
   <name>Hearsay :: Plugin :: CANVAS :: DAO</name>
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.renci.hearsay.plugin.canvas</groupId>
   <artifactId>canvas-dao</artifactId>
-  <version>0.0.30-SNAPSHOT</version>
+  <version>0.0.30</version>
   <packaging>pom</packaging>
   <modules>
     <module>canvas-dao-api</module>
