@@ -95,12 +95,20 @@ public class Region implements Comparable<Region> {
 
     @Override
     public String toString() {
+
+        // if (regionType == null) {
+        // return String
+        // .format("Region [number=%s, genomeStart=%s, genomeStop=%s, transcriptStart=%s, transcriptStop=%s, contigStart=%s, contigStop=%s]",
+        // number, genomeStart, genomeStop, transcriptStart, transcriptStop, contigStart, contigStop);
+        // }
         // return String
         // .format("Region [number=%s, genomeStart=%s, genomeStop=%s, transcriptStart=%s, transcriptStop=%s, contigStart=%s, contigStop=%s, regionType=%s]",
         // number, genomeStart, genomeStop, transcriptStart, transcriptStop, contigStart, contigStop,
         // regionType.toString());
-        return String.format("%d\t%d\t%s\t%d\t%d", genomeStart, genomeStop, regionType.toString(), transcriptStart,
-                transcriptStop);
+
+        return String.format("%d\t%d\t%s\t%s\t%s", genomeStart, genomeStop, regionType.toString(),
+                transcriptStart == null ? "" : transcriptStart.toString(),
+                transcriptStop == null ? "" : transcriptStop.toString());
     }
 
     @Override
@@ -176,10 +184,16 @@ public class Region implements Comparable<Region> {
         if (ret == 0 && this.transcriptStart != null && e.getTranscriptStart() != null) {
             ret = this.transcriptStart.compareTo(e.getTranscriptStart());
         }
-        if (ret == 0) {
+        if (ret == 0 && this.genomeStop != null && e.getGenomeStop() != null) {
+            ret = this.genomeStop.compareTo(e.getGenomeStop());
+        }
+        if (ret == 0 && this.transcriptStop != null && e.getTranscriptStop() != null) {
+            ret = this.transcriptStop.compareTo(e.getTranscriptStop());
+        }
+        if (ret == 0 && this.regionType != null) {
             switch (this.regionType) {
                 case UTR3:
-                    ret -= 10;
+                    ret -= 2;
                     break;
                 case EXON:
                     ret -= 1;
@@ -188,7 +202,7 @@ public class Region implements Comparable<Region> {
                     ret += 1;
                     break;
                 case UTR5:
-                    ret += 10;
+                    ret += 2;
                     break;
             }
         }
