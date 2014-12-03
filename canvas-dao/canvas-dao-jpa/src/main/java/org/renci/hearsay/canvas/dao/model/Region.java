@@ -190,24 +190,14 @@ public class Region implements Comparable<Region> {
         if (ret == 0 && this.transcriptStop != null && e.getTranscriptStop() != null) {
             ret = this.transcriptStop.compareTo(e.getTranscriptStop());
         }
-        if (ret == 0 && this.regionType != null) {
-            switch (this.regionType) {
-                case UTR3:
-                    ret -= 2;
-                    break;
-                case EXON:
-                    ret -= 1;
-                    break;
-                case INTRON:
-                    ret += 1;
-                    break;
-                case UTR5:
-                    ret += 2;
-                    break;
-            }
-        }
         if (ret == 0 && this.contigStart != null && e.getContigStart() != null) {
             ret = this.contigStart.compareTo(e.getContigStart());
+        }
+        if (ret == 0 && this.contigStop != null && e.getContigStop() != null) {
+            ret = this.contigStop.compareTo(e.getContigStop());
+        }
+        if (ret == 0 && this.regionType != null) {
+            ret = this.regionType.compareTo(e.getRegionType());
         }
         return ret;
     }
