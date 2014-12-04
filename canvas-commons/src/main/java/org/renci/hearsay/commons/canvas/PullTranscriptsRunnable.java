@@ -294,7 +294,8 @@ public class PullTranscriptsRunnable implements Runnable {
                 }
             }
 
-            if (regionStart > firstRegion.getTranscriptStop()) {
+	    if (firstRegion != null) {
+	      if (regionStart > firstRegion.getTranscriptStop()) {
                 Region utr5 = new Region();
                 utr5.setRegionType(org.renci.hearsay.dao.model.RegionType.UTR5);
                 int startTranscript = firstRegion.getTranscriptStop();
@@ -305,10 +306,12 @@ public class PullTranscriptsRunnable implements Runnable {
                 utr5.setTranscriptStart(regionStart - 1);
                 utr5.setTranscriptStop(firstRegion.getTranscriptStop());
                 mapping.getRegions().add(utr5);
-
+		
                 firstRegion.setGenomeStop(utr5.getGenomeStart() - 1);
                 firstRegion.setTranscriptStop(regionStart);
-            }
+	      }
+	    }
+
 
         } else {
 
