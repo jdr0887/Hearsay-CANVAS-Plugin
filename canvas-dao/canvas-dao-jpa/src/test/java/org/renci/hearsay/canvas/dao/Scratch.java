@@ -127,8 +127,11 @@ public class Scratch {
             // List<TranscriptMapsExons> pulledExons = canvasDAOBean.getTranscriptMapsExonsDAO()
             // .findByGenomeRefIdAndRefSeqVersion(Integer.valueOf(genomeRefId), refSeqVersion);
 
+            // List<TranscriptMapsExons> pulledExons = canvasDAOBean.getTranscriptMapsExonsDAO()
+            // .findByGenomeRefIdAndRefSeqVersionAndAccession(genomeRefId, refSeqVersion, "XM_005277470.1");
+
             List<TranscriptMapsExons> pulledExons = canvasDAOBean.getTranscriptMapsExonsDAO()
-                    .findByGenomeRefIdAndRefSeqVersionAndAccession(genomeRefId, refSeqVersion, "XM_005277470.1");
+                    .findByGenomeRefIdAndRefSeqVersionAndAccession(genomeRefId, refSeqVersion, "NM_001025389.1");
 
             // List<TranscriptMapsExons> pulledExons = canvasDAOBean.getTranscriptMapsExonsDAO()
             // .findByGenomeRefIdAndRefSeqVersionAndAccession(genomeRefId, refSeqVersion, "NM_000059.3");
@@ -242,10 +245,9 @@ public class Scratch {
                         List<TranscriptRefSeq> alreadyPersistedTranscriptList = hearsayDAOBean.getTranscriptRefSeqDAO()
                                 .findByExample(transcriptRefSeq);
                         if (alreadyPersistedTranscriptList != null && alreadyPersistedTranscriptList.isEmpty()) {
-                            hearsayEM.getTransaction().begin();
-                            Long id = hearsayDAOBean.getTranscriptRefSeqDAO().save(transcriptRefSeq);
-                            hearsayEM.getTransaction().commit();
-                            transcriptRefSeq.setId(id);
+                            // hearsayEM.getTransaction().begin();
+                            // transcriptRefSeq.setId(hearsayDAOBean.getTranscriptRefSeqDAO().save(transcriptRefSeq));
+                            // hearsayEM.getTransaction().commit();
 
                             List<Feature> canvasFeatures = canvasDAOBean.getFeatureDAO()
                                     .findByRefSeqVersionAndTranscriptId(refSeqVersion, key.getVersionId());
