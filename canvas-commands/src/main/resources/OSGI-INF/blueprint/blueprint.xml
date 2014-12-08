@@ -4,17 +4,22 @@
   <command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.1.0">
     <command>
       <action class="org.renci.hearsay.commands.canvas.PullFeaturesAction">
-        <property name="runnable" ref="featuresRunnable" />
+        <property name="runnable" ref="pullFeaturesRunnable" />
       </action>
     </command>
     <command>
       <action class="org.renci.hearsay.commands.canvas.PullVariantsAction">
-        <property name="runnable" ref="variantsRunnable" />
+        <property name="runnable" ref="pullVariantsRunnable" />
+      </action>
+    </command>
+    <command>
+      <action class="org.renci.hearsay.commands.canvas.DeleteTranscriptAlignmentsAction">
+        <property name="runnable" ref="deleteTranscriptAlignmentsRunnable" />
       </action>
     </command>
     <command>
       <action class="org.renci.hearsay.commands.canvas.PullTranscriptsAction">
-        <property name="runnable" ref="transcriptsRunnable" />
+        <property name="runnable" ref="pullTranscriptsRunnable" />
       </action>
     </command>
   </command-bundle>
@@ -83,17 +88,21 @@
     <property name="variants_61_2_DAO" ref="variants_61_2_DAO" />
   </bean>
 
-  <bean id="transcriptsRunnable" class="org.renci.hearsay.commons.canvas.PullTranscriptsRunnable">
+  <bean id="pullTranscriptsRunnable" class="org.renci.hearsay.commons.canvas.PullTranscriptsRunnable">
     <property name="canvasDAOBean" ref="canvasDAOBean" />
     <property name="hearsayDAOBean" ref="hearsayDAOBean" />
   </bean>
 
-  <bean id="featuresRunnable" class="org.renci.hearsay.commons.canvas.PullFeaturesRunnable">
+  <bean id="deleteTranscriptAlignmentsRunnable" class="org.renci.hearsay.commons.canvas.DeleteTranscriptAlignmentsRunnable">
+    <property name="hearsayDAOBean" ref="hearsayDAOBean" />
+  </bean>
+
+  <bean id="pullFeaturesRunnable" class="org.renci.hearsay.commons.canvas.PullFeaturesRunnable">
     <property name="canvasDAOBean" ref="canvasDAOBean" />
     <property name="hearsayDAOBean" ref="hearsayDAOBean" />
   </bean>
 
-  <bean id="variantsRunnable" class="org.renci.hearsay.commons.canvas.PullVariantsRunnable">
+  <bean id="pullVariantsRunnable" class="org.renci.hearsay.commons.canvas.PullVariantsRunnable">
     <property name="canvasDAOBean" ref="canvasDAOBean" />
     <property name="hearsayDAOBean" ref="hearsayDAOBean" />
   </bean>
