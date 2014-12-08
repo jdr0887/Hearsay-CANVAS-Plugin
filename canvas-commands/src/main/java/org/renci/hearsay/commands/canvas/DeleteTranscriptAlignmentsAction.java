@@ -9,7 +9,7 @@ import org.renci.hearsay.commons.canvas.DeleteTranscriptAlignmentsRunnable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Command(scope = "canvas", name = "pull-transcripts", description = "Pull Transcripts")
+@Command(scope = "canvas", name = "delete-transcript-alignments", description = "Delete Transcript Alignments")
 public class DeleteTranscriptAlignmentsAction extends AbstractAction {
 
     private final Logger logger = LoggerFactory.getLogger(DeleteTranscriptAlignmentsAction.class);
