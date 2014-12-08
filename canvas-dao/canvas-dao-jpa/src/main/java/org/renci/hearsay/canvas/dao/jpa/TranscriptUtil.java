@@ -173,7 +173,6 @@ public class TranscriptUtil {
 
                 lastRegion.setGenomeStop(lastRegion.getGenomeStart() + (regionStop - lastRegion.getTranscriptStart()));
                 lastRegion.setTranscriptStop(regionStop);
-                System.out.println();
             }
 
         }
