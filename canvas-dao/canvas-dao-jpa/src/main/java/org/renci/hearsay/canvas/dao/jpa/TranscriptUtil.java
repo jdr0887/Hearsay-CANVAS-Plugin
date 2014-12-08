@@ -191,7 +191,7 @@ public class TranscriptUtil {
                 if (current.equals(mapping.getRegions().first())) {
                     continue;
                 }
-                Region previous = mapping.getRegions().higher(current);
+                Region previous = mapping.getRegions().lower(current);
 
                 if (previous == null || current.equals(previous)) {
                     continue;
@@ -200,8 +200,8 @@ public class TranscriptUtil {
                 if (current.getGenomeStop() + 1 != previous.getGenomeStart()) {
                     Region exon = new Region();
                     exon.setRegionType(RegionType.INTRON);
-                    exon.setGenomeStart(current.getGenomeStop() + 1);
-                    exon.setGenomeStop(previous.getGenomeStart() - 1);
+                    exon.setGenomeStart(previous.getGenomeStop() + 1);
+                    exon.setGenomeStop(current.getGenomeStart() - 1);
                     regions.add(exon);
                 }
             }
