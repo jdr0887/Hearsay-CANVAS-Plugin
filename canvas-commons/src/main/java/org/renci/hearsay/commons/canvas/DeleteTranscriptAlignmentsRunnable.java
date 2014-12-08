@@ -6,6 +6,7 @@ import java.util.Set;
 
 import org.renci.hearsay.dao.HearsayDAOBean;
 import org.renci.hearsay.dao.HearsayDAOException;
+import org.renci.hearsay.dao.model.Region;
 import org.renci.hearsay.dao.model.TranscriptAlignment;
 import org.renci.hearsay.dao.model.TranscriptRefSeq;
 import org.slf4j.Logger;
@@ -31,6 +32,16 @@ public class DeleteTranscriptAlignmentsRunnable implements Runnable {
                 for (TranscriptRefSeq transcriptRefSeq : transcriptRefSeqs) {
                     Set<TranscriptAlignment> alignmentSet = transcriptRefSeq.getAlignments();
                     if (alignmentSet != null && !alignmentSet.isEmpty()) {
+                        
+                        for (TranscriptAlignment alignment : alignmentSet) {
+                            Set<Region> regionSet = alignment.getRegions();
+                            if (regionSet != null && !regionSet.isEmpty()) {
+                                List<Region> regions = new ArrayList<Region>();
+                                regions.addAll(regionSet);
+                                hearsayDAOBean.getRegionDAO().delete(regions);
+                            }
+                        }
+                        
                         List<TranscriptAlignment> alignments = new ArrayList<TranscriptAlignment>();
                         alignments.addAll(alignmentSet);
                         hearsayDAOBean.getTranscriptAlignmentDAO().delete(alignments);
