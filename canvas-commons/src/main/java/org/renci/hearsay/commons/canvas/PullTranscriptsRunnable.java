@@ -9,7 +9,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.renci.hearsay.canvas.dao.CANVASDAOBean;
-import org.renci.hearsay.canvas.dao.TranscriptUtil;
+import org.renci.hearsay.canvas.dao.jpa.TranscriptUtil;
 import org.renci.hearsay.canvas.dao.model.Mapping;
 import org.renci.hearsay.canvas.dao.model.MappingKey;
 import org.renci.hearsay.canvas.dao.model.Region;

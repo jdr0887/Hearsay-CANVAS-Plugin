@@ -15,6 +15,7 @@ import javax.persistence.Persistence;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.renci.hearsay.canvas.dao.jpa.TranscriptUtil;
 import org.renci.hearsay.canvas.dao.model.Mapping;
 import org.renci.hearsay.canvas.dao.model.MappingKey;
 import org.renci.hearsay.canvas.dao.model.Region;
