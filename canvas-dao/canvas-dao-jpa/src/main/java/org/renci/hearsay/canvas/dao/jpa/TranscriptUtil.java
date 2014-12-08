@@ -42,7 +42,7 @@ public class TranscriptUtil {
                 }
             }
 
-            if (regionStart > firstRegion.getTranscriptStop()) {
+            if (firstRegion != null && regionStart > firstRegion.getTranscriptStop()) {
                 Region utr5 = new Region();
                 utr5.setRegionType(org.renci.hearsay.dao.model.RegionType.UTR5);
                 int startTranscript = firstRegion.getTranscriptStop();
@@ -56,7 +56,6 @@ public class TranscriptUtil {
 
                 firstRegion.setGenomeStop(utr5.getGenomeStart() - 1);
                 firstRegion.setTranscriptStop(regionStart);
-
             }
 
         } else {
@@ -77,23 +76,24 @@ public class TranscriptUtil {
                 }
             }
 
-            Region nextRegion = mapping.getRegions().higher(firstRegion);
+            if (firstRegion != null) {
+                Region nextRegion = mapping.getRegions().higher(firstRegion);
 
-            if (regionStart > firstRegion.getTranscriptStop()) {
-                Region utr5 = new Region();
-                utr5.setRegionType(org.renci.hearsay.dao.model.RegionType.UTR5);
-                utr5.setGenomeStart(nextRegion.getGenomeStart());
-                int startTranscript = firstRegion.getTranscriptStop() + 1;
-                utr5.setTranscriptStart(startTranscript);
-                int stopTranscript = regionStart - 1;
-                utr5.setTranscriptStop(stopTranscript);
-                int diff = startTranscript - stopTranscript;
-                utr5.setGenomeStop(nextRegion.getGenomeStart() - (1 * diff));
-                mapping.getRegions().add(utr5);
+                if (regionStart > firstRegion.getTranscriptStop()) {
+                    Region utr5 = new Region();
+                    utr5.setRegionType(org.renci.hearsay.dao.model.RegionType.UTR5);
+                    utr5.setGenomeStart(nextRegion.getGenomeStart());
+                    int startTranscript = firstRegion.getTranscriptStop() + 1;
+                    utr5.setTranscriptStart(startTranscript);
+                    int stopTranscript = regionStart - 1;
+                    utr5.setTranscriptStop(stopTranscript);
+                    int diff = startTranscript - stopTranscript;
+                    utr5.setGenomeStop(nextRegion.getGenomeStart() - (1 * diff));
+                    mapping.getRegions().add(utr5);
 
-                nextRegion.setGenomeStart(utr5.getGenomeStop() + 1);
-                nextRegion.setTranscriptStart(regionStart);
-                System.out.println();
+                    nextRegion.setGenomeStart(utr5.getGenomeStop() + 1);
+                    nextRegion.setTranscriptStart(regionStart);
+                }
             }
 
         }
@@ -122,7 +122,7 @@ public class TranscriptUtil {
                 }
             }
 
-            if (regionStop > lastRegion.getTranscriptStop()) {
+            if (lastRegion != null && regionStop > lastRegion.getTranscriptStop()) {
 
                 Region utr3 = new Region();
                 utr3.setRegionType(org.renci.hearsay.dao.model.RegionType.UTR3);
@@ -159,26 +159,21 @@ public class TranscriptUtil {
                 }
             }
 
-            if (lastRegion != null) {
+            if (lastRegion != null && lastRegion.getTranscriptStop() > regionStop) {
+                Region utr3 = new Region();
+                utr3.setRegionType(org.renci.hearsay.dao.model.RegionType.UTR3);
+                int startTranscript = lastRegion.getTranscriptStop();
+                utr3.setTranscriptStop(startTranscript);
+                int stopTranscript = regionStop + 1;
+                utr3.setTranscriptStart(stopTranscript);
+                int diff = startTranscript - stopTranscript;
+                utr3.setGenomeStop(lastRegion.getGenomeStop());
+                utr3.setGenomeStart(lastRegion.getGenomeStop() - diff);
+                mapping.getRegions().add(utr3);
 
-                if (lastRegion.getTranscriptStop() > regionStop) {
-                    Region utr3 = new Region();
-                    utr3.setRegionType(org.renci.hearsay.dao.model.RegionType.UTR3);
-                    int startTranscript = lastRegion.getTranscriptStop();
-                    utr3.setTranscriptStop(startTranscript);
-                    int stopTranscript = regionStop + 1;
-                    utr3.setTranscriptStart(stopTranscript);
-                    int diff = startTranscript - stopTranscript;
-                    utr3.setGenomeStop(lastRegion.getGenomeStop());
-                    utr3.setGenomeStart(lastRegion.getGenomeStop() - diff);
-                    mapping.getRegions().add(utr3);
-
-                    lastRegion.setGenomeStop(lastRegion.getGenomeStart()
-                            + (regionStop - lastRegion.getTranscriptStart()));
-                    lastRegion.setTranscriptStop(regionStop);
-                    System.out.println();
-                }
-
+                lastRegion.setGenomeStop(lastRegion.getGenomeStart() + (regionStop - lastRegion.getTranscriptStart()));
+                lastRegion.setTranscriptStop(regionStop);
+                System.out.println();
             }
 
         }
@@ -222,7 +217,7 @@ public class TranscriptUtil {
                 }
                 Region previous = mapping.getRegions().lower(current);
 
-                if (current.equals(previous)) {
+                if (previous == null || current.equals(previous)) {
                     continue;
                 }
 
