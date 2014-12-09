@@ -183,52 +183,25 @@ public class TranscriptUtil {
 
         List<Region> regions = new ArrayList<Region>();
 
-        if (mapping.getStrandType().equals(StrandType.MINUS)) {
+        Iterator<Region> regionIter = mapping.getRegions().iterator();
+        while (regionIter.hasNext()) {
+            Region current = regionIter.next();
+            if (current.equals(mapping.getRegions().first())) {
+                continue;
+            }
+            Region previous = mapping.getRegions().lower(current);
 
-            Iterator<Region> regionIter = mapping.getRegions().descendingIterator();
-            while (regionIter.hasNext()) {
-                Region current = regionIter.next();
-                if (current.equals(mapping.getRegions().first())) {
-                    continue;
-                }
-                Region previous = mapping.getRegions().lower(current);
-
-                if (previous == null || current.equals(previous)) {
-                    continue;
-                }
-
-                if (current.getGenomeStop() + 1 != previous.getGenomeStart()) {
-                    Region exon = new Region();
-                    exon.setRegionType(RegionType.INTRON);
-                    exon.setGenomeStart(previous.getGenomeStop() + 1);
-                    exon.setGenomeStop(current.getGenomeStart() - 1);
-                    regions.add(exon);
-                }
+            if (previous == null || current.equals(previous)) {
+                continue;
             }
 
-        } else {
-
-            Iterator<Region> regionIter = mapping.getRegions().iterator();
-            while (regionIter.hasNext()) {
-                Region current = regionIter.next();
-                if (current.equals(mapping.getRegions().first())) {
-                    continue;
-                }
-                Region previous = mapping.getRegions().lower(current);
-
-                if (previous == null || current.equals(previous)) {
-                    continue;
-                }
-
-                if (previous.getGenomeStop() + 1 != current.getGenomeStart()) {
-                    Region exon = new Region();
-                    exon.setRegionType(RegionType.INTRON);
-                    exon.setGenomeStart(previous.getGenomeStop() + 1);
-                    exon.setGenomeStop(current.getGenomeStart() - 1);
-                    regions.add(exon);
-                }
+            if (previous.getGenomeStop() + 1 != current.getGenomeStart()) {
+                Region exon = new Region();
+                exon.setRegionType(RegionType.INTRON);
+                exon.setGenomeStart(previous.getGenomeStop() + 1);
+                exon.setGenomeStop(current.getGenomeStart() - 1);
+                regions.add(exon);
             }
-
         }
 
         mapping.getRegions().addAll(regions);
