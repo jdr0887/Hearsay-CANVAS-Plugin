@@ -136,8 +136,14 @@ public class Scratch {
             // List<TranscriptMapsExons> pulledExons = canvasDAOBean.getTranscriptMapsExonsDAO()
             // .findByGenomeRefIdAndRefSeqVersionAndAccession(genomeRefId, refSeqVersion, "NR_027676.1");
 
+            // List<TranscriptMapsExons> pulledExons = canvasDAOBean.getTranscriptMapsExonsDAO()
+            // .findByGenomeRefIdAndRefSeqVersionAndAccession(genomeRefId, refSeqVersion, "NM_000059.3");
+
+            // List<TranscriptMapsExons> pulledExons = canvasDAOBean.getTranscriptMapsExonsDAO()
+            // .findByGenomeRefIdAndRefSeqVersionAndAccession(genomeRefId, refSeqVersion, "NM_024429.1");
+
             List<TranscriptMapsExons> pulledExons = canvasDAOBean.getTranscriptMapsExonsDAO()
-                    .findByGenomeRefIdAndRefSeqVersionAndAccession(genomeRefId, refSeqVersion, "NM_000059.3");
+                    .findByGenomeRefIdAndRefSeqVersionAndAccession(genomeRefId, refSeqVersion, "NM_004572.3");
 
             if (pulledExons != null && !pulledExons.isEmpty()) {
                 mapsExonsResults.addAll(pulledExons);
@@ -290,6 +296,8 @@ public class Scratch {
                     transcriptAlignment.setGenomicStart(regions.first().toRange().getMinimumInteger());
                     transcriptAlignment.setGenomicStop(regions.last().toRange().getMaximumInteger());
 
+                    System.out.println(transcriptAlignment.toString());
+
                     List<RefSeqCodingSequence> refSeqCodingSequenceResults = null;
                     try {
                         refSeqCodingSequenceResults = canvasDAOBean.getRefSeqCodingSequenceDAO()
@@ -324,25 +332,11 @@ public class Scratch {
                         transcriptAlignment.setProteinRegionStart(regionStart);
                         transcriptAlignment.setProteinRegionStop(regionEnd);
 
-                        Iterator<Region> navigableRegionIter = mapping.getRegions().iterator();
-                        while (navigableRegionIter.hasNext()) {
-                            System.out.println(navigableRegionIter.next().toString());
-                        }
-                        System.out.println();
-                        System.out.println();
-
                         TranscriptUtil.addUTR5s(mapping, regionStart);
                         TranscriptUtil.addUTR3s(mapping, regionEnd);
                         TranscriptUtil.addCDSCoordinates(mapping, regionStart);
                     }
                     TranscriptUtil.addIntrons(mapping);
-
-                    Iterator<Region> navigableRegionIter = mapping.getRegions().iterator();
-                    while (navigableRegionIter.hasNext()) {
-                        System.out.println(navigableRegionIter.next().toString());
-                    }
-                    System.out.println();
-                    System.out.println();
 
                     // try {
                     // hearsayEM.getTransaction().begin();
@@ -358,13 +352,8 @@ public class Scratch {
                         org.renci.hearsay.dao.model.Region hearsayRegion = new org.renci.hearsay.dao.model.Region();
                         hearsayRegion.setTranscriptAlignment(transcriptAlignment);
                         hearsayRegion.setRegionType(region.getRegionType());
-                        // if (region.getGenomeStart() < region.getGenomeStop()) {
                         hearsayRegion.setRegionStart(region.getGenomeStart());
                         hearsayRegion.setRegionStop(region.getGenomeStop());
-                        // } else {
-                        // hearsayRegion.setRegionStop(region.getGenomeStart());
-                        // hearsayRegion.setRegionStart(region.getGenomeStop());
-                        // }
                         hearsayRegion.setTranscriptStart(region.getTranscriptStart());
                         hearsayRegion.setTranscriptStop(region.getTranscriptStop());
 
