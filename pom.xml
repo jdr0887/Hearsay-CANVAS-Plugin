@@ -2,7 +2,7 @@
   <parent>
     <groupId>org.renci.hearsay</groupId>
     <artifactId>parent</artifactId>
-    <version>0.0.4</version>
+    <version>0.0.5</version>
   </parent>
   <name>Hearsay :: Plugin :: CANVAS</name>
   <modelVersion>4.0.0</modelVersion>
@@ -14,7 +14,7 @@
     <karaf.version>3.0.1</karaf.version>
     <cxf.version>2.7.12</cxf.version>
     <jackson.version>2.4.1</jackson.version>
-    <hearsay.version>0.0.23</hearsay.version>
+    <hearsay.version>0.0.25</hearsay.version>
   </properties>
   <issueManagement>
     <system>GitHub Issues</system>
