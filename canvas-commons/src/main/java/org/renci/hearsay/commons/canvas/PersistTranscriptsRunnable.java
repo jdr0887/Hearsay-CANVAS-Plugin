@@ -43,51 +43,46 @@ public class PersistTranscriptsRunnable implements Runnable {
     public void run() {
         logger.debug("ENTERING call()");
 
-        List<RefSeqGene> refSeqGeneList = null;
+        Gene gene = null;
         try {
-            refSeqGeneList = canvasDAOBean.getRefSeqGeneDAO().findByRefSeqVersionAndTranscriptId(refSeqVersion,
-                    versionId);
+            List<RefSeqGene> refSeqGeneList = canvasDAOBean.getRefSeqGeneDAO().findByRefSeqVersionAndTranscriptId(
+                    refSeqVersion, versionId);
+            if (refSeqGeneList != null && !refSeqGeneList.isEmpty()) {
+                RefSeqGene refSeqGene = refSeqGeneList.get(0);
+                List<Gene> alreadyPersistedGeneList = hearsayDAOBean.getGeneDAO().findByName(refSeqGene.getName());
+                gene = alreadyPersistedGeneList.get(0);
+            }
         } catch (HearsayDAOException e) {
             e.printStackTrace();
         }
 
-        Gene gene = null;
-        if (refSeqGeneList != null && !refSeqGeneList.isEmpty()) {
-            RefSeqGene refSeqGene = refSeqGeneList.get(0);
-            try {
-                List<Gene> alreadyPersistedGeneList = hearsayDAOBean.getGeneDAO().findByName(refSeqGene.getName());
-                if (alreadyPersistedGeneList != null && alreadyPersistedGeneList.isEmpty()) {
-                    gene = new Gene();
-                    gene.setName(refSeqGene.getName());
-                    gene.setDescription(refSeqGene.getDescription());
-                    gene.setId(hearsayDAOBean.getGeneDAO().save(gene));
-                } else {
-                    gene = alreadyPersistedGeneList.get(0);
-                }
-            } catch (HearsayDAOException e) {
-                e.printStackTrace();
-            }
+        if (gene == null) {
+            logger.error("Gene not found");
+            return;
         }
         logger.info(gene.toString());
 
-        TreeSet<Region> regions = mapping.getRegions();
-
         TranscriptRefSeq transcriptRefSeq = new TranscriptRefSeq();
-        transcriptRefSeq.setGene(gene);
-        transcriptRefSeq.setAccession(versionId);
         try {
+            TranscriptRefSeq exampleTranscriptRefSeq = new TranscriptRefSeq();
+            exampleTranscriptRefSeq.setGene(gene);
+            exampleTranscriptRefSeq.setAccession(versionId);
             List<TranscriptRefSeq> alreadyPersistedTranscriptList = hearsayDAOBean.getTranscriptRefSeqDAO()
-                    .findByExample(transcriptRefSeq);
-            if (alreadyPersistedTranscriptList != null && alreadyPersistedTranscriptList.isEmpty()) {
-                Long id = hearsayDAOBean.getTranscriptRefSeqDAO().save(transcriptRefSeq);
-                transcriptRefSeq.setId(id);
-            } else {
+                    .findByExample(exampleTranscriptRefSeq);
+            if (alreadyPersistedTranscriptList != null && !alreadyPersistedTranscriptList.isEmpty()) {
                 transcriptRefSeq = alreadyPersistedTranscriptList.get(0);
             }
-            logger.info(transcriptRefSeq.toString());
         } catch (HearsayDAOException e) {
             e.printStackTrace();
         }
+
+        if (transcriptRefSeq == null) {
+            logger.error("TranscriptRefSeq not found");
+            return;
+        }
+        logger.info(transcriptRefSeq.toString());
+
+        TreeSet<Region> regions = mapping.getRegions();
 
         TranscriptAlignment transcriptAlignment = new TranscriptAlignment();
 
