@@ -67,7 +67,7 @@ public class TranscriptUtil {
             }
 
             Region firstRegion = null;
-            Iterator<Region> navigableRegionIter = mapping.getRegions().iterator();
+            Iterator<Region> navigableRegionIter = mapping.getRegions().descendingIterator();
             while (navigableRegionIter.hasNext()) {
                 Region r = navigableRegionIter.next();
                 if (regionStart > r.getTranscriptStop()) {
@@ -78,8 +78,7 @@ public class TranscriptUtil {
 
             if (firstRegion != null) {
                 Region nextRegion = mapping.getRegions().higher(firstRegion);
-
-                if (regionStart > firstRegion.getTranscriptStop()) {
+                if (nextRegion != null) {
                     Region utr5 = new Region();
                     utr5.setRegionType(org.renci.hearsay.dao.model.RegionType.UTR5);
                     utr5.setGenomeStart(nextRegion.getGenomeStart());
