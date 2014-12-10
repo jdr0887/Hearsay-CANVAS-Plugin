@@ -13,11 +13,6 @@
       </action>
     </command>
     <command>
-      <action class="org.renci.hearsay.commands.canvas.DeleteTranscriptAlignmentsAction">
-        <property name="runnable" ref="deleteTranscriptAlignmentsRunnable" />
-      </action>
-    </command>
-    <command>
       <action class="org.renci.hearsay.commands.canvas.PullTranscriptsAction">
         <property name="runnable" ref="pullTranscriptsRunnable" />
       </action>
@@ -90,10 +85,6 @@
 
   <bean id="pullTranscriptsRunnable" class="org.renci.hearsay.commons.canvas.PullTranscriptsRunnable">
     <property name="canvasDAOBean" ref="canvasDAOBean" />
-    <property name="hearsayDAOBean" ref="hearsayDAOBean" />
-  </bean>
-
-  <bean id="deleteTranscriptAlignmentsRunnable" class="org.renci.hearsay.commons.canvas.DeleteTranscriptAlignmentsRunnable">
     <property name="hearsayDAOBean" ref="hearsayDAOBean" />
   </bean>
 
