@@ -1,6 +1,10 @@
 package org.renci.hearsay.canvas.dao;
 
+import static org.junit.Assert.assertTrue;
+
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -127,23 +131,50 @@ public class Scratch {
             // List<TranscriptMapsExons> pulledExons = canvasDAOBean.getTranscriptMapsExonsDAO()
             // .findByGenomeRefIdAndRefSeqVersion(Integer.valueOf(genomeRefId), refSeqVersion);
 
-            // List<TranscriptMapsExons> pulledExons = canvasDAOBean.getTranscriptMapsExonsDAO()
-            // .findByGenomeRefIdAndRefSeqVersionAndAccession(genomeRefId, refSeqVersion, "XM_005277470.1");
-
-            // List<TranscriptMapsExons> pulledExons = canvasDAOBean.getTranscriptMapsExonsDAO()
-            // .findByGenomeRefIdAndRefSeqVersionAndAccession(genomeRefId, refSeqVersion, "NM_001025389.1");
-
-            // List<TranscriptMapsExons> pulledExons = canvasDAOBean.getTranscriptMapsExonsDAO()
-            // .findByGenomeRefIdAndRefSeqVersionAndAccession(genomeRefId, refSeqVersion, "NR_027676.1");
-
-            // List<TranscriptMapsExons> pulledExons = canvasDAOBean.getTranscriptMapsExonsDAO()
-            // .findByGenomeRefIdAndRefSeqVersionAndAccession(genomeRefId, refSeqVersion, "NM_000059.3");
-
-            // List<TranscriptMapsExons> pulledExons = canvasDAOBean.getTranscriptMapsExonsDAO()
-            // .findByGenomeRefIdAndRefSeqVersionAndAccession(genomeRefId, refSeqVersion, "NM_024429.1");
-
             List<TranscriptMapsExons> pulledExons = canvasDAOBean.getTranscriptMapsExonsDAO()
-                    .findByGenomeRefIdAndRefSeqVersionAndAccession(genomeRefId, refSeqVersion, "NM_004572.3");
+                    .findByGenomeRefIdAndRefSeqVersionAndAccession(genomeRefId, refSeqVersion, "XM_005277470.1");
+
+            if (pulledExons != null && !pulledExons.isEmpty()) {
+                mapsExonsResults.addAll(pulledExons);
+            }
+
+            pulledExons = canvasDAOBean.getTranscriptMapsExonsDAO().findByGenomeRefIdAndRefSeqVersionAndAccession(
+                    genomeRefId, refSeqVersion, "NM_001025389.1");
+
+            if (pulledExons != null && !pulledExons.isEmpty()) {
+                mapsExonsResults.addAll(pulledExons);
+            }
+
+            pulledExons = canvasDAOBean.getTranscriptMapsExonsDAO().findByGenomeRefIdAndRefSeqVersionAndAccession(
+                    genomeRefId, refSeqVersion, "NR_027676.1");
+
+            if (pulledExons != null && !pulledExons.isEmpty()) {
+                mapsExonsResults.addAll(pulledExons);
+            }
+
+            pulledExons = canvasDAOBean.getTranscriptMapsExonsDAO().findByGenomeRefIdAndRefSeqVersionAndAccession(
+                    genomeRefId, refSeqVersion, "NM_000059.3");
+
+            if (pulledExons != null && !pulledExons.isEmpty()) {
+                mapsExonsResults.addAll(pulledExons);
+            }
+
+            pulledExons = canvasDAOBean.getTranscriptMapsExonsDAO().findByGenomeRefIdAndRefSeqVersionAndAccession(
+                    genomeRefId, refSeqVersion, "NM_024429.1");
+
+            if (pulledExons != null && !pulledExons.isEmpty()) {
+                mapsExonsResults.addAll(pulledExons);
+            }
+
+            pulledExons = canvasDAOBean.getTranscriptMapsExonsDAO().findByGenomeRefIdAndRefSeqVersionAndAccession(
+                    genomeRefId, refSeqVersion, "NM_004572.3");
+
+            if (pulledExons != null && !pulledExons.isEmpty()) {
+                mapsExonsResults.addAll(pulledExons);
+            }
+
+            pulledExons = canvasDAOBean.getTranscriptMapsExonsDAO().findByGenomeRefIdAndRefSeqVersionAndAccession(
+                    genomeRefId, refSeqVersion, "XM_005276995.1");
 
             if (pulledExons != null && !pulledExons.isEmpty()) {
                 mapsExonsResults.addAll(pulledExons);
@@ -372,6 +403,27 @@ public class Scratch {
                         // }
                         transcriptAlignment.getRegions().add(hearsayRegion);
                     }
+
+                    List<org.renci.hearsay.dao.model.Region> sortedRegions = new ArrayList<org.renci.hearsay.dao.model.Region>(
+                            transcriptAlignment.getRegions());
+                    Collections.sort(sortedRegions, new Comparator<org.renci.hearsay.dao.model.Region>() {
+                        @Override
+                        public int compare(org.renci.hearsay.dao.model.Region o1, org.renci.hearsay.dao.model.Region o2) {
+                            return o1.getRegionStart().compareTo(o2.getRegionStart());
+                        }
+                    });
+
+                    if (sortedRegions != null && !sortedRegions.isEmpty()) {
+                        int previousRegionStop = 0;
+                        for (org.renci.hearsay.dao.model.Region region : sortedRegions) {
+                            System.out.println(region.toString());
+                            if (previousRegionStop != 0) {
+                                assertTrue(previousRegionStop + 1 == region.getRegionStart());
+                            }
+                            previousRegionStop = region.getRegionStop();
+                        }
+                    }
+
                     // try {
                     // hearsayEM.getTransaction().begin();
                     // transcriptAlignmentDAO.save(transcriptAlignment);
