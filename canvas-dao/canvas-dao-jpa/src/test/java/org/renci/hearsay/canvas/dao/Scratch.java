@@ -128,59 +128,34 @@ public class Scratch {
 
             List<TranscriptMapsExons> mapsExonsResults = new ArrayList<TranscriptMapsExons>();
 
-            // List<TranscriptMapsExons> pulledExons = canvasDAOBean.getTranscriptMapsExonsDAO()
-            // .findByGenomeRefIdAndRefSeqVersion(Integer.valueOf(genomeRefId), refSeqVersion);
+            // mapsExonsResults.addAll(canvasDAOBean.getTranscriptMapsExonsDAO().findByGenomeRefIdAndRefSeqVersion(
+            // Integer.valueOf(genomeRefId), refSeqVersion));
 
-            List<TranscriptMapsExons> pulledExons = canvasDAOBean.getTranscriptMapsExonsDAO()
-                    .findByGenomeRefIdAndRefSeqVersionAndAccession(genomeRefId, refSeqVersion, "XM_005277470.1");
+            mapsExonsResults.addAll(canvasDAOBean.getTranscriptMapsExonsDAO()
+                    .findByGenomeRefIdAndRefSeqVersionAndAccession(genomeRefId, refSeqVersion, "NM_005691.2"));
 
-            if (pulledExons != null && !pulledExons.isEmpty()) {
-                mapsExonsResults.addAll(pulledExons);
-            }
+            mapsExonsResults.addAll(canvasDAOBean.getTranscriptMapsExonsDAO()
+                    .findByGenomeRefIdAndRefSeqVersionAndAccession(genomeRefId, refSeqVersion, "NM_001025389.1"));
 
-            pulledExons = canvasDAOBean.getTranscriptMapsExonsDAO().findByGenomeRefIdAndRefSeqVersionAndAccession(
-                    genomeRefId, refSeqVersion, "NM_001025389.1");
+            mapsExonsResults.addAll(canvasDAOBean.getTranscriptMapsExonsDAO()
+                    .findByGenomeRefIdAndRefSeqVersionAndAccession(genomeRefId, refSeqVersion, "NR_027676.1"));
 
-            if (pulledExons != null && !pulledExons.isEmpty()) {
-                mapsExonsResults.addAll(pulledExons);
-            }
+            mapsExonsResults.addAll(canvasDAOBean.getTranscriptMapsExonsDAO()
+                    .findByGenomeRefIdAndRefSeqVersionAndAccession(genomeRefId, refSeqVersion, "NM_000059.3"));
 
-            pulledExons = canvasDAOBean.getTranscriptMapsExonsDAO().findByGenomeRefIdAndRefSeqVersionAndAccession(
-                    genomeRefId, refSeqVersion, "NR_027676.1");
+            mapsExonsResults.addAll(canvasDAOBean.getTranscriptMapsExonsDAO()
+                    .findByGenomeRefIdAndRefSeqVersionAndAccession(genomeRefId, refSeqVersion, "NM_024429.1"));
 
-            if (pulledExons != null && !pulledExons.isEmpty()) {
-                mapsExonsResults.addAll(pulledExons);
-            }
+            mapsExonsResults.addAll(canvasDAOBean.getTranscriptMapsExonsDAO()
+                    .findByGenomeRefIdAndRefSeqVersionAndAccession(genomeRefId, refSeqVersion, "NM_004572.3"));
 
-            pulledExons = canvasDAOBean.getTranscriptMapsExonsDAO().findByGenomeRefIdAndRefSeqVersionAndAccession(
-                    genomeRefId, refSeqVersion, "NM_000059.3");
+            mapsExonsResults.addAll(canvasDAOBean.getTranscriptMapsExonsDAO()
+                    .findByGenomeRefIdAndRefSeqVersionAndAccession(genomeRefId, refSeqVersion, "XM_005276995.1"));
 
-            if (pulledExons != null && !pulledExons.isEmpty()) {
-                mapsExonsResults.addAll(pulledExons);
-            }
+            mapsExonsResults.addAll(canvasDAOBean.getTranscriptMapsExonsDAO()
+                    .findByGenomeRefIdAndRefSeqVersionAndAccession(genomeRefId, refSeqVersion, "XM_005277470.1"));
 
-            pulledExons = canvasDAOBean.getTranscriptMapsExonsDAO().findByGenomeRefIdAndRefSeqVersionAndAccession(
-                    genomeRefId, refSeqVersion, "NM_024429.1");
-
-            if (pulledExons != null && !pulledExons.isEmpty()) {
-                mapsExonsResults.addAll(pulledExons);
-            }
-
-            pulledExons = canvasDAOBean.getTranscriptMapsExonsDAO().findByGenomeRefIdAndRefSeqVersionAndAccession(
-                    genomeRefId, refSeqVersion, "NM_004572.3");
-
-            if (pulledExons != null && !pulledExons.isEmpty()) {
-                mapsExonsResults.addAll(pulledExons);
-            }
-
-            pulledExons = canvasDAOBean.getTranscriptMapsExonsDAO().findByGenomeRefIdAndRefSeqVersionAndAccession(
-                    genomeRefId, refSeqVersion, "XM_005276995.1");
-
-            if (pulledExons != null && !pulledExons.isEmpty()) {
-                mapsExonsResults.addAll(pulledExons);
-            }
-
-            System.out.printf("pulledExons.size() = %s%n", pulledExons.size());
+            System.out.printf("pulledExons.size() = %s%n", mapsExonsResults.size());
 
             GenomeRef genomeRef = null;
             try {
