@@ -1,12 +1,11 @@
 package org.renci.hearsay.commons.canvas;
 
 import java.util.List;
-import java.util.Set;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import org.renci.hearsay.canvas.dao.CANVASDAOBean;
-import org.renci.hearsay.canvas.refseq.dao.model.Feature;
-import org.renci.hearsay.canvas.refseq.dao.model.RegionGroup;
-import org.renci.hearsay.canvas.refseq.dao.model.RegionGroupRegion;
 import org.renci.hearsay.dao.HearsayDAOBean;
 import org.renci.hearsay.dao.HearsayDAOException;
 import org.renci.hearsay.dao.model.TranscriptRefSeq;
@@ -31,32 +30,19 @@ public class PullFeaturesRunnable implements Runnable {
     public void run() {
         logger.debug("ENTERING call()");
         try {
+            ThreadPoolExecutor tpe = new ThreadPoolExecutor(2, 2, 2, TimeUnit.DAYS, new LinkedBlockingQueue<Runnable>());
             List<TranscriptRefSeq> transcriptRefSeqs = hearsayDAOBean.getTranscriptRefSeqDAO().findAll();
             if (transcriptRefSeqs != null && !transcriptRefSeqs.isEmpty()) {
                 for (TranscriptRefSeq transcriptRefSeq : transcriptRefSeqs) {
-                    List<Feature> canvasFeatures = canvasDAOBean.getFeatureDAO().findByRefSeqVersionAndTranscriptId(
-                            refSeqVersion, transcriptRefSeq.getAccession());
-
-                    if (canvasFeatures != null && !canvasFeatures.isEmpty()) {
-                        for (Feature canvasFeature : canvasFeatures) {
-                            RegionGroup regionGroup = canvasFeature.getRegionGroup();
-                            if (regionGroup != null) {
-                                Set<RegionGroupRegion> regionGroupRegions = regionGroup.getRegionGroupRegions();
-                                if (regionGroupRegions != null && !regionGroupRegions.isEmpty()) {
-                                    RegionGroupRegion[] regionGroupRegionArray = regionGroupRegions
-                                            .toArray(new RegionGroupRegion[regionGroupRegions.size()]);
-                                    org.renci.hearsay.dao.model.Feature hearsayFeature = new org.renci.hearsay.dao.model.Feature();
-                                    hearsayFeature.setNote(canvasFeature.getNote());
-                                    hearsayFeature.setRegionStart(regionGroupRegionArray[0].getRegionStart());
-                                    hearsayFeature.setRegionStop(regionGroupRegionArray[0].getRegionEnd());
-                                    hearsayFeature.setTranscriptRefSeq(transcriptRefSeq);
-                                    hearsayDAOBean.getFeatureDAO().save(hearsayFeature);
-                                }
-                            }
-                        }
-                    }
+                    PersistFeaturesRunnable runnable = new PersistFeaturesRunnable();
+                    runnable.setCanvasDAOBean(canvasDAOBean);
+                    runnable.setHearsayDAOBean(hearsayDAOBean);
+                    runnable.setRefSeqVersion(refSeqVersion);
+                    runnable.setTranscriptRefSeq(transcriptRefSeq);
+                    tpe.submit(runnable);
                 }
             }
+            tpe.shutdown();
         } catch (HearsayDAOException e) {
             e.printStackTrace();
         }
