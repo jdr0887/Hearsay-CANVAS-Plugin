@@ -1,4 +1,4 @@
-<features name="canvas-${project.version}">
+<features name="canvas-${project.version}" xmlns="http://karaf.apache.org/xmlns/features/v1.0.0">
 
   <feature name="canvas" version="${project.version}" resolver="(obr)">    
     <bundle>mvn:org.renci.hearsay.plugin.canvas/canvas-datasource/${project.version}</bundle>
