@@ -11,10 +11,10 @@
   <version>0.0.48-SNAPSHOT</version>
   <packaging>pom</packaging>
   <properties>
+    <hearsay.version>0.0.28</hearsay.version>
     <karaf.version>3.0.1</karaf.version>
     <cxf.version>2.7.12</cxf.version>
     <jackson.version>2.4.1</jackson.version>
-    <hearsay.version>0.0.27</hearsay.version>
   </properties>
   <issueManagement>
     <system>GitHub Issues</system>
