@@ -36,6 +36,7 @@ public class PullVariantsRunnable implements Runnable {
             List<TranscriptRefSeq> transcriptRefSeqs = hearsayDAOBean.getTranscriptRefSeqDAO().findAll();
             if (transcriptRefSeqs != null && !transcriptRefSeqs.isEmpty()) {
                 for (TranscriptRefSeq transcriptRefSeq : transcriptRefSeqs) {
+                    logger.info(transcriptRefSeq.toString());
                     List<Variants_61_2> variants = canvasDAOBean.getVariants_61_2_DAO().findByTranscriptAccession(
                             transcriptRefSeq.getAccession());
                     if (variants != null && !variants.isEmpty()) {
@@ -48,6 +49,7 @@ public class PullVariantsRunnable implements Runnable {
                         CanonicalVariant canonicalVariant = null;
 
                         for (Variants_61_2 variant : variants) {
+
                             LocationVariant locationVariant = variant.getLocationVariant();
                             if (!locationVariantSet.contains(locationVariant)) {
                                 locationVariantSet.add(locationVariant);
@@ -68,6 +70,7 @@ public class PullVariantsRunnable implements Runnable {
 
                                 Long id = hearsayDAOBean.getGenomicVariantDAO().save(genomicVariant);
                                 genomicVariant.setId(id);
+                                logger.info(genomicVariant.toString());
                                 genomicVariants.add(genomicVariant);
                             }
 
@@ -84,6 +87,7 @@ public class PullVariantsRunnable implements Runnable {
                             transcriptVariant.setVariantEffect(variantEffect.getVariantEffect());
                             Long id = hearsayDAOBean.getTranscriptVariantDAO().save(transcriptVariant);
                             transcriptVariant.setId(id);
+                            logger.info(transcriptVariant.toString());
                             transcriptVariants.add(transcriptVariant);
 
                         }
