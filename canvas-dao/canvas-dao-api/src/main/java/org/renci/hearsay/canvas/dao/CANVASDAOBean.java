@@ -2,6 +2,8 @@ package org.renci.hearsay.canvas.dao;
 
 import org.renci.hearsay.canvas.annotation.dao.AnnotationGeneDAO;
 import org.renci.hearsay.canvas.annotation.dao.AnnotationGeneExternalIdsDAO;
+import org.renci.hearsay.canvas.exac.dao.MaxVariantFrequencyDAO;
+import org.renci.hearsay.canvas.exac.dao.VariantFrequencyDAO;
 import org.renci.hearsay.canvas.hgnc.dao.HGNCGeneDAO;
 import org.renci.hearsay.canvas.ref.dao.GenomeRefDAO;
 import org.renci.hearsay.canvas.refseq.dao.FeatureDAO;
@@ -35,6 +37,10 @@ public class CANVASDAOBean {
     private TranscriptMapsExonsDAO transcriptMapsExonsDAO;
 
     private Variants_61_2_DAO variants_61_2_DAO;
+
+    private MaxVariantFrequencyDAO maxVariantFrequencyDAO;
+
+    private VariantFrequencyDAO variantFrequencyDAO;
 
     public CANVASDAOBean() {
         super();
@@ -126,6 +132,22 @@ public class CANVASDAOBean {
 
     public void setVariants_61_2_DAO(Variants_61_2_DAO variants_61_2_DAO) {
         this.variants_61_2_DAO = variants_61_2_DAO;
+    }
+
+    public MaxVariantFrequencyDAO getMaxVariantFrequencyDAO() {
+        return maxVariantFrequencyDAO;
+    }
+
+    public void setMaxVariantFrequencyDAO(MaxVariantFrequencyDAO maxVariantFrequencyDAO) {
+        this.maxVariantFrequencyDAO = maxVariantFrequencyDAO;
+    }
+
+    public VariantFrequencyDAO getVariantFrequencyDAO() {
+        return variantFrequencyDAO;
+    }
+
+    public void setVariantFrequencyDAO(VariantFrequencyDAO variantFrequencyDAO) {
+        this.variantFrequencyDAO = variantFrequencyDAO;
     }
 
 }
