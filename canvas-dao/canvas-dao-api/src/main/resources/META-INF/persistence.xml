@@ -66,6 +66,10 @@
     <class>org.renci.hearsay.canvas.clinvar.dao.model.Versions</class>
     <class>org.renci.hearsay.canvas.esp.dao.model.SNPFrequencyPopulation</class>
     <class>org.renci.hearsay.canvas.esp.dao.model.SNPFrequencyPopulationPK</class>
+    <class>org.renci.hearsay.canvas.exac.dao.model.MaxVariantFrequency</class>
+    <class>org.renci.hearsay.canvas.exac.dao.model.MaxVariantFrequencyPK</class>
+    <class>org.renci.hearsay.canvas.exac.dao.model.VariantFrequency</class>
+    <class>org.renci.hearsay.canvas.exac.dao.model.VariantFrequencyPK</class>
     <class>org.renci.hearsay.canvas.genome1k.dao.model.IndelFrequency</class>
     <class>org.renci.hearsay.canvas.genome1k.dao.model.IndelFrequencyPK</class>
     <class>org.renci.hearsay.canvas.genome1k.dao.model.SNPFrequencyPopulation</class>
