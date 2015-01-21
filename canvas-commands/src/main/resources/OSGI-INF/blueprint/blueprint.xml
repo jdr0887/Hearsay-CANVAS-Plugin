@@ -31,6 +31,7 @@
   <reference id="hearsayMolecularConsequenceDAO" interface="org.renci.hearsay.dao.MolecularConsequenceDAO" />
   <reference id="hearsayRegionDAO" interface="org.renci.hearsay.dao.RegionDAO" />
   <reference id="hearsayResolvedConditionDAO" interface="org.renci.hearsay.dao.ResolvedConditionDAO" />
+  <reference id="hearsayPopulationFrequencyDAO" interface="org.renci.hearsay.dao.PopulationFrequencyDAO" />
   <reference id="hearsayTranscriptAlignmentDAO" interface="org.renci.hearsay.dao.TranscriptAlignmentDAO" />
   <reference id="hearsayTranscriptRefSeqDAO" interface="org.renci.hearsay.dao.TranscriptRefSeqDAO" />
   <reference id="hearsayTranscriptVariantDAO" interface="org.renci.hearsay.dao.TranscriptVariantDAO" />
@@ -48,6 +49,7 @@
     <property name="individualDAO" ref="hearsayIndividualDAO" />
     <property name="individualVariantDAO" ref="hearsayIndividualVariantDAO" />
     <property name="molecularConsequenceDAO" ref="hearsayMolecularConsequenceDAO" />
+    <property name="populationFrequencyDAO" ref="hearsayPopulationFrequencyDAO" />
     <property name="regionDAO" ref="hearsayRegionDAO" />
     <property name="resolvedConditionDAO" ref="hearsayResolvedConditionDAO" />
     <property name="transcriptAlignmentDAO" ref="hearsayTranscriptAlignmentDAO" />
