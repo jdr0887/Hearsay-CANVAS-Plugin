@@ -71,39 +71,7 @@ public class PullVariantsRunnable implements Runnable {
                                 canonicalVariant = new CanonicalVariant();
                                 canonicalVariant.setId(hearsayDAOBean.getCanonicalVariantDAO().save(canonicalVariant));
 
-                                Set<PopulationFrequency> populationFrequencies = new HashSet<>();
-                                List<MaxVariantFrequency> maxVariantFrequencies = canvasDAOBean
-                                        .getMaxVariantFrequencyDAO().findByLocationVariantIdAndVersion(
-                                                locationVariant.getId(), "0.1");
-                                if (maxVariantFrequencies != null && !maxVariantFrequencies.isEmpty()) {
-                                    for (MaxVariantFrequency maxVariantFrequency : maxVariantFrequencies) {
-                                        PopulationFrequency pf = new PopulationFrequency();
-                                        pf.setFrequency(maxVariantFrequency.getMaxAlleleFrequency());
-                                        pf.setSource("ExAC");
-                                        pf.setVersion(maxVariantFrequency.getVersion());
-                                        pf.setId(hearsayDAOBean.getPopulationFrequencyDAO().save(pf));
-                                        logger.info(pf.toString());
-                                        populationFrequencies.add(pf);
-                                    }
-                                }
-
-                                List<SNPFrequencyPopulation> snpFrequencyPopulations = canvasDAOBean
-                                        .getSNPFrequencyPopulationDAO().findByLocationVariantIdAndVersion(
-                                                locationVariant.getId(), 1);
-                                if (snpFrequencyPopulations != null && !snpFrequencyPopulations.isEmpty()) {
-                                    for (SNPFrequencyPopulation snpFP : snpFrequencyPopulations) {
-                                        PopulationFrequency pf = new PopulationFrequency();
-                                        pf.setFrequency(snpFP.getAltAlleleFreq().doubleValue());
-                                        pf.setSource("1000_GENOME");
-                                        pf.setVersion(snpFP.getVersion().toString());
-                                        pf.setId(hearsayDAOBean.getPopulationFrequencyDAO().save(pf));
-                                        logger.info(pf.toString());
-                                        populationFrequencies.add(pf);
-                                    }
-                                }
-
                                 GenomicVariant genomicVariant = new GenomicVariant();
-                                genomicVariant.setPopulationFrequencies(populationFrequencies);
                                 // genomicVariant.setGene(transcriptRefSeq.getGene());
                                 genomicVariant.setGene(gene);
                                 genomicVariant.setReferenceAllele(variant.getReferenceAllele());
@@ -119,6 +87,40 @@ public class PullVariantsRunnable implements Runnable {
                                 genomicVariant.setId(id);
                                 logger.info(genomicVariant.toString());
                                 genomicVariants.add(genomicVariant);
+
+                                Set<PopulationFrequency> populationFrequencies = new HashSet<>();
+                                List<MaxVariantFrequency> maxVariantFrequencies = canvasDAOBean
+                                        .getMaxVariantFrequencyDAO().findByLocationVariantIdAndVersion(
+                                                locationVariant.getId(), "0.1");
+                                if (maxVariantFrequencies != null && !maxVariantFrequencies.isEmpty()) {
+                                    for (MaxVariantFrequency maxVariantFrequency : maxVariantFrequencies) {
+                                        PopulationFrequency pf = new PopulationFrequency();
+                                        pf.setFrequency(maxVariantFrequency.getMaxAlleleFrequency());
+                                        pf.setVariantRepresentation(genomicVariant);
+                                        pf.setSource("ExAC");
+                                        pf.setVersion(maxVariantFrequency.getVersion());
+                                        pf.setId(hearsayDAOBean.getPopulationFrequencyDAO().save(pf));
+                                        logger.info(pf.toString());
+                                        populationFrequencies.add(pf);
+                                    }
+                                }
+
+                                List<SNPFrequencyPopulation> snpFrequencyPopulations = canvasDAOBean
+                                        .getSNPFrequencyPopulationDAO().findByLocationVariantIdAndVersion(
+                                                locationVariant.getId(), 1);
+                                if (snpFrequencyPopulations != null && !snpFrequencyPopulations.isEmpty()) {
+                                    for (SNPFrequencyPopulation snpFP : snpFrequencyPopulations) {
+                                        PopulationFrequency pf = new PopulationFrequency();
+                                        pf.setFrequency(snpFP.getAltAlleleFreq().doubleValue());
+                                        pf.setVariantRepresentation(genomicVariant);
+                                        pf.setSource("1000_GENOME");
+                                        pf.setVersion(snpFP.getVersion().toString());
+                                        pf.setId(hearsayDAOBean.getPopulationFrequencyDAO().save(pf));
+                                        logger.info(pf.toString());
+                                        populationFrequencies.add(pf);
+                                    }
+                                }
+
                             }
 
                             VariantEffect variantEffect = variant.getVariantEffect();
