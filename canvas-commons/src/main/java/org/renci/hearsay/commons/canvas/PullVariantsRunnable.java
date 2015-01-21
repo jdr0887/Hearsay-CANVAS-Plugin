@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.renci.hearsay.canvas.dao.CANVASDAOBean;
+import org.renci.hearsay.canvas.exac.dao.model.MaxVariantFrequency;
 import org.renci.hearsay.canvas.refseq.dao.model.VariantEffect;
 import org.renci.hearsay.canvas.refseq.dao.model.Variants_61_2;
 import org.renci.hearsay.canvas.var.dao.model.LocationVariant;
@@ -12,6 +13,7 @@ import org.renci.hearsay.dao.HearsayDAOBean;
 import org.renci.hearsay.dao.HearsayDAOException;
 import org.renci.hearsay.dao.model.CanonicalVariant;
 import org.renci.hearsay.dao.model.GenomicVariant;
+import org.renci.hearsay.dao.model.PopulationFrequency;
 import org.renci.hearsay.dao.model.TranscriptRefSeq;
 import org.renci.hearsay.dao.model.TranscriptVariant;
 import org.slf4j.Logger;
@@ -37,8 +39,9 @@ public class PullVariantsRunnable implements Runnable {
             if (transcriptRefSeqs != null && !transcriptRefSeqs.isEmpty()) {
                 for (TranscriptRefSeq transcriptRefSeq : transcriptRefSeqs) {
                     logger.info(transcriptRefSeq.toString());
-                    List<Variants_61_2> variants = canvasDAOBean.getVariants_61_2_DAO().findByTranscriptAccession(
-                            transcriptRefSeq.getAccession());
+                    List<Variants_61_2> variants = canvasDAOBean.getVariants_61_2_DAO().findByGeneName(
+                            transcriptRefSeq.getGene().getName());
+
                     if (variants != null && !variants.isEmpty()) {
 
                         Set<LocationVariant> locationVariantSet = new HashSet<LocationVariant>();
@@ -57,7 +60,23 @@ public class PullVariantsRunnable implements Runnable {
                                 canonicalVariant = new CanonicalVariant();
                                 canonicalVariant.setId(hearsayDAOBean.getCanonicalVariantDAO().save(canonicalVariant));
 
+                                Set<PopulationFrequency> populationFrequencies = new HashSet<>();
+                                List<MaxVariantFrequency> maxVariantFrequencies = canvasDAOBean
+                                        .getMaxVariantFrequencyDAO().findByLocationVariantIdAndVersion(
+                                                locationVariant.getId(), "0.1");
+                                if (maxVariantFrequencies != null && !maxVariantFrequencies.isEmpty()) {
+                                    for (MaxVariantFrequency maxVariantFrequency : maxVariantFrequencies) {
+                                        PopulationFrequency pf = new PopulationFrequency();
+                                        pf.setFrequency(maxVariantFrequency.getMaxAlleleFrequency());
+                                        pf.setSource("ExAC");
+                                        pf.setVersion(maxVariantFrequency.getVersion());
+                                        pf.setId(hearsayDAOBean.getPopulationFrequencyDAO().save(pf));
+                                        populationFrequencies.add(pf);
+                                    }
+                                }
+
                                 GenomicVariant genomicVariant = new GenomicVariant();
+                                genomicVariant.setPopulationFrequencies(populationFrequencies);
                                 genomicVariant.setGene(transcriptRefSeq.getGene());
                                 genomicVariant.setReferenceAllele(variant.getReferenceAllele());
                                 genomicVariant.setVariantAllele(variant.getAlternateAllele());
