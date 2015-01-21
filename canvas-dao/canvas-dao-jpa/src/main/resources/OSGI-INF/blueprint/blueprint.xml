@@ -79,18 +79,18 @@
 
   <service ref="variants_61_2_DAOImpl" interface="org.renci.hearsay.canvas.refseq.dao.Variants_61_2_DAO" />
 
-  <bean id="maxVariantFrequencyImpl" class="org.renci.hearsay.canvas.exac.dao.jpa.MaxVariantFrequencyImpl">
+  <bean id="maxVariantFrequencyDAOImpl" class="org.renci.hearsay.canvas.exac.dao.jpa.MaxVariantFrequencyDAOImpl">
     <tx:transaction method="*" value="Required" />
     <jpa:context property="entityManager" unitname="canvas" />
   </bean>
 
-  <service ref="maxVariantFrequencyImpl" interface="org.renci.hearsay.canvas.exac.dao.MaxVariantFrequencyDAO" />
+  <service ref="maxVariantFrequencyDAOImpl" interface="org.renci.hearsay.canvas.exac.dao.MaxVariantFrequencyDAO" />
 
-  <bean id="variantFrequencyImpl" class="org.renci.hearsay.canvas.exac.dao.jpa.VariantFrequencyImpl">
+  <bean id="variantFrequencyDAOImpl" class="org.renci.hearsay.canvas.exac.dao.jpa.VariantFrequencyDAOImpl">
     <tx:transaction method="*" value="Required" />
     <jpa:context property="entityManager" unitname="canvas" />
   </bean>
 
-  <service ref="variantFrequencyImpl" interface="org.renci.hearsay.canvas.exac.dao.VariantFrequencyDAO" />
+  <service ref="variantFrequencyDAOImpl" interface="org.renci.hearsay.canvas.exac.dao.VariantFrequencyDAO" />
 
 </blueprint>
