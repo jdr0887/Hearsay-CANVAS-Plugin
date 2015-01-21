@@ -4,6 +4,7 @@ import org.renci.hearsay.canvas.annotation.dao.AnnotationGeneDAO;
 import org.renci.hearsay.canvas.annotation.dao.AnnotationGeneExternalIdsDAO;
 import org.renci.hearsay.canvas.exac.dao.MaxVariantFrequencyDAO;
 import org.renci.hearsay.canvas.exac.dao.VariantFrequencyDAO;
+import org.renci.hearsay.canvas.genome1k.dao.SNPFrequencyPopulationDAO;
 import org.renci.hearsay.canvas.hgnc.dao.HGNCGeneDAO;
 import org.renci.hearsay.canvas.ref.dao.GenomeRefDAO;
 import org.renci.hearsay.canvas.refseq.dao.FeatureDAO;
@@ -30,6 +31,8 @@ public class CANVASDAOBean {
 
     private GenomeRefDAO genomeRefDAO;
 
+    private SNPFrequencyPopulationDAO SNPFrequencyPopulationDAO;
+
     private TranscriptDAO transcriptDAO;
 
     private TranscriptMapsDAO transcriptMapsDAO;
@@ -44,6 +47,14 @@ public class CANVASDAOBean {
 
     public CANVASDAOBean() {
         super();
+    }
+
+    public SNPFrequencyPopulationDAO getSNPFrequencyPopulationDAO() {
+        return SNPFrequencyPopulationDAO;
+    }
+
+    public void setSNPFrequencyPopulationDAO(SNPFrequencyPopulationDAO sNPFrequencyPopulationDAO) {
+        SNPFrequencyPopulationDAO = sNPFrequencyPopulationDAO;
     }
 
     public FeatureDAO getFeatureDAO() {
