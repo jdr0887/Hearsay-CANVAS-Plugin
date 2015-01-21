@@ -8,7 +8,7 @@ import org.renci.hearsay.dao.HearsayDAOException;
 
 public interface VariantFrequencyDAO extends BaseDAO<VariantFrequency, Long> {
 
-    public List<VariantFrequency> findByLocationVariantIdAndVersionAndPopulation(Long locVarId, Integer version,
+    public List<VariantFrequency> findByLocationVariantIdAndVersionAndPopulation(Long locVarId, String version,
             String population) throws HearsayDAOException;
 
 }
