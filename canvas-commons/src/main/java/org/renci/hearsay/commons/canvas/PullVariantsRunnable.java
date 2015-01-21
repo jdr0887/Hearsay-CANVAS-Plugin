@@ -16,7 +16,6 @@ import org.renci.hearsay.dao.model.CanonicalVariant;
 import org.renci.hearsay.dao.model.Gene;
 import org.renci.hearsay.dao.model.GenomicVariant;
 import org.renci.hearsay.dao.model.PopulationFrequency;
-import org.renci.hearsay.dao.model.TranscriptRefSeq;
 import org.renci.hearsay.dao.model.TranscriptVariant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,10 +46,14 @@ public class PullVariantsRunnable implements Runnable {
 
             List<Gene> genes = hearsayDAOBean.getGeneDAO().findAll();
             if (genes != null && !genes.isEmpty()) {
+                logger.info("genes.size(): {}", genes.size());
                 for (Gene gene : genes) {
+
+                    logger.info(gene.toString());
                     List<Variants_61_2> variants = canvasDAOBean.getVariants_61_2_DAO().findByGeneName(gene.getName());
 
                     if (variants != null && !variants.isEmpty()) {
+                        logger.info("variants.size(): {}", variants.size());
 
                         Set<LocationVariant> locationVariantSet = new HashSet<LocationVariant>();
 
@@ -79,6 +82,7 @@ public class PullVariantsRunnable implements Runnable {
                                         pf.setSource("ExAC");
                                         pf.setVersion(maxVariantFrequency.getVersion());
                                         pf.setId(hearsayDAOBean.getPopulationFrequencyDAO().save(pf));
+                                        logger.info(pf.toString());
                                         populationFrequencies.add(pf);
                                     }
                                 }
@@ -93,6 +97,7 @@ public class PullVariantsRunnable implements Runnable {
                                         pf.setSource("1000_GENOME");
                                         pf.setVersion(snpFP.getVersion().toString());
                                         pf.setId(hearsayDAOBean.getPopulationFrequencyDAO().save(pf));
+                                        logger.info(pf.toString());
                                         populationFrequencies.add(pf);
                                     }
                                 }
