@@ -24,7 +24,7 @@ public class MaxVariantFrequencyDAOImpl extends BaseDAOImpl<MaxVariantFrequency,
     }
 
     @Override
-    public List<MaxVariantFrequency> findByLocationVariantIdAndVersion(Long locVarId, Integer version)
+    public List<MaxVariantFrequency> findByLocationVariantIdAndVersion(Long locVarId, String version)
             throws HearsayDAOException {
         return null;
     }

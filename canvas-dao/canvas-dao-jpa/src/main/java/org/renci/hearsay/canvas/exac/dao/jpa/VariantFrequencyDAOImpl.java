@@ -23,7 +23,7 @@ public class VariantFrequencyDAOImpl extends BaseDAOImpl<VariantFrequency, Long>
     }
 
     @Override
-    public List<VariantFrequency> findByLocationVariantIdAndVersionAndPopulation(Long locVarId, Integer version,
+    public List<VariantFrequency> findByLocationVariantIdAndVersionAndPopulation(Long locVarId, String version,
             String population) throws HearsayDAOException {
         return null;
     }
