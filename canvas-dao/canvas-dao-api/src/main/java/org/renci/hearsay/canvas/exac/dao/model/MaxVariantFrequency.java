@@ -3,6 +3,7 @@ package org.renci.hearsay.canvas.exac.dao.model;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.Table;
@@ -21,6 +22,7 @@ public class MaxVariantFrequency implements Persistable {
 
     @MapsId
     @ManyToOne
+    @JoinColumn(name = "loc_var_id")
     private LocationVariant locationVariant;
 
     @MapsId
