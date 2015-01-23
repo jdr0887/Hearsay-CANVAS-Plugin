@@ -2,6 +2,8 @@ package org.renci.hearsay.canvas.exac.dao.jpa;
 
 import java.util.List;
 
+import javax.persistence.TypedQuery;
+
 import org.renci.hearsay.canvas.dao.jpa.BaseDAOImpl;
 import org.renci.hearsay.canvas.exac.dao.MaxVariantFrequencyDAO;
 import org.renci.hearsay.canvas.exac.dao.model.MaxVariantFrequency;
@@ -26,7 +28,13 @@ public class MaxVariantFrequencyDAOImpl extends BaseDAOImpl<MaxVariantFrequency,
     @Override
     public List<MaxVariantFrequency> findByLocationVariantIdAndVersion(Long locVarId, String version)
             throws HearsayDAOException {
-        return null;
+        logger.debug("ENTERING findByLocationVariantIdAndVersion(Long, String)");
+        TypedQuery<MaxVariantFrequency> query = getEntityManager().createNamedQuery(
+                "exac.MaxVariantFrequency.findByLocationVariantIdAndVersion", MaxVariantFrequency.class);
+        query.setParameter("locationVariantId", locVarId);
+        query.setParameter("version", version);
+        List<MaxVariantFrequency> ret = query.getResultList();
+        return ret;
     }
 
 }

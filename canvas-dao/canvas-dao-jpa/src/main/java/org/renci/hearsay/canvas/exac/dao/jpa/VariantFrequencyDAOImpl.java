@@ -2,6 +2,8 @@ package org.renci.hearsay.canvas.exac.dao.jpa;
 
 import java.util.List;
 
+import javax.persistence.TypedQuery;
+
 import org.renci.hearsay.canvas.dao.jpa.BaseDAOImpl;
 import org.renci.hearsay.canvas.exac.dao.VariantFrequencyDAO;
 import org.renci.hearsay.canvas.exac.dao.model.VariantFrequency;
@@ -23,9 +25,15 @@ public class VariantFrequencyDAOImpl extends BaseDAOImpl<VariantFrequency, Long>
     }
 
     @Override
-    public List<VariantFrequency> findByLocationVariantIdAndVersionAndPopulation(Long locVarId, String version,
-            String population) throws HearsayDAOException {
-        return null;
+    public List<VariantFrequency> findByLocationVariantIdAndVersion(Long locVarId, String version)
+            throws HearsayDAOException {
+        logger.debug("ENTERING findByLocationVariantIdAndVersion(Long, String)");
+        TypedQuery<VariantFrequency> query = getEntityManager().createNamedQuery(
+                "exac.VariantFrequency.findByLocationVariantIdAndVersion", VariantFrequency.class);
+        query.setParameter("locationVariantId", locVarId);
+        query.setParameter("version", version);
+        List<VariantFrequency> ret = query.getResultList();
+        return ret;
     }
 
 }
