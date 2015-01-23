@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 import org.renci.hearsay.canvas.dao.Persistable;
@@ -13,6 +15,7 @@ import org.renci.hearsay.canvas.var.dao.model.LocationVariant;
 
 @Entity
 @Table(schema = "exac", name = "max_variant_freq")
+@NamedQueries({ @NamedQuery(name = "exac.MaxVariantFrequency.findByLocationVariantIdAndVersion", query = "SELECT a FROM MaxVariantFrequency a where a.locationVariant.id = :locationVariantId and a.version = :version order by a.maxAlleleFrequency desc") })
 public class MaxVariantFrequency implements Persistable {
 
     private static final long serialVersionUID = -1388708510623130329L;
