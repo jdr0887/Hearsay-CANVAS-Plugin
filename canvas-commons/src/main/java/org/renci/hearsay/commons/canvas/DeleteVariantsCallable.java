@@ -41,13 +41,7 @@ public class DeleteVariantsCallable implements Callable<Void> {
         if (genes != null && !genes.isEmpty()) {
             logger.info("genes.size(): {}", genes.size());
             for (Gene gene : genes) {
-                List<CanonicalVariant> canonicalVariants = hearsayDAOBean.getCanonicalVariantDAO().findByGeneName(
-                        gene.getName());
-                if (canonicalVariants != null && !canonicalVariants.isEmpty()) {
-                    for (CanonicalVariant canonicalVariant : canonicalVariants) {
-                        tpe.submit(new Task(canonicalVariant));
-                    }
-                }
+                tpe.submit(new Task(gene));
             }
         }
         logger.info("LEAVING call()");
@@ -56,56 +50,64 @@ public class DeleteVariantsCallable implements Callable<Void> {
 
     class Task implements Callable<Void> {
 
-        private CanonicalVariant canonicalVariant;
+        private Gene gene;
 
-        public Task(CanonicalVariant canonicalVariant) {
+        public Task(Gene gene) {
             super();
-            this.canonicalVariant = canonicalVariant;
+            this.gene = gene;
         }
 
         @Override
         public Void call() throws HearsayDAOException {
-            Set<VariantRepresentation> variantRepresentations = canonicalVariant.getVariants();
-            if (variantRepresentations != null && !variantRepresentations.isEmpty()) {
 
-                List<GenomicVariant> genomicVariants = new ArrayList<>();
-                List<TranscriptVariant> transcriptVariants = new ArrayList<>();
-                List<TranslationVariant> translationVariants = new ArrayList<>();
-                for (VariantRepresentation variantRepresentation : variantRepresentations) {
-                    logger.info("Deleting: {}", variantRepresentation.toString());
-                    if (variantRepresentation instanceof GenomicVariant) {
-                        genomicVariants.add((GenomicVariant) variantRepresentation);
+            List<CanonicalVariant> canonicalVariants = hearsayDAOBean.getCanonicalVariantDAO().findByGeneName(
+                    gene.getName());
+            if (canonicalVariants != null && !canonicalVariants.isEmpty()) {
+                for (CanonicalVariant canonicalVariant : canonicalVariants) {
+
+                    Set<VariantRepresentation> variantRepresentations = canonicalVariant.getVariants();
+                    if (variantRepresentations != null && !variantRepresentations.isEmpty()) {
+
+                        List<GenomicVariant> genomicVariants = new ArrayList<>();
+                        List<TranscriptVariant> transcriptVariants = new ArrayList<>();
+                        List<TranslationVariant> translationVariants = new ArrayList<>();
+                        for (VariantRepresentation variantRepresentation : variantRepresentations) {
+                            logger.info("Deleting: {}", variantRepresentation.toString());
+                            if (variantRepresentation instanceof GenomicVariant) {
+                                genomicVariants.add((GenomicVariant) variantRepresentation);
+                            }
+                            if (variantRepresentation instanceof TranscriptVariant) {
+                                transcriptVariants.add((TranscriptVariant) variantRepresentation);
+                            }
+                            if (variantRepresentation instanceof TranslationVariant) {
+                                translationVariants.add((TranslationVariant) variantRepresentation);
+                            }
+                            Set<PopulationFrequency> populationFrequencies = variantRepresentation
+                                    .getPopulationFrequencies();
+                            if (populationFrequencies != null && !populationFrequencies.isEmpty()) {
+                                List<PopulationFrequency> pfList = new ArrayList<>(populationFrequencies);
+                                hearsayDAOBean.getPopulationFrequencyDAO().delete(pfList);
+                            }
+                            Set<MolecularConsequence> molecularConsequences = variantRepresentation.getConsequences();
+                            if (molecularConsequences != null && !molecularConsequences.isEmpty()) {
+                                List<MolecularConsequence> pfList = new ArrayList<>(molecularConsequences);
+                                hearsayDAOBean.getMolecularConsequenceDAO().delete(pfList);
+                            }
+                        }
+                        if (!genomicVariants.isEmpty()) {
+                            hearsayDAOBean.getGenomicVariantDAO().delete(genomicVariants);
+                        }
+                        if (!transcriptVariants.isEmpty()) {
+                            hearsayDAOBean.getTranscriptVariantDAO().delete(transcriptVariants);
+                        }
+                        if (!translationVariants.isEmpty()) {
+                            hearsayDAOBean.getTranslationVariantDAO().delete(translationVariants);
+                        }
                     }
-                    if (variantRepresentation instanceof TranscriptVariant) {
-                        transcriptVariants.add((TranscriptVariant) variantRepresentation);
-                    }
-                    if (variantRepresentation instanceof TranslationVariant) {
-                        translationVariants.add((TranslationVariant) variantRepresentation);
-                    }
-                    Set<PopulationFrequency> populationFrequencies = variantRepresentation.getPopulationFrequencies();
-                    if (populationFrequencies != null && !populationFrequencies.isEmpty()) {
-                        List<PopulationFrequency> pfList = new ArrayList<>(populationFrequencies);
-                        hearsayDAOBean.getPopulationFrequencyDAO().delete(pfList);
-                    }
-                    Set<MolecularConsequence> molecularConsequences = variantRepresentation.getConsequences();
-                    if (molecularConsequences != null && !molecularConsequences.isEmpty()) {
-                        List<MolecularConsequence> pfList = new ArrayList<>(molecularConsequences);
-                        hearsayDAOBean.getMolecularConsequenceDAO().delete(pfList);
-                    }
-                }
-                if (!genomicVariants.isEmpty()) {
-                    hearsayDAOBean.getGenomicVariantDAO().delete(genomicVariants);
-                }
-                if (!transcriptVariants.isEmpty()) {
-                    hearsayDAOBean.getTranscriptVariantDAO().delete(transcriptVariants);
-                }
-                if (!translationVariants.isEmpty()) {
-                    hearsayDAOBean.getTranslationVariantDAO().delete(translationVariants);
                 }
             }
             return null;
         }
-
     }
 
     public HearsayDAOBean getHearsayDAOBean() {
