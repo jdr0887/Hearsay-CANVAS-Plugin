@@ -1,12 +1,13 @@
 package org.renci.hearsay.commands.canvas;
 
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import org.apache.karaf.shell.commands.Argument;
 import org.apache.karaf.shell.commands.Command;
 import org.apache.karaf.shell.console.AbstractAction;
-import org.renci.hearsay.commons.canvas.PullFeaturesRunnable;
+import org.renci.hearsay.commons.canvas.PullFeaturesCallable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,7 +19,7 @@ public class PullFeaturesAction extends AbstractAction {
     @Argument(index = 0, name = "refSeqVersion", description = "RefSeq Version Identifier", required = true, multiValued = false)
     private String refSeqVersion;
 
-    private PullFeaturesRunnable runnable;
+    private PullFeaturesCallable callable;
 
     public PullFeaturesAction() {
         super();
@@ -27,19 +28,23 @@ public class PullFeaturesAction extends AbstractAction {
     @Override
     public Object doExecute() {
         logger.debug("ENTERING doExecute()");
-        runnable.setRefSeqVersion(refSeqVersion);
+        callable.setRefSeqVersion(refSeqVersion);
         ExecutorService es = Executors.newSingleThreadExecutor();
-        es.execute(runnable);
+        try {
+            es.submit(callable).get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
         es.shutdown();
         return null;
     }
 
-    public PullFeaturesRunnable getRunnable() {
-        return runnable;
+    public PullFeaturesCallable getCallable() {
+        return callable;
     }
 
-    public void setRunnable(PullFeaturesRunnable runnable) {
-        this.runnable = runnable;
+    public void setCallable(PullFeaturesCallable callable) {
+        this.callable = callable;
     }
 
     public String getRefSeqVersion() {

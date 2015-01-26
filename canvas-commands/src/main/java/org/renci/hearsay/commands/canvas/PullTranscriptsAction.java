@@ -1,12 +1,13 @@
 package org.renci.hearsay.commands.canvas;
 
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import org.apache.karaf.shell.commands.Argument;
 import org.apache.karaf.shell.commands.Command;
 import org.apache.karaf.shell.console.AbstractAction;
-import org.renci.hearsay.commons.canvas.PullTranscriptsRunnable;
+import org.renci.hearsay.commons.canvas.PullTranscriptsCallable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,7 +22,7 @@ public class PullTranscriptsAction extends AbstractAction {
     @Argument(index = 1, name = "genomeRefId", description = "GenomeRef Identifier", required = true, multiValued = false)
     private Integer genomeRefId;
 
-    private PullTranscriptsRunnable runnable;
+    private PullTranscriptsCallable callable;
 
     public PullTranscriptsAction() {
         super();
@@ -30,20 +31,24 @@ public class PullTranscriptsAction extends AbstractAction {
     @Override
     public Object doExecute() {
         logger.debug("ENTERING doExecute()");
-        runnable.setRefSeqVersion(refSeqVersion);
-        runnable.setGenomeRefId(genomeRefId);
+        callable.setRefSeqVersion(refSeqVersion);
+        callable.setGenomeRefId(genomeRefId);
         ExecutorService es = Executors.newSingleThreadExecutor();
-        es.execute(runnable);
+        try {
+            es.submit(callable).get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
         es.shutdown();
         return null;
     }
 
-    public PullTranscriptsRunnable getRunnable() {
-        return runnable;
+    public PullTranscriptsCallable getCallable() {
+        return callable;
     }
 
-    public void setRunnable(PullTranscriptsRunnable runnable) {
-        this.runnable = runnable;
+    public void setCallable(PullTranscriptsCallable callable) {
+        this.callable = callable;
     }
 
     public String getRefSeqVersion() {
