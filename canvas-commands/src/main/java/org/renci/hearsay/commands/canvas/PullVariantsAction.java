@@ -1,6 +1,5 @@
 package org.renci.hearsay.commands.canvas;
 
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -25,11 +24,7 @@ public class PullVariantsAction extends AbstractAction {
     public Object doExecute() {
         logger.debug("ENTERING doExecute()");
         ExecutorService es = Executors.newSingleThreadExecutor();
-        try {
-            es.submit(callable).get();
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
+        es.submit(callable);
         es.shutdown();
         return null;
     }
