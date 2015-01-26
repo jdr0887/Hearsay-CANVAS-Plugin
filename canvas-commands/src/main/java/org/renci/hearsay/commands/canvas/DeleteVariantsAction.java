@@ -15,7 +15,7 @@ public class DeleteVariantsAction extends AbstractAction {
 
     private final Logger logger = LoggerFactory.getLogger(DeleteVariantsAction.class);
 
-    private DeleteVariantsCallable runnable;
+    private DeleteVariantsCallable callable;
 
     public DeleteVariantsAction() {
         super();
@@ -26,7 +26,7 @@ public class DeleteVariantsAction extends AbstractAction {
         logger.debug("ENTERING doExecute()");
         ExecutorService es = Executors.newSingleThreadExecutor();
         try {
-            es.submit(runnable).get();
+            es.submit(callable).get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
@@ -34,12 +34,12 @@ public class DeleteVariantsAction extends AbstractAction {
         return null;
     }
 
-    public DeleteVariantsCallable getRunnable() {
-        return runnable;
+    public DeleteVariantsCallable getCallable() {
+        return callable;
     }
 
-    public void setRunnable(DeleteVariantsCallable runnable) {
-        this.runnable = runnable;
+    public void setCallable(DeleteVariantsCallable callable) {
+        this.callable = callable;
     }
 
 }

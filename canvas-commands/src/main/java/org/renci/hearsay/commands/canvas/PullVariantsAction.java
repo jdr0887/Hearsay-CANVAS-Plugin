@@ -15,7 +15,7 @@ public class PullVariantsAction extends AbstractAction {
 
     private final Logger logger = LoggerFactory.getLogger(PullVariantsAction.class);
 
-    private PullVariantsCallable runnable;
+    private PullVariantsCallable callable;
 
     public PullVariantsAction() {
         super();
@@ -26,7 +26,7 @@ public class PullVariantsAction extends AbstractAction {
         logger.debug("ENTERING doExecute()");
         ExecutorService es = Executors.newSingleThreadExecutor();
         try {
-            es.submit(runnable).get();
+            es.submit(callable).get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
@@ -34,12 +34,12 @@ public class PullVariantsAction extends AbstractAction {
         return null;
     }
 
-    public PullVariantsCallable getRunnable() {
-        return runnable;
+    public PullVariantsCallable getCallable() {
+        return callable;
     }
 
-    public void setRunnable(PullVariantsCallable runnable) {
-        this.runnable = runnable;
+    public void setCallable(PullVariantsCallable callable) {
+        this.callable = callable;
     }
 
 }
