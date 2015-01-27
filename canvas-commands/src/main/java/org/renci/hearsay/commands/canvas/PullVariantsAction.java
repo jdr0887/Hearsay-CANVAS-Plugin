@@ -1,5 +1,8 @@
 package org.renci.hearsay.commands.canvas;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import org.apache.karaf.shell.commands.Command;
 import org.apache.karaf.shell.console.AbstractAction;
 import org.renci.hearsay.commons.canvas.PullVariantsCallable;
@@ -20,7 +23,9 @@ public class PullVariantsAction extends AbstractAction {
     @Override
     public Object doExecute() {
         logger.debug("ENTERING doExecute()");
-        callable.call();
+        ExecutorService es = Executors.newSingleThreadExecutor();
+        es.submit(callable);
+        es.shutdown();
         return null;
     }
 

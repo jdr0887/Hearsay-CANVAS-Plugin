@@ -46,6 +46,8 @@ public class PullVariantsCallable implements Callable<Void> {
             List<Gene> genes = hearsayDAOBean.getGeneDAO().findAll();
             if (genes != null && !genes.isEmpty()) {
                 logger.info("genes.size(): {}", genes.size());
+                Set<Gene> genesToProcess = new HashSet<>();
+
                 for (Gene gene : genes) {
                     List<CanonicalVariant> canonicalVariants = hearsayDAOBean.getCanonicalVariantDAO().findByGeneName(
                             gene.getName());
@@ -53,6 +55,10 @@ public class PullVariantsCallable implements Callable<Void> {
                         logger.info("canonicalVariants.size(): {}", canonicalVariants.size());
                         continue;
                     }
+                    genesToProcess.add(gene);
+                }
+
+                for (Gene gene : genesToProcess) {
                     logger.info(gene.toString());
                     tpe.submit(new Task(gene));
                 }
