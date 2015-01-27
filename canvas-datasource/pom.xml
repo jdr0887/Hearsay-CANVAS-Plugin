@@ -3,13 +3,13 @@
   <parent>
     <groupId>org.renci.hearsay.plugin</groupId>
     <artifactId>canvas</artifactId>
-    <version>0.0.73-SNAPSHOT</version>
+    <version>0.0.73</version>
   </parent>
   <name>Hearsay :: Plugin :: CANVAS :: Datasource</name>
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.renci.hearsay.plugin.canvas</groupId>
   <artifactId>canvas-datasource</artifactId>
-  <version>0.0.73-SNAPSHOT</version>
+  <version>0.0.73</version>
   <packaging>bundle</packaging>
   <dependencies>
     <dependency>
