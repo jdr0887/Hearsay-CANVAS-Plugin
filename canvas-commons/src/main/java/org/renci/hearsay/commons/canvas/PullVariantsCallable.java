@@ -40,7 +40,7 @@ public class PullVariantsCallable implements Callable<Void> {
     public Void call() throws HearsayDAOException {
         logger.info("ENTERING call()");
 
-        ThreadPoolExecutor tpe = new ThreadPoolExecutor(4, 4, 3, TimeUnit.DAYS, new LinkedBlockingQueue<Runnable>());
+        ThreadPoolExecutor tpe = new ThreadPoolExecutor(2, 2, 3, TimeUnit.DAYS, new LinkedBlockingQueue<Runnable>());
 
         List<Gene> genes = hearsayDAOBean.getGeneDAO().findAll();
         if (genes != null && !genes.isEmpty()) {
