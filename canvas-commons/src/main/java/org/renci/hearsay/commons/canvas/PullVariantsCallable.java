@@ -49,6 +49,12 @@ public class PullVariantsCallable implements Callable<Void> {
             logger.info("genes.size(): {}", genes.size());
             for (Gene gene : genes) {
 
+                List<CanonicalVariant> canonicalVariants = hearsayDAOBean.getCanonicalVariantDAO().findByGeneName(
+                        gene.getName());
+                if (canonicalVariants != null && !canonicalVariants.isEmpty()) {
+                    continue;
+                }
+
                 logger.info(gene.toString());
                 List<Variants_61_2> variants = canvasDAOBean.getVariants_61_2_DAO().findByGeneName(gene.getName());
 
