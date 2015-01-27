@@ -35,7 +35,7 @@ public class DeleteVariantsCallable implements Callable<Void> {
     public Void call() throws HearsayDAOException {
         logger.info("ENTERING call()");
 
-        ThreadPoolExecutor tpe = new ThreadPoolExecutor(4, 4, 2, TimeUnit.DAYS, new LinkedBlockingQueue<Runnable>());
+        ThreadPoolExecutor tpe = new ThreadPoolExecutor(4, 4, 3, TimeUnit.DAYS, new LinkedBlockingQueue<Runnable>());
 
         List<Gene> genes = hearsayDAOBean.getGeneDAO().findAll();
         if (genes != null && !genes.isEmpty()) {
@@ -44,6 +44,7 @@ public class DeleteVariantsCallable implements Callable<Void> {
                 tpe.submit(new Task(gene));
             }
         }
+        tpe.shutdown();
         logger.info("LEAVING call()");
         return null;
     }
