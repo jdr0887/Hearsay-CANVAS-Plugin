@@ -37,39 +37,35 @@ public class PullVariantsCallable implements Callable<Void> {
     }
 
     @Override
-    public Void call() {
+    public Void call() throws HearsayDAOException {
         logger.info("ENTERING call()");
 
-        // ThreadPoolExecutor tpe = new ThreadPoolExecutor(2, 2, 3, TimeUnit.DAYS, new LinkedBlockingQueue<Runnable>());
+        ThreadPoolExecutor tpe = new ThreadPoolExecutor(2, 2, 3, TimeUnit.DAYS, new LinkedBlockingQueue<Runnable>());
 
-        try {
-            List<Gene> genes = hearsayDAOBean.getGeneDAO().findAll();
-            if (genes != null && !genes.isEmpty()) {
-                logger.info("genes.size(): {}", genes.size());
-                Set<Gene> genesToProcess = new HashSet<>();
+        List<Gene> genes = hearsayDAOBean.getGeneDAO().findAll();
+        if (genes != null && !genes.isEmpty()) {
+            logger.info("genes.size(): {}", genes.size());
+            Set<Gene> genesToProcess = new HashSet<>();
 
-                for (Gene gene : genes) {
-                    List<CanonicalVariant> canonicalVariants = hearsayDAOBean.getCanonicalVariantDAO().findByGeneName(
-                            gene.getName());
-                    if (canonicalVariants != null && !canonicalVariants.isEmpty()) {
-                        logger.info("canonicalVariants.size(): {}", canonicalVariants.size());
-                        continue;
-                    }
-                    genesToProcess.add(gene);
+            for (Gene gene : genes) {
+                List<CanonicalVariant> canonicalVariants = hearsayDAOBean.getCanonicalVariantDAO().findByGeneName(
+                        gene.getName());
+                if (canonicalVariants != null && !canonicalVariants.isEmpty()) {
+                    logger.info("canonicalVariants.size(): {}", canonicalVariants.size());
+                    continue;
                 }
-
-                for (Gene gene : genesToProcess) {
-                    logger.info(gene.toString());
-                    Task task = new Task(gene);
-                    task.call();
-                    // tpe.submit(task);
-                }
+                genesToProcess.add(gene);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+
+            for (Gene gene : genesToProcess) {
+                logger.info(gene.toString());
+                Task task = new Task(gene);
+                // task.call();
+                tpe.submit(task);
+            }
         }
 
-        // tpe.shutdown();
+        tpe.shutdown();
         logger.info("LEAVING call()");
         return null;
 
@@ -84,7 +80,7 @@ public class PullVariantsCallable implements Callable<Void> {
             this.gene = gene;
         }
 
-        public Void call() {
+        public Void call() throws HearsayDAOException {
             // List<TranscriptRefSeq> transcriptRefSeqs = hearsayDAOBean.getTranscriptRefSeqDAO().findAll();
             // if (transcriptRefSeqs != null && !transcriptRefSeqs.isEmpty()) {
             // for (TranscriptRefSeq transcriptRefSeq : transcriptRefSeqs) {
@@ -92,98 +88,93 @@ public class PullVariantsCallable implements Callable<Void> {
             // List<Variants_61_2> variants = canvasDAOBean.getVariants_61_2_DAO().findByGeneName(
             // transcriptRefSeq.getGene().getName());
 
-            try {
-                List<Variants_61_2> variants = canvasDAOBean.getVariants_61_2_DAO().findByGeneName(gene.getName());
-                if (variants != null && !variants.isEmpty()) {
-                    logger.info("variants.size(): {}", variants.size());
+            List<Variants_61_2> variants = canvasDAOBean.getVariants_61_2_DAO().findByGeneName(gene.getName());
+            if (variants != null && !variants.isEmpty()) {
+                logger.info("variants.size(): {}", variants.size());
 
-                    Set<LocationVariant> locationVariantSet = new HashSet<LocationVariant>();
+                Set<LocationVariant> locationVariantSet = new HashSet<LocationVariant>();
 
-                    Set<GenomicVariant> genomicVariants = new HashSet<GenomicVariant>();
-                    Set<TranscriptVariant> transcriptVariants = new HashSet<TranscriptVariant>();
+                Set<GenomicVariant> genomicVariants = new HashSet<GenomicVariant>();
+                Set<TranscriptVariant> transcriptVariants = new HashSet<TranscriptVariant>();
 
-                    CanonicalVariant canonicalVariant = null;
+                CanonicalVariant canonicalVariant = null;
 
-                    for (Variants_61_2 variant : variants) {
+                for (Variants_61_2 variant : variants) {
 
-                        LocationVariant locationVariant = variant.getLocationVariant();
-                        if (!locationVariantSet.contains(locationVariant)) {
-                            locationVariantSet.add(locationVariant);
+                    LocationVariant locationVariant = variant.getLocationVariant();
+                    if (!locationVariantSet.contains(locationVariant)) {
+                        locationVariantSet.add(locationVariant);
 
-                            canonicalVariant = new CanonicalVariant();
-                            canonicalVariant.setId(hearsayDAOBean.getCanonicalVariantDAO().save(canonicalVariant));
+                        canonicalVariant = new CanonicalVariant();
+                        canonicalVariant.setId(hearsayDAOBean.getCanonicalVariantDAO().save(canonicalVariant));
 
-                            GenomicVariant genomicVariant = new GenomicVariant();
-                            // genomicVariant.setGene(transcriptRefSeq.getGene());
-                            genomicVariant.setGene(gene);
-                            genomicVariant.setReferenceAllele(variant.getReferenceAllele());
-                            genomicVariant.setVariantAllele(variant.getAlternateAllele());
-                            genomicVariant.setStart(locationVariant.getPosition());
-                            genomicVariant.setStop(locationVariant.getEndPosition());
-                            genomicVariant.setHgvs(variant.getHgvsGenomic());
-                            genomicVariant.setChromosome(locationVariant.getReferenceVersionAccession()
-                                    .getVerAccession());
-                            genomicVariant.setCanonicalVariant(canonicalVariant);
+                        GenomicVariant genomicVariant = new GenomicVariant();
+                        // genomicVariant.setGene(transcriptRefSeq.getGene());
+                        genomicVariant.setGene(gene);
+                        genomicVariant.setReferenceAllele(variant.getReferenceAllele());
+                        genomicVariant.setVariantAllele(variant.getAlternateAllele());
+                        genomicVariant.setStart(locationVariant.getPosition());
+                        genomicVariant.setStop(locationVariant.getEndPosition());
+                        genomicVariant.setHgvs(variant.getHgvsGenomic());
+                        genomicVariant.setChromosome(locationVariant.getReferenceVersionAccession().getVerAccession());
+                        genomicVariant.setCanonicalVariant(canonicalVariant);
 
-                            Long id = hearsayDAOBean.getGenomicVariantDAO().save(genomicVariant);
-                            genomicVariant.setId(id);
-                            logger.debug(genomicVariant.toString());
-                            genomicVariants.add(genomicVariant);
+                        Long id = hearsayDAOBean.getGenomicVariantDAO().save(genomicVariant);
+                        genomicVariant.setId(id);
+                        logger.debug(genomicVariant.toString());
+                        genomicVariants.add(genomicVariant);
 
-                            List<VariantFrequency> variantFrequencies = canvasDAOBean.getVariantFrequencyDAO()
-                                    .findByLocationVariantIdAndVersion(locationVariant.getId(), "0.1");
-                            if (variantFrequencies != null && !variantFrequencies.isEmpty()) {
+                        List<VariantFrequency> variantFrequencies = canvasDAOBean.getVariantFrequencyDAO()
+                                .findByLocationVariantIdAndVersion(locationVariant.getId(), "0.1");
+                        if (variantFrequencies != null && !variantFrequencies.isEmpty()) {
 
-                                // get the first one...should be sorted by freq desc
-                                VariantFrequency variantFrequency = variantFrequencies.get(0);
-                                PopulationFrequency pf = new PopulationFrequency();
-                                pf.setFrequency(variantFrequency.getAlternateAlleleFrequency());
-                                pf.setVariantRepresentation(genomicVariant);
-                                pf.setSource("ExAC");
-                                pf.setPopulation(variantFrequency.getPopulation());
-                                pf.setVersion(variantFrequency.getVersion());
-                                pf.setId(hearsayDAOBean.getPopulationFrequencyDAO().save(pf));
-                                logger.debug(pf.toString());
-
-                            }
-
-                            List<SNPFrequencyPopulation> snpFrequencyPopulations = canvasDAOBean
-                                    .getSNPFrequencyPopulationDAO().findByLocationVariantIdAndVersion(
-                                            locationVariant.getId(), 1);
-                            if (snpFrequencyPopulations != null && !snpFrequencyPopulations.isEmpty()) {
-                                SNPFrequencyPopulation snpFP = snpFrequencyPopulations.get(0);
-                                PopulationFrequency pf = new PopulationFrequency();
-                                pf.setFrequency(snpFP.getAltAlleleFreq().doubleValue());
-                                pf.setVariantRepresentation(genomicVariant);
-                                pf.setSource("1000_GENOME");
-                                pf.setPopulation(snpFP.getPopulation());
-                                pf.setVersion(snpFP.getVersion().toString());
-                                pf.setId(hearsayDAOBean.getPopulationFrequencyDAO().save(pf));
-                                logger.debug(pf.toString());
-                            }
+                            // get the first one...should be sorted by freq desc
+                            VariantFrequency variantFrequency = variantFrequencies.get(0);
+                            PopulationFrequency pf = new PopulationFrequency();
+                            pf.setFrequency(variantFrequency.getAlternateAlleleFrequency());
+                            pf.setVariantRepresentation(genomicVariant);
+                            pf.setSource("ExAC");
+                            pf.setPopulation(variantFrequency.getPopulation());
+                            pf.setVersion(variantFrequency.getVersion());
+                            pf.setId(hearsayDAOBean.getPopulationFrequencyDAO().save(pf));
+                            logger.debug(pf.toString());
 
                         }
 
-                        VariantEffect variantEffect = variant.getVariantEffect();
-                        TranscriptVariant transcriptVariant = new TranscriptVariant();
-                        transcriptVariant.setCanonicalVariant(canonicalVariant);
-                        transcriptVariant.setGene(gene);
-                        transcriptVariant.setHgvs(variant.getHgvsTranscript());
-                        transcriptVariant.setTranscript(variant.getTranscr());
-                        if (variant.getTranscrPos() != null) {
-                            transcriptVariant.setStart(variant.getTranscrPos());
+                        List<SNPFrequencyPopulation> snpFrequencyPopulations = canvasDAOBean
+                                .getSNPFrequencyPopulationDAO().findByLocationVariantIdAndVersion(
+                                        locationVariant.getId(), 1);
+                        if (snpFrequencyPopulations != null && !snpFrequencyPopulations.isEmpty()) {
+                            SNPFrequencyPopulation snpFP = snpFrequencyPopulations.get(0);
+                            PopulationFrequency pf = new PopulationFrequency();
+                            pf.setFrequency(snpFP.getAltAlleleFreq().doubleValue());
+                            pf.setVariantRepresentation(genomicVariant);
+                            pf.setSource("1000_GENOME");
+                            pf.setPopulation(snpFP.getPopulation());
+                            pf.setVersion(snpFP.getVersion().toString());
+                            pf.setId(hearsayDAOBean.getPopulationFrequencyDAO().save(pf));
+                            logger.debug(pf.toString());
                         }
-                        transcriptVariant.setVariantEffect(variantEffect.getVariantEffect());
-                        Long id = hearsayDAOBean.getTranscriptVariantDAO().save(transcriptVariant);
-                        transcriptVariant.setId(id);
-                        logger.debug(transcriptVariant.toString());
-                        transcriptVariants.add(transcriptVariant);
 
                     }
 
+                    VariantEffect variantEffect = variant.getVariantEffect();
+                    TranscriptVariant transcriptVariant = new TranscriptVariant();
+                    transcriptVariant.setCanonicalVariant(canonicalVariant);
+                    transcriptVariant.setGene(gene);
+                    transcriptVariant.setHgvs(variant.getHgvsTranscript());
+                    transcriptVariant.setTranscript(variant.getTranscr());
+                    if (variant.getTranscrPos() != null) {
+                        transcriptVariant.setStart(variant.getTranscrPos());
+                    }
+                    transcriptVariant.setVariantEffect(variantEffect.getVariantEffect());
+                    Long id = hearsayDAOBean.getTranscriptVariantDAO().save(transcriptVariant);
+                    transcriptVariant.setId(id);
+                    logger.debug(transcriptVariant.toString());
+                    transcriptVariants.add(transcriptVariant);
+
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
+
             }
 
             logger.info("LEAVING call()");
