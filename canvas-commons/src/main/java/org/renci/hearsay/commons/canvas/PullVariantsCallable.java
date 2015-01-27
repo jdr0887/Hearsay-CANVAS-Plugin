@@ -47,15 +47,13 @@ public class PullVariantsCallable implements Callable<Void> {
             if (genes != null && !genes.isEmpty()) {
                 logger.info("genes.size(): {}", genes.size());
                 for (Gene gene : genes) {
-                    logger.info(gene.toString());
-
                     List<CanonicalVariant> canonicalVariants = hearsayDAOBean.getCanonicalVariantDAO().findByGeneName(
                             gene.getName());
                     if (canonicalVariants != null && !canonicalVariants.isEmpty()) {
                         logger.info("canonicalVariants.size(): {}", canonicalVariants.size());
                         continue;
                     }
-
+                    logger.info(gene.toString());
                     tpe.submit(new Task(gene));
                 }
             }
