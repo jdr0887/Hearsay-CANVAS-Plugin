@@ -40,7 +40,7 @@ public class PullVariantsCallable implements Callable<Void> {
     public Void call() {
         logger.info("ENTERING call()");
 
-        ThreadPoolExecutor tpe = new ThreadPoolExecutor(2, 2, 3, TimeUnit.DAYS, new LinkedBlockingQueue<Runnable>());
+        // ThreadPoolExecutor tpe = new ThreadPoolExecutor(2, 2, 3, TimeUnit.DAYS, new LinkedBlockingQueue<Runnable>());
 
         try {
             List<Gene> genes = hearsayDAOBean.getGeneDAO().findAll();
@@ -60,14 +60,16 @@ public class PullVariantsCallable implements Callable<Void> {
 
                 for (Gene gene : genesToProcess) {
                     logger.info(gene.toString());
-                    tpe.submit(new Task(gene));
+                    Task task = new Task(gene);
+                    task.call();
+                    // tpe.submit(task);
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        tpe.shutdown();
+        // tpe.shutdown();
         logger.info("LEAVING call()");
         return null;
 
