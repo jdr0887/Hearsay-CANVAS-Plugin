@@ -46,17 +46,19 @@ public class PullVariantsCallable implements Callable<Void> {
         if (genes != null && !genes.isEmpty()) {
             logger.info("genes.size(): {}", genes.size());
             for (Gene gene : genes) {
+                logger.info(gene.toString());
 
                 List<CanonicalVariant> canonicalVariants = hearsayDAOBean.getCanonicalVariantDAO().findByGeneName(
                         gene.getName());
                 if (canonicalVariants != null && !canonicalVariants.isEmpty()) {
+                    logger.info("canonicalVariants.size(): {}", canonicalVariants.size());
                     continue;
                 }
 
                 tpe.submit(new Task(gene));
             }
         }
-        
+
         tpe.shutdown();
         logger.info("LEAVING call()");
         return null;
@@ -80,9 +82,7 @@ public class PullVariantsCallable implements Callable<Void> {
             // List<Variants_61_2> variants = canvasDAOBean.getVariants_61_2_DAO().findByGeneName(
             // transcriptRefSeq.getGene().getName());
 
-            logger.info(gene.toString());
             List<Variants_61_2> variants = canvasDAOBean.getVariants_61_2_DAO().findByGeneName(gene.getName());
-
             if (variants != null && !variants.isEmpty()) {
                 logger.info("variants.size(): {}", variants.size());
 
@@ -115,7 +115,7 @@ public class PullVariantsCallable implements Callable<Void> {
 
                         Long id = hearsayDAOBean.getGenomicVariantDAO().save(genomicVariant);
                         genomicVariant.setId(id);
-                        logger.info(genomicVariant.toString());
+                        logger.debug(genomicVariant.toString());
                         genomicVariants.add(genomicVariant);
 
                         List<VariantFrequency> variantFrequencies = canvasDAOBean.getVariantFrequencyDAO()
@@ -131,7 +131,7 @@ public class PullVariantsCallable implements Callable<Void> {
                             pf.setPopulation(variantFrequency.getPopulation());
                             pf.setVersion(variantFrequency.getVersion());
                             pf.setId(hearsayDAOBean.getPopulationFrequencyDAO().save(pf));
-                            logger.info(pf.toString());
+                            logger.debug(pf.toString());
 
                         }
 
@@ -147,7 +147,7 @@ public class PullVariantsCallable implements Callable<Void> {
                             pf.setPopulation(snpFP.getPopulation());
                             pf.setVersion(snpFP.getVersion().toString());
                             pf.setId(hearsayDAOBean.getPopulationFrequencyDAO().save(pf));
-                            logger.info(pf.toString());
+                            logger.debug(pf.toString());
                         }
 
                     }
@@ -164,7 +164,7 @@ public class PullVariantsCallable implements Callable<Void> {
                     transcriptVariant.setVariantEffect(variantEffect.getVariantEffect());
                     Long id = hearsayDAOBean.getTranscriptVariantDAO().save(transcriptVariant);
                     transcriptVariant.setId(id);
-                    logger.info(transcriptVariant.toString());
+                    logger.debug(transcriptVariant.toString());
                     transcriptVariants.add(transcriptVariant);
 
                 }
