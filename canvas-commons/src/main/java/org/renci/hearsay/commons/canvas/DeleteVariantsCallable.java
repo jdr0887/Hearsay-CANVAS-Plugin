@@ -52,7 +52,6 @@ public class DeleteVariantsCallable implements Callable<Void> {
         if (genes != null && !genes.isEmpty()) {
             logger.info("genes.size(): {}", genes.size());
             for (Gene gene : genes) {
-                logger.info(gene.toString());
                 tpe.submit(new Task(gene));
             }
         }
@@ -72,6 +71,8 @@ public class DeleteVariantsCallable implements Callable<Void> {
 
         @Override
         public Void call() throws HearsayDAOException {
+
+            logger.info(gene.toString());
 
             List<CanonicalVariant> canonicalVariants = hearsayDAOBean.getCanonicalVariantDAO().findByGeneName(
                     gene.getName());

@@ -61,7 +61,6 @@ public class PullVariantsCallable implements Callable<Void> {
             logger.info("genes.size(): {}", genes.size());
 
             for (Gene gene : genes) {
-                logger.info(gene.toString());
                 Task task = new Task(gene);
                 // task.call();
                 tpe.submit(task);
@@ -85,6 +84,8 @@ public class PullVariantsCallable implements Callable<Void> {
         }
 
         public Void call() throws HearsayDAOException {
+
+            logger.info(gene.toString());
 
             List<Variants_61_2> variants = new ArrayList<Variants_61_2>();
 
