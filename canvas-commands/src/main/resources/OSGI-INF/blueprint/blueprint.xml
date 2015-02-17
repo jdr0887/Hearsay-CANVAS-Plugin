@@ -4,22 +4,25 @@
   <command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.1.0">
     <command>
       <action class="org.renci.hearsay.commands.canvas.PullFeaturesAction">
-        <property name="callable" ref="pullFeaturesCallable" />
+        <property name="canvasDAOBean" ref="canvasDAOBean" />
+        <property name="hearsayDAOBean" ref="hearsayDAOBean" />
       </action>
     </command>
     <command>
       <action class="org.renci.hearsay.commands.canvas.PullVariantsAction">
-        <property name="callable" ref="pullVariantsCallable" />
+        <property name="canvasDAOBean" ref="canvasDAOBean" />
+        <property name="hearsayDAOBean" ref="hearsayDAOBean" />
       </action>
     </command>
     <command>
       <action class="org.renci.hearsay.commands.canvas.PullTranscriptsAction">
-        <property name="callable" ref="pullTranscriptsCallable" />
+        <property name="canvasDAOBean" ref="canvasDAOBean" />
+        <property name="hearsayDAOBean" ref="hearsayDAOBean" />
       </action>
     </command>
     <command>
       <action class="org.renci.hearsay.commands.canvas.DeleteVariantsAction">
-        <property name="callable" ref="deleteVariantsCallable" />
+        <property name="hearsayDAOBean" ref="hearsayDAOBean" />
       </action>
     </command>
   </command-bundle>
@@ -94,25 +97,6 @@
     <property name="variants_61_2_DAO" ref="variants_61_2_DAO" />
     <property name="maxVariantFrequencyDAO" ref="maxVariantFrequencyDAO" />
     <property name="variantFrequencyDAO" ref="variantFrequencyDAO" />
-  </bean>
-
-  <bean id="pullTranscriptsCallable" class="org.renci.hearsay.commons.canvas.PullTranscriptsCallable">
-    <property name="canvasDAOBean" ref="canvasDAOBean" />
-    <property name="hearsayDAOBean" ref="hearsayDAOBean" />
-  </bean>
-
-  <bean id="deleteVariantsCallable" class="org.renci.hearsay.commons.canvas.DeleteVariantsCallable">
-    <property name="hearsayDAOBean" ref="hearsayDAOBean" />
-  </bean>
-
-  <bean id="pullFeaturesCallable" class="org.renci.hearsay.commons.canvas.PullFeaturesCallable">
-    <property name="canvasDAOBean" ref="canvasDAOBean" />
-    <property name="hearsayDAOBean" ref="hearsayDAOBean" />
-  </bean>
-
-  <bean id="pullVariantsCallable" class="org.renci.hearsay.commons.canvas.PullVariantsCallable">
-    <property name="canvasDAOBean" ref="canvasDAOBean" />
-    <property name="hearsayDAOBean" ref="hearsayDAOBean" />
   </bean>
 
 </blueprint>
