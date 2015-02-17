@@ -17,14 +17,17 @@ public class PullFeaturesCallable implements Callable<Void> {
 
     private final Logger logger = LoggerFactory.getLogger(PullFeaturesCallable.class);
 
-    private String refSeqVersion;
-
     private CANVASDAOBean canvasDAOBean;
 
     private HearsayDAOBean hearsayDAOBean;
 
-    public PullFeaturesCallable() {
+    private String refSeqVersion;
+
+    public PullFeaturesCallable(CANVASDAOBean canvasDAOBean, HearsayDAOBean hearsayDAOBean, String refSeqVersion) {
         super();
+        this.canvasDAOBean = canvasDAOBean;
+        this.hearsayDAOBean = hearsayDAOBean;
+        this.refSeqVersion = refSeqVersion;
     }
 
     @Override

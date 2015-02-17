@@ -35,8 +35,14 @@ public class PersistTranscriptsCallable implements Runnable {
 
     private Mapping mapping;
 
-    public PersistTranscriptsCallable() {
+    public PersistTranscriptsCallable(CANVASDAOBean canvasDAOBean, HearsayDAOBean hearsayDAOBean, String refSeqVersion,
+            String versionId, Mapping mapping) {
         super();
+        this.canvasDAOBean = canvasDAOBean;
+        this.hearsayDAOBean = hearsayDAOBean;
+        this.refSeqVersion = refSeqVersion;
+        this.versionId = versionId;
+        this.mapping = mapping;
     }
 
     @Override

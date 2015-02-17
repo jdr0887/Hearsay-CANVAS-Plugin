@@ -31,16 +31,21 @@ public class PullTranscriptsCallable implements Callable<Void> {
 
     private final Logger logger = LoggerFactory.getLogger(PullTranscriptsCallable.class);
 
-    private String refSeqVersion;
-
-    private Integer genomeRefId;
-
     private CANVASDAOBean canvasDAOBean;
 
     private HearsayDAOBean hearsayDAOBean;
 
-    public PullTranscriptsCallable() {
+    private String refSeqVersion;
+
+    private Integer genomeRefId;
+
+    public PullTranscriptsCallable(CANVASDAOBean canvasDAOBean, HearsayDAOBean hearsayDAOBean, String refSeqVersion,
+            Integer genomeRefId) {
         super();
+        this.canvasDAOBean = canvasDAOBean;
+        this.hearsayDAOBean = hearsayDAOBean;
+        this.refSeqVersion = refSeqVersion;
+        this.genomeRefId = genomeRefId;
     }
 
     @Override
@@ -150,12 +155,8 @@ public class PullTranscriptsCallable implements Callable<Void> {
             ThreadPoolExecutor tpe = new ThreadPoolExecutor(2, 2, 2, TimeUnit.DAYS, new LinkedBlockingQueue<Runnable>());
 
             for (MappingKey key : map.keySet()) {
-                PersistTranscriptsCallable runnable = new PersistTranscriptsCallable();
-                runnable.setCanvasDAOBean(canvasDAOBean);
-                runnable.setHearsayDAOBean(hearsayDAOBean);
-                runnable.setMapping(map.get(key));
-                runnable.setRefSeqVersion(refSeqVersion);
-                runnable.setVersionId(key.getVersionId());
+                PersistTranscriptsCallable runnable = new PersistTranscriptsCallable(canvasDAOBean, hearsayDAOBean,
+                        refSeqVersion, key.getVersionId(), map.get(key));
                 tpe.submit(runnable);
             }
 
