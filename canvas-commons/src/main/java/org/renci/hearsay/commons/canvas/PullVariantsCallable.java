@@ -1,5 +1,6 @@
 package org.renci.hearsay.commons.canvas;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -8,6 +9,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.lang.StringUtils;
 import org.renci.hearsay.canvas.dao.CANVASDAOBean;
 import org.renci.hearsay.canvas.exac.dao.model.VariantFrequency;
 import org.renci.hearsay.canvas.genome1k.dao.model.SNPFrequencyPopulation;
@@ -28,12 +30,18 @@ public class PullVariantsCallable implements Callable<Void> {
 
     private final Logger logger = LoggerFactory.getLogger(PullVariantsCallable.class);
 
+    private Long locationVariantId;
+
+    private String geneName;
+
     private CANVASDAOBean canvasDAOBean;
 
     private HearsayDAOBean hearsayDAOBean;
 
-    public PullVariantsCallable() {
+    public PullVariantsCallable(CANVASDAOBean canvasDAOBean, HearsayDAOBean hearsayDAOBean) {
         super();
+        this.canvasDAOBean = canvasDAOBean;
+        this.hearsayDAOBean = hearsayDAOBean;
     }
 
     @Override
@@ -42,27 +50,23 @@ public class PullVariantsCallable implements Callable<Void> {
 
         ThreadPoolExecutor tpe = new ThreadPoolExecutor(2, 2, 3, TimeUnit.DAYS, new LinkedBlockingQueue<Runnable>());
 
-        List<Gene> genes = hearsayDAOBean.getGeneDAO().findAll();
+        List<Gene> genes = new ArrayList<Gene>();
+        if (StringUtils.isNotEmpty(geneName)) {
+            genes.addAll(hearsayDAOBean.getGeneDAO().findByName(geneName));
+        } else {
+            genes.addAll(hearsayDAOBean.getGeneDAO().findAll());
+        }
+
         if (genes != null && !genes.isEmpty()) {
             logger.info("genes.size(): {}", genes.size());
-            Set<Gene> genesToProcess = new HashSet<>();
 
             for (Gene gene : genes) {
-                List<CanonicalVariant> canonicalVariants = hearsayDAOBean.getCanonicalVariantDAO().findByGeneName(
-                        gene.getName());
-                if (canonicalVariants != null && !canonicalVariants.isEmpty()) {
-                    logger.info("canonicalVariants.size(): {}", canonicalVariants.size());
-                    continue;
-                }
-                genesToProcess.add(gene);
-            }
-
-            for (Gene gene : genesToProcess) {
                 logger.info(gene.toString());
                 Task task = new Task(gene);
                 // task.call();
                 tpe.submit(task);
             }
+
         }
 
         tpe.shutdown();
@@ -81,14 +85,15 @@ public class PullVariantsCallable implements Callable<Void> {
         }
 
         public Void call() throws HearsayDAOException {
-            // List<TranscriptRefSeq> transcriptRefSeqs = hearsayDAOBean.getTranscriptRefSeqDAO().findAll();
-            // if (transcriptRefSeqs != null && !transcriptRefSeqs.isEmpty()) {
-            // for (TranscriptRefSeq transcriptRefSeq : transcriptRefSeqs) {
-            // logger.info(transcriptRefSeq.toString());
-            // List<Variants_61_2> variants = canvasDAOBean.getVariants_61_2_DAO().findByGeneName(
-            // transcriptRefSeq.getGene().getName());
 
-            List<Variants_61_2> variants = canvasDAOBean.getVariants_61_2_DAO().findByGeneName(gene.getName());
+            List<Variants_61_2> variants = new ArrayList<Variants_61_2>();
+
+            if (locationVariantId != null) {
+                canvasDAOBean.getVariants_61_2_DAO().findByLocationVariantId(locationVariantId);
+            } else {
+                canvasDAOBean.getVariants_61_2_DAO().findByGeneName(gene.getName());
+            }
+
             if (variants != null && !variants.isEmpty()) {
                 logger.info("variants.size(): {}", variants.size());
 
@@ -180,6 +185,22 @@ public class PullVariantsCallable implements Callable<Void> {
             logger.info("LEAVING call()");
             return null;
         }
+    }
+
+    public Long getLocationVariantId() {
+        return locationVariantId;
+    }
+
+    public void setLocationVariantId(Long locationVariantId) {
+        this.locationVariantId = locationVariantId;
+    }
+
+    public String getGeneName() {
+        return geneName;
+    }
+
+    public void setGeneName(String geneName) {
+        this.geneName = geneName;
     }
 
     public CANVASDAOBean getCanvasDAOBean() {

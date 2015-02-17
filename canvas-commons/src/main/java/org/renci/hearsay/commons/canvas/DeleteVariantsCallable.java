@@ -8,6 +8,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.lang.StringUtils;
 import org.renci.hearsay.dao.HearsayDAOBean;
 import org.renci.hearsay.dao.HearsayDAOException;
 import org.renci.hearsay.dao.model.CanonicalVariant;
@@ -27,8 +28,11 @@ public class DeleteVariantsCallable implements Callable<Void> {
 
     private HearsayDAOBean hearsayDAOBean;
 
-    public DeleteVariantsCallable() {
+    private String geneName;
+
+    public DeleteVariantsCallable(HearsayDAOBean hearsayDAOBean) {
         super();
+        this.hearsayDAOBean = hearsayDAOBean;
     }
 
     @Override
@@ -37,10 +41,18 @@ public class DeleteVariantsCallable implements Callable<Void> {
 
         ThreadPoolExecutor tpe = new ThreadPoolExecutor(2, 2, 3, TimeUnit.DAYS, new LinkedBlockingQueue<Runnable>());
 
-        List<Gene> genes = hearsayDAOBean.getGeneDAO().findAll();
+        List<Gene> genes = new ArrayList<Gene>();
+
+        if (StringUtils.isNotEmpty(geneName)) {
+            genes.addAll(hearsayDAOBean.getGeneDAO().findByName(geneName));
+        } else {
+            genes.addAll(hearsayDAOBean.getGeneDAO().findAll());
+        }
+
         if (genes != null && !genes.isEmpty()) {
             logger.info("genes.size(): {}", genes.size());
             for (Gene gene : genes) {
+                logger.info(gene.toString());
                 tpe.submit(new Task(gene));
             }
         }
@@ -118,4 +130,13 @@ public class DeleteVariantsCallable implements Callable<Void> {
     public void setHearsayDAOBean(HearsayDAOBean hearsayDAOBean) {
         this.hearsayDAOBean = hearsayDAOBean;
     }
+
+    public String getGeneName() {
+        return geneName;
+    }
+
+    public void setGeneName(String geneName) {
+        this.geneName = geneName;
+    }
+
 }
