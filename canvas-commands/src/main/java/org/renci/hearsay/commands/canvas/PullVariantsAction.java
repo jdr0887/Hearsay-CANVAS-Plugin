@@ -18,10 +18,10 @@ public class PullVariantsAction extends AbstractAction {
 
     private final Logger logger = LoggerFactory.getLogger(PullVariantsAction.class);
 
-    @Option(name = "locVarId", description = "location variant id", required = false, multiValued = false)
+    @Option(name = "--locVarId", description = "location variant id", required = false, multiValued = false)
     private Long locationVariantId;
 
-    @Option(name = "geneName", description = "Gene name", required = false, multiValued = false)
+    @Option(name = "--geneName", description = "Gene name", required = false, multiValued = false)
     private String geneName;
 
     private CANVASDAOBean canvasDAOBean;
