@@ -5,6 +5,7 @@ import java.util.concurrent.Executors;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.karaf.shell.commands.Command;
+import org.apache.karaf.shell.commands.Option;
 import org.apache.karaf.shell.console.AbstractAction;
 import org.renci.hearsay.canvas.dao.CANVASDAOBean;
 import org.renci.hearsay.commons.canvas.PullVariantsCallable;
@@ -17,8 +18,10 @@ public class PullVariantsAction extends AbstractAction {
 
     private final Logger logger = LoggerFactory.getLogger(PullVariantsAction.class);
 
+    @Option(name = "locVarId", description = "location variant id", required = false, multiValued = false)
     private Long locationVariantId;
 
+    @Option(name = "geneName", description = "Gene name", required = false, multiValued = false)
     private String geneName;
 
     private CANVASDAOBean canvasDAOBean;
