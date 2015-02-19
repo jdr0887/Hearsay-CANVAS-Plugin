@@ -6,6 +6,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.lang.StringUtils;
 import org.renci.hearsay.canvas.dao.CANVASDAOBean;
 import org.renci.hearsay.dao.HearsayDAOBean;
 import org.renci.hearsay.dao.HearsayDAOException;
@@ -23,6 +24,8 @@ public class PullFeaturesCallable implements Callable<Void> {
 
     private String refSeqVersion;
 
+    private String geneName;
+
     public PullFeaturesCallable(CANVASDAOBean canvasDAOBean, HearsayDAOBean hearsayDAOBean, String refSeqVersion) {
         super();
         this.canvasDAOBean = canvasDAOBean;
@@ -35,6 +38,12 @@ public class PullFeaturesCallable implements Callable<Void> {
         logger.debug("ENTERING call()");
         ThreadPoolExecutor tpe = new ThreadPoolExecutor(2, 2, 2, TimeUnit.DAYS, new LinkedBlockingQueue<Runnable>());
         List<TranscriptRefSeq> transcriptRefSeqs = hearsayDAOBean.getTranscriptRefSeqDAO().findAll();
+        if (StringUtils.isNotEmpty(geneName)) {
+            transcriptRefSeqs.addAll(hearsayDAOBean.getTranscriptRefSeqDAO().findByGeneName(geneName));
+        } else {
+            transcriptRefSeqs.addAll(hearsayDAOBean.getTranscriptRefSeqDAO().findAll());
+        }
+
         if (transcriptRefSeqs != null && !transcriptRefSeqs.isEmpty()) {
             for (TranscriptRefSeq transcriptRefSeq : transcriptRefSeqs) {
                 PersistFeaturesCallable runnable = new PersistFeaturesCallable();
@@ -47,6 +56,14 @@ public class PullFeaturesCallable implements Callable<Void> {
         }
         tpe.shutdown();
         return null;
+    }
+
+    public String getGeneName() {
+        return geneName;
+    }
+
+    public void setGeneName(String geneName) {
+        this.geneName = geneName;
     }
 
     public CANVASDAOBean getCanvasDAOBean() {
