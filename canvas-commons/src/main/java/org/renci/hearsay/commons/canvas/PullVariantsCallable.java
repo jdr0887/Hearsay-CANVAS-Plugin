@@ -90,9 +90,9 @@ public class PullVariantsCallable implements Callable<Void> {
             List<Variants_61_2> variants = new ArrayList<Variants_61_2>();
 
             if (locationVariantId != null) {
-                canvasDAOBean.getVariants_61_2_DAO().findByLocationVariantId(locationVariantId);
+                variants.addAll(canvasDAOBean.getVariants_61_2_DAO().findByLocationVariantId(locationVariantId));
             } else {
-                canvasDAOBean.getVariants_61_2_DAO().findByGeneName(gene.getName());
+                variants.addAll(canvasDAOBean.getVariants_61_2_DAO().findByGeneName(gene.getName()));
             }
 
             if (variants != null && !variants.isEmpty()) {
