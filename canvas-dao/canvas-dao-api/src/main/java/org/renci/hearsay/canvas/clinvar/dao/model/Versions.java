@@ -23,10 +23,10 @@ public class Versions {
     @Column(name = "clinvar_xml_release")
     private String release;
 
-    @OneToMany(mappedBy = "clinvarVersion", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "clinvarVersion", fetch = FetchType.LAZY)
     private Set<DiagnosticResultVersion> diagnosticResultVersions;
 
-    @OneToMany(mappedBy = "clinvarVersion", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "clinvarVersion", fetch = FetchType.LAZY)
     private Set<IncidentalResultVersionX> incidentalResultVersions;
 
     public Versions() {
