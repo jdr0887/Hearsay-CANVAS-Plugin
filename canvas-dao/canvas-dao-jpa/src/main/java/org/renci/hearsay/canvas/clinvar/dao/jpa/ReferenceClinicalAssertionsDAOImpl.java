@@ -32,6 +32,8 @@ import org.renci.hearsay.canvas.clinvar.dao.model.ReferenceClinicalAssertions_;
 import org.renci.hearsay.canvas.clinvar.dao.model.Versions;
 import org.renci.hearsay.canvas.clinvar.dao.model.Versions_;
 import org.renci.hearsay.canvas.dao.jpa.BaseDAOImpl;
+import org.renci.hearsay.canvas.var.dao.model.LocationVariant;
+import org.renci.hearsay.canvas.var.dao.model.LocationVariant_;
 import org.renci.hearsay.dao.HearsayDAOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -165,6 +167,35 @@ public class ReferenceClinicalAssertionsDAOImpl extends BaseDAOImpl<ReferenceCli
 
         predicates.add(critBuilder.equal(binResultsFinalIncidentalXIncidentalBinXJoin.get(IncidentalBinX_.id),
                 incidentalBinId));
+
+        crit.distinct(true);
+        crit.where(predicates.toArray(new Predicate[predicates.size()]));
+
+        TypedQuery<ReferenceClinicalAssertions> query = getEntityManager().createQuery(crit);
+        List<ReferenceClinicalAssertions> ret = query.getResultList();
+        return ret;
+    }
+
+    @Override
+    public List<ReferenceClinicalAssertions> findByLocationVariantIdAndVersion(Long locVarId, Integer version)
+            throws HearsayDAOException {
+        logger.debug("ENTERING findByLocationVariantIdAndVersion(Long, Integer)");
+
+        CriteriaBuilder critBuilder = getEntityManager().getCriteriaBuilder();
+        CriteriaQuery<ReferenceClinicalAssertions> crit = critBuilder.createQuery(getPersistentClass());
+        Root<ReferenceClinicalAssertions> root = crit.from(getPersistentClass());
+        List<Predicate> predicates = new ArrayList<Predicate>();
+
+        Join<ReferenceClinicalAssertions, LocationVariant> referenceClinicalAssertionsLocationVariantJoin = root
+                .join(ReferenceClinicalAssertions_.locationVariant);
+
+        predicates.add(critBuilder.equal(referenceClinicalAssertionsLocationVariantJoin.get(LocationVariant_.id),
+                locVarId));
+
+        SetJoin<ReferenceClinicalAssertions, Versions> referenceClinicalAssertionsVersionsJoin = root.join(
+                ReferenceClinicalAssertions_.versions, JoinType.LEFT);
+
+        predicates.add(critBuilder.equal(referenceClinicalAssertionsVersionsJoin.get(Versions_.id), version));
 
         crit.distinct(true);
         crit.where(predicates.toArray(new Predicate[predicates.size()]));
