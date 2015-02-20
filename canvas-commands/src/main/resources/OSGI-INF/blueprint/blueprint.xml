@@ -75,6 +75,7 @@
   <reference id="transcriptMapsDAO" interface="org.renci.hearsay.canvas.refseq.dao.TranscriptMapsDAO" />
   <reference id="transcriptMapsExonsDAO" interface="org.renci.hearsay.canvas.refseq.dao.TranscriptMapsExonsDAO" />
   <reference id="refSeqGeneDAO" interface="org.renci.hearsay.canvas.refseq.dao.RefSeqGeneDAO" />
+  <reference id="referenceClinicalAssertionsDAO" interface="org.renci.hearsay.canvas.clinvar.dao.ReferenceClinicalAssertionsDAO" />
   <reference id="refSeqCodingSequenceDAO" interface="org.renci.hearsay.canvas.refseq.dao.RefSeqCodingSequenceDAO" />
   <reference id="SNPFrequencyPopulationDAO" interface="org.renci.hearsay.canvas.genome1k.dao.SNPFrequencyPopulationDAO" />
   <reference id="HGNCGeneDAO" interface="org.renci.hearsay.canvas.hgnc.dao.HGNCGeneDAO" />
@@ -92,6 +93,7 @@
     <property name="transcriptMapsExonsDAO" ref="transcriptMapsExonsDAO" />
     <property name="refSeqGeneDAO" ref="refSeqGeneDAO" />
     <property name="refSeqCodingSequenceDAO" ref="refSeqCodingSequenceDAO" />
+    <property name="referenceClinicalAssertionsDAO" ref="referenceClinicalAssertionsDAO" />
     <property name="SNPFrequencyPopulationDAO" ref="SNPFrequencyPopulationDAO" />
     <property name="HGNCGeneDAO" ref="HGNCGeneDAO" />
     <property name="variants_61_2_DAO" ref="variants_61_2_DAO" />
