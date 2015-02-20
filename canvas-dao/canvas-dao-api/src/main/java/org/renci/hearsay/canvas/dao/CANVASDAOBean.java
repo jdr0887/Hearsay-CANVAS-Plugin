@@ -2,6 +2,7 @@ package org.renci.hearsay.canvas.dao;
 
 import org.renci.hearsay.canvas.annotation.dao.AnnotationGeneDAO;
 import org.renci.hearsay.canvas.annotation.dao.AnnotationGeneExternalIdsDAO;
+import org.renci.hearsay.canvas.clinvar.dao.ReferenceClinicalAssertionsDAO;
 import org.renci.hearsay.canvas.exac.dao.MaxVariantFrequencyDAO;
 import org.renci.hearsay.canvas.exac.dao.VariantFrequencyDAO;
 import org.renci.hearsay.canvas.genome1k.dao.SNPFrequencyPopulationDAO;
@@ -45,8 +46,18 @@ public class CANVASDAOBean {
 
     private VariantFrequencyDAO variantFrequencyDAO;
 
+    private ReferenceClinicalAssertionsDAO referenceClinicalAssertionsDAO;
+
     public CANVASDAOBean() {
         super();
+    }
+
+    public ReferenceClinicalAssertionsDAO getReferenceClinicalAssertionsDAO() {
+        return referenceClinicalAssertionsDAO;
+    }
+
+    public void setReferenceClinicalAssertionsDAO(ReferenceClinicalAssertionsDAO referenceClinicalAssertionsDAO) {
+        this.referenceClinicalAssertionsDAO = referenceClinicalAssertionsDAO;
     }
 
     public SNPFrequencyPopulationDAO getSNPFrequencyPopulationDAO() {
