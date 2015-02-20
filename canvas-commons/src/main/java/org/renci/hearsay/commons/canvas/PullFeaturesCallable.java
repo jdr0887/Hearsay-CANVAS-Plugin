@@ -36,7 +36,7 @@ public class PullFeaturesCallable implements Callable<Void> {
     @Override
     public Void call() throws HearsayDAOException {
         logger.debug("ENTERING call()");
-        ThreadPoolExecutor tpe = new ThreadPoolExecutor(2, 2, 2, TimeUnit.DAYS, new LinkedBlockingQueue<Runnable>());
+        ThreadPoolExecutor tpe = new ThreadPoolExecutor(8, 8, 3, TimeUnit.DAYS, new LinkedBlockingQueue<Runnable>());
         List<TranscriptRefSeq> transcriptRefSeqs = hearsayDAOBean.getTranscriptRefSeqDAO().findAll();
         if (StringUtils.isNotEmpty(geneName)) {
             transcriptRefSeqs.addAll(hearsayDAOBean.getTranscriptRefSeqDAO().findByGeneName(geneName));

@@ -152,7 +152,7 @@ public class PullTranscriptsCallable implements Callable<Void> {
                 logger.info(transcriptRefSeq.toString());
             }
 
-            ThreadPoolExecutor tpe = new ThreadPoolExecutor(2, 2, 2, TimeUnit.DAYS, new LinkedBlockingQueue<Runnable>());
+            ThreadPoolExecutor tpe = new ThreadPoolExecutor(8, 8, 3, TimeUnit.DAYS, new LinkedBlockingQueue<Runnable>());
 
             for (MappingKey key : map.keySet()) {
                 PersistTranscriptsCallable runnable = new PersistTranscriptsCallable(canvasDAOBean, hearsayDAOBean,
