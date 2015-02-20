@@ -132,18 +132,24 @@ public class PullTranscriptsCallable implements Callable<Void> {
                         gene.setName(refSeqGene.getName());
                         gene.setDescription(refSeqGene.getDescription());
                         gene.setId(hearsayDAOBean.getGeneDAO().save(gene));
+                        logger.info(gene.toString());
                     } else {
                         gene = alreadyPersistedGeneList.get(0);
                     }
                 }
-                logger.info(gene.toString());
 
                 TranscriptRefSeq transcriptRefSeq = new TranscriptRefSeq();
                 transcriptRefSeq.setGene(gene);
                 transcriptRefSeq.setAccession(key.getVersionId());
-                Long id = hearsayDAOBean.getTranscriptRefSeqDAO().save(transcriptRefSeq);
-                transcriptRefSeq.setId(id);
-                logger.info(transcriptRefSeq.toString());
+                List<TranscriptRefSeq> alreadyPersistedTranscriptList = hearsayDAOBean.getTranscriptRefSeqDAO()
+                        .findByExample(transcriptRefSeq);
+                if (alreadyPersistedTranscriptList != null && alreadyPersistedTranscriptList.isEmpty()) {
+                    Long id = hearsayDAOBean.getTranscriptRefSeqDAO().save(transcriptRefSeq);
+                    transcriptRefSeq.setId(id);
+                    logger.info(transcriptRefSeq.toString());
+                } else {
+                    transcriptRefSeq = alreadyPersistedTranscriptList.get(0);
+                }
             }
 
             ThreadPoolExecutor tpe = new ThreadPoolExecutor(8, 8, 3, TimeUnit.DAYS, new LinkedBlockingQueue<Runnable>());
