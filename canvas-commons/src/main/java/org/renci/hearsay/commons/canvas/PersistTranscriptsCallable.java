@@ -68,7 +68,7 @@ public class PersistTranscriptsCallable implements Runnable {
         }
         logger.info(gene.toString());
 
-        TranscriptRefSeq transcriptRefSeq = new TranscriptRefSeq();
+        TranscriptRefSeq transcriptRefSeq = null;
         try {
             TranscriptRefSeq exampleTranscriptRefSeq = new TranscriptRefSeq();
             exampleTranscriptRefSeq.setGene(gene);

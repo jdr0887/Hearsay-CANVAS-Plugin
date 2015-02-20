@@ -141,14 +141,8 @@ public class PullTranscriptsCallable implements Callable<Void> {
                 TranscriptRefSeq transcriptRefSeq = new TranscriptRefSeq();
                 transcriptRefSeq.setGene(gene);
                 transcriptRefSeq.setAccession(key.getVersionId());
-                List<TranscriptRefSeq> alreadyPersistedTranscriptList = hearsayDAOBean.getTranscriptRefSeqDAO()
-                        .findByExample(transcriptRefSeq);
-                if (alreadyPersistedTranscriptList != null && alreadyPersistedTranscriptList.isEmpty()) {
-                    Long id = hearsayDAOBean.getTranscriptRefSeqDAO().save(transcriptRefSeq);
-                    transcriptRefSeq.setId(id);
-                } else {
-                    transcriptRefSeq = alreadyPersistedTranscriptList.get(0);
-                }
+                Long id = hearsayDAOBean.getTranscriptRefSeqDAO().save(transcriptRefSeq);
+                transcriptRefSeq.setId(id);
                 logger.info(transcriptRefSeq.toString());
             }
 
