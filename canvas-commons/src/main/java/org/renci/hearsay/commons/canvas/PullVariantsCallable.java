@@ -10,6 +10,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.lang.StringUtils;
+import org.renci.hearsay.canvas.clinvar.dao.model.ReferenceClinicalAssertions;
 import org.renci.hearsay.canvas.dao.CANVASDAOBean;
 import org.renci.hearsay.canvas.exac.dao.model.VariantFrequency;
 import org.renci.hearsay.canvas.genome1k.dao.model.SNPFrequencyPopulation;
@@ -23,6 +24,7 @@ import org.renci.hearsay.dao.model.Gene;
 import org.renci.hearsay.dao.model.GenomicVariant;
 import org.renci.hearsay.dao.model.PopulationFrequency;
 import org.renci.hearsay.dao.model.TranscriptVariant;
+import org.renci.hearsay.dao.model.VariantAssertion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -129,6 +131,20 @@ public class PullVariantsCallable implements Callable<Void> {
                         genomicVariant.setId(id);
                         logger.debug(genomicVariant.toString());
                         genomicVariants.add(genomicVariant);
+                        
+                        List<ReferenceClinicalAssertions> assertions = canvasDAOBean
+                                .getReferenceClinicalAssertionsDAO().findByLocationVariantIdAndVersion(
+                                        locationVariant.getId(), 4);
+                        if (assertions != null && !assertions.isEmpty()) {
+                            for (ReferenceClinicalAssertions assertion : assertions) {
+                                VariantAssertion variantAssertion = new VariantAssertion();
+                                variantAssertion.setGenomicVariant(genomicVariant);
+                                variantAssertion.setAccession(assertion.getAccession());
+                                variantAssertion.setAssertion(assertion.getAssertion());
+                                variantAssertion.setVersion(assertion.getVersion());
+                                hearsayDAOBean.getVariantAssertionDAO().save(variantAssertion);
+                            }
+                        }
 
                         List<VariantFrequency> variantFrequencies = canvasDAOBean.getVariantFrequencyDAO()
                                 .findByLocationVariantIdAndVersion(locationVariant.getId(), "0.1");
