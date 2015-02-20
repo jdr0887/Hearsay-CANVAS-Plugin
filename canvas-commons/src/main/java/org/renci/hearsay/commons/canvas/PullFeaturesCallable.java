@@ -1,5 +1,6 @@
 package org.renci.hearsay.commons.canvas;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -37,7 +38,7 @@ public class PullFeaturesCallable implements Callable<Void> {
     public Void call() throws HearsayDAOException {
         logger.debug("ENTERING call()");
         ThreadPoolExecutor tpe = new ThreadPoolExecutor(8, 8, 3, TimeUnit.DAYS, new LinkedBlockingQueue<Runnable>());
-        List<TranscriptRefSeq> transcriptRefSeqs = hearsayDAOBean.getTranscriptRefSeqDAO().findAll();
+        List<TranscriptRefSeq> transcriptRefSeqs = new ArrayList<TranscriptRefSeq>();
         if (StringUtils.isNotEmpty(geneName)) {
             transcriptRefSeqs.addAll(hearsayDAOBean.getTranscriptRefSeqDAO().findByGeneName(geneName));
         } else {
