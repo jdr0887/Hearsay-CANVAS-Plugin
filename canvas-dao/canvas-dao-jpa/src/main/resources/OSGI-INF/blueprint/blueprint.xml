@@ -14,6 +14,12 @@
   </bean>
   <service ref="annotationGeneExternalIdsDAOImpl" interface="org.renci.hearsay.canvas.annotation.dao.AnnotationGeneExternalIdsDAO" />
 
+  <bean id="referenceClinicalAssertionsDAOImpl" class="org.renci.hearsay.canvas.clinvar.dao.jpa.ReferenceClinicalAssertionsDAOImpl">
+    <tx:transaction method="*" value="Required" />
+    <jpa:context property="entityManager" unitname="canvas" />
+  </bean>
+  <service ref="referenceClinicalAssertionsDAOImpl" interface="org.renci.hearsay.canvas.clinvar.dao.jpa.ReferenceClinicalAssertionsDAO" />
+
   <bean id="genomeRefDAOImpl" class="org.renci.hearsay.canvas.ref.dao.jpa.GenomeRefDAOImpl">
     <tx:transaction method="*" value="Required" />
     <jpa:context property="entityManager" unitname="canvas" />
