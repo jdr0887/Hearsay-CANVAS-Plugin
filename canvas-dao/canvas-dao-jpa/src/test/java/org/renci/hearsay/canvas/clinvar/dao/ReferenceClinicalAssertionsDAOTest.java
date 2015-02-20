@@ -41,6 +41,20 @@ public class ReferenceClinicalAssertionsDAOTest {
         }
     }
 
+    @Test
+    public void testFindByLocVarIdAndVersion() {
+        ReferenceClinicalAssertionsDAOImpl referenceClinicalAssertionsDAO = new ReferenceClinicalAssertionsDAOImpl();
+        referenceClinicalAssertionsDAO.setEntityManager(em);
+        try {
+            List<ReferenceClinicalAssertions> results = referenceClinicalAssertionsDAO.findByLocationVariantIdAndVersion(404269787L, 4);
+            assertTrue(results != null);
+            assertTrue(!results.isEmpty());
+        } catch (HearsayDAOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    
     @AfterClass
     public static void tearDown() {
         em.close();
