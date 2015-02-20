@@ -62,4 +62,20 @@ public class PullTranscriptsAction extends AbstractAction {
         this.genomeRefId = genomeRefId;
     }
 
+    public CANVASDAOBean getCanvasDAOBean() {
+        return canvasDAOBean;
+    }
+
+    public void setCanvasDAOBean(CANVASDAOBean canvasDAOBean) {
+        this.canvasDAOBean = canvasDAOBean;
+    }
+
+    public HearsayDAOBean getHearsayDAOBean() {
+        return hearsayDAOBean;
+    }
+
+    public void setHearsayDAOBean(HearsayDAOBean hearsayDAOBean) {
+        this.hearsayDAOBean = hearsayDAOBean;
+    }
+
 }
