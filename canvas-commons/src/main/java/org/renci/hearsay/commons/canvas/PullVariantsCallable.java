@@ -139,15 +139,17 @@ public class PullVariantsCallable implements Callable<Void> {
 			  if (assertions != null && !assertions.isEmpty()) {
 			    logger.info("assertions.size(): {}", assertions.size());
                             for (ReferenceClinicalAssertions assertion : assertions) {
+			      logger.info(assertion.toString());
 			      VariantAssertion variantAssertion = new VariantAssertion();
 			      variantAssertion.setGenomicVariant(genomicVariant);
 			      variantAssertion.setAccession(assertion.getAccession());
 			      variantAssertion.setAssertion(assertion.getAssertion());
 			      variantAssertion.setVersion(assertion.getVersion());
-			      hearsayDAOBean.getVariantAssertionDAO().save(variantAssertion);
+			      variantAssertion.setId(hearsayDAOBean.getVariantAssertionDAO().save(variantAssertion));
+			      logger.info(variantAssertion.toString());
                             }
 			  }
-			} catch (HearsayDAOException e) {
+			} catch (Exception e) {
 			  e.printStackTrace();
 			}
 
