@@ -108,9 +108,11 @@ public class PullVariantsCallable implements Callable<Void> {
                 CanonicalVariant canonicalVariant = null;
 
                 for (Variants_61_2 variant : variants) {
-
-                    LocationVariant locationVariant = variant.getLocationVariant();
+		  logger.info(variant.toString());
+		  LocationVariant locationVariant = variant.getLocationVariant();
+		    logger.info(locationVariant.toString());
                     if (!locationVariantSet.contains(locationVariant)) {
+		      
                         locationVariantSet.add(locationVariant);
 
                         canonicalVariant = new CanonicalVariant();
@@ -132,19 +134,22 @@ public class PullVariantsCallable implements Callable<Void> {
                         logger.debug(genomicVariant.toString());
                         genomicVariants.add(genomicVariant);
                         
-                        List<ReferenceClinicalAssertions> assertions = canvasDAOBean
-                                .getReferenceClinicalAssertionsDAO().findByLocationVariantIdAndVersion(
-                                        locationVariant.getId(), 4);
-                        if (assertions != null && !assertions.isEmpty()) {
+			try {
+			  List<ReferenceClinicalAssertions> assertions = canvasDAOBean.getReferenceClinicalAssertionsDAO().findByLocationVariantIdAndVersion(locationVariant.getId(), 4);
+			  if (assertions != null && !assertions.isEmpty()) {
+			    logger.info("assertions.size(): {}", assertions.size());
                             for (ReferenceClinicalAssertions assertion : assertions) {
-                                VariantAssertion variantAssertion = new VariantAssertion();
-                                variantAssertion.setGenomicVariant(genomicVariant);
-                                variantAssertion.setAccession(assertion.getAccession());
-                                variantAssertion.setAssertion(assertion.getAssertion());
-                                variantAssertion.setVersion(assertion.getVersion());
-                                hearsayDAOBean.getVariantAssertionDAO().save(variantAssertion);
+			      VariantAssertion variantAssertion = new VariantAssertion();
+			      variantAssertion.setGenomicVariant(genomicVariant);
+			      variantAssertion.setAccession(assertion.getAccession());
+			      variantAssertion.setAssertion(assertion.getAssertion());
+			      variantAssertion.setVersion(assertion.getVersion());
+			      hearsayDAOBean.getVariantAssertionDAO().save(variantAssertion);
                             }
-                        }
+			  }
+			} catch (HearsayDAOException e) {
+			  e.printStackTrace();
+			}
 
                         List<VariantFrequency> variantFrequencies = canvasDAOBean.getVariantFrequencyDAO()
                                 .findByLocationVariantIdAndVersion(locationVariant.getId(), "0.1");
