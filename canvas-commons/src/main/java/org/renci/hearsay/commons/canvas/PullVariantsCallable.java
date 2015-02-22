@@ -145,6 +145,7 @@ public class PullVariantsCallable implements Callable<Void> {
 			      variantAssertion.setAccession(assertion.getAccession());
 			      variantAssertion.setAssertion(assertion.getAssertion());
 			      variantAssertion.setVersion(assertion.getVersion());
+			      logger.info("hearsayDAOBean.getVariantAssertionDAO() == null: {}", hearsayDAOBean.getVariantAssertionDAO() == null);
 			      variantAssertion.setId(hearsayDAOBean.getVariantAssertionDAO().save(variantAssertion));
 			      logger.info(variantAssertion.toString());
                             }
