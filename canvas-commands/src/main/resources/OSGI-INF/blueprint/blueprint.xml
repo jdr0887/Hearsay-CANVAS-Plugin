@@ -44,7 +44,7 @@
   <reference id="hearsayTranscriptRefSeqDAO" interface="org.renci.hearsay.dao.TranscriptRefSeqDAO" />
   <reference id="hearsayTranscriptVariantDAO" interface="org.renci.hearsay.dao.TranscriptVariantDAO" />
   <reference id="hearsayTranslationRefSeqDAO" interface="org.renci.hearsay.dao.TranslationRefSeqDAO" />
-  <reference id="hearsayTranslationVariantDAO" interface="org.renci.hearsay.dao.TranslationVariantDAO" />
+  <reference id="hearsayVariantAssertionDAO" interface="org.renci.hearsay.dao.VariantAssertionDAO" />
 
   <bean id="hearsayDAOBean" class="org.renci.hearsay.dao.HearsayDAOBean">
     <property name="canonicalVariantDAO" ref="hearsayCanonicalVariantDAO" />
@@ -64,7 +64,7 @@
     <property name="transcriptRefSeqDAO" ref="hearsayTranscriptRefSeqDAO" />
     <property name="transcriptVariantDAO" ref="hearsayTranscriptVariantDAO" />
     <property name="translationRefSeqDAO" ref="hearsayTranslationRefSeqDAO" />
-    <property name="translationVariantDAO" ref="hearsayTranslationVariantDAO" />
+    <property name="variantAssertionDAO" ref="hearsayVariantAssertionDAO" />
   </bean>
 
   <reference id="annotationGeneDAO" interface="org.renci.hearsay.canvas.annotation.dao.AnnotationGeneDAO" />
