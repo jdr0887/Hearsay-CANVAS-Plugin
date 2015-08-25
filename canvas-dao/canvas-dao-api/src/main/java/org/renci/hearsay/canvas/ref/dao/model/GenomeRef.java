@@ -44,7 +44,7 @@ public class GenomeRef implements Persistable {
     @Column(name = "extras_fasta_url", length = 1023)
     protected String extrasFastaURL;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(schema = "ref", name = "genome_ref_seqs", joinColumns = @JoinColumn(name = "ref_id"), inverseJoinColumns = @JoinColumn(name = "seq_ver_accession"))
     protected Set<GenomeRefSeq> genomeRefSeqs;
 

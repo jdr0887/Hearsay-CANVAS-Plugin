@@ -12,6 +12,9 @@ public interface Variants_61_2_DAO extends BaseDAO<Variants_61_2, Long> {
 
     public List<Variants_61_2> findByGeneName(String name) throws HearsayDAOException;
 
+    public List<Variants_61_2> findByGeneNameAndMaxAlleleFrequency(String name, Double threshold)
+            throws HearsayDAOException;
+
     public List<Variants_61_2> findByTranscriptAccession(String accession) throws HearsayDAOException;
 
 }

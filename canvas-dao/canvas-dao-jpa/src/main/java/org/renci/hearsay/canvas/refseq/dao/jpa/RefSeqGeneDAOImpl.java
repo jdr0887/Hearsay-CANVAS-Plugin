@@ -36,9 +36,17 @@ public class RefSeqGeneDAOImpl extends BaseDAOImpl<RefSeqGene, Long> implements 
     }
 
     @Override
-    public List<RefSeqGene> findByVersion(String version) throws HearsayDAOException {
-        logger.debug("ENTERING findByVersion(String)");
-        return null;
+    public List<RefSeqGene> findByRefSeqVersion(String refSeqVersion) throws HearsayDAOException {
+        logger.debug("ENTERING findByRefSeqVersion(String)");
+        CriteriaBuilder critBuilder = getEntityManager().getCriteriaBuilder();
+        CriteriaQuery<RefSeqGene> crit = critBuilder.createQuery(getPersistentClass());
+        List<Predicate> predicates = new ArrayList<Predicate>();
+        Root<RefSeqGene> fromRefSeqGene = crit.from(getPersistentClass());
+        predicates.add(critBuilder.equal(fromRefSeqGene.get(RefSeqGene_.refseqVersion), refSeqVersion));
+        crit.where(predicates.toArray(new Predicate[predicates.size()]));
+        TypedQuery<RefSeqGene> query = getEntityManager().createQuery(crit);
+        List<RefSeqGene> ret = query.getResultList();
+        return ret;
     }
 
     @Override
@@ -47,23 +55,16 @@ public class RefSeqGeneDAOImpl extends BaseDAOImpl<RefSeqGene, Long> implements 
         logger.debug("ENTERING findByRefSeqVersionAndTranscriptId(String, String)");
         CriteriaBuilder critBuilder = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<RefSeqGene> crit = critBuilder.createQuery(getPersistentClass());
-
         List<Predicate> predicates = new ArrayList<Predicate>();
-
         Root<RefSeqGene> fromRefSeqGene = crit.from(getPersistentClass());
-
         predicates.add(critBuilder.equal(fromRefSeqGene.get(RefSeqGene_.refseqVersion), refSeqVersion));
-
         Join<RefSeqGene, RegionGroup> refSeqGeneRegionGroupJoin = fromRefSeqGene.join(RefSeqGene_.locations);
         Join<RegionGroup, Transcript> regionGroupTranscriptJoin = refSeqGeneRegionGroupJoin
                 .join(RegionGroup_.transcript);
         predicates.add(critBuilder.equal(regionGroupTranscriptJoin.get(Transcript_.versionId), transcriptId));
-
         crit.where(predicates.toArray(new Predicate[predicates.size()]));
-
         TypedQuery<RefSeqGene> query = getEntityManager().createQuery(crit);
         List<RefSeqGene> ret = query.getResultList();
-
         return ret;
     }
 }

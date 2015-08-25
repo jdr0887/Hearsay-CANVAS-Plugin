@@ -53,7 +53,7 @@ public class FeatureDAOImpl extends BaseDAOImpl<Feature, Long> implements Featur
         predicates.add(critBuilder.equal(regionGroupTranscriptJoin.get(Transcript_.versionId), versionId));
 
         crit.where(predicates.toArray(new Predicate[predicates.size()]));
-
+        
         TypedQuery<Feature> query = getEntityManager().createQuery(crit);
         List<Feature> ret = query.getResultList();
 

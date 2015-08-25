@@ -17,7 +17,7 @@ public class MaxFreqPK implements Serializable {
     private Integer gen1000Version;
 
     @Column(name = "max_allele_freq")
-    private Float maxAlleleFreq;
+    private Double maxAlleleFreq;
 
     @Column(name = "source")
     private String source;
@@ -42,11 +42,11 @@ public class MaxFreqPK implements Serializable {
         this.gen1000Version = gen1000Version;
     }
 
-    public Float getMaxAlleleFreq() {
+    public Double getMaxAlleleFreq() {
         return maxAlleleFreq;
     }
 
-    public void setMaxAlleleFreq(Float maxAlleleFreq) {
+    public void setMaxAlleleFreq(Double maxAlleleFreq) {
         this.maxAlleleFreq = maxAlleleFreq;
     }
 
