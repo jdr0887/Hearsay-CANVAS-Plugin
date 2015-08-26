@@ -17,16 +17,19 @@ import org.renci.hearsay.canvas.ref.dao.model.GenomeRefSeq;
 import org.renci.hearsay.canvas.var.dao.model.LocationVariant;
 import org.renci.hearsay.canvas.var.dao.model.VariantType;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(schema = "refseq", name = "variants_61_2")
 @NamedQueries({
         @NamedQuery(name = "Variants_61_2.findByLocationVariantId", query = "SELECT a FROM Variants_61_2 a where a.locationVariant.id = :locationVariantId"),
-        @NamedQuery(name = "Variants_61_2.findByGeneName", query = "SELECT a FROM Variants_61_2 a where a.hgncGene = :geneName"), 
-        @NamedQuery(name = "Variants_61_2.findByTranscriptAccession", query = "SELECT a FROM Variants_61_2 a where a.transcr = :transcr")})
+        @NamedQuery(name = "Variants_61_2.findByGeneName", query = "SELECT a FROM Variants_61_2 a where a.hgncGene = :geneName"),
+        @NamedQuery(name = "Variants_61_2.findByTranscriptAccession", query = "SELECT a FROM Variants_61_2 a where a.transcr = :transcr") })
 public class Variants_61_2 implements Persistable {
 
     private static final long serialVersionUID = 7532101830529403701L;
 
+    @JsonIgnore
     @EmbeddedId
     private Variants_61_2PK key;
 
