@@ -5,10 +5,10 @@
     <artifactId>canvas-web-services</artifactId>
     <version>0.0.91-SNAPSHOT</version>
   </parent>
-  <name>Hearsay :: Plugin :: CANVAS :: Web Services :: Variants</name>
+  <name>Hearsay :: Plugin :: CANVAS :: Web Services :: Variants_61_2</name>
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.renci.hearsay.plugin.canvas.canvas-web-services</groupId>
-  <artifactId>canvas-web-services-variants_61_2</artifactId>
+  <artifactId>canvas-web-service-variants_61_2</artifactId>
   <version>0.0.91-SNAPSHOT</version>
   <packaging>bundle</packaging>
   <dependencies>
