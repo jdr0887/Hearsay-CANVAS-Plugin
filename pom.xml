@@ -2,7 +2,7 @@
   <parent>
     <groupId>org.renci.hearsay</groupId>
     <artifactId>parent</artifactId>
-    <version>0.0.5</version>
+    <version>0.0.18</version>
   </parent>
   <name>Hearsay :: Plugin :: CANVAS</name>
   <modelVersion>4.0.0</modelVersion>
@@ -35,6 +35,16 @@
   </scm>
   <dependencyManagement>
     <dependencies>
+      <dependency>
+	<groupId>javax.ws.rs</groupId>
+	<artifactId>javax.ws.rs-api</artifactId>
+	<version>2.0.1</version>
+      </dependency>
+      <dependency>
+	<groupId>org.codehaus.jettison</groupId>
+	<artifactId>jettison</artifactId>
+	<version>1.3.7</version>
+      </dependency>      
       <dependency>
       	<groupId>org.apache.aries.transaction</groupId>
       	<artifactId>org.apache.aries.transaction.blueprint</artifactId>
@@ -70,6 +80,11 @@
 	<artifactId>canvas-commons</artifactId>
 	<version>0.0.91-SNAPSHOT</version>
       </dependency>
+      <dependency>
+	<groupId>org.renci.hearsay.plugin.canvas</groupId>
+	<artifactId>canvas-web-service-api</artifactId>
+	<version>0.0.91-SNAPSHOT</version>
+      </dependency>      
       <dependency>
 	<groupId>org.renci.hearsay.plugin.canvas.canvas-dao</groupId>
 	<artifactId>canvas-dao-api</artifactId>
@@ -124,8 +139,9 @@
     </dependencies>
   </dependencyManagement>
   <modules>
-    <module>canvas-commons</module>
     <module>canvas-commands</module>
+    <module>canvas-web-service-api</module>
+    <module>canvas-web-services</module>
     <module>canvas-datasource</module>
     <module>canvas-dao</module>
     <module>canvas-features</module>
