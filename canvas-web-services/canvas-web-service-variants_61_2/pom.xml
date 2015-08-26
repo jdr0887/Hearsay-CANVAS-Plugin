@@ -3,13 +3,13 @@
   <parent>
     <groupId>org.renci.hearsay.plugin.canvas</groupId>
     <artifactId>canvas-web-services</artifactId>
-    <version>0.0.91-SNAPSHOT</version>
+    <version>0.0.91</version>
   </parent>
   <name>Hearsay :: Plugin :: CANVAS :: Web Services :: Variants_61_2</name>
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.renci.hearsay.plugin.canvas.canvas-web-services</groupId>
   <artifactId>canvas-web-service-variants_61_2</artifactId>
-  <version>0.0.91-SNAPSHOT</version>
+  <version>0.0.91</version>
   <packaging>bundle</packaging>
   <dependencies>
     <dependency>

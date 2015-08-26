@@ -2,13 +2,13 @@
   <parent>
     <groupId>org.renci.hearsay.plugin</groupId>
     <artifactId>canvas</artifactId>
-    <version>0.0.91-SNAPSHOT</version>    
+    <version>0.0.91</version>    
   </parent>
   <name>Hearsay :: Plugin :: CANVAS :: Web Services</name>
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.renci.hearsay.plugin.canvas</groupId>
   <artifactId>canvas-web-services</artifactId>
-  <version>0.0.91-SNAPSHOT</version>
+  <version>0.0.91</version>
   <packaging>pom</packaging>
   <dependencies>
     <dependency>
