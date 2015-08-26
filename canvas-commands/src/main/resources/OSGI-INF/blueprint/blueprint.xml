@@ -20,11 +20,6 @@
         <property name="hearsayDAOBean" ref="hearsayDAOBean" />
       </action>
     </command>
-    <command>
-      <action class="org.renci.hearsay.commands.canvas.DeleteVariantsAction">
-        <property name="hearsayDAOBean" ref="hearsayDAOBean" />
-      </action>
-    </command>
   </command-bundle>
 
   <reference id="hearsayCanonicalVariantDAO" interface="org.renci.hearsay.dao.CanonicalVariantDAO" />
@@ -39,12 +34,12 @@
   <reference id="hearsayMolecularConsequenceDAO" interface="org.renci.hearsay.dao.MolecularConsequenceDAO" />
   <reference id="hearsayRegionDAO" interface="org.renci.hearsay.dao.RegionDAO" />
   <reference id="hearsayResolvedConditionDAO" interface="org.renci.hearsay.dao.ResolvedConditionDAO" />
-  <reference id="hearsayPopulationFrequencyDAO" interface="org.renci.hearsay.dao.PopulationFrequencyDAO" />
+<!--   <reference id="hearsayPopulationFrequencyDAO" interface="org.renci.hearsay.dao.PopulationFrequencyDAO" /> -->
   <reference id="hearsayTranscriptAlignmentDAO" interface="org.renci.hearsay.dao.TranscriptAlignmentDAO" />
   <reference id="hearsayTranscriptRefSeqDAO" interface="org.renci.hearsay.dao.TranscriptRefSeqDAO" />
   <reference id="hearsayTranscriptVariantDAO" interface="org.renci.hearsay.dao.TranscriptVariantDAO" />
   <reference id="hearsayTranslationRefSeqDAO" interface="org.renci.hearsay.dao.TranslationRefSeqDAO" />
-  <reference id="hearsayVariantAssertionDAO" interface="org.renci.hearsay.dao.VariantAssertionDAO" />
+<!--   <reference id="hearsayVariantAssertionDAO" interface="org.renci.hearsay.dao.VariantAssertionDAO" /> -->
 
   <bean id="hearsayDAOBean" class="org.renci.hearsay.dao.HearsayDAOBean">
     <property name="canonicalVariantDAO" ref="hearsayCanonicalVariantDAO" />
@@ -57,14 +52,14 @@
     <property name="individualDAO" ref="hearsayIndividualDAO" />
     <property name="individualVariantDAO" ref="hearsayIndividualVariantDAO" />
     <property name="molecularConsequenceDAO" ref="hearsayMolecularConsequenceDAO" />
-    <property name="populationFrequencyDAO" ref="hearsayPopulationFrequencyDAO" />
+<!--     <property name="populationFrequencyDAO" ref="hearsayPopulationFrequencyDAO" /> -->
     <property name="regionDAO" ref="hearsayRegionDAO" />
     <property name="resolvedConditionDAO" ref="hearsayResolvedConditionDAO" />
     <property name="transcriptAlignmentDAO" ref="hearsayTranscriptAlignmentDAO" />
     <property name="transcriptRefSeqDAO" ref="hearsayTranscriptRefSeqDAO" />
     <property name="transcriptVariantDAO" ref="hearsayTranscriptVariantDAO" />
     <property name="translationRefSeqDAO" ref="hearsayTranslationRefSeqDAO" />
-    <property name="variantAssertionDAO" ref="hearsayVariantAssertionDAO" />
+<!--     <property name="variantAssertionDAO" ref="hearsayVariantAssertionDAO" /> -->
   </bean>
 
   <reference id="annotationGeneDAO" interface="org.renci.hearsay.canvas.annotation.dao.AnnotationGeneDAO" />
@@ -81,7 +76,7 @@
   <reference id="HGNCGeneDAO" interface="org.renci.hearsay.canvas.hgnc.dao.HGNCGeneDAO" />
   <reference id="variants_61_2_DAO" interface="org.renci.hearsay.canvas.refseq.dao.Variants_61_2_DAO" />
   <reference id="maxVariantFrequencyDAO" interface="org.renci.hearsay.canvas.exac.dao.MaxVariantFrequencyDAO" />
-  <reference id="variantFrequencyDAO" interface="org.renci.hearsay.canvas.exac.dao.VariantFrequencyDAO" />
+<!--   <reference id="variantFrequencyDAO" interface="org.renci.hearsay.canvas.exac.dao.VariantFrequencyDAO" /> -->
 
   <bean id="canvasDAOBean" class="org.renci.hearsay.canvas.dao.CANVASDAOBean">
     <property name="annotationGeneDAO" ref="annotationGeneDAO" />
@@ -98,7 +93,7 @@
     <property name="HGNCGeneDAO" ref="HGNCGeneDAO" />
     <property name="variants_61_2_DAO" ref="variants_61_2_DAO" />
     <property name="maxVariantFrequencyDAO" ref="maxVariantFrequencyDAO" />
-    <property name="variantFrequencyDAO" ref="variantFrequencyDAO" />
+<!--     <property name="variantFrequencyDAO" ref="variantFrequencyDAO" /> -->
   </bean>
 
 </blueprint>
