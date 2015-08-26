@@ -7,7 +7,6 @@ import org.apache.karaf.shell.commands.Argument;
 import org.apache.karaf.shell.commands.Command;
 import org.apache.karaf.shell.console.AbstractAction;
 import org.renci.hearsay.canvas.dao.CANVASDAOBean;
-import org.renci.hearsay.commons.canvas.PullTranscriptsCallable;
 import org.renci.hearsay.dao.HearsayDAOBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
