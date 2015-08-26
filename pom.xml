@@ -77,11 +77,6 @@
       </dependency>
       <dependency>
 	<groupId>org.renci.hearsay.plugin.canvas</groupId>
-	<artifactId>canvas-commons</artifactId>
-	<version>0.0.91-SNAPSHOT</version>
-      </dependency>
-      <dependency>
-	<groupId>org.renci.hearsay.plugin.canvas</groupId>
 	<artifactId>canvas-web-service-api</artifactId>
 	<version>0.0.91-SNAPSHOT</version>
       </dependency>      
