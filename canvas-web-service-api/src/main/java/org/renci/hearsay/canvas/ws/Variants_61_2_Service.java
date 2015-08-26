@@ -13,7 +13,7 @@ import org.renci.hearsay.canvas.refseq.dao.model.Variants_61_2;
 
 @Path("/Variants_61_2_Service/")
 @Consumes(MediaType.APPLICATION_JSON)
-@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+@Produces({ MediaType.APPLICATION_JSON })
 public interface Variants_61_2_Service {
 
     @GET
