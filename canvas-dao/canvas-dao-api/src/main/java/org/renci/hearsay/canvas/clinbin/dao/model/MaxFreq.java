@@ -30,7 +30,7 @@ public class MaxFreq implements Persistable {
     private Integer gen1000Version;
 
     @Column(name = "max_allele_freq")
-    private Float maxAlleleFreq;
+    private Double maxAlleleFreq;
 
     @ManyToOne
     @JoinColumn(name = "source")
@@ -64,11 +64,11 @@ public class MaxFreq implements Persistable {
         this.gen1000Version = gen1000Version;
     }
 
-    public Float getMaxAlleleFreq() {
+    public Double getMaxAlleleFreq() {
         return maxAlleleFreq;
     }
 
-    public void setMaxAlleleFreq(Float maxAlleleFreq) {
+    public void setMaxAlleleFreq(Double maxAlleleFreq) {
         this.maxAlleleFreq = maxAlleleFreq;
     }
 
