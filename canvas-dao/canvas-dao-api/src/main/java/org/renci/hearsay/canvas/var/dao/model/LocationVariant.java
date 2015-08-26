@@ -1,15 +1,21 @@
 package org.renci.hearsay.canvas.var.dao.model;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import org.renci.hearsay.canvas.clinbin.dao.model.MaxFreq;
 import org.renci.hearsay.canvas.dao.Persistable;
+import org.renci.hearsay.canvas.exac.dao.model.MaxVariantFrequency;
 import org.renci.hearsay.canvas.ref.dao.model.GenomeRef;
 import org.renci.hearsay.canvas.ref.dao.model.GenomeRefSeq;
 
@@ -48,6 +54,12 @@ public class LocationVariant implements Persistable {
 
     @Column(name = "seq", length = 65535)
     private String seq;
+
+    @OneToMany(mappedBy = "locationVariant", fetch = FetchType.LAZY)
+    private List<MaxVariantFrequency> maxVariantFrequencies;
+
+    @OneToMany(mappedBy = "locationVariant", fetch = FetchType.LAZY)
+    private List<MaxFreq> maxFreqs;
 
     public LocationVariant() {
         super();
@@ -115,6 +127,22 @@ public class LocationVariant implements Persistable {
 
     public void setSeq(String seq) {
         this.seq = seq;
+    }
+
+    public List<MaxVariantFrequency> getMaxVariantFrequencies() {
+        return maxVariantFrequencies;
+    }
+
+    public void setMaxVariantFrequencies(List<MaxVariantFrequency> maxVariantFrequencies) {
+        this.maxVariantFrequencies = maxVariantFrequencies;
+    }
+
+    public List<MaxFreq> getMaxFreqs() {
+        return maxFreqs;
+    }
+
+    public void setMaxFreqs(List<MaxFreq> maxFreqs) {
+        this.maxFreqs = maxFreqs;
     }
 
     @Override
