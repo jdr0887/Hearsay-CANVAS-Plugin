@@ -1,19 +1,19 @@
 package org.renci.hearsay.canvas.refseq.dao;
 
-import static org.junit.Assert.assertTrue;
-
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.renci.hearsay.canvas.refseq.dao.jpa.Variants_61_2_DAOImpl;
 import org.renci.hearsay.canvas.refseq.dao.model.Variants_61_2;
+import org.renci.hearsay.canvas.var.dao.model.LocationVariant;
 import org.renci.hearsay.dao.HearsayDAOException;
 
 public class Variant_61_2Test {
@@ -35,15 +35,34 @@ public class Variant_61_2Test {
     }
 
     @Test
-    public void testFindByGeneNameAndMaxAlleleFrequency() {
-        Variants_61_2_DAOImpl variant_61_2DAO = new Variants_61_2_DAOImpl();
-        variant_61_2DAO.setEntityManager(em);
+    public void testFindByName() {
+        Variants_61_2_DAOImpl variantDAO = new Variants_61_2_DAOImpl();
+        variantDAO.setEntityManager(em);
+
+        Set<LocationVariant> locationVariantSet = new HashSet<LocationVariant>();
+
         try {
-            List<Variants_61_2> results = variant_61_2DAO.findByGeneNameAndMaxAlleleFrequency("BRCA1", 0.05);
-            assertTrue(CollectionUtils.isNotEmpty(results));
+            List<Variants_61_2> variants = variantDAO.findByGeneName("DRD3");
+            if (variants != null && !variants.isEmpty()) {
+                for (Variants_61_2 variant : variants) {
+                    LocationVariant locationVariant = variant.getLocationVariant();
+                    if (!locationVariantSet.contains(locationVariant)) {
+                        locationVariantSet.add(locationVariant);
+                    }
+                }
+
+                for (LocationVariant lv : locationVariantSet) {
+                    System.out.println(lv.toString());
+                }
+
+                System.out.println(variants.size());
+                System.out.println(locationVariantSet.size());
+
+            }
         } catch (HearsayDAOException e) {
             e.printStackTrace();
         }
+
     }
 
 }
