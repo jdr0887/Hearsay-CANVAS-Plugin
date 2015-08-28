@@ -13,16 +13,22 @@ import javax.persistence.Table;
 import org.renci.hearsay.canvas.dao.Persistable;
 import org.renci.hearsay.canvas.var.dao.model.LocationVariant;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(schema = "exac", name = "max_variant_freq")
-@NamedQueries({ @NamedQuery(name = "exac.MaxVariantFrequency.findByLocationVariantIdAndVersion", query = "SELECT a FROM MaxVariantFrequency a where a.locationVariant.id = :locationVariantId and a.version = :version order by a.maxAlleleFrequency desc") })
+@NamedQueries({
+        @NamedQuery(name = "exac.MaxVariantFrequency.findByLocationVariantId", query = "SELECT a FROM MaxVariantFrequency a where a.locationVariant.id = :locationVariantId"),
+        @NamedQuery(name = "exac.MaxVariantFrequency.findByLocationVariantIdAndVersion", query = "SELECT a FROM MaxVariantFrequency a where a.locationVariant.id = :locationVariantId and a.version = :version") })
 public class MaxVariantFrequency implements Persistable {
 
     private static final long serialVersionUID = -1388708510623130329L;
 
+    @JsonIgnore
     @EmbeddedId
     private MaxVariantFrequencyPK key;
 
+    @JsonIgnore
     @MapsId
     @ManyToOne
     @JoinColumn(name = "loc_var_id")
