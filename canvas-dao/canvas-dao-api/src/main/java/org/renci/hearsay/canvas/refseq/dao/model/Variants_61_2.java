@@ -33,11 +33,13 @@ public class Variants_61_2 implements Persistable {
     @EmbeddedId
     private Variants_61_2PK key;
 
+    @JsonIgnore
     @MapsId
     @ManyToOne
     @JoinColumn(name = "loc_var_id")
     private LocationVariant locationVariant;
 
+    @JsonIgnore
     @MapsId
     @ManyToOne
     @JoinColumn(name = "chromosome")
