@@ -11,7 +11,7 @@
   <version>0.0.92-SNAPSHOT</version>
   <packaging>pom</packaging>
   <properties>
-    <hearsay.version>0.0.38</hearsay.version>
+    <hearsay.version>0.0.29</hearsay.version>
     <karaf.version>3.0.1</karaf.version>
     <cxf.version>2.7.12</cxf.version>
     <jackson.version>2.4.1</jackson.version>
@@ -135,8 +135,8 @@
   </dependencyManagement>
   <modules>
     <module>canvas-commands</module>
-    <module>canvas-web-service-api</module>
-    <module>canvas-web-services</module>
+    <!-- <module>canvas-web-service-api</module> -->
+    <!-- <module>canvas-web-services</module> -->
     <module>canvas-datasource</module>
     <module>canvas-dao</module>
     <module>canvas-features</module>
