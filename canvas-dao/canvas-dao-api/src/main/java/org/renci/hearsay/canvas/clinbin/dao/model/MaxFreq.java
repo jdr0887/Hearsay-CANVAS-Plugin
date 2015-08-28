@@ -11,12 +11,15 @@ import javax.persistence.Table;
 import org.renci.hearsay.canvas.dao.Persistable;
 import org.renci.hearsay.canvas.var.dao.model.LocationVariant;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(schema = "clinbin", name = "max_freq")
 public class MaxFreq implements Persistable {
 
     private static final long serialVersionUID = -2401541418491242656L;
 
+    @JsonIgnore
     @EmbeddedId
     private MaxFreqPK key;
 
