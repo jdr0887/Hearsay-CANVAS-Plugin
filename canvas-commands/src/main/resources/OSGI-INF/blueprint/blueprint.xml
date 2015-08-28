@@ -4,29 +4,27 @@
   <command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.1.0">
     <command>
       <action class="org.renci.hearsay.commands.canvas.PullFeaturesAction">
-        <property name="canvasDAOBean" ref="canvasDAOBean" />
-        <property name="hearsayDAOBean" ref="hearsayDAOBean" />
+        <property name="callable" ref="pullFeaturesCallable" />
       </action>
     </command>
     <command>
       <action class="org.renci.hearsay.commands.canvas.PullTranscriptsAction">
-        <property name="callable" ref="pullTranscriptCallable" />
+        <property name="callable" ref="pullTranscriptsCallable" />
       </action>
     </command>
   </command-bundle>
 
-  <bean id="pullTranscriptCallable" class="org.renci.hearsay.commands.canvas.PullTranscriptsCallable" scope="prototype">
+  <bean id="pullTranscriptsCallable" class="org.renci.hearsay.commands.canvas.PullTranscriptsCallable">
     <property name="canvasDAOBean" ref="canvasDAOBean" />
     <property name="hearsayDAOBean" ref="hearsayDAOBean" />
   </bean>
 
-  <bean id="pullFeaturesCallable" class="org.renci.hearsay.commands.canvas.PullFeaturesCallable" scope="prototype">
+  <bean id="pullFeaturesCallable" class="org.renci.hearsay.commands.canvas.PullFeaturesCallable">
     <property name="canvasDAOBean" ref="canvasDAOBean" />
     <property name="hearsayDAOBean" ref="hearsayDAOBean" />
   </bean>
 
-  <bean id="pullGenePopulationFrequenciesCallable" class="org.renci.hearsay.commands.canvas.PullGenePopulationFrequenciesCallable"
-    scope="prototype">
+  <bean id="pullGenePopulationFrequenciesCallable" class="org.renci.hearsay.commands.canvas.PullGenePopulationFrequenciesCallable">
     <property name="canvasDAOBean" ref="canvasDAOBean" />
     <property name="hearsayDAOBean" ref="hearsayDAOBean" />
   </bean>
