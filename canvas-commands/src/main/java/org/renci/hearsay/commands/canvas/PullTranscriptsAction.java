@@ -6,13 +6,15 @@ import java.util.concurrent.Executors;
 import org.apache.karaf.shell.commands.Argument;
 import org.apache.karaf.shell.commands.Command;
 import org.apache.karaf.shell.console.AbstractAction;
+import org.renci.hearsay.canvas.dao.CANVASDAOBean;
+import org.renci.hearsay.dao.HearsayDAOBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Command(scope = "canvas", name = "pull-transcripts", description = "Pull Transcripts")
 public class PullTranscriptsAction extends AbstractAction {
 
-    private final Logger logger = LoggerFactory.getLogger(PullTranscriptsAction.class);
+    private static final Logger logger = LoggerFactory.getLogger(PullTranscriptsAction.class);
 
     @Argument(index = 0, name = "refSeqVersion", description = "RefSeq Version Identifier", required = true, multiValued = false)
     private String refSeqVersion;
@@ -20,7 +22,9 @@ public class PullTranscriptsAction extends AbstractAction {
     @Argument(index = 1, name = "genomeRefId", description = "GenomeRef Identifier", required = true, multiValued = false)
     private Integer genomeRefId;
 
-    private PullTranscriptsCallable callable;
+    private CANVASDAOBean canvasDAOBean;
+
+    private HearsayDAOBean hearsayDAOBean;
 
     public PullTranscriptsAction() {
         super();
@@ -29,6 +33,9 @@ public class PullTranscriptsAction extends AbstractAction {
     @Override
     public Object doExecute() {
         logger.debug("ENTERING doExecute()");
+        PullTranscriptsCallable callable = new PullTranscriptsCallable();
+        callable.setCanvasDAOBean(canvasDAOBean);
+        callable.setHearsayDAOBean(hearsayDAOBean);
         callable.setGenomeRefId(genomeRefId);
         callable.setRefSeqVersion(refSeqVersion);
         try {
@@ -39,6 +46,22 @@ public class PullTranscriptsAction extends AbstractAction {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public CANVASDAOBean getCanvasDAOBean() {
+        return canvasDAOBean;
+    }
+
+    public void setCanvasDAOBean(CANVASDAOBean canvasDAOBean) {
+        this.canvasDAOBean = canvasDAOBean;
+    }
+
+    public HearsayDAOBean getHearsayDAOBean() {
+        return hearsayDAOBean;
+    }
+
+    public void setHearsayDAOBean(HearsayDAOBean hearsayDAOBean) {
+        this.hearsayDAOBean = hearsayDAOBean;
     }
 
     public String getRefSeqVersion() {

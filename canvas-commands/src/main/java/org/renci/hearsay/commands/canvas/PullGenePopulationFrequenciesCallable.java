@@ -7,8 +7,6 @@ import org.apache.commons.collections.CollectionUtils;
 import org.renci.hearsay.canvas.clinbin.dao.model.MaxFreq;
 import org.renci.hearsay.canvas.dao.CANVASDAOBean;
 import org.renci.hearsay.canvas.exac.dao.model.MaxVariantFrequency;
-import org.renci.hearsay.canvas.genome1k.dao.model.SNPFrequencyPopulation;
-import org.renci.hearsay.canvas.refseq.dao.model.Variants_61_2;
 import org.renci.hearsay.canvas.var.dao.model.LocationVariant;
 import org.renci.hearsay.dao.HearsayDAOBean;
 import org.renci.hearsay.dao.HearsayDAOException;

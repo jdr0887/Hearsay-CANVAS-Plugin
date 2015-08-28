@@ -7,6 +7,8 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.karaf.shell.commands.Command;
 import org.apache.karaf.shell.commands.Option;
 import org.apache.karaf.shell.console.AbstractAction;
+import org.renci.hearsay.canvas.dao.CANVASDAOBean;
+import org.renci.hearsay.dao.HearsayDAOBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,7 +23,9 @@ public class PullFeaturesAction extends AbstractAction {
     @Option(name = "--geneName", description = "RefSeq Version Identifier", required = false, multiValued = false)
     private String geneName;
 
-    private PullFeaturesCallable callable;
+    private CANVASDAOBean canvasDAOBean;
+
+    private HearsayDAOBean hearsayDAOBean;
 
     public PullFeaturesAction() {
         super();
@@ -31,6 +35,9 @@ public class PullFeaturesAction extends AbstractAction {
     public Object doExecute() {
         logger.debug("ENTERING doExecute()");
 
+        PullFeaturesCallable callable = new PullFeaturesCallable();
+        callable.setCanvasDAOBean(canvasDAOBean);
+        callable.setHearsayDAOBean(hearsayDAOBean);
         callable.setRefSeqVersion(refSeqVersion);
 
         if (StringUtils.isNotEmpty(geneName)) {
@@ -44,6 +51,22 @@ public class PullFeaturesAction extends AbstractAction {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public CANVASDAOBean getCanvasDAOBean() {
+        return canvasDAOBean;
+    }
+
+    public void setCanvasDAOBean(CANVASDAOBean canvasDAOBean) {
+        this.canvasDAOBean = canvasDAOBean;
+    }
+
+    public HearsayDAOBean getHearsayDAOBean() {
+        return hearsayDAOBean;
+    }
+
+    public void setHearsayDAOBean(HearsayDAOBean hearsayDAOBean) {
+        this.hearsayDAOBean = hearsayDAOBean;
     }
 
     public String getGeneName() {

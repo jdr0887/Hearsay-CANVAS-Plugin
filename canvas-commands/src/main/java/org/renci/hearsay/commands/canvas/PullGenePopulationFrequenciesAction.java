@@ -5,6 +5,8 @@ import java.util.concurrent.Executors;
 
 import org.apache.karaf.shell.commands.Command;
 import org.apache.karaf.shell.console.AbstractAction;
+import org.renci.hearsay.canvas.dao.CANVASDAOBean;
+import org.renci.hearsay.dao.HearsayDAOBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,7 +15,9 @@ public class PullGenePopulationFrequenciesAction extends AbstractAction {
 
     private static final Logger logger = LoggerFactory.getLogger(PullGenePopulationFrequenciesAction.class);
 
-    private PullGenePopulationFrequenciesCallable callable;
+    private CANVASDAOBean canvasDAOBean;
+
+    private HearsayDAOBean hearsayDAOBean;
 
     public PullGenePopulationFrequenciesAction() {
         super();
@@ -22,6 +26,12 @@ public class PullGenePopulationFrequenciesAction extends AbstractAction {
     @Override
     protected Object doExecute() throws Exception {
         logger.debug("ENTERING doExecute()");
+
+        PullGenePopulationFrequenciesCallable callable = new PullGenePopulationFrequenciesCallable();
+
+        callable.setCanvasDAOBean(canvasDAOBean);
+        callable.setHearsayDAOBean(hearsayDAOBean);
+
         try {
             ExecutorService es = Executors.newSingleThreadExecutor();
             es.submit(callable);
@@ -32,12 +42,20 @@ public class PullGenePopulationFrequenciesAction extends AbstractAction {
         return null;
     }
 
-    public PullGenePopulationFrequenciesCallable getCallable() {
-        return callable;
+    public CANVASDAOBean getCanvasDAOBean() {
+        return canvasDAOBean;
     }
 
-    public void setCallable(PullGenePopulationFrequenciesCallable callable) {
-        this.callable = callable;
+    public void setCanvasDAOBean(CANVASDAOBean canvasDAOBean) {
+        this.canvasDAOBean = canvasDAOBean;
+    }
+
+    public HearsayDAOBean getHearsayDAOBean() {
+        return hearsayDAOBean;
+    }
+
+    public void setHearsayDAOBean(HearsayDAOBean hearsayDAOBean) {
+        this.hearsayDAOBean = hearsayDAOBean;
     }
 
 }
