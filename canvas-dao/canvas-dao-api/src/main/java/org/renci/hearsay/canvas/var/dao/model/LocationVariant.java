@@ -18,6 +18,7 @@ import org.renci.hearsay.canvas.dao.Persistable;
 import org.renci.hearsay.canvas.exac.dao.model.MaxVariantFrequency;
 import org.renci.hearsay.canvas.ref.dao.model.GenomeRef;
 import org.renci.hearsay.canvas.ref.dao.model.GenomeRefSeq;
+import org.renci.hearsay.canvas.refseq.dao.model.Variants_61_2;
 
 @Entity
 @Table(schema = "var", name = "loc_var", uniqueConstraints = { @UniqueConstraint(columnNames = { "ref_id",
@@ -56,13 +57,24 @@ public class LocationVariant implements Persistable {
     private String seq;
 
     @OneToMany(mappedBy = "locationVariant", fetch = FetchType.LAZY)
-    private List<MaxVariantFrequency> maxVariantFrequencies;
+    private List<MaxVariantFrequency> exacMaxVariantFrequencies;
 
     @OneToMany(mappedBy = "locationVariant", fetch = FetchType.LAZY)
-    private List<MaxFreq> maxFreqs;
+    private List<MaxFreq> clinbinMaxVariantFrequencies;
+
+    @OneToMany(mappedBy = "locationVariant", fetch = FetchType.LAZY)
+    private List<Variants_61_2> variants_61_2;
 
     public LocationVariant() {
         super();
+    }
+
+    public List<Variants_61_2> getVariants_61_2() {
+        return variants_61_2;
+    }
+
+    public void setVariants_61_2(List<Variants_61_2> variants_61_2) {
+        this.variants_61_2 = variants_61_2;
     }
 
     public Long getId() {
@@ -129,20 +141,20 @@ public class LocationVariant implements Persistable {
         this.seq = seq;
     }
 
-    public List<MaxVariantFrequency> getMaxVariantFrequencies() {
-        return maxVariantFrequencies;
+    public List<MaxVariantFrequency> getExacMaxVariantFrequencies() {
+        return exacMaxVariantFrequencies;
     }
 
-    public void setMaxVariantFrequencies(List<MaxVariantFrequency> maxVariantFrequencies) {
-        this.maxVariantFrequencies = maxVariantFrequencies;
+    public void setExacMaxVariantFrequencies(List<MaxVariantFrequency> exacMaxVariantFrequencies) {
+        this.exacMaxVariantFrequencies = exacMaxVariantFrequencies;
     }
 
-    public List<MaxFreq> getMaxFreqs() {
-        return maxFreqs;
+    public List<MaxFreq> getClinbinMaxVariantFrequencies() {
+        return clinbinMaxVariantFrequencies;
     }
 
-    public void setMaxFreqs(List<MaxFreq> maxFreqs) {
-        this.maxFreqs = maxFreqs;
+    public void setClinbinMaxVariantFrequencies(List<MaxFreq> clinbinMaxVariantFrequencies) {
+        this.clinbinMaxVariantFrequencies = clinbinMaxVariantFrequencies;
     }
 
     @Override
