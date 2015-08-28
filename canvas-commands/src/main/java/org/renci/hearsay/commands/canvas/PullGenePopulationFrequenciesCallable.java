@@ -46,6 +46,7 @@ public class PullGenePopulationFrequenciesCallable implements Callable<Void> {
                         pf.setFrequency(maxVariantFrequency.getMaxAlleleFrequency());
                         pf.setGene(gene);
                         pf.setSource("EXAC");
+                        pf.setVersion(maxVariantFrequency.getVersion());
                         LocationVariant locationVariant = maxVariantFrequency.getLocationVariant();
                         Location location = new Location(locationVariant.getPosition(),
                                 locationVariant.getEndPosition());
@@ -66,6 +67,7 @@ public class PullGenePopulationFrequenciesCallable implements Callable<Void> {
                         pf.setFrequency(maxFreq.getMaxAlleleFreq());
                         pf.setGene(gene);
                         pf.setSource("CLINBIN");
+                        pf.setVersion(maxFreq.getGen1000Version().toString());
                         LocationVariant locationVariant = maxFreq.getLocationVariant();
                         Location location = new Location(locationVariant.getPosition(),
                                 locationVariant.getEndPosition());
