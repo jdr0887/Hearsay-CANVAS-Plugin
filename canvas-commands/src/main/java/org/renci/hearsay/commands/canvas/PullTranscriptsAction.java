@@ -6,8 +6,6 @@ import java.util.concurrent.Executors;
 import org.apache.karaf.shell.commands.Argument;
 import org.apache.karaf.shell.commands.Command;
 import org.apache.karaf.shell.console.AbstractAction;
-import org.renci.hearsay.canvas.dao.CANVASDAOBean;
-import org.renci.hearsay.dao.HearsayDAOBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,9 +20,7 @@ public class PullTranscriptsAction extends AbstractAction {
     @Argument(index = 1, name = "genomeRefId", description = "GenomeRef Identifier", required = true, multiValued = false)
     private Integer genomeRefId;
 
-    private CANVASDAOBean canvasDAOBean;
-
-    private HearsayDAOBean hearsayDAOBean;
+    private PullTranscriptsCallable callable;
 
     public PullTranscriptsAction() {
         super();
@@ -33,8 +29,8 @@ public class PullTranscriptsAction extends AbstractAction {
     @Override
     public Object doExecute() {
         logger.debug("ENTERING doExecute()");
-        PullTranscriptsCallable callable = new PullTranscriptsCallable(canvasDAOBean, hearsayDAOBean, refSeqVersion,
-                genomeRefId);
+        callable.setGenomeRefId(genomeRefId);
+        callable.setRefSeqVersion(refSeqVersion);
         try {
             ExecutorService es = Executors.newSingleThreadExecutor();
             es.submit(callable);
@@ -59,22 +55,6 @@ public class PullTranscriptsAction extends AbstractAction {
 
     public void setGenomeRefId(Integer genomeRefId) {
         this.genomeRefId = genomeRefId;
-    }
-
-    public CANVASDAOBean getCanvasDAOBean() {
-        return canvasDAOBean;
-    }
-
-    public void setCanvasDAOBean(CANVASDAOBean canvasDAOBean) {
-        this.canvasDAOBean = canvasDAOBean;
-    }
-
-    public HearsayDAOBean getHearsayDAOBean() {
-        return hearsayDAOBean;
-    }
-
-    public void setHearsayDAOBean(HearsayDAOBean hearsayDAOBean) {
-        this.hearsayDAOBean = hearsayDAOBean;
     }
 
 }

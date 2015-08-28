@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
 
 public class PullFeaturesCallable implements Callable<Void> {
 
-    private final Logger logger = LoggerFactory.getLogger(PullFeaturesCallable.class);
+    private static final Logger logger = LoggerFactory.getLogger(PullFeaturesCallable.class);
 
     private CANVASDAOBean canvasDAOBean;
 
@@ -27,11 +27,8 @@ public class PullFeaturesCallable implements Callable<Void> {
 
     private String geneName;
 
-    public PullFeaturesCallable(CANVASDAOBean canvasDAOBean, HearsayDAOBean hearsayDAOBean, String refSeqVersion) {
+    public PullFeaturesCallable() {
         super();
-        this.canvasDAOBean = canvasDAOBean;
-        this.hearsayDAOBean = hearsayDAOBean;
-        this.refSeqVersion = refSeqVersion;
     }
 
     @Override
