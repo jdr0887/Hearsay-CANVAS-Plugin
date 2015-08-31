@@ -46,28 +46,30 @@ public class PullGenePopulationFrequenciesCallable implements Callable<Void> {
                 for (final Gene gene : geneList) {
 
                     logger.info(gene.toString());
-                    List<Variants_61_2> variants = canvasDAOBean.getVariants_61_2_DAO().findByGeneName(gene.getName());
 
-                    if (CollectionUtils.isNotEmpty(variants)) {
+                    es.submit(new Runnable() {
 
-                        for (Variants_61_2 variant : variants) {
+                        @Override
+                        public void run() {
+                            try {
+                                List<Variants_61_2> variants = canvasDAOBean.getVariants_61_2_DAO().findByGeneName(
+                                        gene.getName());
 
-                            final LocationVariant locationVariant = variant.getLocationVariant();
-                            if (locationVariant != null) {
+                                if (CollectionUtils.isNotEmpty(variants)) {
 
-                                logger.info(locationVariant.toString());
+                                    for (Variants_61_2 variant : variants) {
 
-                                List<MaxFreq> clinbinMaxVariantFrequencies = locationVariant
-                                        .getClinbinMaxVariantFrequencies();
-                                if (CollectionUtils.isNotEmpty(clinbinMaxVariantFrequencies)) {
-                                    for (final MaxFreq maxFreq : clinbinMaxVariantFrequencies) {
-                                        logger.debug(maxFreq.toString());
+                                        final LocationVariant locationVariant = variant.getLocationVariant();
+                                        if (locationVariant != null) {
 
-                                        es.submit(new Runnable() {
+                                            logger.info(locationVariant.toString());
 
-                                            @Override
-                                            public void run() {
-                                                try {
+                                            List<MaxFreq> clinbinMaxVariantFrequencies = locationVariant
+                                                    .getClinbinMaxVariantFrequencies();
+                                            if (CollectionUtils.isNotEmpty(clinbinMaxVariantFrequencies)) {
+                                                for (final MaxFreq maxFreq : clinbinMaxVariantFrequencies) {
+                                                    logger.debug(maxFreq.toString());
+
                                                     PopulationFrequency pf = new PopulationFrequency();
                                                     pf.setFrequency(maxFreq.getMaxAlleleFreq());
                                                     pf.setGene(gene);
@@ -78,27 +80,16 @@ public class PullGenePopulationFrequenciesCallable implements Callable<Void> {
                                                     location.setId(hearsayDAOBean.getLocationDAO().save(location));
                                                     pf.setPosition(location);
                                                     pf.setId(hearsayDAOBean.getPopulationFrequencyDAO().save(pf));
-                                                } catch (Exception e) {
-                                                    e.printStackTrace();
+
                                                 }
                                             }
 
-                                        });
+                                            List<MaxVariantFrequency> exacMaxVariantFrequencies = locationVariant
+                                                    .getExacMaxVariantFrequencies();
+                                            if (CollectionUtils.isNotEmpty(exacMaxVariantFrequencies)) {
+                                                for (final MaxVariantFrequency maxFreq : exacMaxVariantFrequencies) {
+                                                    logger.debug(maxFreq.toString());
 
-                                    }
-                                }
-
-                                List<MaxVariantFrequency> exacMaxVariantFrequencies = locationVariant
-                                        .getExacMaxVariantFrequencies();
-                                if (CollectionUtils.isNotEmpty(exacMaxVariantFrequencies)) {
-                                    for (final MaxVariantFrequency maxFreq : exacMaxVariantFrequencies) {
-                                        logger.debug(maxFreq.toString());
-
-                                        es.submit(new Runnable() {
-
-                                            @Override
-                                            public void run() {
-                                                try {
                                                     PopulationFrequency pf = new PopulationFrequency();
                                                     pf.setFrequency(maxFreq.getMaxAlleleFrequency());
                                                     pf.setGene(gene);
@@ -109,21 +100,21 @@ public class PullGenePopulationFrequenciesCallable implements Callable<Void> {
                                                     location.setId(hearsayDAOBean.getLocationDAO().save(location));
                                                     pf.setPosition(location);
                                                     pf.setId(hearsayDAOBean.getPopulationFrequencyDAO().save(pf));
-                                                } catch (Exception e) {
-                                                    e.printStackTrace();
                                                 }
                                             }
 
-                                        });
+                                        }
 
                                     }
-                                }
 
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
                             }
 
                         }
 
-                    }
+                    });
 
                 }
             }
