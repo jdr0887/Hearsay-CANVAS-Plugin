@@ -56,10 +56,10 @@ public class LocationVariant implements Persistable {
     @Column(name = "seq", length = 65535)
     private String seq;
 
-    @OneToMany(mappedBy = "locationVariant", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "locationVariant", fetch = FetchType.EAGER)
     private List<MaxVariantFrequency> exacMaxVariantFrequencies;
 
-    @OneToMany(mappedBy = "locationVariant", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "locationVariant", fetch = FetchType.EAGER)
     private List<MaxFreq> clinbinMaxVariantFrequencies;
 
     @OneToMany(mappedBy = "locationVariant", fetch = FetchType.LAZY)

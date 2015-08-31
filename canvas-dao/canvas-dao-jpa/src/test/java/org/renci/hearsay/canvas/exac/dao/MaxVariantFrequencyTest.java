@@ -42,11 +42,6 @@ public class MaxVariantFrequencyTest {
         try {
             List<MaxVariantFrequency> results = maxVariantFrequencyDAO.findByGeneNameAndMaxAlleleFrequency("BRCA1", 0.05);
             assertTrue(CollectionUtils.isNotEmpty(results));
-            // for (Variants_61_2 variant : results) {
-            // List<MaxVariantFrequency> maxVariantFrequencies =
-            // maxVariantFrequencyDAO.findByLocationVariantIdAndVersion(variant.getLocationVariant().getId(), "1");
-            //
-            // }
         } catch (HearsayDAOException e) {
             e.printStackTrace();
         }
