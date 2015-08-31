@@ -38,7 +38,7 @@ public class PullGenePopulationFrequenciesCallable implements Callable<Void> {
 
         try {
 
-            ExecutorService es = Executors.newFixedThreadPool(4);
+            ExecutorService es = Executors.newFixedThreadPool(2);
 
             List<Gene> geneList = hearsayDAOBean.getGeneDAO().findAll();
 
