@@ -38,7 +38,7 @@ public class PullGenePopulationFrequenciesCallable implements Callable<Void> {
 
         try {
 
-            ExecutorService es = Executors.newFixedThreadPool(2);
+            ExecutorService es = Executors.newFixedThreadPool(4);
 
             List<Gene> geneList = hearsayDAOBean.getGeneDAO().findAll();
 
@@ -56,6 +56,8 @@ public class PullGenePopulationFrequenciesCallable implements Callable<Void> {
                                         gene.getName());
 
                                 if (CollectionUtils.isNotEmpty(variants)) {
+
+                                    logger.info("variants.size(): {}", variants.size());
 
                                     for (Variants_61_2 variant : variants) {
 
