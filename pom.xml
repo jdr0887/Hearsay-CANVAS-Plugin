@@ -76,11 +76,6 @@
 	<version>${hearsay.version}</version>
       </dependency>
       <dependency>
-	<groupId>org.renci.hearsay.plugin.canvas</groupId>
-	<artifactId>canvas-web-service-api</artifactId>
-	<version>0.0.92-SNAPSHOT</version>
-      </dependency>      
-      <dependency>
 	<groupId>org.renci.hearsay.plugin.canvas.canvas-dao</groupId>
 	<artifactId>canvas-dao-api</artifactId>
 	<version>0.0.100-SNAPSHOT</version>
@@ -135,8 +130,6 @@
   </dependencyManagement>
   <modules>
     <module>canvas-commands</module>
-    <!-- <module>canvas-web-service-api</module> -->
-    <!-- <module>canvas-web-services</module> -->
     <module>canvas-datasource</module>
     <module>canvas-dao</module>
     <module>canvas-features</module>
