@@ -62,27 +62,27 @@ public class PullGenePopulationFrequenciesCallable implements Callable<Void> {
                                         final LocationVariant locationVariant = variant.getLocationVariant();
                                         if (locationVariant != null) {
 
-                                            logger.info(locationVariant.toString());
-
-                                            List<MaxFreq> clinbinMaxVariantFrequencies = locationVariant
-                                                    .getClinbinMaxVariantFrequencies();
-                                            if (CollectionUtils.isNotEmpty(clinbinMaxVariantFrequencies)) {
-                                                for (final MaxFreq maxFreq : clinbinMaxVariantFrequencies) {
-                                                    logger.debug(maxFreq.toString());
-
-                                                    PopulationFrequency pf = new PopulationFrequency();
-                                                    pf.setFrequency(maxFreq.getMaxAlleleFreq());
-                                                    pf.setGene(gene);
-                                                    pf.setSource("CLINBIN");
-                                                    pf.setVersion(maxFreq.getGen1000Version().toString());
-                                                    Location location = new Location(locationVariant.getPosition(),
-                                                            locationVariant.getEndPosition());
-                                                    location.setId(hearsayDAOBean.getLocationDAO().save(location));
-                                                    pf.setPosition(location);
-                                                    pf.setId(hearsayDAOBean.getPopulationFrequencyDAO().save(pf));
-
-                                                }
-                                            }
+                                            // logger.debug(locationVariant.toString());
+                                            //
+                                            // List<MaxFreq> clinbinMaxVariantFrequencies = locationVariant
+                                            // .getClinbinMaxVariantFrequencies();
+                                            // if (CollectionUtils.isNotEmpty(clinbinMaxVariantFrequencies)) {
+                                            // for (final MaxFreq maxFreq : clinbinMaxVariantFrequencies) {
+                                            // logger.debug(maxFreq.toString());
+                                            //
+                                            // PopulationFrequency pf = new PopulationFrequency();
+                                            // pf.setFrequency(maxFreq.getMaxAlleleFreq());
+                                            // pf.setGene(gene);
+                                            // pf.setSource("CLINBIN");
+                                            // pf.setVersion(maxFreq.getGen1000Version().toString());
+                                            // Location location = new Location(locationVariant.getPosition(),
+                                            // locationVariant.getEndPosition());
+                                            // location.setId(hearsayDAOBean.getLocationDAO().save(location));
+                                            // pf.setPosition(location);
+                                            // pf.setId(hearsayDAOBean.getPopulationFrequencyDAO().save(pf));
+                                            //
+                                            // }
+                                            // }
 
                                             List<MaxVariantFrequency> exacMaxVariantFrequencies = locationVariant
                                                     .getExacMaxVariantFrequencies();
