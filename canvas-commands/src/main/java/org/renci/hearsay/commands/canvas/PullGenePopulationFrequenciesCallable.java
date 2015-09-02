@@ -39,8 +39,9 @@ public class PullGenePopulationFrequenciesCallable implements Callable<Void> {
 
         try {
 
-            Set<Gene> genes2Process = new HashSet<Gene>();
             List<Gene> geneList = hearsayDAOBean.getGeneDAO().findAll();
+
+            ExecutorService es = Executors.newFixedThreadPool(2);
 
             if (CollectionUtils.isNotEmpty(geneList)) {
                 for (final Gene gene : geneList) {
@@ -51,94 +52,88 @@ public class PullGenePopulationFrequenciesCallable implements Callable<Void> {
                         logger.info("skipping: {}", gene.toString());
                         continue;
                     }
-                    genes2Process.add(gene);
-                }
-            }
 
-            // ExecutorService es = Executors.newFixedThreadPool(4);
+                    es.submit(new Runnable() {
 
-            if (CollectionUtils.isNotEmpty(genes2Process)) {
-                for (final Gene gene : genes2Process) {
+                        @Override
+                        public void run() {
 
-                    logger.info(gene.toString());
+                            logger.info(gene.toString());
 
-                    List<Variants_61_2> variants = canvasDAOBean.getVariants_61_2_DAO().findByGeneName(gene.getName());
+                            try {
 
-                    if (CollectionUtils.isNotEmpty(variants)) {
+                                List<Variants_61_2> variants = canvasDAOBean.getVariants_61_2_DAO()
+                                        .findByGeneName(gene.getName());
 
-                        logger.info("variants.size(): {}", variants.size());
+                                if (CollectionUtils.isNotEmpty(variants)) {
 
-                        for (final Variants_61_2 variant : variants) {
+                                    logger.info("variants.size(): {}", variants.size());
 
-                            // es.submit(new Runnable() {
-                            //
-                            // @Override
-                            // public void run() {
-                            // try {
+                                    for (final Variants_61_2 variant : variants) {
 
-                            final LocationVariant locationVariant = variant.getLocationVariant();
+                                        final LocationVariant locationVariant = variant.getLocationVariant();
 
-                            if (locationVariant != null) {
+                                        if (locationVariant != null) {
 
-                                // logger.debug(locationVariant.toString());
-                                //
-                                // List<MaxFreq> clinbinMaxVariantFrequencies = locationVariant
-                                // .getClinbinMaxVariantFrequencies();
-                                // if (CollectionUtils.isNotEmpty(clinbinMaxVariantFrequencies)) {
-                                // for (final MaxFreq maxFreq : clinbinMaxVariantFrequencies) {
-                                // logger.debug(maxFreq.toString());
-                                //
-                                // PopulationFrequency pf = new PopulationFrequency();
-                                // pf.setFrequency(maxFreq.getMaxAlleleFreq());
-                                // pf.setGene(gene);
-                                // pf.setSource("CLINBIN");
-                                // pf.setVersion(maxFreq.getGen1000Version().toString());
-                                // Location location = new Location(locationVariant.getPosition(),
-                                // locationVariant.getEndPosition());
-                                // location.setId(hearsayDAOBean.getLocationDAO().save(location));
-                                // pf.setPosition(location);
-                                // pf.setId(hearsayDAOBean.getPopulationFrequencyDAO().save(pf));
-                                //
-                                // }
-                                // }
+                                            // logger.debug(locationVariant.toString());
+                                            //
+                                            // List<MaxFreq> clinbinMaxVariantFrequencies = locationVariant
+                                            // .getClinbinMaxVariantFrequencies();
+                                            // if (CollectionUtils.isNotEmpty(clinbinMaxVariantFrequencies)) {
+                                            // for (final MaxFreq maxFreq : clinbinMaxVariantFrequencies) {
+                                            // logger.debug(maxFreq.toString());
+                                            //
+                                            // PopulationFrequency pf = new PopulationFrequency();
+                                            // pf.setFrequency(maxFreq.getMaxAlleleFreq());
+                                            // pf.setGene(gene);
+                                            // pf.setSource("CLINBIN");
+                                            // pf.setVersion(maxFreq.getGen1000Version().toString());
+                                            // Location location = new Location(locationVariant.getPosition(),
+                                            // locationVariant.getEndPosition());
+                                            // location.setId(hearsayDAOBean.getLocationDAO().save(location));
+                                            // pf.setPosition(location);
+                                            // pf.setId(hearsayDAOBean.getPopulationFrequencyDAO().save(pf));
+                                            //
+                                            // }
+                                            // }
 
-                                List<MaxVariantFrequency> exacMaxVariantFrequencies = locationVariant
-                                        .getExacMaxVariantFrequencies();
-                                if (CollectionUtils.isNotEmpty(exacMaxVariantFrequencies)) {
-                                    for (final MaxVariantFrequency maxFreq : exacMaxVariantFrequencies) {
-                                        logger.debug(maxFreq.toString());
+                                            List<MaxVariantFrequency> exacMaxVariantFrequencies = locationVariant
+                                                    .getExacMaxVariantFrequencies();
+                                            if (CollectionUtils.isNotEmpty(exacMaxVariantFrequencies)) {
+                                                for (final MaxVariantFrequency maxFreq : exacMaxVariantFrequencies) {
+                                                    logger.debug(maxFreq.toString());
 
-                                        PopulationFrequency pf = new PopulationFrequency();
-                                        pf.setFrequency(maxFreq.getMaxAlleleFrequency());
-                                        pf.setGene(gene);
-                                        pf.setSource("EXAC");
-                                        pf.setVersion(maxFreq.getVersion());
-                                        Location location = new Location(locationVariant.getPosition(),
-                                                locationVariant.getEndPosition());
-                                        location.setId(hearsayDAOBean.getLocationDAO().save(location));
-                                        pf.setPosition(location);
-                                        pf.setId(hearsayDAOBean.getPopulationFrequencyDAO().save(pf));
+                                                    PopulationFrequency pf = new PopulationFrequency();
+                                                    pf.setFrequency(maxFreq.getMaxAlleleFrequency());
+                                                    pf.setGene(gene);
+                                                    pf.setSource("EXAC");
+                                                    pf.setVersion(maxFreq.getVersion());
+                                                    Location location = new Location(locationVariant.getPosition(),
+                                                            locationVariant.getEndPosition());
+                                                    location.setId(hearsayDAOBean.getLocationDAO().save(location));
+                                                    pf.setPosition(location);
+                                                    pf.setId(hearsayDAOBean.getPopulationFrequencyDAO().save(pf));
+                                                }
+                                            }
+
+                                        }
+
                                     }
+
                                 }
 
+                            } catch (Exception e) {
+                                e.printStackTrace();
                             }
-
-                            // } catch (Exception e) {
-                            // e.printStackTrace();
-                            // }
-
-                            // }
-
-                            // });
 
                         }
 
-                    }
+                    });
 
                 }
             }
-            // es.shutdown();
-            // es.awaitTermination(2, TimeUnit.DAYS);
+            es.shutdown();
+            es.awaitTermination(2, TimeUnit.DAYS);
 
         } catch (Exception e) {
             logger.error("Error", e);
