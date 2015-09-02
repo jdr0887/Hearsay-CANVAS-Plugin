@@ -1,13 +1,14 @@
 package org.renci.hearsay.commands.canvas;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.renci.hearsay.canvas.clinbin.dao.model.MaxFreq;
 import org.renci.hearsay.canvas.dao.CANVASDAOBean;
 import org.renci.hearsay.canvas.exac.dao.model.MaxVariantFrequency;
 import org.renci.hearsay.canvas.refseq.dao.model.Variants_61_2;
@@ -38,13 +39,11 @@ public class PullGenePopulationFrequenciesCallable implements Callable<Void> {
 
         try {
 
-            ExecutorService es = Executors.newFixedThreadPool(2);
-
+            Set<Gene> genes2Process = new HashSet<Gene>();
             List<Gene> geneList = hearsayDAOBean.getGeneDAO().findAll();
 
             if (CollectionUtils.isNotEmpty(geneList)) {
                 for (final Gene gene : geneList) {
-
                     // non-granular search for population frequencies
                     List<PopulationFrequency> alreadyPersistedPopulationFrequencies = hearsayDAOBean
                             .getPopulationFrequencyDAO().findByGeneName(gene.getName());
@@ -52,20 +51,29 @@ public class PullGenePopulationFrequenciesCallable implements Callable<Void> {
                         logger.info("skipping: {}", gene.toString());
                         continue;
                     }
+                    genes2Process.add(gene);
+                }
+            }
 
-                    es.submit(new Runnable() {
+            ExecutorService es = Executors.newFixedThreadPool(4);
 
-                        @Override
-                        public void run() {
-                            try {
-                                List<Variants_61_2> variants = canvasDAOBean.getVariants_61_2_DAO().findByGeneName(
-                                        gene.getName());
+            if (CollectionUtils.isNotEmpty(genes2Process)) {
+                for (final Gene gene : genes2Process) {
 
-                                if (CollectionUtils.isNotEmpty(variants)) {
+                    List<Variants_61_2> variants = canvasDAOBean.getVariants_61_2_DAO().findByGeneName(gene.getName());
 
-                                    logger.info("variants.size(): {}, {}", variants.size(), gene.toString());
+                    if (CollectionUtils.isNotEmpty(variants)) {
 
-                                    for (Variants_61_2 variant : variants) {
+                        logger.info(gene.toString());
+                        logger.info("variants.size(): {}", variants.size());
+
+                        for (final Variants_61_2 variant : variants) {
+
+                            es.submit(new Runnable() {
+
+                                @Override
+                                public void run() {
+                                    try {
 
                                         final LocationVariant locationVariant = variant.getLocationVariant();
 
@@ -114,16 +122,17 @@ public class PullGenePopulationFrequenciesCallable implements Callable<Void> {
 
                                         }
 
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
                                     }
 
                                 }
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
+
+                            });
 
                         }
 
-                    });
+                    }
 
                 }
             }
