@@ -38,14 +38,20 @@ public class PullGenePopulationFrequenciesCallable implements Callable<Void> {
 
         try {
 
-            ExecutorService es = Executors.newFixedThreadPool(4);
+            ExecutorService es = Executors.newFixedThreadPool(2);
 
             List<Gene> geneList = hearsayDAOBean.getGeneDAO().findAll();
 
             if (CollectionUtils.isNotEmpty(geneList)) {
                 for (final Gene gene : geneList) {
 
-                    logger.info(gene.toString());
+                    // non-granular search for population frequencies
+                    List<PopulationFrequency> alreadyPersistedPopulationFrequencies = hearsayDAOBean
+                            .getPopulationFrequencyDAO().findByGeneName(gene.getName());
+                    if (CollectionUtils.isNotEmpty(alreadyPersistedPopulationFrequencies)) {
+                        logger.info("skipping: {}", gene.toString());
+                        continue;
+                    }
 
                     es.submit(new Runnable() {
 
@@ -57,11 +63,12 @@ public class PullGenePopulationFrequenciesCallable implements Callable<Void> {
 
                                 if (CollectionUtils.isNotEmpty(variants)) {
 
-                                    logger.info("variants.size(): {}", variants.size());
+                                    logger.info("variants.size(): {}, {}", variants.size(), gene.toString());
 
                                     for (Variants_61_2 variant : variants) {
 
                                         final LocationVariant locationVariant = variant.getLocationVariant();
+
                                         if (locationVariant != null) {
 
                                             // logger.debug(locationVariant.toString());
