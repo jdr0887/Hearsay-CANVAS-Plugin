@@ -39,21 +39,37 @@ public class PullGenePopulationFrequenciesCallable implements Callable<Void> {
 
         try {
 
+            ExecutorService findGenesExecutorService = Executors.newFixedThreadPool(4);
             List<Gene> geneList = hearsayDAOBean.getGeneDAO().findAll();
+            final Set<Gene> foundGeneSet = new HashSet<Gene>();
+            for (final Gene gene : geneList) {
 
-            ExecutorService es = Executors.newFixedThreadPool(2);
+                findGenesExecutorService.submit(new Runnable() {
 
-            if (CollectionUtils.isNotEmpty(geneList)) {
-                for (final Gene gene : geneList) {
-                    // non-granular search for population frequencies
-                    List<PopulationFrequency> alreadyPersistedPopulationFrequencies = hearsayDAOBean
-                            .getPopulationFrequencyDAO().findByGeneName(gene.getName());
-                    if (CollectionUtils.isNotEmpty(alreadyPersistedPopulationFrequencies)) {
-                        logger.info("skipping: {}", gene.toString());
-                        continue;
+                    @Override
+                    public void run() {
+                        try {
+                            // non-granular search for population frequencies
+                            List<PopulationFrequency> alreadyPersistedPopulationFrequencies = hearsayDAOBean
+                                    .getPopulationFrequencyDAO().findByGeneName(gene.getName());
+                            if (CollectionUtils.isEmpty(alreadyPersistedPopulationFrequencies)) {
+                                foundGeneSet.add(gene);
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
 
-                    es.submit(new Runnable() {
+                });
+            }
+            findGenesExecutorService.shutdown();
+            findGenesExecutorService.awaitTermination(1, TimeUnit.DAYS);
+
+            ExecutorService persistPopulationFrequencyExecutorService = Executors.newFixedThreadPool(4);
+            if (CollectionUtils.isNotEmpty(foundGeneSet)) {
+                for (final Gene gene : foundGeneSet) {
+
+                    persistPopulationFrequencyExecutorService.submit(new Runnable() {
 
                         @Override
                         public void run() {
@@ -132,8 +148,8 @@ public class PullGenePopulationFrequenciesCallable implements Callable<Void> {
 
                 }
             }
-            es.shutdown();
-            es.awaitTermination(2, TimeUnit.DAYS);
+            persistPopulationFrequencyExecutorService.shutdown();
+            persistPopulationFrequencyExecutorService.awaitTermination(4, TimeUnit.DAYS);
 
         } catch (Exception e) {
             logger.error("Error", e);
