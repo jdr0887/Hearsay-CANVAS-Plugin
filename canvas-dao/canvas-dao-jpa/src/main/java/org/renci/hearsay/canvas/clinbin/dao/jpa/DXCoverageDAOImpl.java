@@ -13,6 +13,8 @@ import javax.persistence.criteria.Root;
 import org.renci.hearsay.canvas.clinbin.dao.DXCoverageDAO;
 import org.renci.hearsay.canvas.clinbin.dao.model.DX;
 import org.renci.hearsay.canvas.clinbin.dao.model.DXCoverage;
+import org.renci.hearsay.canvas.clinbin.dao.model.DXCoveragePK;
+import org.renci.hearsay.canvas.clinbin.dao.model.DXCoveragePK_;
 import org.renci.hearsay.canvas.clinbin.dao.model.DXCoverage_;
 import org.renci.hearsay.canvas.clinbin.dao.model.DXExons;
 import org.renci.hearsay.canvas.clinbin.dao.model.DXExons_;
@@ -47,7 +49,8 @@ public class DXCoverageDAOImpl extends BaseDAOImpl<DXCoverage, Long> implements 
         Root<DXCoverage> root = crit.from(getPersistentClass());
 
         List<Predicate> predicates = new ArrayList<Predicate>();
-        predicates.add(critBuilder.equal(root.get(DXCoverage_.participant), participant));
+        Join<DXCoverage, DXCoveragePK> dxCoverageDXCoveragePKJoin = root.join(DXCoverage_.key);
+        predicates.add(critBuilder.equal(dxCoverageDXCoveragePKJoin.get(DXCoveragePK_.participant), participant));
 
         Join<DXCoverage, DXExons> coverageExonJoin = root.join(DXCoverage_.exon);
         predicates.add(critBuilder.equal(coverageExonJoin.get(DXExons_.listVersion), listVersion));

@@ -12,6 +12,8 @@ import javax.persistence.criteria.Root;
 
 import org.renci.hearsay.canvas.clinbin.dao.BinResultsFinalIncidentalXDAO;
 import org.renci.hearsay.canvas.clinbin.dao.model.BinResultsFinalIncidentalX;
+import org.renci.hearsay.canvas.clinbin.dao.model.BinResultsFinalIncidentalXPK;
+import org.renci.hearsay.canvas.clinbin.dao.model.BinResultsFinalIncidentalXPK_;
 import org.renci.hearsay.canvas.clinbin.dao.model.BinResultsFinalIncidentalX_;
 import org.renci.hearsay.canvas.clinbin.dao.model.IncidentalBinX;
 import org.renci.hearsay.canvas.clinbin.dao.model.IncidentalBinX_;
@@ -22,8 +24,8 @@ import org.renci.hearsay.dao.HearsayDAOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class BinResultsFinalIncidentalXDAOImpl extends BaseDAOImpl<BinResultsFinalIncidentalX, Long> implements
-        BinResultsFinalIncidentalXDAO {
+public class BinResultsFinalIncidentalXDAOImpl extends BaseDAOImpl<BinResultsFinalIncidentalX, Long>
+        implements BinResultsFinalIncidentalXDAO {
 
     private final Logger logger = LoggerFactory.getLogger(BinResultsFinalIncidentalXDAOImpl.class);
 
@@ -46,7 +48,11 @@ public class BinResultsFinalIncidentalXDAOImpl extends BaseDAOImpl<BinResultsFin
         Root<BinResultsFinalIncidentalX> root = crit.from(getPersistentClass());
 
         List<Predicate> predicates = new ArrayList<Predicate>();
-        predicates.add(critBuilder.equal(root.get(BinResultsFinalIncidentalX_.participant), participant));
+
+        Join<BinResultsFinalIncidentalX, BinResultsFinalIncidentalXPK> binResultsFinalIncidentalXBinResultsFinalIncidentalXPKJoin = root
+                .join(BinResultsFinalIncidentalX_.key);
+        predicates.add(critBuilder.equal(binResultsFinalIncidentalXBinResultsFinalIncidentalXPKJoin
+                .get(BinResultsFinalIncidentalXPK_.participant), participant));
 
         Join<BinResultsFinalIncidentalX, IncidentalBinX> binResultsFinalIncidentalXIncidentalBinXJoin = root
                 .join(BinResultsFinalIncidentalX_.incidentalBin);

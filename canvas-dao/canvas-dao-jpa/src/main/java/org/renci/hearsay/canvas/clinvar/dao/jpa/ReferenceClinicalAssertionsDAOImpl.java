@@ -13,10 +13,16 @@ import javax.persistence.criteria.Root;
 import javax.persistence.criteria.SetJoin;
 
 import org.renci.hearsay.canvas.clinbin.dao.model.BinResultsFinalDiagnostic;
+import org.renci.hearsay.canvas.clinbin.dao.model.BinResultsFinalDiagnosticPK;
+import org.renci.hearsay.canvas.clinbin.dao.model.BinResultsFinalDiagnosticPK_;
 import org.renci.hearsay.canvas.clinbin.dao.model.BinResultsFinalDiagnostic_;
 import org.renci.hearsay.canvas.clinbin.dao.model.BinResultsFinalIncidentalX;
+import org.renci.hearsay.canvas.clinbin.dao.model.BinResultsFinalIncidentalXPK;
+import org.renci.hearsay.canvas.clinbin.dao.model.BinResultsFinalIncidentalXPK_;
 import org.renci.hearsay.canvas.clinbin.dao.model.BinResultsFinalIncidentalX_;
 import org.renci.hearsay.canvas.clinbin.dao.model.BinResultsFinalRiskX;
+import org.renci.hearsay.canvas.clinbin.dao.model.BinResultsFinalRiskXPK;
+import org.renci.hearsay.canvas.clinbin.dao.model.BinResultsFinalRiskXPK_;
 import org.renci.hearsay.canvas.clinbin.dao.model.BinResultsFinalRiskX_;
 import org.renci.hearsay.canvas.clinbin.dao.model.DX;
 import org.renci.hearsay.canvas.clinbin.dao.model.DX_;
@@ -38,8 +44,8 @@ import org.renci.hearsay.dao.HearsayDAOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ReferenceClinicalAssertionsDAOImpl extends BaseDAOImpl<ReferenceClinicalAssertions, Long> implements
-        ReferenceClinicalAssertionsDAO {
+public class ReferenceClinicalAssertionsDAOImpl extends BaseDAOImpl<ReferenceClinicalAssertions, Long>
+        implements ReferenceClinicalAssertionsDAO {
 
     private final Logger logger = LoggerFactory.getLogger(ReferenceClinicalAssertionsDAOImpl.class);
 
@@ -63,8 +69,8 @@ public class ReferenceClinicalAssertionsDAOImpl extends BaseDAOImpl<ReferenceCli
 
         List<Predicate> predicates = new ArrayList<Predicate>();
 
-        SetJoin<ReferenceClinicalAssertions, Versions> referenceClinicalAssertionsVersionsJoin = root.join(
-                ReferenceClinicalAssertions_.versions, JoinType.LEFT);
+        SetJoin<ReferenceClinicalAssertions, Versions> referenceClinicalAssertionsVersionsJoin = root
+                .join(ReferenceClinicalAssertions_.versions, JoinType.LEFT);
 
         SetJoin<Versions, DiagnosticResultVersion> versionsDiagnosticResultVersionJoin = referenceClinicalAssertionsVersionsJoin
                 .join(Versions_.diagnosticResultVersions, JoinType.LEFT);
@@ -73,11 +79,14 @@ public class ReferenceClinicalAssertionsDAOImpl extends BaseDAOImpl<ReferenceCli
                 versionsDiagnosticResultVersionJoin.get(DiagnosticResultVersion_.diagnosticResultVersion),
                 resultVersion));
 
-        SetJoin<DiagnosticResultVersion, BinResultsFinalDiagnostic> diagnosticResultVersionBinResultsFinalDiagnosticJoin = versionsDiagnosticResultVersionJoin
-                .join(DiagnosticResultVersion_.binResultsFinalDiagnostics, JoinType.LEFT);
+        Join<DiagnosticResultVersion, BinResultsFinalDiagnostic> diagnosticResultVersionBinResultsFinalDiagnosticJoin = versionsDiagnosticResultVersionJoin
+                .join(DiagnosticResultVersion_.binResultsFinalDiagnostics);
+
+        Join<BinResultsFinalDiagnostic, BinResultsFinalDiagnosticPK> binResultsFinalDiagnosticBinResultsFinalDiagnosticPKJoin = diagnosticResultVersionBinResultsFinalDiagnosticJoin
+                .join(BinResultsFinalDiagnostic_.key);
 
         predicates.add(critBuilder.equal(
-                diagnosticResultVersionBinResultsFinalDiagnosticJoin.get(BinResultsFinalDiagnostic_.participant),
+                binResultsFinalDiagnosticBinResultsFinalDiagnosticPKJoin.get(BinResultsFinalDiagnosticPK_.participant),
                 participant));
 
         Join<BinResultsFinalDiagnostic, DX> binResultsFinalDiagnosticDXJoin = diagnosticResultVersionBinResultsFinalDiagnosticJoin
@@ -103,23 +112,22 @@ public class ReferenceClinicalAssertionsDAOImpl extends BaseDAOImpl<ReferenceCli
         Root<ReferenceClinicalAssertions> root = crit.from(getPersistentClass());
         List<Predicate> predicates = new ArrayList<Predicate>();
 
-        SetJoin<ReferenceClinicalAssertions, Versions> referenceClinicalAssertionsVersionsJoin = root.join(
-                ReferenceClinicalAssertions_.versions, JoinType.LEFT);
+        SetJoin<ReferenceClinicalAssertions, Versions> referenceClinicalAssertionsVersionsJoin = root
+                .join(ReferenceClinicalAssertions_.versions, JoinType.LEFT);
 
         SetJoin<Versions, IncidentalResultVersionX> versionsIncidentalResultVersionXJoin = referenceClinicalAssertionsVersionsJoin
                 .join(Versions_.incidentalResultVersions, JoinType.LEFT);
 
-        predicates
-                .add(critBuilder.equal(
-                        versionsIncidentalResultVersionXJoin.get(IncidentalResultVersionX_.binningResultVersion),
-                        resultVersion));
-
-        SetJoin<IncidentalResultVersionX, BinResultsFinalIncidentalX> incidentalResultVersionXBinResultsFinalIncidentalXJoin = versionsIncidentalResultVersionXJoin
-                .join(IncidentalResultVersionX_.binResultsFinalIncidentals, JoinType.LEFT);
-
         predicates.add(critBuilder.equal(
-                incidentalResultVersionXBinResultsFinalIncidentalXJoin.get(BinResultsFinalIncidentalX_.participant),
-                participant));
+                versionsIncidentalResultVersionXJoin.get(IncidentalResultVersionX_.binningResultVersion),
+                resultVersion));
+
+        Join<IncidentalResultVersionX, BinResultsFinalIncidentalX> incidentalResultVersionXBinResultsFinalIncidentalXJoin = versionsIncidentalResultVersionXJoin
+                .join(IncidentalResultVersionX_.binResultsFinalIncidentals, JoinType.LEFT);
+        Join<BinResultsFinalIncidentalX, BinResultsFinalIncidentalXPK> binResultsFinalIncidentalXBinResultsFinalIncidentalXPKJoin = incidentalResultVersionXBinResultsFinalIncidentalXJoin
+                .join(BinResultsFinalIncidentalX_.key, JoinType.LEFT);
+        predicates.add(critBuilder.equal(binResultsFinalIncidentalXBinResultsFinalIncidentalXPKJoin
+                .get(BinResultsFinalIncidentalXPK_.participant), participant));
 
         Join<BinResultsFinalIncidentalX, IncidentalBinX> binResultsFinalIncidentalXIncidentalBinXJoin = incidentalResultVersionXBinResultsFinalIncidentalXJoin
                 .join(BinResultsFinalIncidentalX_.incidentalBin);
@@ -145,22 +153,20 @@ public class ReferenceClinicalAssertionsDAOImpl extends BaseDAOImpl<ReferenceCli
         Root<ReferenceClinicalAssertions> root = crit.from(getPersistentClass());
         List<Predicate> predicates = new ArrayList<Predicate>();
 
-        SetJoin<ReferenceClinicalAssertions, Versions> referenceClinicalAssertionsVersionsJoin = root.join(
-                ReferenceClinicalAssertions_.versions, JoinType.LEFT);
-
+        SetJoin<ReferenceClinicalAssertions, Versions> referenceClinicalAssertionsVersionsJoin = root
+                .join(ReferenceClinicalAssertions_.versions, JoinType.LEFT);
         SetJoin<Versions, IncidentalResultVersionX> versionsIncidentalResultVersionXJoin = referenceClinicalAssertionsVersionsJoin
                 .join(Versions_.incidentalResultVersions, JoinType.LEFT);
-
-        predicates
-                .add(critBuilder.equal(
-                        versionsIncidentalResultVersionXJoin.get(IncidentalResultVersionX_.binningResultVersion),
-                        resultVersion));
-
-        SetJoin<IncidentalResultVersionX, BinResultsFinalRiskX> incidentalResultVersionXBinResultsFinalRiskXJoin = versionsIncidentalResultVersionXJoin
-                .join(IncidentalResultVersionX_.binResultsFinalRisks, JoinType.LEFT);
-
         predicates.add(critBuilder.equal(
-                incidentalResultVersionXBinResultsFinalRiskXJoin.get(BinResultsFinalRiskX_.participant), participant));
+                versionsIncidentalResultVersionXJoin.get(IncidentalResultVersionX_.binningResultVersion),
+                resultVersion));
+
+        Join<IncidentalResultVersionX, BinResultsFinalRiskX> incidentalResultVersionXBinResultsFinalRiskXJoin = versionsIncidentalResultVersionXJoin
+                .join(IncidentalResultVersionX_.binResultsFinalRisks, JoinType.LEFT);
+        Join<BinResultsFinalRiskX, BinResultsFinalRiskXPK> binResultsFinalRiskXBinResultsFinalRiskXPKJoin = incidentalResultVersionXBinResultsFinalRiskXJoin
+                .join(BinResultsFinalRiskX_.key, JoinType.LEFT);
+        predicates.add(critBuilder.equal(
+                binResultsFinalRiskXBinResultsFinalRiskXPKJoin.get(BinResultsFinalRiskXPK_.participant), participant));
 
         Join<BinResultsFinalRiskX, IncidentalBinX> binResultsFinalIncidentalXIncidentalBinXJoin = incidentalResultVersionXBinResultsFinalRiskXJoin
                 .join(BinResultsFinalRiskX_.incidentalBin);
@@ -189,11 +195,11 @@ public class ReferenceClinicalAssertionsDAOImpl extends BaseDAOImpl<ReferenceCli
         Join<ReferenceClinicalAssertions, LocationVariant> referenceClinicalAssertionsLocationVariantJoin = root
                 .join(ReferenceClinicalAssertions_.locationVariant);
 
-        predicates.add(critBuilder.equal(referenceClinicalAssertionsLocationVariantJoin.get(LocationVariant_.id),
-                locVarId));
+        predicates.add(
+                critBuilder.equal(referenceClinicalAssertionsLocationVariantJoin.get(LocationVariant_.id), locVarId));
 
-        SetJoin<ReferenceClinicalAssertions, Versions> referenceClinicalAssertionsVersionsJoin = root.join(
-                ReferenceClinicalAssertions_.versions, JoinType.LEFT);
+        SetJoin<ReferenceClinicalAssertions, Versions> referenceClinicalAssertionsVersionsJoin = root
+                .join(ReferenceClinicalAssertions_.versions, JoinType.LEFT);
 
         predicates.add(critBuilder.equal(referenceClinicalAssertionsVersionsJoin.get(Versions_.id), version));
 

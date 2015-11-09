@@ -12,6 +12,8 @@ import javax.persistence.criteria.Root;
 
 import org.renci.hearsay.canvas.clinbin.dao.BinResultsFinalRiskXDAO;
 import org.renci.hearsay.canvas.clinbin.dao.model.BinResultsFinalRiskX;
+import org.renci.hearsay.canvas.clinbin.dao.model.BinResultsFinalRiskXPK;
+import org.renci.hearsay.canvas.clinbin.dao.model.BinResultsFinalRiskXPK_;
 import org.renci.hearsay.canvas.clinbin.dao.model.BinResultsFinalRiskX_;
 import org.renci.hearsay.canvas.clinbin.dao.model.IncidentalBinX;
 import org.renci.hearsay.canvas.clinbin.dao.model.IncidentalBinX_;
@@ -22,8 +24,8 @@ import org.renci.hearsay.dao.HearsayDAOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class BinResultsFinalRiskXDAOImpl extends BaseDAOImpl<BinResultsFinalRiskX, Long> implements
-        BinResultsFinalRiskXDAO {
+public class BinResultsFinalRiskXDAOImpl extends BaseDAOImpl<BinResultsFinalRiskX, Long>
+        implements BinResultsFinalRiskXDAO {
 
     private final Logger logger = LoggerFactory.getLogger(BinResultsFinalRiskXDAOImpl.class);
 
@@ -46,11 +48,16 @@ public class BinResultsFinalRiskXDAOImpl extends BaseDAOImpl<BinResultsFinalRisk
         Root<BinResultsFinalRiskX> root = crit.from(getPersistentClass());
 
         List<Predicate> predicates = new ArrayList<Predicate>();
-        predicates.add(critBuilder.equal(root.get(BinResultsFinalRiskX_.participant), participant));
+
+        Join<BinResultsFinalRiskX, BinResultsFinalRiskXPK> binResultsFinalRiskXBinResultsFinalRiskXPKJoin = root
+                .join(BinResultsFinalRiskX_.key);
+        predicates.add(critBuilder.equal(
+                binResultsFinalRiskXBinResultsFinalRiskXPKJoin.get(BinResultsFinalRiskXPK_.participant), participant));
+
         Join<BinResultsFinalRiskX, IncidentalBinX> binResultsFinalRiskXIncidentalBinXJoin = root
                 .join(BinResultsFinalRiskX_.incidentalBin);
-        predicates.add(critBuilder.equal(binResultsFinalRiskXIncidentalBinXJoin.get(IncidentalBinX_.id),
-                incidentalBinId));
+        predicates.add(
+                critBuilder.equal(binResultsFinalRiskXIncidentalBinXJoin.get(IncidentalBinX_.id), incidentalBinId));
 
         Join<BinResultsFinalRiskX, IncidentalResultVersionX> binResultsFinalRiskXIncidentalResultVersionXJoin = root
                 .join(BinResultsFinalRiskX_.incidentalResultVersion);

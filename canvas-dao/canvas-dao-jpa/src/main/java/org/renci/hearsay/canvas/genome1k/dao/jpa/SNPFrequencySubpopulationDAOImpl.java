@@ -5,14 +5,14 @@ import java.util.List;
 import javax.persistence.TypedQuery;
 
 import org.renci.hearsay.canvas.dao.jpa.BaseDAOImpl;
-import org.renci.hearsay.canvas.genome1k.dao.SNPFrequencySubpopulationDAO;
-import org.renci.hearsay.canvas.genome1k.dao.model.SNPFrequencySubpopulation;
+import org.renci.hearsay.canvas.genome1k.dao.OneThousandGenomeSNPFrequencySubpopulationDAO;
+import org.renci.hearsay.canvas.genome1k.dao.model.OneThousandGenomeSNPFrequencySubpopulation;
 import org.renci.hearsay.dao.HearsayDAOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class SNPFrequencySubpopulationDAOImpl extends BaseDAOImpl<SNPFrequencySubpopulation, Long> implements
-        SNPFrequencySubpopulationDAO {
+public class SNPFrequencySubpopulationDAOImpl extends BaseDAOImpl<OneThousandGenomeSNPFrequencySubpopulation, Long> implements
+        OneThousandGenomeSNPFrequencySubpopulationDAO {
 
     private final Logger logger = LoggerFactory.getLogger(SNPFrequencySubpopulationDAOImpl.class);
 
@@ -21,19 +21,19 @@ public class SNPFrequencySubpopulationDAOImpl extends BaseDAOImpl<SNPFrequencySu
     }
 
     @Override
-    public Class<SNPFrequencySubpopulation> getPersistentClass() {
-        return SNPFrequencySubpopulation.class;
+    public Class<OneThousandGenomeSNPFrequencySubpopulation> getPersistentClass() {
+        return OneThousandGenomeSNPFrequencySubpopulation.class;
     }
 
     @Override
-    public List<SNPFrequencySubpopulation> findByLocationVariantIdAndVersion(Long locVarId, Integer version)
+    public List<OneThousandGenomeSNPFrequencySubpopulation> findByLocationVariantIdAndVersion(Long locVarId, Integer version)
             throws HearsayDAOException {
         logger.debug("ENTERING findByLocationVariantIdAndVersion(Long, Integer)");
-        TypedQuery<SNPFrequencySubpopulation> query = getEntityManager().createNamedQuery(
-                "SNPFrequencySubpopulation.findByLocationVariantIdAndVersion", SNPFrequencySubpopulation.class);
+        TypedQuery<OneThousandGenomeSNPFrequencySubpopulation> query = getEntityManager().createNamedQuery(
+                "SNPFrequencySubpopulation.findByLocationVariantIdAndVersion", OneThousandGenomeSNPFrequencySubpopulation.class);
         query.setParameter("locationVariantId", locVarId);
         query.setParameter("version", version);
-        List<SNPFrequencySubpopulation> ret = query.getResultList();
+        List<OneThousandGenomeSNPFrequencySubpopulation> ret = query.getResultList();
         return ret;
     }
 
