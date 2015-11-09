@@ -21,7 +21,7 @@ public class DiagnosticBinResultsPK implements Serializable {
     private Integer binVersion;
 
     @Column(name = "dx_id")
-    private Long dx;
+    private Integer dx;
 
     @Column(name = "gene_id")
     private Integer geneId;
@@ -63,11 +63,11 @@ public class DiagnosticBinResultsPK implements Serializable {
         this.binVersion = binVersion;
     }
 
-    public Long getDx() {
+    public Integer getDx() {
         return dx;
     }
 
-    public void setDx(Long dx) {
+    public void setDx(Integer dx) {
         this.dx = dx;
     }
 

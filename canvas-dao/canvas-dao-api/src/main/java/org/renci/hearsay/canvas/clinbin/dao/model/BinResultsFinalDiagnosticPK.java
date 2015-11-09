@@ -14,13 +14,13 @@ public class BinResultsFinalDiagnosticPK implements Serializable {
     private String participant;
 
     @Column(name = "dx_id")
-    private Long dx;
+    private Integer dx;
 
     @Column(name = "diagnostic_result_version")
     private Integer diagnosticResultVersion;
 
     @Column(name = "asm_id")
-    private Long assembly;
+    private Integer assembly;
 
     @Column(name = "loc_var_id")
     private Long locationVariant;
@@ -43,11 +43,11 @@ public class BinResultsFinalDiagnosticPK implements Serializable {
         this.participant = participant;
     }
 
-    public Long getDx() {
+    public Integer getDx() {
         return dx;
     }
 
-    public void setDx(Long dx) {
+    public void setDx(Integer dx) {
         this.dx = dx;
     }
 
@@ -59,11 +59,11 @@ public class BinResultsFinalDiagnosticPK implements Serializable {
         this.diagnosticResultVersion = diagnosticResultVersion;
     }
 
-    public Long getAssembly() {
+    public Integer getAssembly() {
         return assembly;
     }
 
-    public void setAssembly(Long assembly) {
+    public void setAssembly(Integer assembly) {
         this.assembly = assembly;
     }
 

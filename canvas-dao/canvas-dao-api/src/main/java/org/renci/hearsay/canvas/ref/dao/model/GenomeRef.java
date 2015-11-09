@@ -27,7 +27,7 @@ public class GenomeRef implements Persistable {
 
     @Id
     @Column(name = "ref_id")
-    protected Long id;
+    protected Integer id;
 
     @Column(name = "ref_source")
     protected String refSource;
@@ -52,11 +52,11 @@ public class GenomeRef implements Persistable {
         super();
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

@@ -25,22 +25,22 @@ public class DXCoverage implements Persistable {
     private DXExons exon;
 
     @Column(name = "frac_gt_1")
-    private Float fracGt1;
+    private Double fracGt1;
 
     @Column(name = "frac_gt_5")
-    private Float fracGt5;
+    private Double fracGt5;
 
     @Column(name = "frac_gt_10")
-    private Float fracGt10;
+    private Double fracGt10;
 
     @Column(name = "frac_gt_15")
-    private Float fracGt15;
+    private Double fracGt15;
 
     @Column(name = "frac_gt_30")
-    private Float fracGt30;
+    private Double fracGt30;
 
     @Column(name = "frac_gt_50")
-    private Float fracGt50;
+    private Double fracGt50;
 
     public DXCoverage() {
         super();
@@ -62,51 +62,51 @@ public class DXCoverage implements Persistable {
         this.exon = exon;
     }
 
-    public Float getFracGt1() {
+    public Double getFracGt1() {
         return fracGt1;
     }
 
-    public void setFracGt1(Float fracGt1) {
+    public void setFracGt1(Double fracGt1) {
         this.fracGt1 = fracGt1;
     }
 
-    public Float getFracGt5() {
+    public Double getFracGt5() {
         return fracGt5;
     }
 
-    public void setFracGt5(Float fracGt5) {
+    public void setFracGt5(Double fracGt5) {
         this.fracGt5 = fracGt5;
     }
 
-    public Float getFracGt10() {
+    public Double getFracGt10() {
         return fracGt10;
     }
 
-    public void setFracGt10(Float fracGt10) {
+    public void setFracGt10(Double fracGt10) {
         this.fracGt10 = fracGt10;
     }
 
-    public Float getFracGt15() {
+    public Double getFracGt15() {
         return fracGt15;
     }
 
-    public void setFracGt15(Float fracGt15) {
+    public void setFracGt15(Double fracGt15) {
         this.fracGt15 = fracGt15;
     }
 
-    public Float getFracGt30() {
+    public Double getFracGt30() {
         return fracGt30;
     }
 
-    public void setFracGt30(Float fracGt30) {
+    public void setFracGt30(Double fracGt30) {
         this.fracGt30 = fracGt30;
     }
 
-    public Float getFracGt50() {
+    public Double getFracGt50() {
         return fracGt50;
     }
 
-    public void setFracGt50(Float fracGt50) {
+    public void setFracGt50(Double fracGt50) {
         this.fracGt50 = fracGt50;
     }
 

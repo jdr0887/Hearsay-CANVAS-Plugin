@@ -21,7 +21,7 @@ public class DiagnosticGene implements Persistable {
 
     @Id
     @Column(name = "diagnostic_gene_id")
-    private Long id;
+    private Integer id;
 
     @ManyToOne
     @JoinColumn(name = "gene_id")
@@ -46,11 +46,11 @@ public class DiagnosticGene implements Persistable {
         super();
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

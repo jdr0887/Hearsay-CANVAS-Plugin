@@ -21,7 +21,7 @@ public class RefSeqCodingSequence implements Persistable {
 
     @Id
     @Column(name = "refseq_cds_id")
-    private Long id;
+    private Integer id;
 
     @Column(name = "refseq_ver")
     private String version;
@@ -57,11 +57,11 @@ public class RefSeqCodingSequence implements Persistable {
         this.locations = locations;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

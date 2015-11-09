@@ -12,7 +12,7 @@ public class AnalysisClassPK implements Serializable {
     private static final long serialVersionUID = -5781318200771229922L;
 
     @Column(name = "analysis_class_id")
-    private Long id;
+    private Integer id;
 
     @Column(name = "selected_class")
     private String selectedClass;
@@ -33,17 +33,17 @@ public class AnalysisClassPK implements Serializable {
     private String hgncGene;
 
     @Column(name = "dx_id")
-    private Long dx;
+    private Integer dx;
 
     public AnalysisClassPK() {
         super();
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -95,11 +95,11 @@ public class AnalysisClassPK implements Serializable {
         this.hgncGene = hgncGene;
     }
 
-    public Long getDx() {
+    public Integer getDx() {
         return dx;
     }
 
-    public void setDx(Long dx) {
+    public void setDx(Integer dx) {
         this.dx = dx;
     }
 

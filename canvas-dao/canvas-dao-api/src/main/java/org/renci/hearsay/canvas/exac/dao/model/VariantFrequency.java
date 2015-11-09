@@ -32,7 +32,7 @@ public class VariantFrequency implements Persistable {
     @Column(name = "alt_allele_freq")
     private Double alternateAlleleFrequency;
 
-    @Column(name = "alt_allele_count")
+    @Column(name = "alt_allele_count", insertable = false, updatable = false)
     private Integer alternateAlleleCount;
 
     @Column(name = "alt_allele_count")

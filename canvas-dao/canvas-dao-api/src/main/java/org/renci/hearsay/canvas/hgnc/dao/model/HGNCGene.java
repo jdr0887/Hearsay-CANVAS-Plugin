@@ -11,6 +11,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Type;
 import org.renci.hearsay.canvas.dao.Persistable;
 
 @Entity
@@ -45,6 +46,7 @@ public class HGNCGene implements Persistable {
     private String chromosomeRegion;
 
     @Column(name = "date_modified")
+    @Type(type = "date")
     private Date dateModified;
 
     @ManyToOne

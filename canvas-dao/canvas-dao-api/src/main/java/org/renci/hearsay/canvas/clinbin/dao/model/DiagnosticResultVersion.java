@@ -65,7 +65,7 @@ public class DiagnosticResultVersion implements Persistable {
     private String vcfLoaderVersion;
 
     @ManyToOne
-    @JoinColumn(name = "clinvar_version")
+    @JoinColumn(name = "clinvar_version", columnDefinition = "int4")
     private Versions clinvarVersion;
 
     @OneToMany(mappedBy = "diagnosticResultVersion", fetch = FetchType.EAGER)

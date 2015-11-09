@@ -11,7 +11,7 @@ public class IncidentalBinResultsPK implements Serializable {
     private static final long serialVersionUID = -4224198274029225689L;
 
     @Column(name = "loc_var_id")
-    private Long locationVariant;
+    private Integer locationVariant;
 
     @Column(name = "bin_version")
     private Integer binVersion;
@@ -26,11 +26,11 @@ public class IncidentalBinResultsPK implements Serializable {
         super();
     }
 
-    public Long getLocationVariant() {
+    public Integer getLocationVariant() {
         return locationVariant;
     }
 
-    public void setLocationVariant(Long locationVariant) {
+    public void setLocationVariant(Integer locationVariant) {
         this.locationVariant = locationVariant;
     }
 

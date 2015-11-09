@@ -11,10 +11,10 @@ public class IncidentalBinGenePK implements Serializable {
     private static final long serialVersionUID = 5774709424660804712L;
 
     @Column(name = "incidental_bin_id")
-    private Long incidentalBin;
+    private Integer incidentalBin;
 
     @Column(name = "gene_id")
-    private Long gene;
+    private Integer gene;
 
     @Column(name = "disease")
     private String disease;
@@ -23,19 +23,19 @@ public class IncidentalBinGenePK implements Serializable {
         super();
     }
 
-    public Long getIncidentalBin() {
+    public Integer getIncidentalBin() {
         return incidentalBin;
     }
 
-    public void setIncidentalBin(Long incidentalBin) {
+    public void setIncidentalBin(Integer incidentalBin) {
         this.incidentalBin = incidentalBin;
     }
 
-    public Long getGene() {
+    public Integer getGene() {
         return gene;
     }
 
-    public void setGene(Long gene) {
+    public void setGene(Integer gene) {
         this.gene = gene;
     }
 

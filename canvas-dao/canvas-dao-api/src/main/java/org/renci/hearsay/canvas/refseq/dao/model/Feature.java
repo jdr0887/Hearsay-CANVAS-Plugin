@@ -17,7 +17,7 @@ public class Feature implements Persistable {
 
     @Id
     @Column(name = "refseq_feature_id")
-    private Long refseqFeatureId;
+    private Integer refseqFeatureId;
 
     @ManyToOne
     @JoinColumn(name = "feature_type_type_name")
@@ -37,11 +37,11 @@ public class Feature implements Persistable {
         super();
     }
 
-    public Long getRefseqFeatureId() {
+    public Integer getRefseqFeatureId() {
         return refseqFeatureId;
     }
 
-    public void setRefseqFeatureId(Long refseqFeatureId) {
+    public void setRefseqFeatureId(Integer refseqFeatureId) {
         this.refseqFeatureId = refseqFeatureId;
     }
 

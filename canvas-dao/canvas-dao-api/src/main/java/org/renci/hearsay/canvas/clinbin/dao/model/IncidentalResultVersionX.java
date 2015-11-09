@@ -62,7 +62,7 @@ public class IncidentalResultVersionX implements Persistable {
     private String vcfLoaderVersion;
 
     @ManyToOne
-    @JoinColumn(name = "clinvar_version")
+    @JoinColumn(name = "clinvar_version", columnDefinition = "int4")
     private Versions clinvarVersion;
 
     @OneToMany(mappedBy = "incidentalResultVersion", fetch = FetchType.EAGER)

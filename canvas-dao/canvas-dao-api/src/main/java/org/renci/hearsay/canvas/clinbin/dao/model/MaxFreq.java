@@ -25,11 +25,11 @@ public class MaxFreq implements Persistable {
     @JoinColumn(name = "loc_var_id")
     private LocationVariant locationVariant;
 
-    @Column(name = "max_allele_freq")
+    @Column(name = "max_allele_freq", insertable = false, updatable = false)
     private Double maxAlleleFreq;
 
     @ManyToOne
-    @JoinColumn(name = "source")
+    @JoinColumn(name = "source", insertable = false, updatable = false)
     private MaxFreqSource source;
 
     public MaxFreq() {

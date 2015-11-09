@@ -30,7 +30,7 @@ public class IncidentalBinGene implements Persistable {
     @JoinColumn(name = "gene_id")
     private AnnotationGene gene;
 
-    @Column(name = "disease")
+    @Column(name = "disease", insertable = false, updatable = false)
     private String disease;
 
     public IncidentalBinGene() {

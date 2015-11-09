@@ -19,7 +19,7 @@ public class DX implements Persistable {
 
     @Id
     @Column(name = "dx_id")
-    private Long id;
+    private Integer id;
 
     @Column(name = "dx_name", length = 1024)
     private String name;
@@ -28,11 +28,11 @@ public class DX implements Persistable {
         super();
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

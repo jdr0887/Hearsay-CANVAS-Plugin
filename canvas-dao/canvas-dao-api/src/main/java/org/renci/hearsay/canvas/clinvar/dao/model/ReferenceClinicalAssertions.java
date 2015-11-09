@@ -3,6 +3,7 @@ package org.renci.hearsay.canvas.clinvar.dao.model;
 import java.util.Date;
 import java.util.Set;
 
+import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,6 +14,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Type;
 import org.renci.hearsay.canvas.dao.Persistable;
 import org.renci.hearsay.canvas.var.dao.model.LocationVariant;
 
@@ -33,9 +35,11 @@ public class ReferenceClinicalAssertions implements Persistable {
     private Integer version;
 
     @Column(name = "date_created")
+    @Type(type = "date")
     private Date created;
 
     @Column(name = "date_updated")
+    @Type(type = "date")
     private Date updated;
 
     @Column(name = "record_status")
@@ -51,7 +55,7 @@ public class ReferenceClinicalAssertions implements Persistable {
     private String assertionType;
 
     @ManyToOne
-    @JoinColumn(name = "loc_var_id")
+    @JoinColumn(name = "loc_var_id", columnDefinition = "int4")
     private LocationVariant locationVariant;
 
     @ManyToOne
@@ -59,7 +63,7 @@ public class ReferenceClinicalAssertions implements Persistable {
     private TraitSets traitSet;
 
     @ManyToMany(targetEntity = Versions.class, fetch = FetchType.EAGER)
-    @JoinTable(schema = "clinvar", name = "version_accession_map", joinColumns = @JoinColumn(name = "clinvar_ref_assertion_id"), inverseJoinColumns = @JoinColumn(name = "clinvar_version_id"))
+    @JoinTable(schema = "clinvar", name = "version_accession_map", joinColumns = @JoinColumn(name = "clinvar_ref_assertion_id", columnDefinition = "int4") , inverseJoinColumns = @JoinColumn(name = "clinvar_version_id", columnDefinition = "int4") )
     private Set<Versions> versions;
 
     public ReferenceClinicalAssertions() {
@@ -164,10 +168,9 @@ public class ReferenceClinicalAssertions implements Persistable {
 
     @Override
     public String toString() {
-        return String
-                .format("ReferenceClinicalAssertions [id=%s, accession=%s, version=%s, created=%s, updated=%s, recordStatus=%s, assertionStatus=%s, assertion=%s, assertionType=%s]",
-                        id, accession, version, created, updated, recordStatus, assertionStatus, assertion,
-                        assertionType);
+        return String.format(
+                "ReferenceClinicalAssertions [id=%s, accession=%s, version=%s, created=%s, updated=%s, recordStatus=%s, assertionStatus=%s, assertion=%s, assertionType=%s]",
+                id, accession, version, created, updated, recordStatus, assertionStatus, assertion, assertionType);
     }
 
     @Override

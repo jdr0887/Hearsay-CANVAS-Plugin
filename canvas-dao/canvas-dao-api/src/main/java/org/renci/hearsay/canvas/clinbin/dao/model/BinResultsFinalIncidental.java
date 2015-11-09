@@ -107,7 +107,7 @@ public class BinResultsFinalIncidental implements Persistable {
     private String accNum;
 
     @Column(name = "max_allele_freq")
-    private Float maxAlleleFreq;
+    private Double maxAlleleFreq;
 
     @Column(name = "disease")
     private String disease;
@@ -135,19 +135,19 @@ public class BinResultsFinalIncidental implements Persistable {
     private Integer depth;
 
     @Column(name = "qd")
-    private Float qd;
+    private Double qd;
 
     @Column(name = "read_pos_rank_sum")
-    private Float readPosRankSum;
+    private Double readPosRankSum;
 
     @Column(name = "frac_reads_with_dels")
-    private Float fracReadsWithDels;
+    private Double fracReadsWithDels;
 
     @Column(name = "hrun")
     private Integer hrun;
 
     @Column(name = "strand_score")
-    private Float strandScore;
+    private Double strandScore;
 
     @Column(name = "ref_depth")
     private Integer refDepth;
@@ -159,7 +159,7 @@ public class BinResultsFinalIncidental implements Persistable {
     private Boolean homozygous;
 
     @Column(name = "genotype_qual")
-    private Float genotypeQual;
+    private Double genotypeQual;
 
     @Lob
     @Column(name = "rs_id")
@@ -369,11 +369,11 @@ public class BinResultsFinalIncidental implements Persistable {
         this.accNum = accNum;
     }
 
-    public Float getMaxAlleleFreq() {
+    public Double getMaxAlleleFreq() {
         return maxAlleleFreq;
     }
 
-    public void setMaxAlleleFreq(Float maxAlleleFreq) {
+    public void setMaxAlleleFreq(Double maxAlleleFreq) {
         this.maxAlleleFreq = maxAlleleFreq;
     }
 
@@ -441,27 +441,27 @@ public class BinResultsFinalIncidental implements Persistable {
         this.depth = depth;
     }
 
-    public Float getQd() {
+    public Double getQd() {
         return qd;
     }
 
-    public void setQd(Float qd) {
+    public void setQd(Double qd) {
         this.qd = qd;
     }
 
-    public Float getReadPosRankSum() {
+    public Double getReadPosRankSum() {
         return readPosRankSum;
     }
 
-    public void setReadPosRankSum(Float readPosRankSum) {
+    public void setReadPosRankSum(Double readPosRankSum) {
         this.readPosRankSum = readPosRankSum;
     }
 
-    public Float getFracReadsWithDels() {
+    public Double getFracReadsWithDels() {
         return fracReadsWithDels;
     }
 
-    public void setFracReadsWithDels(Float fracReadsWithDels) {
+    public void setFracReadsWithDels(Double fracReadsWithDels) {
         this.fracReadsWithDels = fracReadsWithDels;
     }
 
@@ -473,11 +473,11 @@ public class BinResultsFinalIncidental implements Persistable {
         this.hrun = hrun;
     }
 
-    public Float getStrandScore() {
+    public Double getStrandScore() {
         return strandScore;
     }
 
-    public void setStrandScore(Float strandScore) {
+    public void setStrandScore(Double strandScore) {
         this.strandScore = strandScore;
     }
 
@@ -505,11 +505,11 @@ public class BinResultsFinalIncidental implements Persistable {
         this.homozygous = homozygous;
     }
 
-    public Float getGenotypeQual() {
+    public Double getGenotypeQual() {
         return genotypeQual;
     }
 
-    public void setGenotypeQual(Float genotypeQual) {
+    public void setGenotypeQual(Double genotypeQual) {
         this.genotypeQual = genotypeQual;
     }
 

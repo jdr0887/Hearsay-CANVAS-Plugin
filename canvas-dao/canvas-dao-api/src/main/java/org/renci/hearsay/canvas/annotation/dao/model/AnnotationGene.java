@@ -26,7 +26,7 @@ public class AnnotationGene implements Persistable {
 
     @Id
     @Column(name = "gene_id")
-    private Long id;
+    private Integer id;
 
     @Column(name = "preferred_name")
     private String preferredName;
@@ -44,11 +44,11 @@ public class AnnotationGene implements Persistable {
         super();
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

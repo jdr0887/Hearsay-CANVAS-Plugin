@@ -22,7 +22,7 @@ public class RegionGroup implements Persistable {
 
     @Id
     @Column(name = "region_group_id")
-    private Long regionGroupId;
+    private Integer regionGroupId;
 
     @ManyToOne
     @JoinColumn(name = "transcr_ver_id")
@@ -53,11 +53,11 @@ public class RegionGroup implements Persistable {
         this.refSeqGenes = refSeqGenes;
     }
 
-    public Long getRegionGroupId() {
+    public Integer getRegionGroupId() {
         return regionGroupId;
     }
 
-    public void setRegionGroupId(Long regionGroupId) {
+    public void setRegionGroupId(Integer regionGroupId) {
         this.regionGroupId = regionGroupId;
     }
 

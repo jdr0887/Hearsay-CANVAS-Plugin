@@ -12,11 +12,17 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
+import org.hibernate.annotations.TypeDefs;
 import org.renci.hearsay.canvas.dao.Persistable;
 import org.renci.hearsay.canvas.ref.dao.model.GenomeRefSeq;
+import org.renci.hearsay.canvas.refseq.dao.StrandBasicType;
+import org.renci.hearsay.canvas.refseq.dao.StrandUserType;
 
 @Entity
 @Table(schema = "refseq", name = "transcr_maps")
+@TypeDefs({ @TypeDef(name = StrandUserType.NAME, typeClass = StrandBasicType.class) })
 public class TranscriptMaps implements Persistable {
 
     private static final long serialVersionUID = 8175717803443861686L;
@@ -35,14 +41,15 @@ public class TranscriptMaps implements Persistable {
     @Column(name = "map_count")
     private Integer mapCount;
 
-    @Column(name = "strand")
+    @Column(name = "strand", columnDefinition = "varchar")
+    @Type(type = StrandUserType.NAME)
     private String strand;
 
     @Column(name = "score")
-    private Float score;
+    private Double score;
 
     @Column(name = "ident")
-    private Float ident;
+    private Double ident;
 
     @ManyToOne
     @JoinColumn(name = "seq_ver_accession")
@@ -90,19 +97,19 @@ public class TranscriptMaps implements Persistable {
         this.mapCount = mapCount;
     }
 
-    public Float getScore() {
+    public Double getScore() {
         return score;
     }
 
-    public void setScore(Float score) {
+    public void setScore(Double score) {
         this.score = score;
     }
 
-    public Float getIdent() {
+    public Double getIdent() {
         return ident;
     }
 
-    public void setIdent(Float ident) {
+    public void setIdent(Double ident) {
         this.ident = ident;
     }
 
@@ -143,9 +150,9 @@ public class TranscriptMaps implements Persistable {
 
     @Override
     public String toString() {
-        return String
-                .format("TranscriptMaps [id=%s, transcript=%s, genomeRefId=%s, mapCount=%s, strand=%s, score=%s, ident=%s, exonCount=%s]",
-                        id, transcript, genomeRefId, mapCount, strand, score, ident, exonCount);
+        return String.format(
+                "TranscriptMaps [id=%s, transcript=%s, genomeRefId=%s, mapCount=%s, strand=%s, score=%s, ident=%s, exonCount=%s]",
+                id, transcript, genomeRefId, mapCount, strand, score, ident, exonCount);
     }
 
     @Override

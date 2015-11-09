@@ -12,7 +12,7 @@ public class AnalysisClassIncidentalPK implements Serializable {
     private static final long serialVersionUID = 7996961551667362972L;
 
     @Column(name = "analysis_class_incidental_id")
-    private Long id;
+    private Integer id;
 
     @Column(name = "selected_class")
     private String selectedClass;
@@ -42,11 +42,11 @@ public class AnalysisClassIncidentalPK implements Serializable {
         super();
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

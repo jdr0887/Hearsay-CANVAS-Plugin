@@ -20,7 +20,7 @@ public class RefSeqGene implements Persistable {
 
     @Id
     @Column(name = "refseq_gene_id")
-    private Long id;
+    private Integer id;
 
     @Column(name = "refseq_ver")
     private String refseqVersion;
@@ -32,18 +32,20 @@ public class RefSeqGene implements Persistable {
     private String description;
 
     @ManyToMany
-    @JoinTable(schema = "refseq", name = "gene_locs", joinColumns = { @JoinColumn(name = "refseq_gene_id", referencedColumnName = "refseq_gene_id") }, inverseJoinColumns = { @JoinColumn(name = "loc_region_group_id", referencedColumnName = "region_group_id") })
+    @JoinTable(schema = "refseq", name = "gene_locs", joinColumns = {
+            @JoinColumn(name = "refseq_gene_id", referencedColumnName = "refseq_gene_id") }, inverseJoinColumns = {
+                    @JoinColumn(name = "loc_region_group_id", referencedColumnName = "region_group_id") })
     protected Set<RegionGroup> locations;
 
     public RefSeqGene() {
         super();
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

@@ -20,7 +20,7 @@ public class BinningJob implements Persistable {
 
     @Id
     @Column(name = "binning_job_id")
-    private Long binningJobId;
+    private Integer binningJobId;
 
     @Column(name = "incidental_list_version")
     private Integer incidentalListVersion;
@@ -71,11 +71,11 @@ public class BinningJob implements Persistable {
         super();
     }
 
-    public Long getBinningJobId() {
+    public Integer getBinningJobId() {
         return binningJobId;
     }
 
-    public void setBinningJobId(Long binningJobId) {
+    public void setBinningJobId(Integer binningJobId) {
         this.binningJobId = binningJobId;
     }
 

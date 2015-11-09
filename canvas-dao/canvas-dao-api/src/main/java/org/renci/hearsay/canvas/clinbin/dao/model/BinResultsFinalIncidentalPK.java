@@ -20,7 +20,7 @@ public class BinResultsFinalIncidentalPK implements Serializable {
     private Integer incidentalResultVersion;
 
     @Column(name = "asm_id")
-    private Long assembly;
+    private Integer assembly;
 
     @Column(name = "loc_var_id")
     private Long locationVariant;
@@ -59,11 +59,11 @@ public class BinResultsFinalIncidentalPK implements Serializable {
         this.incidentalResultVersion = incidentalResultVersion;
     }
 
-    public Long getAssembly() {
+    public Integer getAssembly() {
         return assembly;
     }
 
-    public void setAssembly(Long assembly) {
+    public void setAssembly(Integer assembly) {
         this.assembly = assembly;
     }
 

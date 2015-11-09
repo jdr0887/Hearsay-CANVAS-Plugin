@@ -53,10 +53,10 @@ public class BinResultsFinalIncidentalX implements Persistable {
     private PhenotypeX phenotype;
 
     @Column(name = "ncg_alt_f")
-    private Float ncgAlternateFrequency;
+    private Double ncgAlternateFrequency;
 
     @Column(name = "ncg_hwe_p")
-    private Float ncgHWEP;
+    private Double ncgHWEP;
 
     @ManyToOne
     @JoinColumn(name = "carrier_status_id")
@@ -85,7 +85,7 @@ public class BinResultsFinalIncidentalX implements Persistable {
     private LocationType locationType;
 
     @Column(name = "strand", length = 1)
-    private String strand;
+    private Character strand;
 
     @Column(name = "transcr_pos")
     private Integer transcrPos;
@@ -127,11 +127,11 @@ public class BinResultsFinalIncidentalX implements Persistable {
     @Column(name = "acc_num", length = 10)
     private String accNum;
 
-    @Column(name = "tag")
-    private String tag;
+    // @Column(name = "tag")
+    // private String tag;
 
     @Column(name = "max_allele_freq")
-    private Float maxAlleleFreq;
+    private Double maxAlleleFreq;
 
     @Lob
     @Column(name = "refallele")
@@ -156,19 +156,19 @@ public class BinResultsFinalIncidentalX implements Persistable {
     private Integer depth;
 
     @Column(name = "qd")
-    private Float qd;
+    private Double qd;
 
     @Column(name = "read_pos_rank_sum")
-    private Float readPosRankSum;
+    private Double readPosRankSum;
 
     @Column(name = "frac_reads_with_dels")
-    private Float fracReadsWithDels;
+    private Double fracReadsWithDels;
 
     @Column(name = "hrun")
     private Integer hrun;
 
     @Column(name = "strand_score")
-    private Float strandScore;
+    private Double strandScore;
 
     @Column(name = "ref_depth")
     private Integer refDepth;
@@ -180,7 +180,7 @@ public class BinResultsFinalIncidentalX implements Persistable {
     private Boolean homozygous;
 
     @Column(name = "genotype_qual")
-    private Float genotypeQual;
+    private Double genotypeQual;
 
     @Lob
     @Column(name = "rs_id")
@@ -246,19 +246,19 @@ public class BinResultsFinalIncidentalX implements Persistable {
         this.phenotype = phenotype;
     }
 
-    public Float getNcgAlternateFrequency() {
+    public Double getNcgAlternateFrequency() {
         return ncgAlternateFrequency;
     }
 
-    public void setNcgAlternateFrequency(Float ncgAlternateFrequency) {
+    public void setNcgAlternateFrequency(Double ncgAlternateFrequency) {
         this.ncgAlternateFrequency = ncgAlternateFrequency;
     }
 
-    public Float getNcgHWEP() {
+    public Double getNcgHWEP() {
         return ncgHWEP;
     }
 
-    public void setNcgHWEP(Float ncgHWEP) {
+    public void setNcgHWEP(Double ncgHWEP) {
         this.ncgHWEP = ncgHWEP;
     }
 
@@ -326,11 +326,11 @@ public class BinResultsFinalIncidentalX implements Persistable {
         this.locationType = locationType;
     }
 
-    public String getStrand() {
+    public Character getStrand() {
         return strand;
     }
 
-    public void setStrand(String strand) {
+    public void setStrand(Character strand) {
         this.strand = strand;
     }
 
@@ -438,19 +438,19 @@ public class BinResultsFinalIncidentalX implements Persistable {
         this.accNum = accNum;
     }
 
-    public String getTag() {
-        return tag;
-    }
+    // public String getTag() {
+    // return tag;
+    // }
+    //
+    // public void setTag(String tag) {
+    // this.tag = tag;
+    // }
 
-    public void setTag(String tag) {
-        this.tag = tag;
-    }
-
-    public Float getMaxAlleleFreq() {
+    public Double getMaxAlleleFreq() {
         return maxAlleleFreq;
     }
 
-    public void setMaxAlleleFreq(Float maxAlleleFreq) {
+    public void setMaxAlleleFreq(Double maxAlleleFreq) {
         this.maxAlleleFreq = maxAlleleFreq;
     }
 
@@ -510,27 +510,27 @@ public class BinResultsFinalIncidentalX implements Persistable {
         this.depth = depth;
     }
 
-    public Float getQd() {
+    public Double getQd() {
         return qd;
     }
 
-    public void setQd(Float qd) {
+    public void setQd(Double qd) {
         this.qd = qd;
     }
 
-    public Float getReadPosRankSum() {
+    public Double getReadPosRankSum() {
         return readPosRankSum;
     }
 
-    public void setReadPosRankSum(Float readPosRankSum) {
+    public void setReadPosRankSum(Double readPosRankSum) {
         this.readPosRankSum = readPosRankSum;
     }
 
-    public Float getFracReadsWithDels() {
+    public Double getFracReadsWithDels() {
         return fracReadsWithDels;
     }
 
-    public void setFracReadsWithDels(Float fracReadsWithDels) {
+    public void setFracReadsWithDels(Double fracReadsWithDels) {
         this.fracReadsWithDels = fracReadsWithDels;
     }
 
@@ -542,11 +542,11 @@ public class BinResultsFinalIncidentalX implements Persistable {
         this.hrun = hrun;
     }
 
-    public Float getStrandScore() {
+    public Double getStrandScore() {
         return strandScore;
     }
 
-    public void setStrandScore(Float strandScore) {
+    public void setStrandScore(Double strandScore) {
         this.strandScore = strandScore;
     }
 
@@ -574,11 +574,11 @@ public class BinResultsFinalIncidentalX implements Persistable {
         this.homozygous = homozygous;
     }
 
-    public Float getGenotypeQual() {
+    public Double getGenotypeQual() {
         return genotypeQual;
     }
 
-    public void setGenotypeQual(Float genotypeQual) {
+    public void setGenotypeQual(Double genotypeQual) {
         this.genotypeQual = genotypeQual;
     }
 
@@ -592,13 +592,27 @@ public class BinResultsFinalIncidentalX implements Persistable {
 
     @Override
     public String toString() {
+        // return String.format(
+        // "BinResultsFinalIncidentalX [ncgAlternateFrequency=%s, ncgHWEP=%s, chromosome=%s, pos=%s, type=%s,
+        // transcr=%s, refseqGene=%s, hgncGene=%s, locationType=%s, strand=%s, transcrPos=%s, cdsPos=%s, aaStart=%s,
+        // aaEnd=%s, originalAa=%s, finalAa=%s, frameshift=%s, inframe=%s, intronExonDist=%s, nummaps=%s, geneId=%s,
+        // accNum=%s, tag=%s, maxAlleleFreq=%s, disease=%s, referenceAllele=%s, alternateAllele=%s, hgvsGenomic=%s,
+        // hgvsCodingSequence=%s, hgvsTranscript=%s, hgvsProtein=%s, depth=%s, qd=%s, readPosRankSum=%s,
+        // fracReadsWithDels=%s, hrun=%s, strandScore=%s, refDepth=%s, altDepth=%s, homozygous=%s, genotypeQual=%s,
+        // rsId=%s]",
+        // ncgAlternateFrequency, ncgHWEP, chromosome, pos, type, transcr, refseqGene, hgncGene, locationType,
+        // strand, transcrPos, cdsPos, aaStart, aaEnd, originalAa, finalAa, frameshift, inframe, intronExonDist,
+        // variantEffect, nummaps, geneId, accNum, tag, maxAlleleFreq, referenceAllele, alternateAllele,
+        // hgvsGenomic, hgvsCodingSequence, hgvsTranscript, hgvsProtein, depth, qd, readPosRankSum,
+        // fracReadsWithDels, hrun, strandScore, refDepth, altDepth, homozygous, genotypeQual, rsId);
         return String.format(
-                "BinResultsFinalIncidentalX [ncgAlternateFrequency=%s, ncgHWEP=%s, chromosome=%s, pos=%s, type=%s, transcr=%s, refseqGene=%s, hgncGene=%s, locationType=%s, strand=%s, transcrPos=%s, cdsPos=%s, aaStart=%s, aaEnd=%s, originalAa=%s, finalAa=%s, frameshift=%s, inframe=%s, intronExonDist=%s, nummaps=%s, geneId=%s, accNum=%s, tag=%s, maxAlleleFreq=%s, disease=%s, referenceAllele=%s, alternateAllele=%s, hgvsGenomic=%s, hgvsCodingSequence=%s, hgvsTranscript=%s, hgvsProtein=%s, depth=%s, qd=%s, readPosRankSum=%s, fracReadsWithDels=%s, hrun=%s, strandScore=%s, refDepth=%s, altDepth=%s, homozygous=%s, genotypeQual=%s, rsId=%s]",
+                "BinResultsFinalIncidentalX [ncgAlternateFrequency=%s, ncgHWEP=%s, chromosome=%s, pos=%s, type=%s, transcr=%s, refseqGene=%s, hgncGene=%s, locationType=%s, strand=%s, transcrPos=%s, cdsPos=%s, aaStart=%s, aaEnd=%s, originalAa=%s, finalAa=%s, frameshift=%s, inframe=%s, intronExonDist=%s, nummaps=%s, geneId=%s, accNum=%s, maxAlleleFreq=%s, disease=%s, referenceAllele=%s, alternateAllele=%s, hgvsGenomic=%s, hgvsCodingSequence=%s, hgvsTranscript=%s, hgvsProtein=%s, depth=%s, qd=%s, readPosRankSum=%s, fracReadsWithDels=%s, hrun=%s, strandScore=%s, refDepth=%s, altDepth=%s, homozygous=%s, genotypeQual=%s, rsId=%s]",
                 ncgAlternateFrequency, ncgHWEP, chromosome, pos, type, transcr, refseqGene, hgncGene, locationType,
                 strand, transcrPos, cdsPos, aaStart, aaEnd, originalAa, finalAa, frameshift, inframe, intronExonDist,
-                variantEffect, nummaps, geneId, accNum, tag, maxAlleleFreq, referenceAllele, alternateAllele,
-                hgvsGenomic, hgvsCodingSequence, hgvsTranscript, hgvsProtein, depth, qd, readPosRankSum,
-                fracReadsWithDels, hrun, strandScore, refDepth, altDepth, homozygous, genotypeQual, rsId);
+                variantEffect, nummaps, geneId, accNum, maxAlleleFreq, referenceAllele, alternateAllele, hgvsGenomic,
+                hgvsCodingSequence, hgvsTranscript, hgvsProtein, depth, qd, readPosRankSum, fracReadsWithDels, hrun,
+                strandScore, refDepth, altDepth, homozygous, genotypeQual, rsId);
+
     }
 
     @Override
@@ -642,7 +656,7 @@ public class BinResultsFinalIncidentalX implements Persistable {
         result = prime * result + ((rsId == null) ? 0 : rsId.hashCode());
         result = prime * result + ((strand == null) ? 0 : strand.hashCode());
         result = prime * result + ((strandScore == null) ? 0 : strandScore.hashCode());
-        result = prime * result + ((tag == null) ? 0 : tag.hashCode());
+        // result = prime * result + ((tag == null) ? 0 : tag.hashCode());
         result = prime * result + ((transcr == null) ? 0 : transcr.hashCode());
         result = prime * result + ((transcrPos == null) ? 0 : transcrPos.hashCode());
         result = prime * result + ((type == null) ? 0 : type.hashCode());
@@ -843,11 +857,11 @@ public class BinResultsFinalIncidentalX implements Persistable {
                 return false;
         } else if (!strandScore.equals(other.strandScore))
             return false;
-        if (tag == null) {
-            if (other.tag != null)
-                return false;
-        } else if (!tag.equals(other.tag))
-            return false;
+        // if (tag == null) {
+        // if (other.tag != null)
+        // return false;
+        // } else if (!tag.equals(other.tag))
+        // return false;
         if (transcr == null) {
             if (other.transcr != null)
                 return false;

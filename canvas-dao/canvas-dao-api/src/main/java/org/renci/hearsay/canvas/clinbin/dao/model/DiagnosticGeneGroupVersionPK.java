@@ -14,7 +14,7 @@ public class DiagnosticGeneGroupVersionPK implements Serializable {
     private Integer dbinGroupVersion;
 
     @Column(name = "dx_id")
-    private Long dx;
+    private Integer dx;
 
     @Column(name = "diagnostic_list_version")
     private Integer diagnosticListVersion;
@@ -31,11 +31,11 @@ public class DiagnosticGeneGroupVersionPK implements Serializable {
         this.dbinGroupVersion = dbinGroupVersion;
     }
 
-    public Long getDx() {
+    public Integer getDx() {
         return dx;
     }
 
-    public void setDx(Long dx) {
+    public void setDx(Integer dx) {
         this.dx = dx;
     }
 

@@ -14,13 +14,13 @@ public class BinResultsFinalRiskXPK implements Serializable {
     private String participant;
 
     @Column(name = "incidental_bin_id")
-    private Long incidentalBin;
+    private Integer incidentalBin;
 
     @Column(name = "incidental_result_version")
     private Integer incidentalResultVersion;
 
     @Column(name = "asm_id")
-    private Long assembly;
+    private Integer assembly;
 
     @Column(name = "loc_var_id")
     private Long locationVariant;
@@ -43,11 +43,11 @@ public class BinResultsFinalRiskXPK implements Serializable {
         this.participant = participant;
     }
 
-    public Long getIncidentalBin() {
+    public Integer getIncidentalBin() {
         return incidentalBin;
     }
 
-    public void setIncidentalBin(Long incidentalBin) {
+    public void setIncidentalBin(Integer incidentalBin) {
         this.incidentalBin = incidentalBin;
     }
 
@@ -59,11 +59,11 @@ public class BinResultsFinalRiskXPK implements Serializable {
         this.incidentalResultVersion = incidentalResultVersion;
     }
 
-    public Long getAssembly() {
+    public Integer getAssembly() {
         return assembly;
     }
 
-    public void setAssembly(Long assembly) {
+    public void setAssembly(Integer assembly) {
         this.assembly = assembly;
     }
 

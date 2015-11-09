@@ -16,7 +16,7 @@ public class IncidentalBinX implements Persistable {
 
     @Id
     @Column(name = "incidental_bin_id")
-    private Long id;
+    private Integer id;
 
     @Column(name = "bin_name", length = 1024)
     private String name;
@@ -25,11 +25,11 @@ public class IncidentalBinX implements Persistable {
         super();
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
