@@ -11,42 +11,43 @@ public class AssemblyLocationVariantQCPK implements Serializable {
     private static final long serialVersionUID = 1885906950903803056L;
 
     @Column(name = "asm_id")
-    private Integer asmId;
+    private Integer assembly;
 
     @Column(name = "loc_var_id")
-    private Integer locationVariantId;
+    private Long locationVariant;
 
     public AssemblyLocationVariantQCPK() {
         super();
     }
 
-    public Integer getAsmId() {
-        return asmId;
+    public Integer getAssembly() {
+        return assembly;
     }
 
-    public void setAsmId(Integer asmId) {
-        this.asmId = asmId;
+    public void setAssembly(Integer assembly) {
+        this.assembly = assembly;
     }
 
-    public Integer getLocationVariantId() {
-        return locationVariantId;
+    public Long getLocationVariant() {
+        return locationVariant;
     }
 
-    public void setLocationVariantId(Integer locationVariantId) {
-        this.locationVariantId = locationVariantId;
+    public void setLocationVariant(Long locationVariant) {
+        this.locationVariant = locationVariant;
     }
 
     @Override
     public String toString() {
-        return "AssemblyLocationVariantQCPK [asmId=" + asmId + ", locationVariantId=" + locationVariantId + "]";
+        return String.format("AssemblyLocationVariantQCPK [assembly=%s, locationVariant=%s]", assembly,
+                locationVariant);
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((asmId == null) ? 0 : asmId.hashCode());
-        result = prime * result + ((locationVariantId == null) ? 0 : locationVariantId.hashCode());
+        result = prime * result + ((assembly == null) ? 0 : assembly.hashCode());
+        result = prime * result + ((locationVariant == null) ? 0 : locationVariant.hashCode());
         return result;
     }
 
@@ -59,15 +60,15 @@ public class AssemblyLocationVariantQCPK implements Serializable {
         if (getClass() != obj.getClass())
             return false;
         AssemblyLocationVariantQCPK other = (AssemblyLocationVariantQCPK) obj;
-        if (asmId == null) {
-            if (other.asmId != null)
+        if (assembly == null) {
+            if (other.assembly != null)
                 return false;
-        } else if (!asmId.equals(other.asmId))
+        } else if (!assembly.equals(other.assembly))
             return false;
-        if (locationVariantId == null) {
-            if (other.locationVariantId != null)
+        if (locationVariant == null) {
+            if (other.locationVariant != null)
                 return false;
-        } else if (!locationVariantId.equals(other.locationVariantId))
+        } else if (!locationVariant.equals(other.locationVariant))
             return false;
         return true;
     }

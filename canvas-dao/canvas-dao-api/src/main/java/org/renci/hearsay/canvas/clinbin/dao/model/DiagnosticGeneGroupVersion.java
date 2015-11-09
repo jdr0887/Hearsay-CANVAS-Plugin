@@ -1,6 +1,5 @@
 package org.renci.hearsay.canvas.clinbin.dao.model;
 
-import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -19,18 +18,10 @@ public class DiagnosticGeneGroupVersion implements Persistable {
     @EmbeddedId
     private DiagnosticGeneGroupVersionPK key;
 
-    @MapsId
-    @Column(name = "dbin_group_version")
-    private Integer dbinGroupVersion;
-
-    @MapsId
+    @MapsId("dx")
     @ManyToOne
     @JoinColumn(name = "dx_id")
     private DX dx;
-
-    @MapsId
-    @Column(name = "diagnostic_list_version")
-    private Integer diagnosticListVersion;
 
     public DiagnosticGeneGroupVersion() {
         super();
@@ -44,14 +35,6 @@ public class DiagnosticGeneGroupVersion implements Persistable {
         this.key = key;
     }
 
-    public Integer getDbinGroupVersion() {
-        return dbinGroupVersion;
-    }
-
-    public void setDbinGroupVersion(Integer dbinGroupVersion) {
-        this.dbinGroupVersion = dbinGroupVersion;
-    }
-
     public DX getDx() {
         return dx;
     }
@@ -60,26 +43,16 @@ public class DiagnosticGeneGroupVersion implements Persistable {
         this.dx = dx;
     }
 
-    public Integer getDiagnosticListVersion() {
-        return diagnosticListVersion;
-    }
-
-    public void setDiagnosticListVersion(Integer diagnosticListVersion) {
-        this.diagnosticListVersion = diagnosticListVersion;
-    }
-
     @Override
     public String toString() {
-        return String.format("DiagnosticGeneGroupVersion [dbinGroupVersion=%s, diagnosticListVersion=%s]",
-                dbinGroupVersion, diagnosticListVersion);
+        return String.format("DiagnosticGeneGroupVersion [key=%s]", key);
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((dbinGroupVersion == null) ? 0 : dbinGroupVersion.hashCode());
-        result = prime * result + ((diagnosticListVersion == null) ? 0 : diagnosticListVersion.hashCode());
+        result = prime * result + ((dx == null) ? 0 : dx.hashCode());
         result = prime * result + ((key == null) ? 0 : key.hashCode());
         return result;
     }
@@ -93,15 +66,10 @@ public class DiagnosticGeneGroupVersion implements Persistable {
         if (getClass() != obj.getClass())
             return false;
         DiagnosticGeneGroupVersion other = (DiagnosticGeneGroupVersion) obj;
-        if (dbinGroupVersion == null) {
-            if (other.dbinGroupVersion != null)
+        if (dx == null) {
+            if (other.dx != null)
                 return false;
-        } else if (!dbinGroupVersion.equals(other.dbinGroupVersion))
-            return false;
-        if (diagnosticListVersion == null) {
-            if (other.diagnosticListVersion != null)
-                return false;
-        } else if (!diagnosticListVersion.equals(other.diagnosticListVersion))
+        } else if (!dx.equals(other.dx))
             return false;
         if (key == null) {
             if (other.key != null)

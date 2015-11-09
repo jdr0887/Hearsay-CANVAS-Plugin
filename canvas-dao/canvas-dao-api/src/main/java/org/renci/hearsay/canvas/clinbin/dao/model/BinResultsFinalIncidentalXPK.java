@@ -26,7 +26,7 @@ public class BinResultsFinalIncidentalXPK implements Serializable {
     private Integer assembly;
 
     @Column(name = "loc_var_id")
-    private Integer locationVariant;
+    private Long locationVariant;
 
     public BinResultsFinalIncidentalXPK() {
         super();
@@ -72,11 +72,11 @@ public class BinResultsFinalIncidentalXPK implements Serializable {
         this.assembly = assembly;
     }
 
-    public Integer getLocationVariant() {
+    public Long getLocationVariant() {
         return locationVariant;
     }
 
-    public void setLocationVariant(Integer locationVariant) {
+    public void setLocationVariant(Long locationVariant) {
         this.locationVariant = locationVariant;
     }
 

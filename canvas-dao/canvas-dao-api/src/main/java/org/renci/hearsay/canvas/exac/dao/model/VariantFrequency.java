@@ -15,7 +15,8 @@ import org.renci.hearsay.canvas.var.dao.model.LocationVariant;
 
 @Entity
 @Table(schema = "exac", name = "variant_freq")
-@NamedQueries({ @NamedQuery(name = "exac.VariantFrequency.findByLocationVariantIdAndVersion", query = "SELECT a FROM VariantFrequency a where a.locationVariant.id = :locationVariantId and a.version = :version order by a.alternateAlleleFrequency desc") })
+@NamedQueries({
+        @NamedQuery(name = "exac.VariantFrequency.findByLocationVariantIdAndVersion", query = "SELECT a FROM VariantFrequency a where a.locationVariant.id = :locationVariantId and a.version = :version order by a.alternateAlleleFrequency desc") })
 public class VariantFrequency implements Persistable {
 
     private static final long serialVersionUID = 4359650786462818369L;
@@ -23,18 +24,10 @@ public class VariantFrequency implements Persistable {
     @EmbeddedId
     private VariantFrequencyPK key;
 
-    @MapsId
+    @MapsId("locationVariant")
     @ManyToOne
     @JoinColumn(name = "loc_var_id")
     private LocationVariant locationVariant;
-
-    @MapsId
-    @Column(name = "exac_version", length = 10)
-    private String version;
-
-    @MapsId
-    @Column(name = "population", length = 5)
-    private String population;
 
     @Column(name = "alt_allele_freq")
     private Double alternateAlleleFrequency;
@@ -65,22 +58,6 @@ public class VariantFrequency implements Persistable {
         this.locationVariant = locationVariant;
     }
 
-    public String getVersion() {
-        return version;
-    }
-
-    public void setVersion(String version) {
-        this.version = version;
-    }
-
-    public String getPopulation() {
-        return population;
-    }
-
-    public void setPopulation(String population) {
-        this.population = population;
-    }
-
     public Double getAlternateAlleleFrequency() {
         return alternateAlleleFrequency;
     }
@@ -107,10 +84,9 @@ public class VariantFrequency implements Persistable {
 
     @Override
     public String toString() {
-        return String
-                .format("VariantFrequency [locationVariant=%s, version=%s, population=%s, alternateAlleleFrequency=%s, alternateAlleleCount=%s, totalAlleleCount=%s]",
-                        locationVariant, version, population, alternateAlleleFrequency, alternateAlleleCount,
-                        totalAlleleCount);
+        return String.format(
+                "VariantFrequency [locationVariant=%s, alternateAlleleFrequency=%s, alternateAlleleCount=%s, totalAlleleCount=%s]",
+                locationVariant, alternateAlleleFrequency, alternateAlleleCount, totalAlleleCount);
     }
 
     @Override
@@ -121,9 +97,7 @@ public class VariantFrequency implements Persistable {
         result = prime * result + ((alternateAlleleFrequency == null) ? 0 : alternateAlleleFrequency.hashCode());
         result = prime * result + ((key == null) ? 0 : key.hashCode());
         result = prime * result + ((locationVariant == null) ? 0 : locationVariant.hashCode());
-        result = prime * result + ((population == null) ? 0 : population.hashCode());
         result = prime * result + ((totalAlleleCount == null) ? 0 : totalAlleleCount.hashCode());
-        result = prime * result + ((version == null) ? 0 : version.hashCode());
         return result;
     }
 
@@ -156,20 +130,10 @@ public class VariantFrequency implements Persistable {
                 return false;
         } else if (!locationVariant.equals(other.locationVariant))
             return false;
-        if (population == null) {
-            if (other.population != null)
-                return false;
-        } else if (!population.equals(other.population))
-            return false;
         if (totalAlleleCount == null) {
             if (other.totalAlleleCount != null)
                 return false;
         } else if (!totalAlleleCount.equals(other.totalAlleleCount))
-            return false;
-        if (version == null) {
-            if (other.version != null)
-                return false;
-        } else if (!version.equals(other.version))
             return false;
         return true;
     }

@@ -11,10 +11,10 @@ public class VariantSetLocationPK implements Serializable {
     private static final long serialVersionUID = -2850126342576220251L;
 
     @Column(name = "ver_set_id")
-    private Integer varSetId;
+    private Integer varSet;
 
     @Column(name = "ref_ver_accession")
-    private String versionAccession;
+    private String genomeRefSeq;
 
     @Column(name = "pos")
     private Integer pos;
@@ -23,20 +23,20 @@ public class VariantSetLocationPK implements Serializable {
         super();
     }
 
-    public Integer getVarSetId() {
-        return varSetId;
+    public Integer getVarSet() {
+        return varSet;
     }
 
-    public void setVarSetId(Integer varSetId) {
-        this.varSetId = varSetId;
+    public void setVarSet(Integer varSet) {
+        this.varSet = varSet;
     }
 
-    public String getVersionAccession() {
-        return versionAccession;
+    public String getGenomeRefSeq() {
+        return genomeRefSeq;
     }
 
-    public void setVersionAccession(String versionAccession) {
-        this.versionAccession = versionAccession;
+    public void setGenomeRefSeq(String genomeRefSeq) {
+        this.genomeRefSeq = genomeRefSeq;
     }
 
     public Integer getPos() {
@@ -49,17 +49,16 @@ public class VariantSetLocationPK implements Serializable {
 
     @Override
     public String toString() {
-        return "VariantSetLocationPK [varSetId=" + varSetId + ", versionAccession=" + versionAccession + ", pos=" + pos
-                + "]";
+        return String.format("VariantSetLocationPK [varSet=%s, genomeRefSeq=%s, pos=%s]", varSet, genomeRefSeq, pos);
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
+        result = prime * result + ((genomeRefSeq == null) ? 0 : genomeRefSeq.hashCode());
         result = prime * result + ((pos == null) ? 0 : pos.hashCode());
-        result = prime * result + ((varSetId == null) ? 0 : varSetId.hashCode());
-        result = prime * result + ((versionAccession == null) ? 0 : versionAccession.hashCode());
+        result = prime * result + ((varSet == null) ? 0 : varSet.hashCode());
         return result;
     }
 
@@ -72,20 +71,20 @@ public class VariantSetLocationPK implements Serializable {
         if (getClass() != obj.getClass())
             return false;
         VariantSetLocationPK other = (VariantSetLocationPK) obj;
+        if (genomeRefSeq == null) {
+            if (other.genomeRefSeq != null)
+                return false;
+        } else if (!genomeRefSeq.equals(other.genomeRefSeq))
+            return false;
         if (pos == null) {
             if (other.pos != null)
                 return false;
         } else if (!pos.equals(other.pos))
             return false;
-        if (varSetId == null) {
-            if (other.varSetId != null)
+        if (varSet == null) {
+            if (other.varSet != null)
                 return false;
-        } else if (!varSetId.equals(other.varSetId))
-            return false;
-        if (versionAccession == null) {
-            if (other.versionAccession != null)
-                return false;
-        } else if (!versionAccession.equals(other.versionAccession))
+        } else if (!varSet.equals(other.varSet))
             return false;
         return true;
     }

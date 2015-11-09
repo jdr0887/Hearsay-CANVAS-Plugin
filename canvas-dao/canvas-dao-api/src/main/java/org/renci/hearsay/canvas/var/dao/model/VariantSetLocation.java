@@ -17,22 +17,18 @@ public class VariantSetLocation implements Persistable {
 
     private static final long serialVersionUID = 8718903481376803091L;
 
-    @MapsId("varSetId")
+    @EmbeddedId
+    private VariantSetLocationPK key;
+
+    @MapsId("varSet")
     @ManyToOne
     @JoinColumn(name = "var_set_id")
     private VariantSet varSet;
 
-    @MapsId("versionAccession")
+    @MapsId("genomeRefSeq")
     @ManyToOne
     @JoinColumn(name = "ref_ver_accession")
     private GenomeRefSeq genomeRefSeq;
-
-    @MapsId("pos")
-    @Column(name = "pos")
-    private Integer pos;
-
-    @EmbeddedId
-    private VariantSetLocationPK key;
 
     @Column(name = "vcffilter")
     private String vcfFilter;
@@ -58,14 +54,6 @@ public class VariantSetLocation implements Persistable {
 
     public void setGenomeRefSeq(GenomeRefSeq genomeRefSeq) {
         this.genomeRefSeq = genomeRefSeq;
-    }
-
-    public Integer getPos() {
-        return pos;
-    }
-
-    public void setPos(Integer pos) {
-        this.pos = pos;
     }
 
     public VariantSetLocationPK getKey() {
@@ -94,8 +82,7 @@ public class VariantSetLocation implements Persistable {
 
     @Override
     public String toString() {
-        return "VariantSetLocation [varSet=" + varSet + ", genomeRefSeq=" + genomeRefSeq + ", pos=" + pos + ", key="
-                + key + ", vcfFilter=" + vcfFilter + ", qual=" + qual + "]";
+        return String.format("VariantSetLocation [key=%s, vcfFilter=%s, qual=%s]", key, vcfFilter, qual);
     }
 
     @Override
@@ -104,7 +91,6 @@ public class VariantSetLocation implements Persistable {
         int result = 1;
         result = prime * result + ((genomeRefSeq == null) ? 0 : genomeRefSeq.hashCode());
         result = prime * result + ((key == null) ? 0 : key.hashCode());
-        result = prime * result + ((pos == null) ? 0 : pos.hashCode());
         result = prime * result + ((qual == null) ? 0 : qual.hashCode());
         result = prime * result + ((varSet == null) ? 0 : varSet.hashCode());
         result = prime * result + ((vcfFilter == null) ? 0 : vcfFilter.hashCode());
@@ -129,11 +115,6 @@ public class VariantSetLocation implements Persistable {
             if (other.key != null)
                 return false;
         } else if (!key.equals(other.key))
-            return false;
-        if (pos == null) {
-            if (other.pos != null)
-                return false;
-        } else if (!pos.equals(other.pos))
             return false;
         if (qual == null) {
             if (other.qual != null)

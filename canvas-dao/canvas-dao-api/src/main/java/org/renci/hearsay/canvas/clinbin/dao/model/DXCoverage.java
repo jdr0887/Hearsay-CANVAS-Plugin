@@ -19,14 +19,10 @@ public class DXCoverage implements Persistable {
     @EmbeddedId
     private DXCoveragePK key;
 
-    @MapsId
+    @MapsId("exon")
     @OneToOne
     @JoinColumn(name = "dx_exon_id")
     private DXExons exon;
-
-    @MapsId
-    @Column(name = "participant", length = 50)
-    private String participant;
 
     @Column(name = "frac_gt_1")
     private Float fracGt1;
@@ -64,14 +60,6 @@ public class DXCoverage implements Persistable {
 
     public void setExon(DXExons exon) {
         this.exon = exon;
-    }
-
-    public String getParticipant() {
-        return participant;
-    }
-
-    public void setParticipant(String participant) {
-        this.participant = participant;
     }
 
     public Float getFracGt1() {
@@ -124,9 +112,9 @@ public class DXCoverage implements Persistable {
 
     @Override
     public String toString() {
-        return String
-                .format("DxCoverage [exon=%s, participant=%s, fracGt1=%s, fracGt5=%s, fracGt10=%s, fracGt15=%s, fracGt30=%s, fracGt50=%s]",
-                        exon, participant, fracGt1, fracGt5, fracGt10, fracGt15, fracGt30, fracGt50);
+        return String.format(
+                "DxCoverage [exon=%s, fracGt1=%s, fracGt5=%s, fracGt10=%s, fracGt15=%s, fracGt30=%s, fracGt50=%s]",
+                exon, fracGt1, fracGt5, fracGt10, fracGt15, fracGt30, fracGt50);
     }
 
     @Override
@@ -141,7 +129,6 @@ public class DXCoverage implements Persistable {
         result = prime * result + ((fracGt5 == null) ? 0 : fracGt5.hashCode());
         result = prime * result + ((fracGt50 == null) ? 0 : fracGt50.hashCode());
         result = prime * result + ((key == null) ? 0 : key.hashCode());
-        result = prime * result + ((participant == null) ? 0 : participant.hashCode());
         return result;
     }
 
@@ -193,11 +180,6 @@ public class DXCoverage implements Persistable {
             if (other.key != null)
                 return false;
         } else if (!key.equals(other.key))
-            return false;
-        if (participant == null) {
-            if (other.participant != null)
-                return false;
-        } else if (!participant.equals(other.participant))
             return false;
         return true;
     }

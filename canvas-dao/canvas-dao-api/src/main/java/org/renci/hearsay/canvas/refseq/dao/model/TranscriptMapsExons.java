@@ -9,7 +9,7 @@ import javax.persistence.MapsId;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.apache.commons.lang.math.IntRange;
+import org.apache.commons.lang3.Range;
 import org.renci.hearsay.canvas.dao.Persistable;
 
 @Entity
@@ -123,8 +123,8 @@ public class TranscriptMapsExons implements Persistable {
         this.contigEnd = contigEnd;
     }
 
-    public IntRange toRange() {
-        return new IntRange(this.contigStart, this.contigEnd);
+    public Range<Integer> toRange() {
+        return Range.between(this.contigStart, this.contigEnd);
     }
 
     @Override

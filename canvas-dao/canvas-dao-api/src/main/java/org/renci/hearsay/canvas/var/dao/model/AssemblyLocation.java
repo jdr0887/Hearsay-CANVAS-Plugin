@@ -17,7 +17,10 @@ public class AssemblyLocation implements Persistable {
 
     private static final long serialVersionUID = -6485178807017764493L;
 
-    @MapsId("asmId")
+    @EmbeddedId
+    private AssemblyLocationPK key;
+
+    @MapsId("assembly")
     @ManyToOne
     @JoinColumn(name = "asm_id")
     private Assembly assembly;
@@ -26,13 +29,6 @@ public class AssemblyLocation implements Persistable {
     @ManyToOne
     @JoinColumn(name = "ref_ver_accession")
     private GenomeRefSeq genomeRefSeq;
-
-    @MapsId("pos")
-    @Column(name = "pos")
-    private Integer pos;
-
-    @EmbeddedId
-    private AssemblyLocationPK key;
 
     @Column(name = "homozygous")
     private Boolean homozygous;
@@ -58,14 +54,6 @@ public class AssemblyLocation implements Persistable {
 
     public void setGenomeRefSeq(GenomeRefSeq genomeRefSeq) {
         this.genomeRefSeq = genomeRefSeq;
-    }
-
-    public Integer getPos() {
-        return pos;
-    }
-
-    public void setPos(Integer pos) {
-        this.pos = pos;
     }
 
     public AssemblyLocationPK getKey() {
@@ -94,8 +82,8 @@ public class AssemblyLocation implements Persistable {
 
     @Override
     public String toString() {
-        return "AssemblyLocation [assembly=" + assembly + ", genomeRefSeq=" + genomeRefSeq + ", pos=" + pos + ", key="
-                + key + ", homozygous=" + homozygous + ", genotypeQual=" + genotypeQual + "]";
+        return String.format("AssemblyLocation [assembly=%s, key=%s, homozygous=%s, genotypeQual=%s]", assembly, key,
+                homozygous, genotypeQual);
     }
 
     @Override
@@ -103,11 +91,9 @@ public class AssemblyLocation implements Persistable {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((assembly == null) ? 0 : assembly.hashCode());
-        result = prime * result + ((genomeRefSeq == null) ? 0 : genomeRefSeq.hashCode());
         result = prime * result + ((genotypeQual == null) ? 0 : genotypeQual.hashCode());
         result = prime * result + ((homozygous == null) ? 0 : homozygous.hashCode());
         result = prime * result + ((key == null) ? 0 : key.hashCode());
-        result = prime * result + ((pos == null) ? 0 : pos.hashCode());
         return result;
     }
 
@@ -144,11 +130,6 @@ public class AssemblyLocation implements Persistable {
             if (other.key != null)
                 return false;
         } else if (!key.equals(other.key))
-            return false;
-        if (pos == null) {
-            if (other.pos != null)
-                return false;
-        } else if (!pos.equals(other.pos))
             return false;
         return true;
     }

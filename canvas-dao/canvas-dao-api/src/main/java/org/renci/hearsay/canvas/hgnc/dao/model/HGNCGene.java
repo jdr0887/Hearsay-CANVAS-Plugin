@@ -49,7 +49,7 @@ public class HGNCGene implements Persistable {
 
     @ManyToOne
     @JoinColumn(name = "status")
-    private StatusType status;
+    private HGNCStatusType status;
 
     public HGNCGene() {
         super();
@@ -119,11 +119,11 @@ public class HGNCGene implements Persistable {
         this.dateModified = dateModified;
     }
 
-    public StatusType getStatus() {
+    public HGNCStatusType getStatus() {
         return status;
     }
 
-    public void setStatus(StatusType status) {
+    public void setStatus(HGNCStatusType status) {
         this.status = status;
     }
 

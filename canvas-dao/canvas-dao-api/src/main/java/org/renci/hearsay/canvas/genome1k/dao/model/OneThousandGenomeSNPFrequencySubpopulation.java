@@ -14,27 +14,20 @@ import org.renci.hearsay.canvas.dao.Persistable;
 import org.renci.hearsay.canvas.var.dao.model.LocationVariant;
 
 @Entity
-@Table(schema = "gen1000", name = "snp_freq_population")
-@NamedQueries({ @NamedQuery(name = "genome1k.SNPFrequencyPopulation.findByLocationVariantIdAndVersion", query = "SELECT a FROM SNPFrequencyPopulation a where a.locationVariant.id = :locationVariantId and a.version = :version") })
-public class SNPFrequencyPopulation implements Persistable {
+@Table(schema = "gen1000", name = "snp_freq_subpopulation")
+@NamedQueries({
+        @NamedQuery(name = "OneThousandGenomeSNPFrequencySubpopulation.findByLocationVariantIdAndVersion", query = "SELECT a FROM OneThousandGenomeSNPFrequencySubpopulation a where a.locationVariant.id = :locationVariantId and a.version = :version") })
+public class OneThousandGenomeSNPFrequencySubpopulation implements Persistable {
 
-    private static final long serialVersionUID = 644922221095328483L;
+    private static final long serialVersionUID = -3312702331463575620L;
 
     @EmbeddedId
-    private SNPFrequencyPopulationPK key;
+    private OneThousandGenomeSNPFrequencySubpopulationPK key;
 
-    @MapsId
+    @MapsId("locationVariant")
     @ManyToOne
     @JoinColumn(name = "loc_var_id")
     private LocationVariant locationVariant;
-
-    @MapsId
-    @Column(name = "gen1000_version")
-    private Integer version;
-
-    @MapsId
-    @Column(name = "population", length = 5)
-    private String population;
 
     @Column(name = "alt_allele_freq")
     private Float altAlleleFreq;
@@ -45,15 +38,15 @@ public class SNPFrequencyPopulation implements Persistable {
     @Column(name = "alt_allele_count")
     private Integer altAlleleCount;
 
-    public SNPFrequencyPopulation() {
+    public OneThousandGenomeSNPFrequencySubpopulation() {
         super();
     }
 
-    public SNPFrequencyPopulationPK getKey() {
+    public OneThousandGenomeSNPFrequencySubpopulationPK getKey() {
         return key;
     }
 
-    public void setKey(SNPFrequencyPopulationPK key) {
+    public void setKey(OneThousandGenomeSNPFrequencySubpopulationPK key) {
         this.key = key;
     }
 
@@ -63,22 +56,6 @@ public class SNPFrequencyPopulation implements Persistable {
 
     public void setLocationVariant(LocationVariant locationVariant) {
         this.locationVariant = locationVariant;
-    }
-
-    public Integer getVersion() {
-        return version;
-    }
-
-    public void setVersion(Integer version) {
-        this.version = version;
-    }
-
-    public String getPopulation() {
-        return population;
-    }
-
-    public void setPopulation(String population) {
-        this.population = population;
     }
 
     public Float getAltAlleleFreq() {
@@ -105,15 +82,10 @@ public class SNPFrequencyPopulation implements Persistable {
         this.altAlleleCount = altAlleleCount;
     }
 
-    public static long getSerialversionuid() {
-        return serialVersionUID;
-    }
-
     @Override
     public String toString() {
-        return String
-                .format("SNPFrequencyPopulation [version=%s, population=%s, altAlleleFreq=%s, totalAlleleCount=%s, altAlleleCount=%s]",
-                        version, population, altAlleleFreq, totalAlleleCount, altAlleleCount);
+        return String.format("SNPFrequencySubpopulation [altAlleleFreq=%s, totalAlleleCount=%s, altAlleleCount=%s]",
+                altAlleleFreq, totalAlleleCount, altAlleleCount);
     }
 
     @Override
@@ -122,9 +94,7 @@ public class SNPFrequencyPopulation implements Persistable {
         int result = 1;
         result = prime * result + ((altAlleleCount == null) ? 0 : altAlleleCount.hashCode());
         result = prime * result + ((altAlleleFreq == null) ? 0 : altAlleleFreq.hashCode());
-        result = prime * result + ((version == null) ? 0 : version.hashCode());
         result = prime * result + ((key == null) ? 0 : key.hashCode());
-        result = prime * result + ((population == null) ? 0 : population.hashCode());
         result = prime * result + ((totalAlleleCount == null) ? 0 : totalAlleleCount.hashCode());
         return result;
     }
@@ -137,7 +107,7 @@ public class SNPFrequencyPopulation implements Persistable {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        SNPFrequencyPopulation other = (SNPFrequencyPopulation) obj;
+        OneThousandGenomeSNPFrequencySubpopulation other = (OneThousandGenomeSNPFrequencySubpopulation) obj;
         if (altAlleleCount == null) {
             if (other.altAlleleCount != null)
                 return false;
@@ -148,20 +118,10 @@ public class SNPFrequencyPopulation implements Persistable {
                 return false;
         } else if (!altAlleleFreq.equals(other.altAlleleFreq))
             return false;
-        if (version == null) {
-            if (other.version != null)
-                return false;
-        } else if (!version.equals(other.version))
-            return false;
         if (key == null) {
             if (other.key != null)
                 return false;
         } else if (!key.equals(other.key))
-            return false;
-        if (population == null) {
-            if (other.population != null)
-                return false;
-        } else if (!population.equals(other.population))
             return false;
         if (totalAlleleCount == null) {
             if (other.totalAlleleCount != null)

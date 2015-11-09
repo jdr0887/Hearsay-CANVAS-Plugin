@@ -1,6 +1,5 @@
 package org.renci.hearsay.canvas.clinbin.dao.model;
 
-import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -19,11 +18,7 @@ public class IncidentalBinGroupVersion implements Persistable {
     @EmbeddedId
     private IncidentalBinGroupVersionPK key;
 
-    @MapsId
-    @Column(name = "ibin_group_version")
-    private Integer ibinGroupVersion;
-
-    @MapsId
+    @MapsId("incidentalBin")
     @ManyToOne
     @JoinColumn(name = "incidental_bin_id")
     private IncidentalBin incidentalBin;
@@ -40,14 +35,6 @@ public class IncidentalBinGroupVersion implements Persistable {
         this.key = key;
     }
 
-    public Integer getIbinGroupVersion() {
-        return ibinGroupVersion;
-    }
-
-    public void setIbinGroupVersion(Integer ibinGroupVersion) {
-        this.ibinGroupVersion = ibinGroupVersion;
-    }
-
     public IncidentalBin getIncidentalBin() {
         return incidentalBin;
     }
@@ -58,15 +45,13 @@ public class IncidentalBinGroupVersion implements Persistable {
 
     @Override
     public String toString() {
-        return String.format("IncidentalBinGroupVersion [ibinGroupVersion=%s, incidentalBin=%s]", ibinGroupVersion,
-                incidentalBin);
+        return String.format("IncidentalBinGroupVersion [incidentalBin=%s]", incidentalBin);
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((ibinGroupVersion == null) ? 0 : ibinGroupVersion.hashCode());
         result = prime * result + ((key == null) ? 0 : key.hashCode());
         return result;
     }
@@ -80,11 +65,6 @@ public class IncidentalBinGroupVersion implements Persistable {
         if (getClass() != obj.getClass())
             return false;
         IncidentalBinGroupVersion other = (IncidentalBinGroupVersion) obj;
-        if (ibinGroupVersion == null) {
-            if (other.ibinGroupVersion != null)
-                return false;
-        } else if (!ibinGroupVersion.equals(other.ibinGroupVersion))
-            return false;
         if (key == null) {
             if (other.key != null)
                 return false;

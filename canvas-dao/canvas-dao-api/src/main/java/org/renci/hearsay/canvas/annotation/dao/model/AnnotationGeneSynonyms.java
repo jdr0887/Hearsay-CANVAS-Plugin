@@ -22,13 +22,13 @@ public class AnnotationGeneSynonyms implements Persistable {
 
     private static final long serialVersionUID = 3309532806166062035L;
 
-    @ManyToOne
-    @JoinColumn(name = "gene_id")
-    private AnnotationGene gene;
-
     @Id
     @Column(name = "synonym")
     private String synonym;
+
+    @ManyToOne
+    @JoinColumn(name = "gene_id")
+    private AnnotationGene gene;
 
     public AnnotationGeneSynonyms() {
         super();

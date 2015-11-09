@@ -6,9 +6,9 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 @Embeddable
-public class IndelFrequencyPK implements Serializable {
+public class OneThousandGenomeSNPFrequencySubpopulationPK implements Serializable {
 
-    private static final long serialVersionUID = 8860787790814777207L;
+    private static final long serialVersionUID = -3681815447860895929L;
 
     @Column(name = "loc_var_id")
     private Long locationVariant;
@@ -19,7 +19,7 @@ public class IndelFrequencyPK implements Serializable {
     @Column(name = "population", length = 5)
     private String population;
 
-    public IndelFrequencyPK() {
+    public OneThousandGenomeSNPFrequencySubpopulationPK() {
         super();
     }
 
@@ -49,8 +49,8 @@ public class IndelFrequencyPK implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("IndelFrequencyPK [locationVariant=%s, version=%s, population=%s]", locationVariant,
-                version, population);
+        return String.format("SNPFrequencySubpopulationPK [locationVariant=%s, gen1000Version=%s, population=%s]",
+                locationVariant, version, population);
     }
 
     @Override
@@ -71,7 +71,7 @@ public class IndelFrequencyPK implements Serializable {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        IndelFrequencyPK other = (IndelFrequencyPK) obj;
+        OneThousandGenomeSNPFrequencySubpopulationPK other = (OneThousandGenomeSNPFrequencySubpopulationPK) obj;
         if (version == null) {
             if (other.version != null)
                 return false;

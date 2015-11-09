@@ -16,18 +16,18 @@ public class AssemblyLocationVariantQC implements Persistable {
 
     private static final long serialVersionUID = -5626899616641958084L;
 
-    @MapsId("asm_id")
+    @EmbeddedId
+    private AssemblyLocationVariantQCPK key;
+
+    @MapsId("assembly")
     @ManyToOne
     @JoinColumn(name = "asm_id")
-    private Assembly asm;
+    private Assembly assembly;
 
-    @MapsId("loc_var_id")
+    @MapsId("locationVariant")
     @ManyToOne
     @JoinColumn(name = "loc_var_id")
     private LocationVariant locationVariant;
-
-    @EmbeddedId
-    private AssemblyLocationVariantQCPK key;
 
     @Column(name = "depth")
     private Integer depth;
@@ -57,12 +57,12 @@ public class AssemblyLocationVariantQC implements Persistable {
         super();
     }
 
-    public Assembly getAsm() {
-        return asm;
+    public Assembly getAssembly() {
+        return assembly;
     }
 
-    public void setAsm(Assembly asm) {
-        this.asm = asm;
+    public void setAssembly(Assembly assembly) {
+        this.assembly = assembly;
     }
 
     public LocationVariant getLocationVariant() {
@@ -147,10 +147,10 @@ public class AssemblyLocationVariantQC implements Persistable {
 
     @Override
     public String toString() {
-        return "AssemblyLocactionVariantQC [asm=" + asm + ", locationVariant=" + locationVariant + ", key=" + key
-                + ", depth=" + depth + ", qd=" + qd + ", readPosRankSum=" + readPosRankSum + ", fracReadsWithDels="
-                + fracReadsWithDels + ", hrun=" + hrun + ", strandScore=" + strandScore + ", refDepth=" + refDepth
-                + ", altDepth=" + altDepth + "]";
+        return "AssemblyLocactionVariantQC [assembly=" + assembly + ", locationVariant=" + locationVariant + ", key="
+                + key + ", depth=" + depth + ", qd=" + qd + ", readPosRankSum=" + readPosRankSum
+                + ", fracReadsWithDels=" + fracReadsWithDels + ", hrun=" + hrun + ", strandScore=" + strandScore
+                + ", refDepth=" + refDepth + ", altDepth=" + altDepth + "]";
     }
 
     @Override
@@ -158,7 +158,7 @@ public class AssemblyLocationVariantQC implements Persistable {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((altDepth == null) ? 0 : altDepth.hashCode());
-        result = prime * result + ((asm == null) ? 0 : asm.hashCode());
+        result = prime * result + ((assembly == null) ? 0 : assembly.hashCode());
         result = prime * result + ((depth == null) ? 0 : depth.hashCode());
         result = prime * result + ((fracReadsWithDels == null) ? 0 : fracReadsWithDels.hashCode());
         result = prime * result + ((hrun == null) ? 0 : hrun.hashCode());
@@ -185,10 +185,10 @@ public class AssemblyLocationVariantQC implements Persistable {
                 return false;
         } else if (!altDepth.equals(other.altDepth))
             return false;
-        if (asm == null) {
-            if (other.asm != null)
+        if (assembly == null) {
+            if (other.assembly != null)
                 return false;
-        } else if (!asm.equals(other.asm))
+        } else if (!assembly.equals(other.assembly))
             return false;
         if (depth == null) {
             if (other.depth != null)

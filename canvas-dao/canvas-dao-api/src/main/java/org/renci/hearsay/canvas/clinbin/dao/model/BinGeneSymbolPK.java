@@ -70,6 +70,12 @@ public class BinGeneSymbolPK implements Serializable {
     }
 
     @Override
+    public String toString() {
+        return String.format("BinGeneSymbolPK [projectId=%s, versionId=%s, binId=%s, geneTypeId=%s, geneSymbol=%s]",
+                projectId, versionId, binId, geneTypeId, geneSymbol);
+    }
+
+    @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;

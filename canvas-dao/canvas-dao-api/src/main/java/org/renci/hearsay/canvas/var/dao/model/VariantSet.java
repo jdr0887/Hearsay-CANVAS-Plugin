@@ -67,11 +67,11 @@ public class VariantSet implements Persistable {
         if (getClass() != obj.getClass())
             return false;
         VariantSet other = (VariantSet) obj;
-        if (genomeRef == null) {
-            if (other.genomeRef != null)
-                return false;
-        } else if (!genomeRef.equals(other.genomeRef))
-            return false;
+        // if (genomeRef == null) {
+        // if (other.genomeRef != null)
+        // return false;
+        // } else if (!genomeRef.equals(other.genomeRef))
+        // return false;
         if (id == null) {
             if (other.id != null)
                 return false;

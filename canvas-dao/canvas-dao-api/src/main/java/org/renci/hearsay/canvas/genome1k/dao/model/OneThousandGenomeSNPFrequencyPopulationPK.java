@@ -6,7 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 @Embeddable
-public class SNPFrequencyPopulationPK implements Serializable {
+public class OneThousandGenomeSNPFrequencyPopulationPK implements Serializable {
 
     private static final long serialVersionUID = -6667568470320810780L;
 
@@ -19,7 +19,7 @@ public class SNPFrequencyPopulationPK implements Serializable {
     @Column(name = "population", length = 5)
     private String population;
 
-    public SNPFrequencyPopulationPK() {
+    public OneThousandGenomeSNPFrequencyPopulationPK() {
         super();
     }
 
@@ -71,7 +71,7 @@ public class SNPFrequencyPopulationPK implements Serializable {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        SNPFrequencyPopulationPK other = (SNPFrequencyPopulationPK) obj;
+        OneThousandGenomeSNPFrequencyPopulationPK other = (OneThousandGenomeSNPFrequencyPopulationPK) obj;
         if (version == null) {
             if (other.version != null)
                 return false;

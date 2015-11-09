@@ -15,7 +15,8 @@ import org.renci.hearsay.canvas.var.dao.model.LocationVariant;
 
 @Entity
 @Table(schema = "exac", name = "max_variant_freq")
-@NamedQueries({ @NamedQuery(name = "exac.MaxVariantFrequency.findByLocationVariantIdAndVersion", query = "SELECT a FROM MaxVariantFrequency a where a.locationVariant.id = :locationVariantId and a.version = :version order by a.maxAlleleFrequency desc") })
+@NamedQueries({
+        @NamedQuery(name = "exac.MaxVariantFrequency.findByLocationVariantIdAndVersion", query = "SELECT a FROM MaxVariantFrequency a where a.locationVariant.id = :locationVariantId and a.version = :version order by a.maxAlleleFrequency desc") })
 public class MaxVariantFrequency implements Persistable {
 
     private static final long serialVersionUID = -1388708510623130329L;
@@ -23,14 +24,10 @@ public class MaxVariantFrequency implements Persistable {
     @EmbeddedId
     private MaxVariantFrequencyPK key;
 
-    @MapsId
+    @MapsId("locationVariant")
     @ManyToOne
     @JoinColumn(name = "loc_var_id")
     private LocationVariant locationVariant;
-
-    @MapsId
-    @Column(name = "exac_version", length = 10)
-    private String version;
 
     @Column(name = "max_allele_freq")
     private Double maxAlleleFrequency;
@@ -55,14 +52,6 @@ public class MaxVariantFrequency implements Persistable {
         this.locationVariant = locationVariant;
     }
 
-    public String getVersion() {
-        return version;
-    }
-
-    public void setVersion(String version) {
-        this.version = version;
-    }
-
     public Double getMaxAlleleFrequency() {
         return maxAlleleFrequency;
     }
@@ -73,8 +62,8 @@ public class MaxVariantFrequency implements Persistable {
 
     @Override
     public String toString() {
-        return String.format("MaxVariantFrequency [locationVariant=%s, version=%s, maxAlleleFrequency=%s]",
-                locationVariant, version, maxAlleleFrequency);
+        return String.format("MaxVariantFrequency [locationVariant=%s, maxAlleleFrequency=%s]", locationVariant,
+                maxAlleleFrequency);
     }
 
     @Override
@@ -84,7 +73,6 @@ public class MaxVariantFrequency implements Persistable {
         result = prime * result + ((key == null) ? 0 : key.hashCode());
         result = prime * result + ((locationVariant == null) ? 0 : locationVariant.hashCode());
         result = prime * result + ((maxAlleleFrequency == null) ? 0 : maxAlleleFrequency.hashCode());
-        result = prime * result + ((version == null) ? 0 : version.hashCode());
         return result;
     }
 
@@ -111,11 +99,6 @@ public class MaxVariantFrequency implements Persistable {
             if (other.maxAlleleFrequency != null)
                 return false;
         } else if (!maxAlleleFrequency.equals(other.maxAlleleFrequency))
-            return false;
-        if (version == null) {
-            if (other.version != null)
-                return false;
-        } else if (!version.equals(other.version))
             return false;
         return true;
     }

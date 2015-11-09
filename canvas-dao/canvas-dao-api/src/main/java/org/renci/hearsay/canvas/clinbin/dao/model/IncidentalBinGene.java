@@ -20,12 +20,12 @@ public class IncidentalBinGene implements Persistable {
     @EmbeddedId
     private IncidentalBinGenePK key;
 
-    @MapsId
+    @MapsId("incidentalBin")
     @ManyToOne
     @JoinColumn(name = "incidental_bin_id")
     private IncidentalBin incidentalBin;
 
-    @MapsId
+    @MapsId("gene")
     @ManyToOne
     @JoinColumn(name = "gene_id")
     private AnnotationGene gene;

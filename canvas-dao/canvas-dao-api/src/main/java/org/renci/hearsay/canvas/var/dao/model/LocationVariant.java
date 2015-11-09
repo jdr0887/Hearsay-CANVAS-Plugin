@@ -20,7 +20,7 @@ import org.renci.hearsay.canvas.ref.dao.model.GenomeRef;
 import org.renci.hearsay.canvas.ref.dao.model.GenomeRefSeq;
 
 @Entity
-@Table(schema = "var", name = "loc_var", uniqueConstraints = { @UniqueConstraint(columnNames = { "ref_id",
+@Table(schema = "var", name = "loc_var", uniqueConstraints = { @UniqueConstraint(columnNames = { "loc_var_id", "ref_id",
         "ref_ver_accession", "pos", "type", "seq", "end_pos" }) })
 public class LocationVariant implements Persistable {
 

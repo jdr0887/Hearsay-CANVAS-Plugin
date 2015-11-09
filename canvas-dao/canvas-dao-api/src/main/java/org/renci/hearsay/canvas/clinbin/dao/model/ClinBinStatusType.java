@@ -10,7 +10,7 @@ import org.renci.hearsay.canvas.dao.Persistable;
 
 @Entity
 @Table(schema = "clinbin", name = "status_type")
-public class StatusType implements Persistable {
+public class ClinBinStatusType implements Persistable {
 
     private static final long serialVersionUID = 4080512941895052375L;
 
@@ -19,7 +19,7 @@ public class StatusType implements Persistable {
     @Column(name = "status")
     private String status;
 
-    public StatusType() {
+    public ClinBinStatusType() {
         super();
     }
 
@@ -52,7 +52,7 @@ public class StatusType implements Persistable {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        StatusType other = (StatusType) obj;
+        ClinBinStatusType other = (ClinBinStatusType) obj;
         if (status == null) {
             if (other.status != null)
                 return false;

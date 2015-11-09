@@ -24,30 +24,22 @@ public class BinResultsFinalIncidentalX implements Persistable {
     @EmbeddedId
     private BinResultsFinalIncidentalXPK key;
 
-    @MapsId
-    @Column(name = "participant", length = 50)
-    private String participant;
-
-    @MapsId
-    @Column(name = "mapnum")
-    private Integer mapnum;
-
-    @MapsId
+    @MapsId("incidentalResultVersion")
     @ManyToOne
     @JoinColumn(name = "incidental_result_version")
     private IncidentalResultVersionX incidentalResultVersion;
 
-    @MapsId
+    @MapsId("incidentalBin")
     @ManyToOne
     @JoinColumn(name = "incidental_bin_id")
     private IncidentalBinX incidentalBin;
 
-    @MapsId
+    @MapsId("assembly")
     @ManyToOne
     @JoinColumn(name = "asm_id")
     private Assembly assembly;
 
-    @MapsId
+    @MapsId("locationVariant")
     @ManyToOne
     @JoinColumn(name = "loc_var_id")
     private LocationVariant locationVariant;
@@ -204,22 +196,6 @@ public class BinResultsFinalIncidentalX implements Persistable {
 
     public void setKey(BinResultsFinalIncidentalXPK key) {
         this.key = key;
-    }
-
-    public String getParticipant() {
-        return participant;
-    }
-
-    public void setParticipant(String participant) {
-        this.participant = participant;
-    }
-
-    public Integer getMapnum() {
-        return mapnum;
-    }
-
-    public void setMapnum(Integer mapnum) {
-        this.mapnum = mapnum;
     }
 
     public IncidentalResultVersionX getIncidentalResultVersion() {
@@ -616,14 +592,13 @@ public class BinResultsFinalIncidentalX implements Persistable {
 
     @Override
     public String toString() {
-        return String
-                .format("BinResultsFinalIncidentalX [participant=%s, mapnum=%s, ncgAlternateFrequency=%s, ncgHWEP=%s, chromosome=%s, pos=%s, type=%s, transcr=%s, refseqGene=%s, hgncGene=%s, locationType=%s, strand=%s, transcrPos=%s, cdsPos=%s, aaStart=%s, aaEnd=%s, originalAa=%s, finalAa=%s, frameshift=%s, inframe=%s, intronExonDist=%s, nummaps=%s, geneId=%s, accNum=%s, tag=%s, maxAlleleFreq=%s, disease=%s, referenceAllele=%s, alternateAllele=%s, hgvsGenomic=%s, hgvsCodingSequence=%s, hgvsTranscript=%s, hgvsProtein=%s, depth=%s, qd=%s, readPosRankSum=%s, fracReadsWithDels=%s, hrun=%s, strandScore=%s, refDepth=%s, altDepth=%s, homozygous=%s, genotypeQual=%s, rsId=%s]",
-                        participant, mapnum, ncgAlternateFrequency, ncgHWEP, chromosome, pos, type, transcr,
-                        refseqGene, hgncGene, locationType, strand, transcrPos, cdsPos, aaStart, aaEnd, originalAa,
-                        finalAa, frameshift, inframe, intronExonDist, variantEffect, nummaps, geneId, accNum, tag,
-                        maxAlleleFreq, referenceAllele, alternateAllele, hgvsGenomic, hgvsCodingSequence,
-                        hgvsTranscript, hgvsProtein, depth, qd, readPosRankSum, fracReadsWithDels, hrun, strandScore,
-                        refDepth, altDepth, homozygous, genotypeQual, rsId);
+        return String.format(
+                "BinResultsFinalIncidentalX [ncgAlternateFrequency=%s, ncgHWEP=%s, chromosome=%s, pos=%s, type=%s, transcr=%s, refseqGene=%s, hgncGene=%s, locationType=%s, strand=%s, transcrPos=%s, cdsPos=%s, aaStart=%s, aaEnd=%s, originalAa=%s, finalAa=%s, frameshift=%s, inframe=%s, intronExonDist=%s, nummaps=%s, geneId=%s, accNum=%s, tag=%s, maxAlleleFreq=%s, disease=%s, referenceAllele=%s, alternateAllele=%s, hgvsGenomic=%s, hgvsCodingSequence=%s, hgvsTranscript=%s, hgvsProtein=%s, depth=%s, qd=%s, readPosRankSum=%s, fracReadsWithDels=%s, hrun=%s, strandScore=%s, refDepth=%s, altDepth=%s, homozygous=%s, genotypeQual=%s, rsId=%s]",
+                ncgAlternateFrequency, ncgHWEP, chromosome, pos, type, transcr, refseqGene, hgncGene, locationType,
+                strand, transcrPos, cdsPos, aaStart, aaEnd, originalAa, finalAa, frameshift, inframe, intronExonDist,
+                variantEffect, nummaps, geneId, accNum, tag, maxAlleleFreq, referenceAllele, alternateAllele,
+                hgvsGenomic, hgvsCodingSequence, hgvsTranscript, hgvsProtein, depth, qd, readPosRankSum,
+                fracReadsWithDels, hrun, strandScore, refDepth, altDepth, homozygous, genotypeQual, rsId);
     }
 
     @Override
@@ -653,13 +628,11 @@ public class BinResultsFinalIncidentalX implements Persistable {
         result = prime * result + ((inframe == null) ? 0 : inframe.hashCode());
         result = prime * result + ((intronExonDist == null) ? 0 : intronExonDist.hashCode());
         result = prime * result + ((key == null) ? 0 : key.hashCode());
-        result = prime * result + ((mapnum == null) ? 0 : mapnum.hashCode());
         result = prime * result + ((maxAlleleFreq == null) ? 0 : maxAlleleFreq.hashCode());
         result = prime * result + ((ncgAlternateFrequency == null) ? 0 : ncgAlternateFrequency.hashCode());
         result = prime * result + ((ncgHWEP == null) ? 0 : ncgHWEP.hashCode());
         result = prime * result + ((nummaps == null) ? 0 : nummaps.hashCode());
         result = prime * result + ((originalAa == null) ? 0 : originalAa.hashCode());
-        result = prime * result + ((participant == null) ? 0 : participant.hashCode());
         result = prime * result + ((pos == null) ? 0 : pos.hashCode());
         result = prime * result + ((qd == null) ? 0 : qd.hashCode());
         result = prime * result + ((readPosRankSum == null) ? 0 : readPosRankSum.hashCode());
@@ -800,11 +773,6 @@ public class BinResultsFinalIncidentalX implements Persistable {
                 return false;
         } else if (!key.equals(other.key))
             return false;
-        if (mapnum == null) {
-            if (other.mapnum != null)
-                return false;
-        } else if (!mapnum.equals(other.mapnum))
-            return false;
         if (maxAlleleFreq == null) {
             if (other.maxAlleleFreq != null)
                 return false;
@@ -829,11 +797,6 @@ public class BinResultsFinalIncidentalX implements Persistable {
             if (other.originalAa != null)
                 return false;
         } else if (!originalAa.equals(other.originalAa))
-            return false;
-        if (participant == null) {
-            if (other.participant != null)
-                return false;
-        } else if (!participant.equals(other.participant))
             return false;
         if (pos == null) {
             if (other.pos != null)

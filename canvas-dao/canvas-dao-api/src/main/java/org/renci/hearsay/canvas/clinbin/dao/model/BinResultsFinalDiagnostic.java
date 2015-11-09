@@ -24,33 +24,37 @@ public class BinResultsFinalDiagnostic implements Persistable {
     @EmbeddedId
     private BinResultsFinalDiagnosticPK key;
 
-    @MapsId
-    @Column(name = "participant", length = 50)
-    private String participant;
-
-    @MapsId
+    @MapsId("dx")
     @ManyToOne
     @JoinColumn(name = "dx_id")
     private DX dx;
 
-    @MapsId
+    @MapsId("diagnosticResultVersion")
     @ManyToOne
     @JoinColumn(name = "diagnostic_result_version")
     private DiagnosticResultVersion diagnosticResultVersion;
 
-    @MapsId
+    @MapsId("assembly")
     @ManyToOne
     @JoinColumn(name = "asm_id")
     private Assembly assembly;
 
-    @MapsId
+    @MapsId("locationVariant")
     @ManyToOne
     @JoinColumn(name = "loc_var_id")
     private LocationVariant locationVariant;
 
-    @MapsId
-    @Column(name = "mapnum")
-    private Integer mapnum;
+    @ManyToOne
+    @JoinColumn(name = "loc_type")
+    private LocationType locationType;
+
+    @ManyToOne
+    @JoinColumn(name = "variant_effect")
+    private VariantEffect variantEffect;
+
+    @ManyToOne
+    @JoinColumn(name = "class_id")
+    private DiseaseClass diseaseClass;
 
     @Column(name = "chromosome", length = 15)
     private String chromosome;
@@ -61,19 +65,11 @@ public class BinResultsFinalDiagnostic implements Persistable {
     @Column(name = "type", length = 15)
     private String type;
 
-    @MapsId
-    @Column(name = "transcr", length = 31)
-    private String transcr;
-
     @Column(name = "refseq_gene")
     private String refseqGene;
 
     @Column(name = "hgnc_gene")
     private String hgncGene;
-
-    @ManyToOne
-    @JoinColumn(name = "loc_type")
-    private LocationType locationType;
 
     @Column(name = "transcr_pos")
     private Integer transcrPos;
@@ -102,10 +98,6 @@ public class BinResultsFinalDiagnostic implements Persistable {
     @Column(name = "intron_exon_dist")
     private Integer intronExonDist;
 
-    @ManyToOne
-    @JoinColumn(name = "variant_effect")
-    private VariantEffect variantEffect;
-
     @Column(name = "nummaps")
     private Integer nummaps;
 
@@ -117,10 +109,6 @@ public class BinResultsFinalDiagnostic implements Persistable {
 
     @Column(name = "max_allele_freq")
     private Float maxAlleleFreq;
-
-    @ManyToOne
-    @JoinColumn(name = "class_id")
-    private DiseaseClass diseaseClass;
 
     @Lob
     @Column(name = "refallele")
@@ -198,14 +186,6 @@ public class BinResultsFinalDiagnostic implements Persistable {
         this.key = key;
     }
 
-    public String getParticipant() {
-        return participant;
-    }
-
-    public void setParticipant(String participant) {
-        this.participant = participant;
-    }
-
     public DX getDx() {
         return dx;
     }
@@ -238,14 +218,6 @@ public class BinResultsFinalDiagnostic implements Persistable {
         this.locationVariant = locationVariant;
     }
 
-    public Integer getMapnum() {
-        return mapnum;
-    }
-
-    public void setMapnum(Integer mapnum) {
-        this.mapnum = mapnum;
-    }
-
     public String getChromosome() {
         return chromosome;
     }
@@ -268,14 +240,6 @@ public class BinResultsFinalDiagnostic implements Persistable {
 
     public void setType(String type) {
         this.type = type;
-    }
-
-    public String getTranscr() {
-        return transcr;
-    }
-
-    public void setTranscr(String transcr) {
-        this.transcr = transcr;
     }
 
     public String getRefseqGene() {
@@ -584,13 +548,13 @@ public class BinResultsFinalDiagnostic implements Persistable {
 
     @Override
     public String toString() {
-        return String
-                .format("BinResultsFinalDiagnostic [participant=%s, mapnum=%s, chromosome=%s, pos=%s, type=%s, transcr=%s, refseqGene=%s, hgncGene=%s, transcrPos=%s, cdsPos=%s, aaStart=%s, aaEnd=%s, originalAa=%s, finalAa=%s, frameshift=%s, inframe=%s, intronExonDist=%s, nummaps=%s, geneId=%s, accNum=%s, maxAlleleFreq=%s, refallele=%s, altallele=%s, hgvsgenomic=%s, hgvscds=%s, hgvstranscript=%s, hgvsprotein=%s, depth=%s, qd=%s, readPosRankSum=%s, fracReadsWithDels=%s, hrun=%s, strandScore=%s, refDepth=%s, altDepth=%s, homozygous=%s, genotypeQual=%s, tier=%s, inheritance=%s, rsId=%s, exonTruncationCount=%s]",
-                        participant, mapnum, chromosome, pos, type, transcr, refseqGene, hgncGene, transcrPos, cdsPos,
-                        aaStart, aaEnd, originalAa, finalAa, frameshift, inframe, intronExonDist, nummaps, geneId,
-                        accNum, maxAlleleFreq, refallele, altallele, hgvsgenomic, hgvscds, hgvstranscript, hgvsprotein,
-                        depth, qd, readPosRankSum, fracReadsWithDels, hrun, strandScore, refDepth, altDepth,
-                        homozygous, genotypeQual, tier, inheritance, rsId, exonTruncationCount);
+        return String.format(
+                "BinResultsFinalDiagnostic [chromosome=%s, pos=%s, type=%s, refseqGene=%s, hgncGene=%s, transcrPos=%s, cdsPos=%s, aaStart=%s, aaEnd=%s, originalAa=%s, finalAa=%s, frameshift=%s, inframe=%s, intronExonDist=%s, nummaps=%s, geneId=%s, accNum=%s, maxAlleleFreq=%s, refallele=%s, altallele=%s, hgvsgenomic=%s, hgvscds=%s, hgvstranscript=%s, hgvsprotein=%s, depth=%s, qd=%s, readPosRankSum=%s, fracReadsWithDels=%s, hrun=%s, strandScore=%s, refDepth=%s, altDepth=%s, homozygous=%s, genotypeQual=%s, tier=%s, inheritance=%s, rsId=%s, exonTruncationCount=%s]",
+                chromosome, pos, type, refseqGene, hgncGene, transcrPos, cdsPos, aaStart, aaEnd, originalAa, finalAa,
+                frameshift, inframe, intronExonDist, nummaps, geneId, accNum, maxAlleleFreq, refallele, altallele,
+                hgvsgenomic, hgvscds, hgvstranscript, hgvsprotein, depth, qd, readPosRankSum, fracReadsWithDels, hrun,
+                strandScore, refDepth, altDepth, homozygous, genotypeQual, tier, inheritance, rsId,
+                exonTruncationCount);
     }
 
     @Override
@@ -622,11 +586,9 @@ public class BinResultsFinalDiagnostic implements Persistable {
         result = prime * result + ((inheritance == null) ? 0 : inheritance.hashCode());
         result = prime * result + ((intronExonDist == null) ? 0 : intronExonDist.hashCode());
         result = prime * result + ((key == null) ? 0 : key.hashCode());
-        result = prime * result + ((mapnum == null) ? 0 : mapnum.hashCode());
         result = prime * result + ((maxAlleleFreq == null) ? 0 : maxAlleleFreq.hashCode());
         result = prime * result + ((nummaps == null) ? 0 : nummaps.hashCode());
         result = prime * result + ((originalAa == null) ? 0 : originalAa.hashCode());
-        result = prime * result + ((participant == null) ? 0 : participant.hashCode());
         result = prime * result + ((pos == null) ? 0 : pos.hashCode());
         result = prime * result + ((qd == null) ? 0 : qd.hashCode());
         result = prime * result + ((readPosRankSum == null) ? 0 : readPosRankSum.hashCode());
@@ -636,7 +598,6 @@ public class BinResultsFinalDiagnostic implements Persistable {
         result = prime * result + ((rsId == null) ? 0 : rsId.hashCode());
         result = prime * result + ((strandScore == null) ? 0 : strandScore.hashCode());
         result = prime * result + ((tier == null) ? 0 : tier.hashCode());
-        result = prime * result + ((transcr == null) ? 0 : transcr.hashCode());
         result = prime * result + ((transcrPos == null) ? 0 : transcrPos.hashCode());
         result = prime * result + ((type == null) ? 0 : type.hashCode());
         return result;
@@ -776,11 +737,6 @@ public class BinResultsFinalDiagnostic implements Persistable {
                 return false;
         } else if (!key.equals(other.key))
             return false;
-        if (mapnum == null) {
-            if (other.mapnum != null)
-                return false;
-        } else if (!mapnum.equals(other.mapnum))
-            return false;
         if (maxAlleleFreq == null) {
             if (other.maxAlleleFreq != null)
                 return false;
@@ -795,11 +751,6 @@ public class BinResultsFinalDiagnostic implements Persistable {
             if (other.originalAa != null)
                 return false;
         } else if (!originalAa.equals(other.originalAa))
-            return false;
-        if (participant == null) {
-            if (other.participant != null)
-                return false;
-        } else if (!participant.equals(other.participant))
             return false;
         if (pos == null) {
             if (other.pos != null)
@@ -845,11 +796,6 @@ public class BinResultsFinalDiagnostic implements Persistable {
             if (other.tier != null)
                 return false;
         } else if (!tier.equals(other.tier))
-            return false;
-        if (transcr == null) {
-            if (other.transcr != null)
-                return false;
-        } else if (!transcr.equals(other.transcr))
             return false;
         if (transcrPos == null) {
             if (other.transcrPos != null)

@@ -1,6 +1,6 @@
 package org.renci.hearsay.canvas.dao.model;
 
-import org.apache.commons.lang.math.IntRange;
+import org.apache.commons.lang3.Range;
 import org.renci.hearsay.dao.model.RegionType;
 
 public class Region implements Comparable<Region> {
@@ -89,8 +89,8 @@ public class Region implements Comparable<Region> {
         this.contigStop = contigStop;
     }
 
-    public IntRange toRange() {
-        return new IntRange(this.genomeStart, this.genomeStop);
+    public Range<Integer> toRange() {
+        return Range.between(this.genomeStart, this.genomeStop);
     }
 
     @Override
@@ -98,11 +98,13 @@ public class Region implements Comparable<Region> {
 
         // if (regionType == null) {
         // return String
-        // .format("Region [number=%s, genomeStart=%s, genomeStop=%s, transcriptStart=%s, transcriptStop=%s, contigStart=%s, contigStop=%s]",
+        // .format("Region [number=%s, genomeStart=%s, genomeStop=%s, transcriptStart=%s, transcriptStop=%s,
+        // contigStart=%s, contigStop=%s]",
         // number, genomeStart, genomeStop, transcriptStart, transcriptStop, contigStart, contigStop);
         // }
         // return String
-        // .format("Region [number=%s, genomeStart=%s, genomeStop=%s, transcriptStart=%s, transcriptStop=%s, contigStart=%s, contigStop=%s, regionType=%s]",
+        // .format("Region [number=%s, genomeStart=%s, genomeStop=%s, transcriptStart=%s, transcriptStop=%s,
+        // contigStart=%s, contigStop=%s, regionType=%s]",
         // number, genomeStart, genomeStop, transcriptStart, transcriptStop, contigStart, contigStop,
         // regionType.toString());
 

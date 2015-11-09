@@ -9,7 +9,7 @@ import org.renci.hearsay.canvas.dao.Persistable;
 
 @Entity
 @Table(schema = "hgnc", name = "status_type")
-public class StatusType implements Persistable {
+public class HGNCStatusType implements Persistable {
 
     private static final long serialVersionUID = 1069297528359738574L;
 
@@ -17,7 +17,7 @@ public class StatusType implements Persistable {
     @Column(name = "status_type_name")
     private String name;
 
-    public StatusType() {
+    public HGNCStatusType() {
         super();
     }
 
@@ -50,7 +50,7 @@ public class StatusType implements Persistable {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        StatusType other = (StatusType) obj;
+        HGNCStatusType other = (HGNCStatusType) obj;
         if (name == null) {
             if (other.name != null)
                 return false;

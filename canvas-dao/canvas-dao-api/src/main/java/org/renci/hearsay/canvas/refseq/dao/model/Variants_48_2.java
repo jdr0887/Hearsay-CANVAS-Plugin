@@ -19,7 +19,8 @@ import org.renci.hearsay.canvas.var.dao.model.VariantType;
 
 @Entity
 @Table(schema = "refseq", name = "variants_48_2")
-@NamedQueries({ @NamedQuery(name = "Variants_48_2.findByLocationVariantId", query = "SELECT a FROM Variants_48_2 a where a.locationVariant.id = :locationVariantId") })
+@NamedQueries({
+        @NamedQuery(name = "Variants_48_2.findByLocationVariantId", query = "SELECT a FROM Variants_48_2 a where a.locationVariant.id = :locationVariantId") })
 public class Variants_48_2 implements Persistable {
 
     private static final long serialVersionUID = -3196283582319841870L;
@@ -27,42 +28,30 @@ public class Variants_48_2 implements Persistable {
     @EmbeddedId
     private Variants_48_2PK key;
 
-    @MapsId
+    @MapsId("locationVariant")
     @ManyToOne
     @JoinColumn(name = "loc_var_id")
     private LocationVariant locationVariant;
 
-    @MapsId
+    @MapsId("genomeRefSeq")
     @ManyToOne
     @JoinColumn(name = "chromosome")
     private GenomeRefSeq genomeRefSeq;
 
-    @MapsId
-    @Column(name = "pos")
-    private Integer pos;
-
-    @MapsId
+    @MapsId("type")
     @ManyToOne
     @JoinColumn(name = "type")
     private VariantType type;
 
-    @MapsId
-    @Column(name = "transcr", length = 31)
-    private String transcr;
-
-    @MapsId
+    @MapsId("locationType")
     @ManyToOne
     @JoinColumn(name = "loc_type")
     private LocationType locationType;
 
-    @MapsId
+    @MapsId("variantEffect")
     @ManyToOne
     @JoinColumn(name = "variant_effect")
     private VariantEffect variantEffect;
-
-    @MapsId
-    @Column(name = "mapnum")
-    private Integer mapnum;
 
     @Column(name = "refseq_gene")
     private String refseqGene;
@@ -160,28 +149,12 @@ public class Variants_48_2 implements Persistable {
         this.genomeRefSeq = genomeRefSeq;
     }
 
-    public Integer getPos() {
-        return pos;
-    }
-
-    public void setPos(Integer pos) {
-        this.pos = pos;
-    }
-
     public VariantType getType() {
         return type;
     }
 
     public void setType(VariantType type) {
         this.type = type;
-    }
-
-    public String getTranscr() {
-        return transcr;
-    }
-
-    public void setTranscr(String transcr) {
-        this.transcr = transcr;
     }
 
     public LocationType getLocationType() {
@@ -198,14 +171,6 @@ public class Variants_48_2 implements Persistable {
 
     public void setVariantEffect(VariantEffect variantEffect) {
         this.variantEffect = variantEffect;
-    }
-
-    public Integer getMapnum() {
-        return mapnum;
-    }
-
-    public void setMapnum(Integer mapnum) {
-        this.mapnum = mapnum;
     }
 
     public String getRefseqGene() {
@@ -403,15 +368,12 @@ public class Variants_48_2 implements Persistable {
         result = prime * result + ((inframe == null) ? 0 : inframe.hashCode());
         result = prime * result + ((intronExonDist == null) ? 0 : intronExonDist.hashCode());
         result = prime * result + ((key == null) ? 0 : key.hashCode());
-        result = prime * result + ((mapnum == null) ? 0 : mapnum.hashCode());
         result = prime * result + ((noncanExon == null) ? 0 : noncanExon.hashCode());
         result = prime * result + ((nummaps == null) ? 0 : nummaps.hashCode());
         result = prime * result + ((originalAa == null) ? 0 : originalAa.hashCode());
-        result = prime * result + ((pos == null) ? 0 : pos.hashCode());
         result = prime * result + ((referenceAllele == null) ? 0 : referenceAllele.hashCode());
         result = prime * result + ((refseqGene == null) ? 0 : refseqGene.hashCode());
         result = prime * result + ((strand == null) ? 0 : strand.hashCode());
-        result = prime * result + ((transcr == null) ? 0 : transcr.hashCode());
         result = prime * result + ((transcrPos == null) ? 0 : transcrPos.hashCode());
         return result;
     }
@@ -500,11 +462,6 @@ public class Variants_48_2 implements Persistable {
                 return false;
         } else if (!key.equals(other.key))
             return false;
-        if (mapnum == null) {
-            if (other.mapnum != null)
-                return false;
-        } else if (!mapnum.equals(other.mapnum))
-            return false;
         if (noncanExon == null) {
             if (other.noncanExon != null)
                 return false;
@@ -520,11 +477,6 @@ public class Variants_48_2 implements Persistable {
                 return false;
         } else if (!originalAa.equals(other.originalAa))
             return false;
-        if (pos == null) {
-            if (other.pos != null)
-                return false;
-        } else if (!pos.equals(other.pos))
-            return false;
         if (referenceAllele == null) {
             if (other.referenceAllele != null)
                 return false;
@@ -539,11 +491,6 @@ public class Variants_48_2 implements Persistable {
             if (other.strand != null)
                 return false;
         } else if (!strand.equals(other.strand))
-            return false;
-        if (transcr == null) {
-            if (other.transcr != null)
-                return false;
-        } else if (!transcr.equals(other.transcr))
             return false;
         if (transcrPos == null) {
             if (other.transcrPos != null)

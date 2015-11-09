@@ -16,18 +16,18 @@ public class AssemblyLocationVariant implements Persistable {
 
     private static final long serialVersionUID = -5771832456633119719L;
 
-    @MapsId("asmId")
+    @EmbeddedId
+    private AssemblyLocationVariantPK key;
+
+    @MapsId("assembly")
     @ManyToOne
     @JoinColumn(name = "asm_id", nullable = false)
     private Assembly assembly;
 
-    @MapsId("locationVariantId")
+    @MapsId("locationVariant")
     @ManyToOne
-    @JoinColumn(name = "loc_var_id", nullable = false)
+    @JoinColumn(name = "loc_var_id")
     private LocationVariant locationVariant;
-
-    @EmbeddedId
-    private AssemblyLocationVariantPK key;
 
     @Column(name = "homozygous")
     private Boolean homozygous;
@@ -81,8 +81,8 @@ public class AssemblyLocationVariant implements Persistable {
 
     @Override
     public String toString() {
-        return "AssemblyLocationVariant [assembly=" + assembly + ", locationVariant=" + locationVariant + ", key="
-                + key + ", homozygous=" + homozygous + ", genotypeQual=" + genotypeQual + "]";
+        return "AssemblyLocationVariant [assembly=" + assembly + ", locationVariant=" + locationVariant + ", key=" + key
+                + ", homozygous=" + homozygous + ", genotypeQual=" + genotypeQual + "]";
     }
 
     @Override

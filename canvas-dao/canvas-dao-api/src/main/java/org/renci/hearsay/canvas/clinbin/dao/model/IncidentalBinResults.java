@@ -23,17 +23,18 @@ public class IncidentalBinResults implements Persistable {
     @EmbeddedId
     private IncidentalBinResultsPK key;
 
-    @MapsId
+    @MapsId("locationVariant")
     @ManyToOne
     @JoinColumn(name = "loc_var_id")
     private LocationVariant locationVariant;
 
+    @MapsId("zygosityMode")
+    @ManyToOne
+    @JoinColumn(name = "zygosity_mode")
+    private ZygosityModeType zygosityMode;
+
     @Column(name = "bin_timestamp")
     private Date binTimestamp;
-
-    @MapsId
-    @Column(name = "bin_version")
-    private Integer binVersion;
 
     @Column(name = "bin_name", length = 1023)
     private String binName;
@@ -45,17 +46,8 @@ public class IncidentalBinResults implements Persistable {
     @Column(name = "disease")
     private String disease;
 
-    @MapsId
-    @ManyToOne
-    @JoinColumn(name = "zygosity_mode")
-    private ZygosityModeType zygosityMode;
-
     @Column(name = "incidental_bin", length = 15)
     private String incidentalBin;
-
-    @MapsId
-    @Column(name = "transcr", length = 31)
-    private String transcr;
 
     public IncidentalBinResults() {
         super();
@@ -83,14 +75,6 @@ public class IncidentalBinResults implements Persistable {
 
     public void setBinTimestamp(Date binTimestamp) {
         this.binTimestamp = binTimestamp;
-    }
-
-    public Integer getBinVersion() {
-        return binVersion;
-    }
-
-    public void setBinVersion(Integer binVersion) {
-        this.binVersion = binVersion;
     }
 
     public String getBinName() {
@@ -133,19 +117,10 @@ public class IncidentalBinResults implements Persistable {
         this.incidentalBin = incidentalBin;
     }
 
-    public String getTranscr() {
-        return transcr;
-    }
-
-    public void setTranscr(String transcr) {
-        this.transcr = transcr;
-    }
-
     @Override
     public String toString() {
-        return String
-                .format("IncidentalBinResults [binTimestamp=%s, incidentalListVersion=%s, binName=%s, disease=%s, incidentalBin=%s, transcr=%s]",
-                        binTimestamp, binVersion, binName, disease, incidentalBin, transcr);
+        return String.format("IncidentalBinResults [binTimestamp=%s, binName=%s, disease=%s, incidentalBin=%s]",
+                binTimestamp, binName, disease, incidentalBin);
     }
 
     @Override
@@ -156,9 +131,7 @@ public class IncidentalBinResults implements Persistable {
         result = prime * result + ((binTimestamp == null) ? 0 : binTimestamp.hashCode());
         result = prime * result + ((disease == null) ? 0 : disease.hashCode());
         result = prime * result + ((incidentalBin == null) ? 0 : incidentalBin.hashCode());
-        result = prime * result + ((binVersion == null) ? 0 : binVersion.hashCode());
         result = prime * result + ((key == null) ? 0 : key.hashCode());
-        result = prime * result + ((transcr == null) ? 0 : transcr.hashCode());
         return result;
     }
 
@@ -191,20 +164,10 @@ public class IncidentalBinResults implements Persistable {
                 return false;
         } else if (!incidentalBin.equals(other.incidentalBin))
             return false;
-        if (binVersion == null) {
-            if (other.binVersion != null)
-                return false;
-        } else if (!binVersion.equals(other.binVersion))
-            return false;
         if (key == null) {
             if (other.key != null)
                 return false;
         } else if (!key.equals(other.key))
-            return false;
-        if (transcr == null) {
-            if (other.transcr != null)
-                return false;
-        } else if (!transcr.equals(other.transcr))
             return false;
         return true;
     }

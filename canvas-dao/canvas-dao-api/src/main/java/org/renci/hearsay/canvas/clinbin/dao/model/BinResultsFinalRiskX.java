@@ -22,35 +22,27 @@ public class BinResultsFinalRiskX implements Persistable {
     @EmbeddedId
     private BinResultsFinalRiskXPK key;
 
-    @MapsId
+    @MapsId("incidentalBin")
     @ManyToOne
     @JoinColumn(name = "incidental_bin_id")
     private IncidentalBinX incidentalBin;
 
-    @MapsId
-    @Column(name = "participant")
-    private String participant;
-
-    @MapsId
+    @MapsId("incidentalResultVersion")
     @ManyToOne
     @JoinColumn(name = "incidental_result_version")
     private IncidentalResultVersionX incidentalResultVersion;
 
-    @MapsId
+    @MapsId("assembly")
     @ManyToOne
     @JoinColumn(name = "asm_id")
     private Assembly assembly;
 
-    @MapsId
+    @MapsId("locationVariant")
     @ManyToOne
     @JoinColumn(name = "loc_var_id")
     private LocationVariant locationVariant;
 
-    @MapsId
-    @Column(name = "haplotype_id")
-    private Integer haplotypeId;
-
-    @MapsId
+    @MapsId("phenotypeX")
     @ManyToOne
     @JoinColumn(name = "phenotype_id")
     private PhenotypeX phenotypeX;
@@ -113,14 +105,6 @@ public class BinResultsFinalRiskX implements Persistable {
         this.key = key;
     }
 
-    public String getParticipant() {
-        return participant;
-    }
-
-    public void setParticipant(String participant) {
-        this.participant = participant;
-    }
-
     public IncidentalBinX getIncidentalBin() {
         return incidentalBin;
     }
@@ -151,14 +135,6 @@ public class BinResultsFinalRiskX implements Persistable {
 
     public void setLocationVariant(LocationVariant locationVariant) {
         this.locationVariant = locationVariant;
-    }
-
-    public Integer getHaplotypeId() {
-        return haplotypeId;
-    }
-
-    public void setHaplotypeId(Integer haplotypeId) {
-        this.haplotypeId = haplotypeId;
     }
 
     public PhenotypeX getPhenotypeX() {
@@ -283,10 +259,10 @@ public class BinResultsFinalRiskX implements Persistable {
 
     @Override
     public String toString() {
-        return String
-                .format("BinResultsFinalRiskX [participant=%s, haplotypeId=%s, chromosome=%s, pos=%s, type=%s, refAllele=%s, alternateAllele=%s, riskAllele=%s, numRiskAlleles=%s, numAlleles=%s, rsId=%s, vcfFile=%s, gq=%s, dp=%s, refDepth=%s, altDepth=%s]",
-                        participant, haplotypeId, chromosome, pos, type, refAllele, alternateAllele, riskAllele,
-                        numRiskAlleles, numAlleles, rsId, vcfFile, gq, dp, refDepth, altDepth);
+        return String.format(
+                "BinResultsFinalRiskX [chromosome=%s, pos=%s, type=%s, refAllele=%s, alternateAllele=%s, riskAllele=%s, numRiskAlleles=%s, numAlleles=%s, rsId=%s, vcfFile=%s, gq=%s, dp=%s, refDepth=%s, altDepth=%s]",
+                chromosome, pos, type, refAllele, alternateAllele, riskAllele, numRiskAlleles, numAlleles, rsId,
+                vcfFile, gq, dp, refDepth, altDepth);
     }
 
     @Override
@@ -298,11 +274,9 @@ public class BinResultsFinalRiskX implements Persistable {
         result = prime * result + ((chromosome == null) ? 0 : chromosome.hashCode());
         result = prime * result + ((dp == null) ? 0 : dp.hashCode());
         result = prime * result + ((gq == null) ? 0 : gq.hashCode());
-        result = prime * result + ((haplotypeId == null) ? 0 : haplotypeId.hashCode());
         result = prime * result + ((key == null) ? 0 : key.hashCode());
         result = prime * result + ((numAlleles == null) ? 0 : numAlleles.hashCode());
         result = prime * result + ((numRiskAlleles == null) ? 0 : numRiskAlleles.hashCode());
-        result = prime * result + ((participant == null) ? 0 : participant.hashCode());
         result = prime * result + ((pos == null) ? 0 : pos.hashCode());
         result = prime * result + ((refAllele == null) ? 0 : refAllele.hashCode());
         result = prime * result + ((refDepth == null) ? 0 : refDepth.hashCode());
@@ -347,11 +321,6 @@ public class BinResultsFinalRiskX implements Persistable {
                 return false;
         } else if (!gq.equals(other.gq))
             return false;
-        if (haplotypeId == null) {
-            if (other.haplotypeId != null)
-                return false;
-        } else if (!haplotypeId.equals(other.haplotypeId))
-            return false;
         if (key == null) {
             if (other.key != null)
                 return false;
@@ -366,11 +335,6 @@ public class BinResultsFinalRiskX implements Persistable {
             if (other.numRiskAlleles != null)
                 return false;
         } else if (!numRiskAlleles.equals(other.numRiskAlleles))
-            return false;
-        if (participant == null) {
-            if (other.participant != null)
-                return false;
-        } else if (!participant.equals(other.participant))
             return false;
         if (pos == null) {
             if (other.pos != null)

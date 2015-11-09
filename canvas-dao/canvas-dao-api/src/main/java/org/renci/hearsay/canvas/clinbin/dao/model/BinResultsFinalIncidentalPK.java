@@ -20,7 +20,7 @@ public class BinResultsFinalIncidentalPK implements Serializable {
     private Integer incidentalResultVersion;
 
     @Column(name = "asm_id")
-    private Long asm;
+    private Long assembly;
 
     @Column(name = "loc_var_id")
     private Long locationVariant;
@@ -59,12 +59,12 @@ public class BinResultsFinalIncidentalPK implements Serializable {
         this.incidentalResultVersion = incidentalResultVersion;
     }
 
-    public Long getAsm() {
-        return asm;
+    public Long getAssembly() {
+        return assembly;
     }
 
-    public void setAsm(Long asm) {
-        this.asm = asm;
+    public void setAssembly(Long assembly) {
+        this.assembly = assembly;
     }
 
     public Long getLocationVariant() {
@@ -93,16 +93,16 @@ public class BinResultsFinalIncidentalPK implements Serializable {
 
     @Override
     public String toString() {
-        return String
-                .format("BinResultsFinalIncidentalPK [participant=%s, incidentalBin=%s, incidentalResultVersion=%s, asm=%s, locationVariant=%s, mapnum=%s, transcr=%s]",
-                        participant, incidentalBin, incidentalResultVersion, asm, locationVariant, mapnum, transcr);
+        return String.format(
+                "BinResultsFinalIncidentalPK [participant=%s, incidentalBin=%s, incidentalResultVersion=%s, assembly=%s, locationVariant=%s, mapnum=%s, transcr=%s]",
+                participant, incidentalBin, incidentalResultVersion, assembly, locationVariant, mapnum, transcr);
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((asm == null) ? 0 : asm.hashCode());
+        result = prime * result + ((assembly == null) ? 0 : assembly.hashCode());
         result = prime * result + ((incidentalBin == null) ? 0 : incidentalBin.hashCode());
         result = prime * result + ((incidentalResultVersion == null) ? 0 : incidentalResultVersion.hashCode());
         result = prime * result + ((locationVariant == null) ? 0 : locationVariant.hashCode());
@@ -121,10 +121,10 @@ public class BinResultsFinalIncidentalPK implements Serializable {
         if (getClass() != obj.getClass())
             return false;
         BinResultsFinalIncidentalPK other = (BinResultsFinalIncidentalPK) obj;
-        if (asm == null) {
-            if (other.asm != null)
+        if (assembly == null) {
+            if (other.assembly != null)
                 return false;
-        } else if (!asm.equals(other.asm))
+        } else if (!assembly.equals(other.assembly))
             return false;
         if (incidentalBin == null) {
             if (other.incidentalBin != null)

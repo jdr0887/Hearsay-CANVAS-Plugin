@@ -2,6 +2,7 @@ package org.renci.hearsay.canvas.annotation.dao.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -15,6 +16,7 @@ import javax.xml.bind.annotation.XmlType;
 @Table(schema = "annot", name = "cds")
 public class AnnotationCodingSequence {
 
+    @Id
     @Column(name = "cds_id")
     private Long id;
 

@@ -24,36 +24,20 @@ public class BinResultsFinalIncidental implements Persistable {
     @EmbeddedId
     private BinResultsFinalIncidentalPK key;
 
-    @MapsId
-    @Column(name = "participant", length = 50)
-    private String participant;
-
-    @MapsId
-    @Column(name = "incidental_bin", length = 15)
-    private String incidentalBin;
-
-    @MapsId
+    @MapsId("incidentalResultVersion")
     @ManyToOne
     @JoinColumn(name = "incidental_result_version")
     private IncidentalResultVersion incidentalResultVersion;
 
-    @MapsId
+    @MapsId("assembly")
     @ManyToOne
     @JoinColumn(name = "asm_id")
-    private Assembly asm;
+    private Assembly assembly;
 
-    @MapsId
+    @MapsId("locationVariant")
     @ManyToOne
     @JoinColumn(name = "loc_var_id")
     private LocationVariant locationVariant;
-
-    @MapsId
-    @Column(name = "mapnum")
-    private Integer mapnum;
-
-    @MapsId
-    @Column(name = "transcr", length = 31)
-    private String transcr;
 
     @ManyToOne
     @JoinColumn(name = "zygosity_mode")
@@ -193,22 +177,6 @@ public class BinResultsFinalIncidental implements Persistable {
         this.key = key;
     }
 
-    public String getParticipant() {
-        return participant;
-    }
-
-    public void setParticipant(String participant) {
-        this.participant = participant;
-    }
-
-    public String getIncidentalBin() {
-        return incidentalBin;
-    }
-
-    public void setIncidentalBin(String incidentalBin) {
-        this.incidentalBin = incidentalBin;
-    }
-
     public IncidentalResultVersion getIncidentalResultVersion() {
         return incidentalResultVersion;
     }
@@ -217,12 +185,12 @@ public class BinResultsFinalIncidental implements Persistable {
         this.incidentalResultVersion = incidentalResultVersion;
     }
 
-    public Assembly getAsm() {
-        return asm;
+    public Assembly getAssembly() {
+        return assembly;
     }
 
-    public void setAsm(Assembly asm) {
-        this.asm = asm;
+    public void setAssembly(Assembly assembly) {
+        this.assembly = assembly;
     }
 
     public LocationVariant getLocationVariant() {
@@ -231,22 +199,6 @@ public class BinResultsFinalIncidental implements Persistable {
 
     public void setLocationVariant(LocationVariant locationVariant) {
         this.locationVariant = locationVariant;
-    }
-
-    public Integer getMapnum() {
-        return mapnum;
-    }
-
-    public void setMapnum(Integer mapnum) {
-        this.mapnum = mapnum;
-    }
-
-    public String getTranscr() {
-        return transcr;
-    }
-
-    public void setTranscr(String transcr) {
-        this.transcr = transcr;
     }
 
     public ZygosityModeType getZygosityMode() {
@@ -571,13 +523,13 @@ public class BinResultsFinalIncidental implements Persistable {
 
     @Override
     public String toString() {
-        return String
-                .format("BinResultsFinalIncidental [participant=%s, mapnum=%s, transcr=%s, zygosityMode=%s, chromosome=%s, pos=%s, type=%s, refseqGene=%s, hgncGene=%s, transcrPos=%s, cdsPos=%s, aaStart=%s, aaEnd=%s, originalAa=%s, finalAa=%s, frameshift=%s, inframe=%s, intronExonDist=%s, nummaps=%s, geneId=%s, accNum=%s, maxAlleleFreq=%s, disease=%s, refallele=%s, altallele=%s, hgvsgenomic=%s, hgvscds=%s, hgvstranscript=%s, hgvsprotein=%s, depth=%s, qd=%s, readPosRankSum=%s, fracReadsWithDels=%s, hrun=%s, strandScore=%s, refDepth=%s, altDepth=%s, homozygous=%s, genotypeQual=%s, rsId=%s]",
-                        participant, mapnum, transcr, zygosityMode, chromosome, pos, type, refseqGene, hgncGene,
-                        transcrPos, cdsPos, aaStart, aaEnd, originalAa, finalAa, frameshift, inframe, intronExonDist,
-                        nummaps, geneId, accNum, maxAlleleFreq, disease, refallele, altallele, hgvsgenomic, hgvscds,
-                        hgvstranscript, hgvsprotein, depth, qd, readPosRankSum, fracReadsWithDels, hrun, strandScore,
-                        refDepth, altDepth, homozygous, genotypeQual, rsId);
+        return String.format(
+                "BinResultsFinalIncidental [zygosityMode=%s, chromosome=%s, pos=%s, type=%s, refseqGene=%s, hgncGene=%s, transcrPos=%s, cdsPos=%s, aaStart=%s, aaEnd=%s, originalAa=%s, finalAa=%s, frameshift=%s, inframe=%s, intronExonDist=%s, nummaps=%s, geneId=%s, accNum=%s, maxAlleleFreq=%s, disease=%s, refallele=%s, altallele=%s, hgvsgenomic=%s, hgvscds=%s, hgvstranscript=%s, hgvsprotein=%s, depth=%s, qd=%s, readPosRankSum=%s, fracReadsWithDels=%s, hrun=%s, strandScore=%s, refDepth=%s, altDepth=%s, homozygous=%s, genotypeQual=%s, rsId=%s]",
+                zygosityMode, chromosome, pos, type, refseqGene, hgncGene, transcrPos, cdsPos, aaStart, aaEnd,
+                originalAa, finalAa, frameshift, inframe, intronExonDist, nummaps, geneId, accNum, maxAlleleFreq,
+                disease, refallele, altallele, hgvsgenomic, hgvscds, hgvstranscript, hgvsprotein, depth, qd,
+                readPosRankSum, fracReadsWithDels, hrun, strandScore, refDepth, altDepth, homozygous, genotypeQual,
+                rsId);
     }
 
     @Override
@@ -608,11 +560,9 @@ public class BinResultsFinalIncidental implements Persistable {
         result = prime * result + ((inframe == null) ? 0 : inframe.hashCode());
         result = prime * result + ((intronExonDist == null) ? 0 : intronExonDist.hashCode());
         result = prime * result + ((key == null) ? 0 : key.hashCode());
-        result = prime * result + ((mapnum == null) ? 0 : mapnum.hashCode());
         result = prime * result + ((maxAlleleFreq == null) ? 0 : maxAlleleFreq.hashCode());
         result = prime * result + ((nummaps == null) ? 0 : nummaps.hashCode());
         result = prime * result + ((originalAa == null) ? 0 : originalAa.hashCode());
-        result = prime * result + ((participant == null) ? 0 : participant.hashCode());
         result = prime * result + ((pos == null) ? 0 : pos.hashCode());
         result = prime * result + ((qd == null) ? 0 : qd.hashCode());
         result = prime * result + ((readPosRankSum == null) ? 0 : readPosRankSum.hashCode());
@@ -621,7 +571,6 @@ public class BinResultsFinalIncidental implements Persistable {
         result = prime * result + ((refseqGene == null) ? 0 : refseqGene.hashCode());
         result = prime * result + ((rsId == null) ? 0 : rsId.hashCode());
         result = prime * result + ((strandScore == null) ? 0 : strandScore.hashCode());
-        result = prime * result + ((transcr == null) ? 0 : transcr.hashCode());
         result = prime * result + ((transcrPos == null) ? 0 : transcrPos.hashCode());
         result = prime * result + ((type == null) ? 0 : type.hashCode());
         return result;
@@ -756,11 +705,6 @@ public class BinResultsFinalIncidental implements Persistable {
                 return false;
         } else if (!key.equals(other.key))
             return false;
-        if (mapnum == null) {
-            if (other.mapnum != null)
-                return false;
-        } else if (!mapnum.equals(other.mapnum))
-            return false;
         if (maxAlleleFreq == null) {
             if (other.maxAlleleFreq != null)
                 return false;
@@ -775,11 +719,6 @@ public class BinResultsFinalIncidental implements Persistable {
             if (other.originalAa != null)
                 return false;
         } else if (!originalAa.equals(other.originalAa))
-            return false;
-        if (participant == null) {
-            if (other.participant != null)
-                return false;
-        } else if (!participant.equals(other.participant))
             return false;
         if (pos == null) {
             if (other.pos != null)
@@ -820,11 +759,6 @@ public class BinResultsFinalIncidental implements Persistable {
             if (other.strandScore != null)
                 return false;
         } else if (!strandScore.equals(other.strandScore))
-            return false;
-        if (transcr == null) {
-            if (other.transcr != null)
-                return false;
-        } else if (!transcr.equals(other.transcr))
             return false;
         if (transcrPos == null) {
             if (other.transcrPos != null)

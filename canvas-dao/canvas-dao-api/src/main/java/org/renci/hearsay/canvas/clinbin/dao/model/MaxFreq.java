@@ -20,14 +20,10 @@ public class MaxFreq implements Persistable {
     @EmbeddedId
     private MaxFreqPK key;
 
-    @MapsId
+    @MapsId("locationVariant")
     @ManyToOne
     @JoinColumn(name = "loc_var_id")
     private LocationVariant locationVariant;
-
-    @MapsId
-    @Column(name = "gen1000_version")
-    private Integer gen1000Version;
 
     @Column(name = "max_allele_freq")
     private Double maxAlleleFreq;
@@ -56,14 +52,6 @@ public class MaxFreq implements Persistable {
         this.locationVariant = locationVariant;
     }
 
-    public Integer getGen1000Version() {
-        return gen1000Version;
-    }
-
-    public void setGen1000Version(Integer gen1000Version) {
-        this.gen1000Version = gen1000Version;
-    }
-
     public Double getMaxAlleleFreq() {
         return maxAlleleFreq;
     }
@@ -82,14 +70,13 @@ public class MaxFreq implements Persistable {
 
     @Override
     public String toString() {
-        return String.format("MaxFreq [gen1000Version=%s, maxAlleleFreq=%s]", gen1000Version, maxAlleleFreq);
+        return String.format("MaxFreq [maxAlleleFreq=%s]", maxAlleleFreq);
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((gen1000Version == null) ? 0 : gen1000Version.hashCode());
         result = prime * result + ((key == null) ? 0 : key.hashCode());
         result = prime * result + ((maxAlleleFreq == null) ? 0 : maxAlleleFreq.hashCode());
         return result;
@@ -104,11 +91,6 @@ public class MaxFreq implements Persistable {
         if (getClass() != obj.getClass())
             return false;
         MaxFreq other = (MaxFreq) obj;
-        if (gen1000Version == null) {
-            if (other.gen1000Version != null)
-                return false;
-        } else if (!gen1000Version.equals(other.gen1000Version))
-            return false;
         if (key == null) {
             if (other.key != null)
                 return false;

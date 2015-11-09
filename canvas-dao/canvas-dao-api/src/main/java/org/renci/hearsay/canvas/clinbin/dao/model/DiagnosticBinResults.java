@@ -1,8 +1,5 @@
 package org.renci.hearsay.canvas.clinbin.dao.model;
 
-import java.util.Date;
-
-import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -22,40 +19,20 @@ public class DiagnosticBinResults implements Persistable {
     @EmbeddedId
     private DiagnosticBinResultsPK key;
 
-    @MapsId
+    @MapsId("locationVariant")
     @ManyToOne
     @JoinColumn(name = "loc_var_id")
     private LocationVariant locationVariant;
 
-    @MapsId
-    @Column(name = "bin_timestamp")
-    private Date binTimestamp;
-
-    @MapsId
-    @Column(name = "bin_version")
-    private Integer binVersion;
-
-    @MapsId
+    @MapsId("dx")
     @ManyToOne
     @JoinColumn(name = "dx_id")
     private DX dx;
 
-    @MapsId
-    @Column(name = "gene_id")
-    private Integer geneId;
-
-    @MapsId
+    @MapsId("diseaseClass")
     @ManyToOne
     @JoinColumn(name = "class_id")
     private DiseaseClass diseaseClass;
-
-    @MapsId
-    @Column(name = "transcr", length = 31)
-    private String transcr;
-
-    @MapsId
-    @Column(name = "mapnum")
-    private Integer mapnum;
 
     public DiagnosticBinResults() {
         super();
@@ -77,36 +54,12 @@ public class DiagnosticBinResults implements Persistable {
         this.locationVariant = locationVariant;
     }
 
-    public Date getBinTimestamp() {
-        return binTimestamp;
-    }
-
-    public void setBinTimestamp(Date binTimestamp) {
-        this.binTimestamp = binTimestamp;
-    }
-
-    public Integer getBinVersion() {
-        return binVersion;
-    }
-
-    public void setBinVersion(Integer binVersion) {
-        this.binVersion = binVersion;
-    }
-
     public DX getDx() {
         return dx;
     }
 
     public void setDx(DX dx) {
         this.dx = dx;
-    }
-
-    public Integer getGeneId() {
-        return geneId;
-    }
-
-    public void setGeneId(Integer geneId) {
-        this.geneId = geneId;
     }
 
     public DiseaseClass getDiseaseClass() {
@@ -117,38 +70,19 @@ public class DiagnosticBinResults implements Persistable {
         this.diseaseClass = diseaseClass;
     }
 
-    public String getTranscr() {
-        return transcr;
-    }
-
-    public void setTranscr(String transcr) {
-        this.transcr = transcr;
-    }
-
-    public Integer getMapnum() {
-        return mapnum;
-    }
-
-    public void setMapnum(Integer mapnum) {
-        this.mapnum = mapnum;
-    }
-
     @Override
     public String toString() {
-        return String.format("DiagnosticBinResults [binTimestamp=%s, binVersion=%s, geneId=%s, transcr=%s, mapnum=%s]",
-                binTimestamp, binVersion, geneId, transcr, mapnum);
+        return String.format("DiagnosticBinResults [key=%s]", key);
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((binTimestamp == null) ? 0 : binTimestamp.hashCode());
-        result = prime * result + ((binVersion == null) ? 0 : binVersion.hashCode());
-        result = prime * result + ((geneId == null) ? 0 : geneId.hashCode());
+        result = prime * result + ((diseaseClass == null) ? 0 : diseaseClass.hashCode());
+        result = prime * result + ((dx == null) ? 0 : dx.hashCode());
         result = prime * result + ((key == null) ? 0 : key.hashCode());
-        result = prime * result + ((mapnum == null) ? 0 : mapnum.hashCode());
-        result = prime * result + ((transcr == null) ? 0 : transcr.hashCode());
+        result = prime * result + ((locationVariant == null) ? 0 : locationVariant.hashCode());
         return result;
     }
 
@@ -161,35 +95,25 @@ public class DiagnosticBinResults implements Persistable {
         if (getClass() != obj.getClass())
             return false;
         DiagnosticBinResults other = (DiagnosticBinResults) obj;
-        if (binTimestamp == null) {
-            if (other.binTimestamp != null)
+        if (diseaseClass == null) {
+            if (other.diseaseClass != null)
                 return false;
-        } else if (!binTimestamp.equals(other.binTimestamp))
+        } else if (!diseaseClass.equals(other.diseaseClass))
             return false;
-        if (binVersion == null) {
-            if (other.binVersion != null)
+        if (dx == null) {
+            if (other.dx != null)
                 return false;
-        } else if (!binVersion.equals(other.binVersion))
-            return false;
-        if (geneId == null) {
-            if (other.geneId != null)
-                return false;
-        } else if (!geneId.equals(other.geneId))
+        } else if (!dx.equals(other.dx))
             return false;
         if (key == null) {
             if (other.key != null)
                 return false;
         } else if (!key.equals(other.key))
             return false;
-        if (mapnum == null) {
-            if (other.mapnum != null)
+        if (locationVariant == null) {
+            if (other.locationVariant != null)
                 return false;
-        } else if (!mapnum.equals(other.mapnum))
-            return false;
-        if (transcr == null) {
-            if (other.transcr != null)
-                return false;
-        } else if (!transcr.equals(other.transcr))
+        } else if (!locationVariant.equals(other.locationVariant))
             return false;
         return true;
     }

@@ -55,7 +55,7 @@ public class BinningJob implements Persistable {
 
     @ManyToOne
     @JoinColumn(name = "status")
-    private StatusType status;
+    private ClinBinStatusType status;
 
     @Column(name = "failure_message", length = 1023)
     private String failureMessage;
@@ -159,11 +159,11 @@ public class BinningJob implements Persistable {
         this.dx = dx;
     }
 
-    public StatusType getStatus() {
+    public ClinBinStatusType getStatus() {
         return status;
     }
 
-    public void setStatus(StatusType status) {
+    public void setStatus(ClinBinStatusType status) {
         this.status = status;
     }
 
