@@ -2,7 +2,7 @@
   <parent>
     <groupId>org.renci.hearsay</groupId>
     <artifactId>parent</artifactId>
-    <version>0.0.5</version>
+    <version>0.0.20-SNAPSHOT</version>    
   </parent>
   <name>Hearsay :: Plugin :: CANVAS</name>
   <modelVersion>4.0.0</modelVersion>
@@ -11,10 +11,7 @@
   <version>0.0.91-SNAPSHOT</version>
   <packaging>pom</packaging>
   <properties>
-    <hearsay.version>0.0.38</hearsay.version>
-    <karaf.version>3.0.1</karaf.version>
-    <cxf.version>2.7.12</cxf.version>
-    <jackson.version>2.4.1</jackson.version>
+    <hearsay.version>0.0.46-SNAPSHOT</hearsay.version>
   </properties>
   <issueManagement>
     <system>GitHub Issues</system>
@@ -35,6 +32,16 @@
   </scm>
   <dependencyManagement>
     <dependencies>
+      <dependency>
+	<groupId>org.hibernate.javax.persistence</groupId>
+	<artifactId>hibernate-jpa-2.1-api</artifactId>
+	<version>1.0.0.Final</version>
+      </dependency>    
+      <dependency>
+	<groupId>org.hibernate</groupId>
+	<artifactId>hibernate-jpamodelgen</artifactId>
+	<version>${hibernate.version}</version>
+      </dependency>    
       <dependency>
       	<groupId>org.apache.aries.transaction</groupId>
       	<artifactId>org.apache.aries.transaction.blueprint</artifactId>
@@ -64,11 +71,6 @@
 	<groupId>org.renci.hearsay.hearsay-dao</groupId>
 	<artifactId>hearsay-dao-jpa</artifactId>
 	<version>${hearsay.version}</version>
-      </dependency>
-      <dependency>
-	<groupId>org.renci.hearsay.plugin.canvas</groupId>
-	<artifactId>canvas-commons</artifactId>
-	<version>0.0.91-SNAPSHOT</version>
       </dependency>
       <dependency>
 	<groupId>org.renci.hearsay.plugin.canvas.canvas-dao</groupId>
@@ -113,18 +115,29 @@
       <dependency>
       	<groupId>org.osgi</groupId>
       	<artifactId>org.osgi.compendium</artifactId>
-      	<version>4.3.1</version>
+      	<version>5.0.0</version>
       </dependency>
       <dependency>
       	<groupId>org.osgi</groupId>
       	<artifactId>org.osgi.core</artifactId>
-      	<version>4.3.1</version>
+      	<version>5.0.0</version>
       	<scope>provided</scope>
       </dependency>
     </dependencies>
   </dependencyManagement>
+  <build>
+    <plugins>
+      <plugin>
+	<groupId>org.apache.maven.plugins</groupId>
+	<artifactId>maven-compiler-plugin</artifactId>
+	<configuration>
+	  <source>1.8</source>
+	  <target>1.8</target>
+	</configuration>
+      </plugin>      
+    </plugins>
+  </build>  
   <modules>
-    <module>canvas-commons</module>
     <module>canvas-commands</module>
     <module>canvas-datasource</module>
     <module>canvas-dao</module>
