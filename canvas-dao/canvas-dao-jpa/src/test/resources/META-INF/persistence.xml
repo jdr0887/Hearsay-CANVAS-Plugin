@@ -3,7 +3,7 @@
   xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd" version="1.0">
   <persistence-unit name="test-canvas" transaction-type="RESOURCE_LOCAL">
 
-    <provider>org.apache.openjpa.persistence.PersistenceProviderImpl</provider>
+    <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
     <class>org.renci.hearsay.canvas.annotation.dao.model.AnnotationGene</class>
     <class>org.renci.hearsay.canvas.annotation.dao.model.AnnotationGeneExternalIds</class>
@@ -142,59 +142,56 @@
 
     <provider>org.apache.openjpa.persistence.PersistenceProviderImpl</provider>
 
-    <class>org.renci.hearsay.dao.model.BaseEntity</class>
-    <class>org.renci.hearsay.dao.model.CanonicalVariant</class>
-    <class>org.renci.hearsay.dao.model.ConditionSubmission</class>
+    <class>org.renci.hearsay.dao.model.Alignment</class>
+    <class>org.renci.hearsay.dao.model.Chromosome</class>
+    <class>org.renci.hearsay.dao.model.CanonicalAllele</class>
+    <class>org.renci.hearsay.dao.model.DiagnosticResult</class>
     <class>org.renci.hearsay.dao.model.Feature</class>
     <class>org.renci.hearsay.dao.model.Gene</class>
-    <class>org.renci.hearsay.dao.model.GeneCondition</class>
-    <class>org.renci.hearsay.dao.model.GeneConditionAssertion</class>
-    <class>org.renci.hearsay.dao.model.GenomicRefSeq</class>
-    <class>org.renci.hearsay.dao.model.GenomicVariant</class>
-    <class>org.renci.hearsay.dao.model.Individual</class>
-    <class>org.renci.hearsay.dao.model.IndividualVariant</class>
+    <class>org.renci.hearsay.dao.model.GeneSymbol</class>
+    <class>org.renci.hearsay.dao.model.GenomeReference</class>
+    <class>org.renci.hearsay.dao.model.IdentifiableEntity</class>
+    <class>org.renci.hearsay.dao.model.Identifier</class>
+    <class>org.renci.hearsay.dao.model.IntronOffset</class>
+    <class>org.renci.hearsay.dao.model.Location</class>
     <class>org.renci.hearsay.dao.model.MolecularConsequence</class>
-    <class>org.renci.hearsay.dao.model.PhaseGroup</class>
-    <class>org.renci.hearsay.dao.model.ReferenceSequence</class>
+    <class>org.renci.hearsay.dao.model.Participant</class>
+    <class>org.renci.hearsay.dao.model.PopulationFrequency</class>
     <class>org.renci.hearsay.dao.model.Region</class>
-    <class>org.renci.hearsay.dao.model.ResolvedCondition</class>
-    <class>org.renci.hearsay.dao.model.ResolvedConditionIdentifier</class>
-    <class>org.renci.hearsay.dao.model.Submitter</class>
-    <class>org.renci.hearsay.dao.model.SupportingObservation</class>
-    <class>org.renci.hearsay.dao.model.SuspectedDiagnosis</class>
-    <class>org.renci.hearsay.dao.model.TranscriptAlignment</class>
-    <class>org.renci.hearsay.dao.model.TranscriptRefSeq</class>
-    <class>org.renci.hearsay.dao.model.TranscriptVariant</class>
-    <class>org.renci.hearsay.dao.model.TranslationRefSeq</class>
-    <class>org.renci.hearsay.dao.model.TranslationVariant</class>
-    <class>org.renci.hearsay.dao.model.VariantAssertion</class>
-    <class>org.renci.hearsay.dao.model.VariantConditionSet</class>
-    <class>org.renci.hearsay.dao.model.VariantRepresentation</class>
-    <class>org.renci.hearsay.dao.model.VariantSubmission</class>
+    <class>org.renci.hearsay.dao.model.ReferenceCoordinate</class>
+    <class>org.renci.hearsay.dao.model.ReferenceSequence</class>
+    <class>org.renci.hearsay.dao.model.Role</class>
+    <class>org.renci.hearsay.dao.model.SimpleAllele</class>
+    <class>org.renci.hearsay.dao.model.User</class>
 
     <properties>
-      <property name="openjpa.ConnectionProperties"
-        value="DriverClassName=org.postgresql.Driver,
-        Url=jdbc:postgresql://localhost:5432/hearsay,
-        MaxActive=100,
-        MaxWait=1000,
-        TestOnBorrow=true,
-        RemoveAbandoned=true,
-        RemoveAbandonedTimeout=60,
-        LogAbandoned=60,
-        Username=hearsay,
-        Password=hearsay" />
-      <property name="openjpa.ConnectionDriverName" value="org.apache.commons.dbcp.BasicDataSource" />
-      <property name="openjpa.ConnectionFactoryProperties" value="printParameters=true" />
-      <property name="openjpa.jdbc.SchemaFactory" value="native(ForeignKeys=true)" />
-      <property name="openjpa.jdbc.MappingDefaults" value="ForeignKeyDeleteAction=restrict, JoinForeignKeyDeleteAction=restrict" />
-      <property name="openjpa.jdbc.SynchronizeMappings" value="buildSchema(SchemaAction='add',ForeignKeys=true)" />
-      <property name="openjpa.Multithreaded" value="true" />
-      <property name="openjpa.Log" value="DefaultLevel=WARN, Runtime=INFO, Tool=INFO, SQL=TRACE" />
-      <property name="openjpa.jdbc.DBDictionary" value="postgres(SearchStringEscape=\, SupportsXMLColumn=false)" />
-      <property name="openjpa.RemoteCommitProvider" value="sjvm" />
-      <property name="openjpa.DataCache" value="false" />
-      <property name="openjpa.QueryCache" value="true" />
+
+      <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver" />
+      <property name="javax.persistence.jdbc.user" value="hearsay" />
+      <property name="javax.persistence.jdbc.password" value="hearsay" />
+      <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/hearsay" />
+      <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL9Dialect" />
+      <property name="hibernate.hbm2ddl.auto" value="update" />
+      <property name="hibernate.discriminator.ignore_explicit_for_joined" value="false" />
+      <property name="hibernate.show_sql" value="true" />
+      <property name="hibernate.format_sql" value="true" />
+      <property name="hibernate.connection.autocommit" value="true" />
+      <property name="hibernate.default_schema" value="hearsay" />
+
+      <!-- <property name="openjpa.ConnectionProperties" -->
+      <!-- value="DriverClassName=org.postgresql.Driver,Url=jdbc:postgresql://localhost:5432/hearsay,MaxActive=100,MaxWait=1000,TestOnBorrow=true,RemoveAbandoned=true,RemoveAbandonedTimeout=60,LogAbandoned=60,Username=hearsay,Password=hearsay" 
+        /> -->
+      <!-- <property name="openjpa.ConnectionDriverName" value="org.apache.commons.dbcp.BasicDataSource" /> -->
+      <!-- <property name="openjpa.ConnectionFactoryProperties" value="printParameters=true" /> -->
+      <!-- <property name="openjpa.jdbc.SchemaFactory" value="native(ForeignKeys=true)" /> -->
+      <!-- <property name="openjpa.jdbc.MappingDefaults" value="ForeignKeyDeleteAction=restrict, JoinForeignKeyDeleteAction=restrict" /> -->
+      <!-- <property name="openjpa.jdbc.SynchronizeMappings" value="buildSchema(SchemaAction='add',ForeignKeys=true)" /> -->
+      <!-- <property name="openjpa.Multithreaded" value="true" /> -->
+      <!-- <property name="openjpa.Log" value="DefaultLevel=WARN, Runtime=INFO, Tool=INFO, SQL=TRACE" /> -->
+      <!-- <property name="openjpa.jdbc.DBDictionary" value="postgres(SearchStringEscape=\, SupportsXMLColumn=false)" /> -->
+      <!-- <property name="openjpa.RemoteCommitProvider" value="sjvm" /> -->
+      <!-- <property name="openjpa.DataCache" value="false" /> -->
+      <!-- <property name="openjpa.QueryCache" value="true" /> -->
     </properties>
 
   </persistence-unit>
