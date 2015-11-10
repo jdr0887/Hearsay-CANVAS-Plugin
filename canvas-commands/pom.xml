@@ -12,14 +12,24 @@
   <packaging>bundle</packaging>
   <dependencies>
     <dependency>
-      <groupId>org.renci.hearsay.plugin.canvas</groupId>
-      <artifactId>canvas-commons</artifactId>
+      <groupId>org.renci.hearsay.hearsay-dao</groupId>
+      <artifactId>hearsay-dao-api</artifactId>
+      <scope>provided</scope>      
     </dependency>
+    <dependency>
+      <groupId>org.renci.hearsay.plugin.canvas.canvas-dao</groupId>
+      <artifactId>canvas-dao-api</artifactId>
+    </dependency>    
     <dependency>
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
       <scope>provided</scope>
     </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+      <scope>provided</scope>      
+    </dependency>    
     <dependency>
       <groupId>org.apache.karaf.shell</groupId>
       <artifactId>org.apache.karaf.shell.console</artifactId>
