@@ -1,14 +1,12 @@
 package org.renci.hearsay.canvas.refseq.dao;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -68,9 +66,9 @@ public class Variant_61_2Test {
                 int count = 0;
                 for (Variants_61_2 variant : variants) {
                     LocationVariant locationVariant = variant.getLocationVariant();
-                    List<MaxFreq> clinbinMaxFrequencies = locationVariant.getClinbinMaxVariantFrequencies();
+                    List<MaxFreq> clinbinMaxFrequencies = locationVariant.getMaxFreqs();
                     count += clinbinMaxFrequencies.size();
-                    List<MaxVariantFrequency> exacMaxFrequencies = locationVariant.getExacMaxVariantFrequencies();
+                    List<MaxVariantFrequency> exacMaxFrequencies = locationVariant.getMaxVariantFrequencies();
                     count += exacMaxFrequencies.size();
                 }
                 System.out.println(count);
