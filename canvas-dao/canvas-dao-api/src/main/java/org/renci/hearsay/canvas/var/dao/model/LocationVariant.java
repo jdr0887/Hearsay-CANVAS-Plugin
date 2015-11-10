@@ -18,6 +18,7 @@ import org.renci.hearsay.canvas.dao.Persistable;
 import org.renci.hearsay.canvas.exac.dao.model.MaxVariantFrequency;
 import org.renci.hearsay.canvas.ref.dao.model.GenomeRef;
 import org.renci.hearsay.canvas.ref.dao.model.GenomeRefSeq;
+import org.renci.hearsay.canvas.refseq.dao.model.Variants_61_2;
 
 @Entity
 @Table(schema = "var", name = "loc_var", uniqueConstraints = { @UniqueConstraint(columnNames = { "loc_var_id", "ref_id",
@@ -60,6 +61,9 @@ public class LocationVariant implements Persistable {
 
     @OneToMany(mappedBy = "locationVariant", fetch = FetchType.LAZY)
     private List<MaxFreq> maxFreqs;
+
+    @OneToMany(mappedBy = "locationVariant", fetch = FetchType.LAZY)
+    private List<Variants_61_2> variants_61_2;
 
     public LocationVariant() {
         super();
@@ -143,6 +147,14 @@ public class LocationVariant implements Persistable {
 
     public void setMaxFreqs(List<MaxFreq> maxFreqs) {
         this.maxFreqs = maxFreqs;
+    }
+
+    public List<Variants_61_2> getVariants_61_2() {
+        return variants_61_2;
+    }
+
+    public void setVariants_61_2(List<Variants_61_2> variants_61_2) {
+        this.variants_61_2 = variants_61_2;
     }
 
     @Override
