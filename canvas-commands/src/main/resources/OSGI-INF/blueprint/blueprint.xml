@@ -21,7 +21,8 @@
       </action>
     </command>
     <command>
-      <action class="org.renci.hearsay.commands.canvas.DeleteVariantsAction">
+      <action class="org.renci.hearsay.commands.canvas.PullGenesAction">
+        <property name="canvasDAOBean" ref="canvasDAOBean" />
         <property name="hearsayDAOBean" ref="hearsayDAOBean" />
       </action>
     </command>
