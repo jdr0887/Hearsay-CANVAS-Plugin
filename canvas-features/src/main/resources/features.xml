@@ -6,8 +6,9 @@
     <bundle>mvn:org.renci.hearsay.plugin.canvas/canvas-datasource/${project.version}</bundle>
     <bundle>mvn:org.renci.hearsay.plugin.canvas.canvas-dao/canvas-dao-api/${project.version}</bundle>
     <bundle>mvn:org.renci.hearsay.plugin.canvas.canvas-dao/canvas-dao-jpa/${project.version}</bundle>
-    <bundle>mvn:org.renci.hearsay.plugin.canvas/canvas-commons/${project.version}</bundle>
     <bundle>mvn:org.renci.hearsay.plugin.canvas/canvas-commands/${project.version}</bundle>
+    <!-- <bundle>mvn:org.renci.hearsay.plugin.canvas/canvas-web-service-api/${project.version}</bundle> -->
+    <!-- <bundle>mvn:org.renci.hearsay.plugin.canvas.canvas-web-services/canvas-web-service-variants_61_2/${project.version}</bundle>     -->
   </feature>
 
 </features>

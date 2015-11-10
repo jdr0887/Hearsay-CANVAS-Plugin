@@ -8,7 +8,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.renci.hearsay.plugin</groupId>
   <artifactId>canvas</artifactId>
-  <version>0.0.91-SNAPSHOT</version>
+  <version>0.0.107-SNAPSHOT</version>
   <packaging>pom</packaging>
   <properties>
     <hearsay.version>0.0.46-SNAPSHOT</hearsay.version>
@@ -80,12 +80,12 @@
       <dependency>
 	<groupId>org.renci.hearsay.plugin.canvas.canvas-dao</groupId>
 	<artifactId>canvas-dao-api</artifactId>
-	<version>0.0.91-SNAPSHOT</version>
+	<version>0.0.107-SNAPSHOT</version>
       </dependency>
       <dependency>
 	<groupId>org.renci.hearsay.plugin.canvas.canvas-dao</groupId>
 	<artifactId>canvas-dao-jpa</artifactId>
-	<version>0.0.91-SNAPSHOT</version>
+	<version>0.0.107-SNAPSHOT</version>
       </dependency>
       <dependency>
       	<groupId>org.apache.felix</groupId>

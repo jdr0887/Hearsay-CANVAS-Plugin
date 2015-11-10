@@ -80,6 +80,12 @@
   </bean>
   <service ref="maxVariantFrequencyDAOImpl" interface="org.renci.hearsay.canvas.exac.dao.MaxVariantFrequencyDAO" />
 
+  <bean id="maxFreqDAOImpl" class="org.renci.hearsay.canvas.clinbin.dao.jpa.MaxFreqDAOImpl">
+    <tx:transaction method="*" value="Required" />
+    <jpa:context property="entityManager" unitname="canvas" />
+  </bean>
+  <service ref="maxFreqDAOImpl" interface="org.renci.hearsay.canvas.clinbin.dao.MaxFreqDAO" />
+
   <bean id="variantFrequencyDAOImpl" class="org.renci.hearsay.canvas.exac.dao.jpa.VariantFrequencyDAOImpl">
     <tx:transaction method="*" value="Required" />
     <jpa:context property="entityManager" unitname="canvas" />

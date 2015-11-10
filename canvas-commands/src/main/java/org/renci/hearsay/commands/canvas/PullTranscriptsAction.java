@@ -3,18 +3,18 @@ package org.renci.hearsay.commands.canvas;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import org.apache.karaf.shell.commands.Argument;
-import org.apache.karaf.shell.commands.Command;
-import org.apache.karaf.shell.console.AbstractAction;
+import org.apache.karaf.shell.api.action.Action;
+import org.apache.karaf.shell.api.action.Argument;
+import org.apache.karaf.shell.api.action.Command;
 import org.renci.hearsay.canvas.dao.CANVASDAOBean;
 import org.renci.hearsay.dao.HearsayDAOBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Command(scope = "canvas", name = "pull-transcripts", description = "Pull Transcripts")
-public class PullTranscriptsAction extends AbstractAction {
+public class PullTranscriptsAction implements Action {
 
-    private final Logger logger = LoggerFactory.getLogger(PullTranscriptsAction.class);
+    private static final Logger logger = LoggerFactory.getLogger(PullTranscriptsAction.class);
 
     @Argument(index = 0, name = "refSeqVersion", description = "RefSeq Version Identifier", required = true, multiValued = false)
     private String refSeqVersion;
@@ -31,11 +31,15 @@ public class PullTranscriptsAction extends AbstractAction {
     }
 
     @Override
-    public Object doExecute() {
-        logger.debug("ENTERING doExecute()");
+    public Object execute() {
+        logger.debug("ENTERING execute()");
         try {
-            PullTranscriptsCallable callable = new PullTranscriptsCallable(canvasDAOBean, hearsayDAOBean,
-                    refSeqVersion, genomeRefId);
+            PullTranscriptsCallable callable = new PullTranscriptsCallable();
+            callable.setCanvasDAOBean(canvasDAOBean);
+            callable.setHearsayDAOBean(hearsayDAOBean);
+            callable.setRefSeqVersion(refSeqVersion);
+            callable.setGenomeRefId(genomeRefId);
+
             ExecutorService es = Executors.newSingleThreadExecutor();
             es.submit(callable);
             es.shutdown();
@@ -43,22 +47,6 @@ public class PullTranscriptsAction extends AbstractAction {
             e.printStackTrace();
         }
         return null;
-    }
-
-    public String getRefSeqVersion() {
-        return refSeqVersion;
-    }
-
-    public void setRefSeqVersion(String refSeqVersion) {
-        this.refSeqVersion = refSeqVersion;
-    }
-
-    public Integer getGenomeRefId() {
-        return genomeRefId;
-    }
-
-    public void setGenomeRefId(Integer genomeRefId) {
-        this.genomeRefId = genomeRefId;
     }
 
     public CANVASDAOBean getCanvasDAOBean() {
@@ -75,6 +63,22 @@ public class PullTranscriptsAction extends AbstractAction {
 
     public void setHearsayDAOBean(HearsayDAOBean hearsayDAOBean) {
         this.hearsayDAOBean = hearsayDAOBean;
+    }
+
+    public String getRefSeqVersion() {
+        return refSeqVersion;
+    }
+
+    public void setRefSeqVersion(String refSeqVersion) {
+        this.refSeqVersion = refSeqVersion;
+    }
+
+    public Integer getGenomeRefId() {
+        return genomeRefId;
+    }
+
+    public void setGenomeRefId(Integer genomeRefId) {
+        this.genomeRefId = genomeRefId;
     }
 
 }

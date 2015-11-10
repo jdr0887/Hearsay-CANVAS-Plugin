@@ -4,16 +4,16 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.karaf.shell.commands.Command;
-import org.apache.karaf.shell.commands.Option;
-import org.apache.karaf.shell.console.AbstractAction;
+import org.apache.karaf.shell.api.action.Command;
+import org.apache.karaf.shell.api.action.Option;
+import org.apache.karaf.shell.api.action.Action;
 import org.renci.hearsay.canvas.dao.CANVASDAOBean;
 import org.renci.hearsay.dao.HearsayDAOBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Command(scope = "canvas", name = "pull-variants", description = "Pull Variants")
-public class PullVariantsAction extends AbstractAction {
+public class PullVariantsAction implements Action {
 
     private final Logger logger = LoggerFactory.getLogger(PullVariantsAction.class);
 
@@ -32,8 +32,8 @@ public class PullVariantsAction extends AbstractAction {
     }
 
     @Override
-    public Object doExecute() {
-        logger.debug("ENTERING doExecute()");
+    public Object execute() {
+        logger.debug("ENTERING execute()");
 
         PullVariantsCallable callable = new PullVariantsCallable(canvasDAOBean, hearsayDAOBean);
 

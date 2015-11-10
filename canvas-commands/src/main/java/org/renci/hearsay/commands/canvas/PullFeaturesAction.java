@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
 @Command(scope = "canvas", name = "pull-features", description = "Pull Features")
 public class PullFeaturesAction extends AbstractAction {
 
-    private final Logger logger = LoggerFactory.getLogger(PullFeaturesAction.class);
+    private static final Logger logger = LoggerFactory.getLogger(PullFeaturesAction.class);
 
     @Option(name = "--refSeqVersion", description = "RefSeq Version Identifier", required = true, multiValued = false)
     private String refSeqVersion;
@@ -34,7 +34,12 @@ public class PullFeaturesAction extends AbstractAction {
     @Override
     public Object doExecute() {
         logger.debug("ENTERING doExecute()");
-        PullFeaturesCallable callable = new PullFeaturesCallable(canvasDAOBean, hearsayDAOBean, refSeqVersion);
+
+        PullFeaturesCallable callable = new PullFeaturesCallable();
+        callable.setCanvasDAOBean(canvasDAOBean);
+        callable.setHearsayDAOBean(hearsayDAOBean);
+        callable.setRefSeqVersion(refSeqVersion);
+
         if (StringUtils.isNotEmpty(geneName)) {
             callable.setGeneName(geneName);
         }
@@ -46,22 +51,6 @@ public class PullFeaturesAction extends AbstractAction {
             e.printStackTrace();
         }
         return null;
-    }
-
-    public String getGeneName() {
-        return geneName;
-    }
-
-    public void setGeneName(String geneName) {
-        this.geneName = geneName;
-    }
-
-    public String getRefSeqVersion() {
-        return refSeqVersion;
-    }
-
-    public void setRefSeqVersion(String refSeqVersion) {
-        this.refSeqVersion = refSeqVersion;
     }
 
     public CANVASDAOBean getCanvasDAOBean() {
@@ -78,6 +67,22 @@ public class PullFeaturesAction extends AbstractAction {
 
     public void setHearsayDAOBean(HearsayDAOBean hearsayDAOBean) {
         this.hearsayDAOBean = hearsayDAOBean;
+    }
+
+    public String getGeneName() {
+        return geneName;
+    }
+
+    public void setGeneName(String geneName) {
+        this.geneName = geneName;
+    }
+
+    public String getRefSeqVersion() {
+        return refSeqVersion;
+    }
+
+    public void setRefSeqVersion(String refSeqVersion) {
+        this.refSeqVersion = refSeqVersion;
     }
 
 }

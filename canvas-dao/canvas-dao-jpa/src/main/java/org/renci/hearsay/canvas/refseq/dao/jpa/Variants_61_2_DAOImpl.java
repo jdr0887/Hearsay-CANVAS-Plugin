@@ -108,4 +108,47 @@ public class Variants_61_2_DAOImpl extends BaseDAOImpl<Variants_61_2, Long> impl
         return ret;
     }
 
+    @Override
+    public List<Variants_61_2> findByGeneNameAndMaxAlleleFrequency(String name, Double threshold)
+            throws HearsayDAOException {
+        logger.debug("ENTERING findByGeneNameAndMaxAlleleFrequency(String, Double)");
+        CriteriaBuilder critBuilder = getEntityManager().getCriteriaBuilder();
+        CriteriaQuery<Variants_61_2> crit = critBuilder.createQuery(getPersistentClass());
+        Root<Variants_61_2> root = crit.from(getPersistentClass());
+
+        List<Predicate> predicates = new ArrayList<Predicate>();
+
+        predicates.add(critBuilder.equal(root.get(Variants_61_2_.hgncGene), name));
+
+        // Join<Variants_61_2, LocationVariant> variantLocationVariantJoin = root.join(Variants_61_2_.locationVariant,
+        // JoinType.LEFT);
+
+        // Join<LocationVariant, MaxVariantFrequency> locationVariantEXACMaxVariantFrequencyJoin =
+        // variantLocationVariantJoin
+        // .join(LocationVariant_.exacMaxVariantFrequencies, JoinType.LEFT);
+        //
+        // Coalesce<Double> exacMaxVariantFrequencyCoalesce = critBuilder.coalesce();
+        // exacMaxVariantFrequencyCoalesce.value(locationVariantEXACMaxVariantFrequencyJoin
+        // .get(MaxVariantFrequency_.maxAlleleFrequency));
+        // exacMaxVariantFrequencyCoalesce.value(0D);
+        //
+        // predicates.add(critBuilder.lessThanOrEqualTo(exacMaxVariantFrequencyCoalesce, threshold));
+
+        // Join<LocationVariant, MaxFreq> locationVariantCLINBINMaxVariantFrequencyJoin =
+        // variantLocationVariantJoin.join(
+        // LocationVariant_.clinbinMaxVariantFrequencies, JoinType.LEFT);
+        //
+        // Coalesce<Double> clinbinMaxVariantFrequencyCoalesce = critBuilder.coalesce();
+        // clinbinMaxVariantFrequencyCoalesce.value(locationVariantCLINBINMaxVariantFrequencyJoin
+        // .get(MaxFreq_.maxAlleleFreq));
+        // clinbinMaxVariantFrequencyCoalesce.value(0D);
+        //
+        // predicates.add(critBuilder.lessThanOrEqualTo(clinbinMaxVariantFrequencyCoalesce, threshold));
+
+        crit.where(predicates.toArray(new Predicate[predicates.size()]));
+        TypedQuery<Variants_61_2> query = getEntityManager().createQuery(crit);
+        List<Variants_61_2> ret = query.getResultList();
+        return ret;
+    }
+
 }

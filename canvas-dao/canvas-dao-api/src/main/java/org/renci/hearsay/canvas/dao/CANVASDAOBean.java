@@ -2,6 +2,7 @@ package org.renci.hearsay.canvas.dao;
 
 import org.renci.hearsay.canvas.annotation.dao.AnnotationGeneDAO;
 import org.renci.hearsay.canvas.annotation.dao.AnnotationGeneExternalIdsDAO;
+import org.renci.hearsay.canvas.clinbin.dao.MaxFreqDAO;
 import org.renci.hearsay.canvas.clinvar.dao.ReferenceClinicalAssertionsDAO;
 import org.renci.hearsay.canvas.exac.dao.MaxVariantFrequencyDAO;
 import org.renci.hearsay.canvas.exac.dao.VariantFrequencyDAO;
@@ -44,12 +45,22 @@ public class CANVASDAOBean {
 
     private MaxVariantFrequencyDAO maxVariantFrequencyDAO;
 
+    private MaxFreqDAO maxFreqDAO;
+
     private VariantFrequencyDAO variantFrequencyDAO;
 
     private ReferenceClinicalAssertionsDAO referenceClinicalAssertionsDAO;
 
     public CANVASDAOBean() {
         super();
+    }
+
+    public MaxFreqDAO getMaxFreqDAO() {
+        return maxFreqDAO;
+    }
+
+    public void setMaxFreqDAO(MaxFreqDAO maxFreqDAO) {
+        this.maxFreqDAO = maxFreqDAO;
     }
 
     public ReferenceClinicalAssertionsDAO getReferenceClinicalAssertionsDAO() {

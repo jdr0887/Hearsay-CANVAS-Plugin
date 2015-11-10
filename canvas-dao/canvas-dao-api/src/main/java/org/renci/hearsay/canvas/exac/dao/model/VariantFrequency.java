@@ -13,6 +13,8 @@ import javax.persistence.Table;
 import org.renci.hearsay.canvas.dao.Persistable;
 import org.renci.hearsay.canvas.var.dao.model.LocationVariant;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(schema = "exac", name = "variant_freq")
 @NamedQueries({
@@ -21,6 +23,7 @@ public class VariantFrequency implements Persistable {
 
     private static final long serialVersionUID = 4359650786462818369L;
 
+    @JsonIgnore
     @EmbeddedId
     private VariantFrequencyPK key;
 

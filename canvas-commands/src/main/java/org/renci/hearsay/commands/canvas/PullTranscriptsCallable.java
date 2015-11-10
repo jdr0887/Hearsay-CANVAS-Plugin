@@ -42,13 +42,8 @@ public class PullTranscriptsCallable implements Callable<Void> {
 
     private Integer genomeRefId;
 
-    public PullTranscriptsCallable(CANVASDAOBean canvasDAOBean, HearsayDAOBean hearsayDAOBean, String refSeqVersion,
-            Integer genomeRefId) {
+    public PullTranscriptsCallable() {
         super();
-        this.canvasDAOBean = canvasDAOBean;
-        this.hearsayDAOBean = hearsayDAOBean;
-        this.refSeqVersion = refSeqVersion;
-        this.genomeRefId = genomeRefId;
     }
 
     @Override
@@ -171,14 +166,6 @@ public class PullTranscriptsCallable implements Callable<Void> {
         return null;
     }
 
-    public String getRefSeqVersion() {
-        return refSeqVersion;
-    }
-
-    public void setRefSeqVersion(String refSeqVersion) {
-        this.refSeqVersion = refSeqVersion;
-    }
-
     public CANVASDAOBean getCanvasDAOBean() {
         return canvasDAOBean;
     }
@@ -193,6 +180,14 @@ public class PullTranscriptsCallable implements Callable<Void> {
 
     public void setHearsayDAOBean(HearsayDAOBean hearsayDAOBean) {
         this.hearsayDAOBean = hearsayDAOBean;
+    }
+
+    public String getRefSeqVersion() {
+        return refSeqVersion;
+    }
+
+    public void setRefSeqVersion(String refSeqVersion) {
+        this.refSeqVersion = refSeqVersion;
     }
 
     public Integer getGenomeRefId() {
