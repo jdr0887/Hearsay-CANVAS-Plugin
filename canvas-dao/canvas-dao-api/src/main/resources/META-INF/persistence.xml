@@ -27,6 +27,7 @@
     <class>org.renci.hearsay.canvas.clinbin.dao.model.BinResultsFinalRiskX</class>
     <class>org.renci.hearsay.canvas.clinbin.dao.model.BinResultsFinalRiskXPK</class>
     <class>org.renci.hearsay.canvas.clinbin.dao.model.CarrierStatus</class>
+    <class>org.renci.hearsay.canvas.clinbin.dao.model.ClinBinStatusType</class>
     <class>org.renci.hearsay.canvas.clinbin.dao.model.DiagnosticBinResults</class>
     <class>org.renci.hearsay.canvas.clinbin.dao.model.DiagnosticBinResultsPK</class>
     <class>org.renci.hearsay.canvas.clinbin.dao.model.DiagnosticGene</class>
@@ -55,7 +56,6 @@
     <class>org.renci.hearsay.canvas.clinbin.dao.model.PhenotypeX</class>
     <class>org.renci.hearsay.canvas.clinbin.dao.model.RsVariants</class>
     <class>org.renci.hearsay.canvas.clinbin.dao.model.RsVariantsPK</class>
-    <class>org.renci.hearsay.canvas.clinbin.dao.model.StatusType</class>
     <class>org.renci.hearsay.canvas.clinbin.dao.model.UnimportantExon</class>
     <class>org.renci.hearsay.canvas.clinbin.dao.model.UnimportantExonPK</class>
     <class>org.renci.hearsay.canvas.clinbin.dao.model.UnimportantFeature</class>
@@ -77,9 +77,9 @@
     <class>org.renci.hearsay.canvas.genome1k.dao.model.SNPFrequencySubpopulation</class>
     <class>org.renci.hearsay.canvas.genome1k.dao.model.SNPFrequencySubpopulationPK</class>
     <class>org.renci.hearsay.canvas.hgnc.dao.model.HGNCGene</class>
+    <class>org.renci.hearsay.canvas.hgnc.dao.model.HGNCStatusType</class>
     <class>org.renci.hearsay.canvas.hgnc.dao.model.LocusGroup</class>
     <class>org.renci.hearsay.canvas.hgnc.dao.model.LocusType</class>
-    <class>org.renci.hearsay.canvas.hgnc.dao.model.StatusType</class>
     <class>org.renci.hearsay.canvas.ref.dao.model.GenomeRef</class>
     <class>org.renci.hearsay.canvas.ref.dao.model.GenomeRefSeq</class>
     <class>org.renci.hearsay.canvas.ref.dao.model.SeqType</class>
