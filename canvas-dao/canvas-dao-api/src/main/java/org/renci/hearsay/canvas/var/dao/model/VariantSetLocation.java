@@ -34,7 +34,7 @@ public class VariantSetLocation implements Persistable {
     private String vcfFilter;
 
     @Column(name = "qual")
-    private Float qual;
+    private Double qual;
 
     public VariantSetLocation() {
         super();
@@ -72,11 +72,11 @@ public class VariantSetLocation implements Persistable {
         this.vcfFilter = vcfFilter;
     }
 
-    public Float getQual() {
+    public Double getQual() {
         return qual;
     }
 
-    public void setQual(Float qual) {
+    public void setQual(Double qual) {
         this.qual = qual;
     }
 

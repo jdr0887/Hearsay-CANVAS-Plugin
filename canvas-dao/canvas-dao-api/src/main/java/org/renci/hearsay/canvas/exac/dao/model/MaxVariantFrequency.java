@@ -16,7 +16,7 @@ import org.renci.hearsay.canvas.var.dao.model.LocationVariant;
 @Entity
 @Table(schema = "exac", name = "max_variant_freq")
 @NamedQueries({
-        @NamedQuery(name = "exac.MaxVariantFrequency.findByLocationVariantIdAndVersion", query = "SELECT a FROM MaxVariantFrequency a where a.locationVariant.id = :locationVariantId and a.version = :version order by a.maxAlleleFrequency desc") })
+        @NamedQuery(name = "exac.MaxVariantFrequency.findByLocationVariantIdAndVersion", query = "SELECT a FROM MaxVariantFrequency a join a.locationVariant b where b.id = :locationVariantId and a.key.version = :version order by a.maxAlleleFrequency desc") })
 public class MaxVariantFrequency implements Persistable {
 
     private static final long serialVersionUID = -1388708510623130329L;

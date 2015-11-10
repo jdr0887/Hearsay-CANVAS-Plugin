@@ -20,7 +20,7 @@ import org.renci.hearsay.canvas.var.dao.model.VariantType;
 @Entity
 @Table(schema = "refseq", name = "variants_48_2")
 @NamedQueries({
-        @NamedQuery(name = "Variants_48_2.findByLocationVariantId", query = "SELECT a FROM Variants_48_2 a where a.locationVariant.id = :locationVariantId") })
+        @NamedQuery(name = "Variants_48_2.findByLocationVariantId", query = "SELECT a FROM Variants_48_2 a join a.locationVariant b where b.id = :locationVariantId") })
 public class Variants_48_2 implements Persistable {
 
     private static final long serialVersionUID = -3196283582319841870L;
@@ -87,7 +87,7 @@ public class Variants_48_2 implements Persistable {
     private Integer intronExonDist;
 
     @Column(name = "strand")
-    private String strand;
+    private Character strand;
 
     @Column(name = "nummaps")
     private Integer nummaps;
@@ -261,11 +261,11 @@ public class Variants_48_2 implements Persistable {
         this.intronExonDist = intronExonDist;
     }
 
-    public String getStrand() {
+    public Character getStrand() {
         return strand;
     }
 
-    public void setStrand(String strand) {
+    public void setStrand(Character strand) {
         this.strand = strand;
     }
 

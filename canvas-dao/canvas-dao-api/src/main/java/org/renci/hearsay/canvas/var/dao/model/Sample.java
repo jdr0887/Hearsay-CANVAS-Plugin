@@ -19,7 +19,7 @@ public class Sample implements Persistable {
 
     @Id
     @Column(name = "sample_id")
-    private Long id;
+    private Integer id;
 
     @ManyToOne
     @JoinColumn(name = "project_name")
@@ -32,11 +32,11 @@ public class Sample implements Persistable {
         super();
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

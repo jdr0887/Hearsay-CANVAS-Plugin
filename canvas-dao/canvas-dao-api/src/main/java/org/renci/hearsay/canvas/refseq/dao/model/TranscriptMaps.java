@@ -4,6 +4,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
+import javax.persistence.Convert;
+import javax.persistence.Converter;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
@@ -12,17 +14,13 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.Type;
-import org.hibernate.annotations.TypeDef;
-import org.hibernate.annotations.TypeDefs;
 import org.renci.hearsay.canvas.dao.Persistable;
 import org.renci.hearsay.canvas.ref.dao.model.GenomeRefSeq;
-import org.renci.hearsay.canvas.refseq.dao.StrandBasicType;
-import org.renci.hearsay.canvas.refseq.dao.StrandUserType;
+import org.renci.hearsay.canvas.refseq.dao.RefSeqStrandTypeConverter;
 
 @Entity
 @Table(schema = "refseq", name = "transcr_maps")
-@TypeDefs({ @TypeDef(name = StrandUserType.NAME, typeClass = StrandBasicType.class) })
+// @TypeDefs({ @TypeDef(name = StrandUserType.NAME, typeClass = StrandBasicType.class) })
 public class TranscriptMaps implements Persistable {
 
     private static final long serialVersionUID = 8175717803443861686L;
@@ -41,9 +39,10 @@ public class TranscriptMaps implements Persistable {
     @Column(name = "map_count")
     private Integer mapCount;
 
-    @Column(name = "strand", columnDefinition = "varchar")
-    @Type(type = StrandUserType.NAME)
-    private String strand;
+    @Column(name = "strand", columnDefinition = "strand_type")
+    // @Type(type = "org.renci.hearsay.canvas.refseq.dao.StrandBasicType")
+    @Convert(converter = RefSeqStrandTypeConverter.class)
+    private RefSeqStrandType strand;
 
     @Column(name = "score")
     private Double score;
@@ -129,11 +128,11 @@ public class TranscriptMaps implements Persistable {
         this.exonCount = exonCount;
     }
 
-    public String getStrand() {
+    public RefSeqStrandType getStrand() {
         return strand;
     }
 
-    public void setStrand(String strand) {
+    public void setStrand(RefSeqStrandType strand) {
         this.strand = strand;
     }
 

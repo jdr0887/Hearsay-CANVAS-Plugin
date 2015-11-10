@@ -18,9 +18,8 @@ import org.renci.hearsay.canvas.dao.Persistable;
 @Entity
 @Table(schema = "ref", name = "genome_ref")
 @NamedQueries({
-        @NamedQuery(name = "GenomeRef.findByShortName", query = "SELECT a FROM GenomeRef a where a.shortName = :shortName"),
-        @NamedQuery(name = "GenomeRef.findByName", query = "SELECT a FROM GenomeRef a where a.name = :name"),
-        @NamedQuery(name = "GenomeRef.findBySeqTypeAndContig", query = "SELECT a FROM GenomeRef a where a.genomeRefSeqs.seqType = :seqType and a.genomeRefSeqs.contig = :contig") })
+        @NamedQuery(name = "GenomeRef.findByShortName", query = "FROM GenomeRef a where a.shortName = :shortName"),
+        @NamedQuery(name = "GenomeRef.findBySeqTypeAndContig", query = "FROM GenomeRef a join a.genomeRefSeqs b where b.seqType = :seqType and b.contig = :contig") })
 public class GenomeRef implements Persistable {
 
     private static final long serialVersionUID = -6241264265732175194L;

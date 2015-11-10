@@ -33,7 +33,7 @@ public class AssemblyLocationVariant implements Persistable {
     private Boolean homozygous;
 
     @Column(name = "genotype_qual")
-    private Float genotypeQual;
+    private Double genotypeQual;
 
     public AssemblyLocationVariant() {
         super();
@@ -71,11 +71,11 @@ public class AssemblyLocationVariant implements Persistable {
         this.homozygous = homozygous;
     }
 
-    public Float getGenotypeQual() {
+    public Double getGenotypeQual() {
         return genotypeQual;
     }
 
-    public void setGenotypeQual(Float genotypeQual) {
+    public void setGenotypeQual(Double genotypeQual) {
         this.genotypeQual = genotypeQual;
     }
 

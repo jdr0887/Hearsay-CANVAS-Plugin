@@ -16,7 +16,7 @@ import org.renci.hearsay.canvas.var.dao.model.LocationVariant;
 @Entity
 @Table(schema = "exac", name = "variant_freq")
 @NamedQueries({
-        @NamedQuery(name = "exac.VariantFrequency.findByLocationVariantIdAndVersion", query = "SELECT a FROM VariantFrequency a where a.locationVariant.id = :locationVariantId and a.version = :version order by a.alternateAlleleFrequency desc") })
+        @NamedQuery(name = "exac.VariantFrequency.findByLocationVariantIdAndVersion", query = "FROM VariantFrequency a join a.locationVariant b where b.id = :locationVariantId and a.key.version = :version order by a.alternateAlleleFrequency desc") })
 public class VariantFrequency implements Persistable {
 
     private static final long serialVersionUID = 4359650786462818369L;
