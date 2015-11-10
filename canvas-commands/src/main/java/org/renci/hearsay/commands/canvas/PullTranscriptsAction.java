@@ -7,7 +7,6 @@ import org.apache.karaf.shell.commands.Argument;
 import org.apache.karaf.shell.commands.Command;
 import org.apache.karaf.shell.console.AbstractAction;
 import org.renci.hearsay.canvas.dao.CANVASDAOBean;
-import org.renci.hearsay.commons.canvas.PullTranscriptsCallable;
 import org.renci.hearsay.dao.HearsayDAOBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,9 +33,9 @@ public class PullTranscriptsAction extends AbstractAction {
     @Override
     public Object doExecute() {
         logger.debug("ENTERING doExecute()");
-        PullTranscriptsCallable callable = new PullTranscriptsCallable(canvasDAOBean, hearsayDAOBean, refSeqVersion,
-                genomeRefId);
         try {
+            PullTranscriptsCallable callable = new PullTranscriptsCallable(canvasDAOBean, hearsayDAOBean,
+                    refSeqVersion, genomeRefId);
             ExecutorService es = Executors.newSingleThreadExecutor();
             es.submit(callable);
             es.shutdown();

@@ -3,12 +3,11 @@ package org.renci.hearsay.commands.canvas;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.karaf.shell.commands.Command;
 import org.apache.karaf.shell.commands.Option;
 import org.apache.karaf.shell.console.AbstractAction;
 import org.renci.hearsay.canvas.dao.CANVASDAOBean;
-import org.renci.hearsay.commons.canvas.PullVariantsCallable;
 import org.renci.hearsay.dao.HearsayDAOBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

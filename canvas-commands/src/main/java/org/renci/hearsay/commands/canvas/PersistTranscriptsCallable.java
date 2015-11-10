@@ -10,10 +10,12 @@ import javax.swing.GroupLayout.Alignment;
 import org.renci.hearsay.canvas.dao.CANVASDAOBean;
 import org.renci.hearsay.canvas.dao.model.Mapping;
 import org.renci.hearsay.canvas.refseq.dao.model.RefSeqCodingSequence;
+import org.renci.hearsay.canvas.refseq.dao.model.RefSeqGene;
 import org.renci.hearsay.canvas.refseq.dao.model.RegionGroup;
 import org.renci.hearsay.canvas.refseq.dao.model.RegionGroupRegion;
 import org.renci.hearsay.dao.HearsayDAOBean;
 import org.renci.hearsay.dao.HearsayDAOException;
+import org.renci.hearsay.dao.model.Gene;
 import org.renci.hearsay.dao.model.ReferenceSequence;
 import org.renci.hearsay.dao.model.Region;
 import org.slf4j.Logger;
@@ -47,13 +49,29 @@ public class PersistTranscriptsCallable implements Runnable {
     public void run() {
         logger.debug("ENTERING call()");
 
+        Gene gene = null;
+        try {
+            List<RefSeqGene> refSeqGeneList = canvasDAOBean.getRefSeqGeneDAO()
+                    .findByRefSeqVersionAndTranscriptId(refSeqVersion, versionId);
+            if (refSeqGeneList != null && !refSeqGeneList.isEmpty()) {
+                RefSeqGene refSeqGene = refSeqGeneList.get(0);
+                List<Gene> alreadyPersistedGeneList = hearsayDAOBean.getGeneDAO().findBySymbol(refSeqGene.getName());
+                gene = alreadyPersistedGeneList.get(0);
+            }
+        } catch (HearsayDAOException e) {
+            e.printStackTrace();
+        }
+
+        if (gene == null) {
+            logger.error("Gene not found");
+            return;
+        }
+        logger.info(gene.toString());
+
         ReferenceSequence transcriptRefSeq = null;
         try {
-            ReferenceSequence exampleReferenceSequence = new ReferenceSequence();
-            exampleReferenceSequence.setGene(gene);
-            exampleReferenceSequence.setAccession(versionId);
             List<ReferenceSequence> alreadyPersistedTranscriptList = hearsayDAOBean.getReferenceSequenceDAO()
-                    .findByExample(exampleReferenceSequence);
+                    .findByIdentifierValue(versionId);
             if (alreadyPersistedTranscriptList != null && !alreadyPersistedTranscriptList.isEmpty()) {
                 transcriptRefSeq = alreadyPersistedTranscriptList.get(0);
             }

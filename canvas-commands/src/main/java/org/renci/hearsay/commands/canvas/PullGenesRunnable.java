@@ -6,6 +6,7 @@ import org.renci.hearsay.canvas.dao.CANVASDAOBean;
 import org.renci.hearsay.canvas.refseq.dao.model.RefSeqGene;
 import org.renci.hearsay.dao.HearsayDAOBean;
 import org.renci.hearsay.dao.model.Gene;
+import org.renci.hearsay.dao.model.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,6 +36,7 @@ public class PullGenesRunnable implements Runnable {
                 for (RefSeqGene refSeqGene : refSeqGeneList) {
                     Gene exampleGene = new Gene();
                     exampleGene.setSymbol(refSeqGene.getName());
+                    
                     List<Gene> alreadyPersistedGeneList = hearsayDAOBean.getGeneDAO().findByExample(exampleGene);
                     if (alreadyPersistedGeneList == null
                             || (alreadyPersistedGeneList != null && alreadyPersistedGeneList.isEmpty())) {

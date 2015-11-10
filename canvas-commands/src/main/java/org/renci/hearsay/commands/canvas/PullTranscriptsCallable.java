@@ -9,6 +9,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.renci.hearsay.canvas.dao.CANVASDAOBean;
 import org.renci.hearsay.canvas.dao.model.Mapping;
 import org.renci.hearsay.canvas.dao.model.MappingKey;
@@ -21,9 +22,11 @@ import org.renci.hearsay.canvas.refseq.dao.model.TranscriptMapsExons;
 import org.renci.hearsay.dao.HearsayDAOBean;
 import org.renci.hearsay.dao.HearsayDAOException;
 import org.renci.hearsay.dao.model.Gene;
+import org.renci.hearsay.dao.model.Identifier;
+import org.renci.hearsay.dao.model.ReferenceSequence;
+import org.renci.hearsay.dao.model.ReferenceSequenceType;
 import org.renci.hearsay.dao.model.RegionType;
 import org.renci.hearsay.dao.model.StrandType;
-import org.renci.hearsay.dao.model.TranscriptRefSeq;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -126,10 +129,10 @@ public class PullTranscriptsCallable implements Callable<Void> {
                 Gene gene = null;
                 if (refSeqGeneList != null && !refSeqGeneList.isEmpty()) {
                     RefSeqGene refSeqGene = refSeqGeneList.get(0);
-                    List<Gene> alreadyPersistedGeneList = hearsayDAOBean.getGeneDAO().findByName(refSeqGene.getName());
+                    List<Gene> alreadyPersistedGeneList = hearsayDAOBean.getGeneDAO().findBySymbol(refSeqGene.getName());
                     if (alreadyPersistedGeneList != null && alreadyPersistedGeneList.isEmpty()) {
                         gene = new Gene();
-                        gene.setName(refSeqGene.getName());
+                        gene.setSymbol(refSeqGene.getName());
                         gene.setDescription(refSeqGene.getDescription());
                         gene.setId(hearsayDAOBean.getGeneDAO().save(gene));
                         logger.info(gene.toString());
@@ -138,18 +141,19 @@ public class PullTranscriptsCallable implements Callable<Void> {
                     }
                 }
 
-                TranscriptRefSeq transcriptRefSeq = new TranscriptRefSeq();
+                ReferenceSequence transcriptRefSeq = new ReferenceSequence(ReferenceSequenceType.TRANSCRIPT);
                 transcriptRefSeq.setGene(gene);
-                transcriptRefSeq.setAccession(key.getVersionId());
-                List<TranscriptRefSeq> alreadyPersistedTranscriptList = hearsayDAOBean.getTranscriptRefSeqDAO()
-                        .findByExample(transcriptRefSeq);
-                if (alreadyPersistedTranscriptList != null && alreadyPersistedTranscriptList.isEmpty()) {
-                    Long id = hearsayDAOBean.getTranscriptRefSeqDAO().save(transcriptRefSeq);
-                    transcriptRefSeq.setId(id);
-                    logger.info(transcriptRefSeq.toString());
+                
+                String versionedRefSeqAccession = key.getVersionId();
+                Identifier identifier = new Identifier("www.ncbi.nlm.nih.gov/nuccore", versionedRefSeqAccession);
+                List<Identifier> possibleIdentifiers = hearsayDAOBean.getIdentifierDAO().findByExample(identifier);
+                if (CollectionUtils.isNotEmpty(possibleIdentifiers)) {
+                    identifier = possibleIdentifiers.get(0);
                 } else {
-                    transcriptRefSeq = alreadyPersistedTranscriptList.get(0);
+                    identifier.setId(hearsayDAOBean.getIdentifierDAO().save(identifier));
                 }
+                transcriptRefSeq.getIdentifiers().add(identifier);
+                
             }
 
             ThreadPoolExecutor tpe = new ThreadPoolExecutor(8, 8, 3, TimeUnit.DAYS, new LinkedBlockingQueue<Runnable>());
