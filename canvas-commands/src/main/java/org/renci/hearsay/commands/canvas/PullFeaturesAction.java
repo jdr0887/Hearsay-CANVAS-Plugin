@@ -3,17 +3,17 @@ package org.renci.hearsay.commands.canvas;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.karaf.shell.commands.Command;
-import org.apache.karaf.shell.commands.Option;
-import org.apache.karaf.shell.console.AbstractAction;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.karaf.shell.api.action.Command;
+import org.apache.karaf.shell.api.action.Action;
+import org.apache.karaf.shell.api.action.Option;
 import org.renci.hearsay.canvas.dao.CANVASDAOBean;
 import org.renci.hearsay.dao.HearsayDAOBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Command(scope = "canvas", name = "pull-features", description = "Pull Features")
-public class PullFeaturesAction extends AbstractAction {
+public class PullFeaturesAction implements Action {
 
     private static final Logger logger = LoggerFactory.getLogger(PullFeaturesAction.class);
 
@@ -32,8 +32,8 @@ public class PullFeaturesAction extends AbstractAction {
     }
 
     @Override
-    public Object doExecute() {
-        logger.debug("ENTERING doExecute()");
+    public Object execute() {
+        logger.debug("ENTERING execute()");
 
         PullFeaturesCallable callable = new PullFeaturesCallable();
         callable.setCanvasDAOBean(canvasDAOBean);
