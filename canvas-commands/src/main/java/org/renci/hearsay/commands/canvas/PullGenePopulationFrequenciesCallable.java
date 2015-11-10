@@ -8,7 +8,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.renci.hearsay.canvas.dao.CANVASDAOBean;
 import org.renci.hearsay.canvas.exac.dao.model.MaxVariantFrequency;
 import org.renci.hearsay.canvas.refseq.dao.model.Variants_61_2;
@@ -51,7 +51,7 @@ public class PullGenePopulationFrequenciesCallable implements Callable<Void> {
                         try {
                             // non-granular search for population frequencies
                             List<PopulationFrequency> alreadyPersistedPopulationFrequencies = hearsayDAOBean
-                                    .getPopulationFrequencyDAO().findByGeneName(gene.getName());
+                                    .getPopulationFrequencyDAO().findByGeneId(gene.getId());
                             if (CollectionUtils.isEmpty(alreadyPersistedPopulationFrequencies)) {
                                 foundGeneSet.add(gene);
                             }
@@ -79,7 +79,7 @@ public class PullGenePopulationFrequenciesCallable implements Callable<Void> {
                             try {
 
                                 List<Variants_61_2> variants = canvasDAOBean.getVariants_61_2_DAO()
-                                        .findByGeneName(gene.getName());
+                                        .findByGeneName(gene.getSymbol());
 
                                 if (CollectionUtils.isNotEmpty(variants)) {
 
@@ -114,7 +114,7 @@ public class PullGenePopulationFrequenciesCallable implements Callable<Void> {
                                             // }
 
                                             List<MaxVariantFrequency> exacMaxVariantFrequencies = locationVariant
-                                                    .getExacMaxVariantFrequencies();
+                                                    .getMaxVariantFrequencies();
                                             if (CollectionUtils.isNotEmpty(exacMaxVariantFrequencies)) {
                                                 for (final MaxVariantFrequency maxFreq : exacMaxVariantFrequencies) {
                                                     logger.debug(maxFreq.toString());
@@ -123,7 +123,7 @@ public class PullGenePopulationFrequenciesCallable implements Callable<Void> {
                                                     pf.setFrequency(maxFreq.getMaxAlleleFrequency());
                                                     pf.setGene(gene);
                                                     pf.setSource("EXAC");
-                                                    pf.setVersion(maxFreq.getVersion());
+                                                    pf.setVersion(maxFreq.getKey().getVersion());
                                                     Location location = new Location(locationVariant.getPosition(),
                                                             locationVariant.getEndPosition());
                                                     location.setId(hearsayDAOBean.getLocationDAO().save(location));
