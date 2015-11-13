@@ -3,6 +3,8 @@ package org.renci.hearsay.canvas.ref.dao.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -10,6 +12,7 @@ import org.renci.hearsay.canvas.dao.Persistable;
 
 @Entity
 @Table(schema = "ref", name = "genome_ref_seq")
+@NamedQueries({ @NamedQuery(name = "GenomeRefSeq.findAll", query = "FROM GenomeRefSeq") })
 public class GenomeRefSeq implements Persistable {
 
     private static final long serialVersionUID = 8237639060154518282L;
