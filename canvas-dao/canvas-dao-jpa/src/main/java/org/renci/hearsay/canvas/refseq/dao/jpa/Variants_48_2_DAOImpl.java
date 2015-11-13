@@ -3,6 +3,7 @@ package org.renci.hearsay.canvas.refseq.dao.jpa;
 import java.util.List;
 
 import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
 
 import org.renci.hearsay.canvas.dao.jpa.BaseDAOImpl;
 import org.renci.hearsay.canvas.refseq.dao.Variants_48_2_DAO;
@@ -11,6 +12,7 @@ import org.renci.hearsay.dao.HearsayDAOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@Transactional
 public class Variants_48_2_DAOImpl extends BaseDAOImpl<Variants_48_2, Long> implements Variants_48_2_DAO {
 
     private final Logger logger = LoggerFactory.getLogger(Variants_48_2_DAOImpl.class);

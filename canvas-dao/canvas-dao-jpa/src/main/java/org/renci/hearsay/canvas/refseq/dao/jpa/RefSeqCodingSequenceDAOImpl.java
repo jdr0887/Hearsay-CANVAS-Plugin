@@ -9,6 +9,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.transaction.Transactional;
 
 import org.renci.hearsay.canvas.dao.jpa.BaseDAOImpl;
 import org.renci.hearsay.canvas.refseq.dao.RefSeqCodingSequenceDAO;
@@ -22,6 +23,7 @@ import org.renci.hearsay.dao.HearsayDAOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@Transactional
 public class RefSeqCodingSequenceDAOImpl extends BaseDAOImpl<RefSeqCodingSequence, Long> implements
         RefSeqCodingSequenceDAO {
 

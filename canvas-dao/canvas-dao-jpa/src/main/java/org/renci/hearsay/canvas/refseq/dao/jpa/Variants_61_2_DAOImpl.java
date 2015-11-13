@@ -11,6 +11,7 @@ import javax.persistence.criteria.Join;
 import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.transaction.Transactional;
 
 import org.renci.hearsay.canvas.clinbin.dao.model.MaxFreq;
 import org.renci.hearsay.canvas.clinbin.dao.model.MaxFreq_;
@@ -26,6 +27,7 @@ import org.renci.hearsay.dao.HearsayDAOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@Transactional
 public class Variants_61_2_DAOImpl extends BaseDAOImpl<Variants_61_2, Long> implements Variants_61_2_DAO {
 
     private final Logger logger = LoggerFactory.getLogger(Variants_61_2_DAOImpl.class);

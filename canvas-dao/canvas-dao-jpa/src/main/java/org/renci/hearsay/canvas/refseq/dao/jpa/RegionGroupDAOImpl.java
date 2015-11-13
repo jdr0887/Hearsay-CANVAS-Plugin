@@ -10,6 +10,7 @@ import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.SetJoin;
+import javax.transaction.Transactional;
 
 import org.renci.hearsay.canvas.dao.jpa.BaseDAOImpl;
 import org.renci.hearsay.canvas.refseq.dao.RegionGroupDAO;
@@ -23,6 +24,7 @@ import org.renci.hearsay.dao.HearsayDAOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@Transactional
 public class RegionGroupDAOImpl extends BaseDAOImpl<RegionGroup, Long> implements RegionGroupDAO {
 
     private final Logger logger = LoggerFactory.getLogger(RegionGroupDAOImpl.class);
