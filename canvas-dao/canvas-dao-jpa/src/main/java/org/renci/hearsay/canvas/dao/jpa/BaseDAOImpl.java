@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceUnit;
+import javax.transaction.Transactional;
 
 import org.renci.hearsay.canvas.dao.BaseDAO;
 import org.renci.hearsay.canvas.dao.Persistable;
@@ -11,6 +12,7 @@ import org.renci.hearsay.dao.HearsayDAOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@Transactional
 public abstract class BaseDAOImpl<T extends Persistable, ID extends Serializable> implements BaseDAO<T, ID> {
 
     private final Logger logger = LoggerFactory.getLogger(BaseDAOImpl.class);

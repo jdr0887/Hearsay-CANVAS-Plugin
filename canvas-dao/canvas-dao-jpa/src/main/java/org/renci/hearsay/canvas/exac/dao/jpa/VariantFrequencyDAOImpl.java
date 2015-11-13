@@ -3,6 +3,7 @@ package org.renci.hearsay.canvas.exac.dao.jpa;
 import java.util.List;
 
 import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
 
 import org.renci.hearsay.canvas.dao.jpa.BaseDAOImpl;
 import org.renci.hearsay.canvas.exac.dao.VariantFrequencyDAO;
@@ -11,6 +12,7 @@ import org.renci.hearsay.dao.HearsayDAOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@Transactional
 public class VariantFrequencyDAOImpl extends BaseDAOImpl<VariantFrequency, Long> implements VariantFrequencyDAO {
 
     private final Logger logger = LoggerFactory.getLogger(VariantFrequencyDAOImpl.class);

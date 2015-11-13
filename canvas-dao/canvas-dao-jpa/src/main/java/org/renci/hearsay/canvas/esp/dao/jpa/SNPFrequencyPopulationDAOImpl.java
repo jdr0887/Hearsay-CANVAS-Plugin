@@ -3,6 +3,7 @@ package org.renci.hearsay.canvas.esp.dao.jpa;
 import java.util.List;
 
 import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
 
 import org.renci.hearsay.canvas.dao.jpa.BaseDAOImpl;
 import org.renci.hearsay.canvas.esp.dao.ESPSNPFrequencyPopulationDAO;
@@ -11,6 +12,7 @@ import org.renci.hearsay.dao.HearsayDAOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@Transactional
 public class SNPFrequencyPopulationDAOImpl extends BaseDAOImpl<ESPSNPFrequencyPopulation, Long> implements
         ESPSNPFrequencyPopulationDAO {
 

@@ -11,6 +11,7 @@ import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.SetJoin;
+import javax.transaction.Transactional;
 
 import org.renci.hearsay.canvas.clinbin.dao.model.BinResultsFinalDiagnostic;
 import org.renci.hearsay.canvas.clinbin.dao.model.BinResultsFinalDiagnosticPK;
@@ -44,6 +45,7 @@ import org.renci.hearsay.dao.HearsayDAOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@Transactional
 public class ReferenceClinicalAssertionsDAOImpl extends BaseDAOImpl<ReferenceClinicalAssertions, Long>
         implements ReferenceClinicalAssertionsDAO {
 

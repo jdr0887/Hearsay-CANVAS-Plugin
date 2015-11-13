@@ -9,6 +9,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.transaction.Transactional;
 
 import org.renci.hearsay.canvas.clinbin.dao.BinResultsFinalDiagnosticDAO;
 import org.renci.hearsay.canvas.clinbin.dao.model.BinResultsFinalDiagnostic;
@@ -24,6 +25,7 @@ import org.renci.hearsay.dao.HearsayDAOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@Transactional
 public class BinResultsFinalDiagnosticDAOImpl extends BaseDAOImpl<BinResultsFinalDiagnostic, Long>
         implements BinResultsFinalDiagnosticDAO {
 
