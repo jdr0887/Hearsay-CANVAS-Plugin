@@ -1,0 +1,5 @@
+org.renci.hearsay.canvas.commands.PullGenesAction
+org.renci.hearsay.canvas.commands.PullTranscriptsAction
+org.renci.hearsay.canvas.commands.PullVariantsAction
+org.renci.hearsay.canvas.commands.PullFeaturesAction
+org.renci.hearsay.canvas.commands.PullGenePopulationFrequenciesAction
