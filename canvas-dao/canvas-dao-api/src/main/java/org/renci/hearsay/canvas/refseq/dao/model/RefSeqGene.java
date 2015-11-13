@@ -2,8 +2,10 @@ package org.renci.hearsay.canvas.refseq.dao.model;
 
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -31,7 +33,7 @@ public class RefSeqGene implements Persistable {
     @Column(name = "descr", length = 4095)
     private String description;
 
-    @ManyToMany
+    @ManyToMany(targetEntity = RegionGroup.class, cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
     @JoinTable(schema = "refseq", name = "gene_locs", joinColumns = {
             @JoinColumn(name = "refseq_gene_id", referencedColumnName = "refseq_gene_id") }, inverseJoinColumns = {
                     @JoinColumn(name = "loc_region_group_id", referencedColumnName = "region_group_id") })
