@@ -9,6 +9,7 @@ import org.renci.hearsay.canvas.exac.dao.VariantFrequencyDAO;
 import org.renci.hearsay.canvas.genome1k.dao.OneThousandGenomeSNPFrequencyPopulationDAO;
 import org.renci.hearsay.canvas.hgnc.dao.HGNCGeneDAO;
 import org.renci.hearsay.canvas.ref.dao.GenomeRefDAO;
+import org.renci.hearsay.canvas.ref.dao.GenomeRefSeqDAO;
 import org.renci.hearsay.canvas.refseq.dao.FeatureDAO;
 import org.renci.hearsay.canvas.refseq.dao.RefSeqCodingSequenceDAO;
 import org.renci.hearsay.canvas.refseq.dao.RefSeqGeneDAO;
@@ -17,7 +18,7 @@ import org.renci.hearsay.canvas.refseq.dao.TranscriptMapsDAO;
 import org.renci.hearsay.canvas.refseq.dao.TranscriptMapsExonsDAO;
 import org.renci.hearsay.canvas.refseq.dao.Variants_61_2_DAO;
 
-public class CANVASDAOBean {
+public class CANVASDAOBean implements CANVASDAOBeanService {
 
     private AnnotationGeneDAO annotationGeneDAO;
 
@@ -33,7 +34,9 @@ public class CANVASDAOBean {
 
     private GenomeRefDAO genomeRefDAO;
 
-    private OneThousandGenomeSNPFrequencyPopulationDAO SNPFrequencyPopulationDAO;
+    private GenomeRefSeqDAO genomeRefSeqDAO;
+
+    private OneThousandGenomeSNPFrequencyPopulationDAO oneThousandGenomeSNPFrequencyPopulationDAO;
 
     private TranscriptDAO transcriptDAO;
 
@@ -55,130 +58,173 @@ public class CANVASDAOBean {
         super();
     }
 
+    @Override
+    public GenomeRefSeqDAO getGenomeRefSeqDAO() {
+        return genomeRefSeqDAO;
+    }
+
+    @Override
+    public void setGenomeRefSeqDAO(GenomeRefSeqDAO genomeRefSeqDAO) {
+        this.genomeRefSeqDAO = genomeRefSeqDAO;
+    }
+
+    @Override
     public MaxFreqDAO getMaxFreqDAO() {
         return maxFreqDAO;
     }
 
+    @Override
     public void setMaxFreqDAO(MaxFreqDAO maxFreqDAO) {
         this.maxFreqDAO = maxFreqDAO;
     }
 
+    @Override
     public ReferenceClinicalAssertionsDAO getReferenceClinicalAssertionsDAO() {
         return referenceClinicalAssertionsDAO;
     }
 
+    @Override
     public void setReferenceClinicalAssertionsDAO(ReferenceClinicalAssertionsDAO referenceClinicalAssertionsDAO) {
         this.referenceClinicalAssertionsDAO = referenceClinicalAssertionsDAO;
     }
 
-    public OneThousandGenomeSNPFrequencyPopulationDAO getSNPFrequencyPopulationDAO() {
-        return SNPFrequencyPopulationDAO;
+    @Override
+    public OneThousandGenomeSNPFrequencyPopulationDAO getOneThousandGenomeSNPFrequencyPopulationDAO() {
+        return oneThousandGenomeSNPFrequencyPopulationDAO;
     }
 
-    public void setSNPFrequencyPopulationDAO(OneThousandGenomeSNPFrequencyPopulationDAO sNPFrequencyPopulationDAO) {
-        SNPFrequencyPopulationDAO = sNPFrequencyPopulationDAO;
+    @Override
+    public void setOneThousandGenomeSNPFrequencyPopulationDAO(
+            OneThousandGenomeSNPFrequencyPopulationDAO oneThousandGenomeSNPFrequencyPopulationDAO) {
+        this.oneThousandGenomeSNPFrequencyPopulationDAO = oneThousandGenomeSNPFrequencyPopulationDAO;
     }
 
+    @Override
     public FeatureDAO getFeatureDAO() {
         return featureDAO;
     }
 
+    @Override
     public void setFeatureDAO(FeatureDAO featureDAO) {
         this.featureDAO = featureDAO;
     }
 
+    @Override
     public AnnotationGeneDAO getAnnotationGeneDAO() {
         return annotationGeneDAO;
     }
 
+    @Override
     public void setAnnotationGeneDAO(AnnotationGeneDAO annotationGeneDAO) {
         this.annotationGeneDAO = annotationGeneDAO;
     }
 
+    @Override
     public AnnotationGeneExternalIdsDAO getAnnotationGeneExternalIdsDAO() {
         return annotationGeneExternalIdsDAO;
     }
 
+    @Override
     public void setAnnotationGeneExternalIdsDAO(AnnotationGeneExternalIdsDAO annotationGeneExternalIdsDAO) {
         this.annotationGeneExternalIdsDAO = annotationGeneExternalIdsDAO;
     }
 
+    @Override
     public RefSeqCodingSequenceDAO getRefSeqCodingSequenceDAO() {
         return refSeqCodingSequenceDAO;
     }
 
+    @Override
     public void setRefSeqCodingSequenceDAO(RefSeqCodingSequenceDAO refSeqCodingSequenceDAO) {
         this.refSeqCodingSequenceDAO = refSeqCodingSequenceDAO;
     }
 
+    @Override
     public RefSeqGeneDAO getRefSeqGeneDAO() {
         return refSeqGeneDAO;
     }
 
+    @Override
     public void setRefSeqGeneDAO(RefSeqGeneDAO refSeqGeneDAO) {
         this.refSeqGeneDAO = refSeqGeneDAO;
     }
 
+    @Override
     public HGNCGeneDAO getHGNCGeneDAO() {
         return HGNCGeneDAO;
     }
 
+    @Override
     public void setHGNCGeneDAO(HGNCGeneDAO hGNCGeneDAO) {
         HGNCGeneDAO = hGNCGeneDAO;
     }
 
+    @Override
     public GenomeRefDAO getGenomeRefDAO() {
         return genomeRefDAO;
     }
 
+    @Override
     public void setGenomeRefDAO(GenomeRefDAO genomeRefDAO) {
         this.genomeRefDAO = genomeRefDAO;
     }
 
+    @Override
     public TranscriptDAO getTranscriptDAO() {
         return transcriptDAO;
     }
 
+    @Override
     public void setTranscriptDAO(TranscriptDAO transcriptDAO) {
         this.transcriptDAO = transcriptDAO;
     }
 
+    @Override
     public TranscriptMapsDAO getTranscriptMapsDAO() {
         return transcriptMapsDAO;
     }
 
+    @Override
     public void setTranscriptMapsDAO(TranscriptMapsDAO transcriptMapsDAO) {
         this.transcriptMapsDAO = transcriptMapsDAO;
     }
 
+    @Override
     public TranscriptMapsExonsDAO getTranscriptMapsExonsDAO() {
         return transcriptMapsExonsDAO;
     }
 
+    @Override
     public void setTranscriptMapsExonsDAO(TranscriptMapsExonsDAO transcriptMapsExonsDAO) {
         this.transcriptMapsExonsDAO = transcriptMapsExonsDAO;
     }
 
+    @Override
     public Variants_61_2_DAO getVariants_61_2_DAO() {
         return variants_61_2_DAO;
     }
 
+    @Override
     public void setVariants_61_2_DAO(Variants_61_2_DAO variants_61_2_DAO) {
         this.variants_61_2_DAO = variants_61_2_DAO;
     }
 
+    @Override
     public MaxVariantFrequencyDAO getMaxVariantFrequencyDAO() {
         return maxVariantFrequencyDAO;
     }
 
+    @Override
     public void setMaxVariantFrequencyDAO(MaxVariantFrequencyDAO maxVariantFrequencyDAO) {
         this.maxVariantFrequencyDAO = maxVariantFrequencyDAO;
     }
 
+    @Override
     public VariantFrequencyDAO getVariantFrequencyDAO() {
         return variantFrequencyDAO;
     }
 
+    @Override
     public void setVariantFrequencyDAO(VariantFrequencyDAO variantFrequencyDAO) {
         this.variantFrequencyDAO = variantFrequencyDAO;
     }
