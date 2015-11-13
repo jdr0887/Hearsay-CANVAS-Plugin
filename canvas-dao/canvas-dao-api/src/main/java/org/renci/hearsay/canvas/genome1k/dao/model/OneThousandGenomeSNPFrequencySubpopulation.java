@@ -16,7 +16,7 @@ import org.renci.hearsay.canvas.var.dao.model.LocationVariant;
 @Entity
 @Table(schema = "gen1000", name = "snp_freq_subpopulation")
 @NamedQueries({
-        @NamedQuery(name = "OneThousandGenomeSNPFrequencySubpopulation.findByLocationVariantIdAndVersion", query = "SELECT a FROM OneThousandGenomeSNPFrequencySubpopulation a where a.locationVariant.id = :locationVariantId and a.version = :version") })
+        @NamedQuery(name = "OneThousandGenomeSNPFrequencySubpopulation.findByLocationVariantIdAndVersion", query = "SELECT a FROM OneThousandGenomeSNPFrequencySubpopulation a where a.locationVariant.id = :locationVariantId and a.key.version = :version") })
 public class OneThousandGenomeSNPFrequencySubpopulation implements Persistable {
 
     private static final long serialVersionUID = -3312702331463575620L;
@@ -30,7 +30,7 @@ public class OneThousandGenomeSNPFrequencySubpopulation implements Persistable {
     private LocationVariant locationVariant;
 
     @Column(name = "alt_allele_freq")
-    private Float altAlleleFreq;
+    private Double altAlleleFreq;
 
     @Column(name = "total_allele_count")
     private Integer totalAlleleCount;
@@ -58,11 +58,11 @@ public class OneThousandGenomeSNPFrequencySubpopulation implements Persistable {
         this.locationVariant = locationVariant;
     }
 
-    public Float getAltAlleleFreq() {
+    public Double getAltAlleleFreq() {
         return altAlleleFreq;
     }
 
-    public void setAltAlleleFreq(Float altAlleleFreq) {
+    public void setAltAlleleFreq(Double altAlleleFreq) {
         this.altAlleleFreq = altAlleleFreq;
     }
 

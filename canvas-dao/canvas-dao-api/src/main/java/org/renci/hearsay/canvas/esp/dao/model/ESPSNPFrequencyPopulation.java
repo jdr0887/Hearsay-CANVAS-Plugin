@@ -16,7 +16,7 @@ import org.renci.hearsay.canvas.var.dao.model.LocationVariant;
 @Entity
 @Table(schema = "esp", name = "snp_freq_population")
 @NamedQueries({
-        @NamedQuery(name = "esp.ESPSNPFrequencyPopulation.findByLocationVariantIdAndVersion", query = "SELECT a FROM ESPSNPFrequencyPopulation a where a.locationVariant.id = :locationVariantId and a.version = :version") })
+        @NamedQuery(name = "esp.ESPSNPFrequencyPopulation.findByLocationVariantIdAndVersion", query = "FROM ESPSNPFrequencyPopulation a join a.locationVariant b where b.id = :locationVariantId and a.key.version = :version") })
 public class ESPSNPFrequencyPopulation implements Persistable {
 
     private static final long serialVersionUID = 644922221095328483L;
@@ -30,7 +30,7 @@ public class ESPSNPFrequencyPopulation implements Persistable {
     private LocationVariant locationVariant;
 
     @Column(name = "alt_allele_freq")
-    private Float altAlleleFreq;
+    private Double altAlleleFreq;
 
     @Column(name = "total_allele_count")
     private Integer totalAlleleCount;
@@ -58,11 +58,11 @@ public class ESPSNPFrequencyPopulation implements Persistable {
         this.locationVariant = locationVariant;
     }
 
-    public Float getAltAlleleFreq() {
+    public Double getAltAlleleFreq() {
         return altAlleleFreq;
     }
 
-    public void setAltAlleleFreq(Float altAlleleFreq) {
+    public void setAltAlleleFreq(Double altAlleleFreq) {
         this.altAlleleFreq = altAlleleFreq;
     }
 

@@ -10,24 +10,24 @@ public class ESPSNPFrequencyPopulationPK implements Serializable {
 
     private static final long serialVersionUID = -6667568470320810780L;
 
-    @Column(name = "loc_var_id")
-    private Long locationVariant;
+    @Column(name = "loc_var_id", columnDefinition = "int8")
+    private Integer locationVariant;
 
     @Column(name = "esp_version")
     private Integer version;
 
-    @Column(name = "population", length = 5)
+    @Column(name = "population")
     private String population;
 
     public ESPSNPFrequencyPopulationPK() {
         super();
     }
 
-    public Long getLocationVariant() {
+    public Integer getLocationVariant() {
         return locationVariant;
     }
 
-    public void setLocationVariant(Long locationVariant) {
+    public void setLocationVariant(Integer locationVariant) {
         this.locationVariant = locationVariant;
     }
 
@@ -49,7 +49,7 @@ public class ESPSNPFrequencyPopulationPK implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("SNPFrequencyPopulationPK [locationVariant=%s, version=%s, population=%s]",
+        return String.format("ESPSNPFrequencyPopulationPK [locationVariant=%s, version=%s, population=%s]",
                 locationVariant, version, population);
     }
 

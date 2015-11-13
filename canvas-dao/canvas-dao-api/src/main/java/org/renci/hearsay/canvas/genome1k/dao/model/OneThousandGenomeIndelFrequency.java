@@ -16,7 +16,7 @@ import org.renci.hearsay.canvas.var.dao.model.LocationVariant;
 @Entity
 @Table(schema = "gen1000", name = "indel_freq")
 @NamedQueries({
-        @NamedQuery(name = "OneThousandGenomeIndelFrequency.findByLocationVariantIdAndVersion", query = "SELECT a FROM OneThousandGenomeIndelFrequency a where a.locationVariant.id = :locationVariantId and a.version = :version") })
+        @NamedQuery(name = "OneThousandGenomeIndelFrequency.findByLocationVariantIdAndVersion", query = "FROM OneThousandGenomeIndelFrequency a join a.locationVariant b where b.id = :locationVariantId and a.key.version = :version") })
 public class OneThousandGenomeIndelFrequency implements Persistable {
 
     private static final long serialVersionUID = 5872322341385565072L;
@@ -30,7 +30,7 @@ public class OneThousandGenomeIndelFrequency implements Persistable {
     private LocationVariant locationVariant;
 
     @Column(name = "allele_freq")
-    private Float alleleFreq;
+    private Double alleleFreq;
 
     @Column(name = "num_samples")
     private Integer numSamples;
@@ -67,11 +67,11 @@ public class OneThousandGenomeIndelFrequency implements Persistable {
         this.locationVariant = locationVariant;
     }
 
-    public Float getAlleleFreq() {
+    public Double getAlleleFreq() {
         return alleleFreq;
     }
 
-    public void setAlleleFreq(Float alleleFreq) {
+    public void setAlleleFreq(Double alleleFreq) {
         this.alleleFreq = alleleFreq;
     }
 
