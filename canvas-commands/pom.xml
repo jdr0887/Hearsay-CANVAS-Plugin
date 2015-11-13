@@ -73,12 +73,18 @@
   <build>
     <plugins>
       <plugin>
+        <groupId>org.apache.karaf.tooling</groupId>
+        <artifactId>karaf-services-maven-plugin</artifactId>
+      </plugin>      
+      <plugin>
         <groupId>org.apache.felix</groupId>
         <artifactId>maven-bundle-plugin</artifactId>
         <configuration>
           <instructions>
-            <Export-Package>org.renci.hearsay.commands.canvas*</Export-Package>
-            <Import-Package>org.apache.felix.service.command,org.apache.felix.gogo.commands,org.apache.karaf.shell.console,*</Import-Package>
+            <Private-Package>org.renci.hearsay.canvas.commands*</Private-Package>
+            <Export-Package>org.renci.hearsay.canvas.commands</Export-Package>
+            <Import-Package>*</Import-Package>
+            <Karaf-Commands>org.renci.hearsay.canvas.commands</Karaf-Commands>
           </instructions>
         </configuration>
       </plugin>
