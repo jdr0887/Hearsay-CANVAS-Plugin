@@ -72,8 +72,8 @@ public class PullRefSeq implements Runnable {
             topBufferedWriter = new BufferedWriter(new FileWriter(topFile));
             detailsBufferedWriter = new BufferedWriter(new FileWriter(detailsFile));
 
-            List<TranscriptMapsExons> mapsExonsResults = transcriptMapsExonsDAO.findByGenomeRefIdAndRefSeqVersion(
-                    genomeRefId, refSeqVersion);
+            List<TranscriptMapsExons> mapsExonsResults = transcriptMapsExonsDAO.findByGenomeRefIdAndRefSeqVersion(genomeRefId,
+                    refSeqVersion);
 
             Set<Transcript> transcriptSet = new HashSet<Transcript>();
 
@@ -87,8 +87,7 @@ public class PullRefSeq implements Runnable {
 
                     GenomeRefSeq genomeRefSeq = transcriptMaps.getGenomeRefSeq();
 
-                    MappingKey mappingKey = new MappingKey(transcriptMaps.getTranscript().getVersionId(),
-                            transcriptMaps.getMapCount());
+                    MappingKey mappingKey = new MappingKey(transcriptMaps.getTranscript().getVersionId(), transcriptMaps.getMapCount());
 
                     // if (!map.containsKey(mappingKey)) {
                     // map.put(mappingKey, new Mapping(genomeRefSeq.getVerAccession()));
