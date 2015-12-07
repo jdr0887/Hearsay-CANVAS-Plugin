@@ -8,7 +8,7 @@ import org.renci.hearsay.canvas.var.dao.model.Lab;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Transactional
+@Transactional(Transactional.TxType.SUPPORTS)
 public class LabDAOImpl extends BaseDAOImpl<Lab, Long> implements LabDAO {
 
     private final Logger logger = LoggerFactory.getLogger(LabDAOImpl.class);

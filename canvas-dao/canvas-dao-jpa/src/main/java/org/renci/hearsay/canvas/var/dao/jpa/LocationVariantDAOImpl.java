@@ -11,7 +11,7 @@ import org.renci.hearsay.dao.HearsayDAOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Transactional
+@Transactional(Transactional.TxType.SUPPORTS)
 public class LocationVariantDAOImpl extends BaseDAOImpl<LocationVariant, Long> implements LocationVariantDAO {
 
     private final Logger logger = LoggerFactory.getLogger(LocationVariantDAOImpl.class);
@@ -26,8 +26,7 @@ public class LocationVariantDAOImpl extends BaseDAOImpl<LocationVariant, Long> i
     }
 
     @Override
-    public List<LocationVariant> findByVersionAccesionAndPosition(String versionAccession, Integer position)
-            throws HearsayDAOException {
+    public List<LocationVariant> findByVersionAccesionAndPosition(String versionAccession, Integer position) throws HearsayDAOException {
         return null;
     }
 

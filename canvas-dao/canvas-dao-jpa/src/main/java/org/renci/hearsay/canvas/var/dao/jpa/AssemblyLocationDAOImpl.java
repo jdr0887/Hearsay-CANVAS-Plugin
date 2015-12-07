@@ -8,7 +8,7 @@ import org.renci.hearsay.canvas.var.dao.model.AssemblyLocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Transactional
+@Transactional(Transactional.TxType.SUPPORTS)
 public class AssemblyLocationDAOImpl extends BaseDAOImpl<AssemblyLocation, Long> implements AssemblyLocationDAO {
 
     private final Logger logger = LoggerFactory.getLogger(AssemblyLocationDAOImpl.class);
