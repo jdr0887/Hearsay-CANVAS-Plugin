@@ -32,15 +32,19 @@ public class RefSeqGeneTest {
     }
 
     @Test
-    public void listByRefSeqVersion() throws HearsayDAOException {
-
+    public void testFindByRefSeqVersion() throws HearsayDAOException {
         RefSeqGeneDAOImpl refSeqGeneDAO = new RefSeqGeneDAOImpl();
         refSeqGeneDAO.setEntityManager(em);
-
         List<RefSeqGene> refSeqGeneList = refSeqGeneDAO.findByRefSeqVersion("61");
+        refSeqGeneList.forEach(a -> System.out.println(a.toString()));
+    }
 
-        refSeqGeneList.forEach(a -> System.out.printf("%s - %s%n", a.getName(), a.getDescription()));
-
+    @Test
+    public void testFindByRefSeqVersionAndTranscriptId() throws HearsayDAOException {
+        RefSeqGeneDAOImpl refSeqGeneDAO = new RefSeqGeneDAOImpl();
+        refSeqGeneDAO.setEntityManager(em);
+        List<RefSeqGene> refSeqGeneList = refSeqGeneDAO.findByRefSeqVersionAndTranscriptId("61", "NM_001101330.1");
+        refSeqGeneList.forEach(a -> System.out.println(a.toString()));
     }
 
 }
