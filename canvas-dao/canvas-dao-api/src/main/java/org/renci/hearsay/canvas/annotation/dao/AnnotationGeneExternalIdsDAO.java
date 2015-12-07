@@ -10,7 +10,6 @@ public interface AnnotationGeneExternalIdsDAO extends BaseDAO<AnnotationGeneExte
 
     public List<AnnotationGeneExternalIds> findByNamespace(String namespace) throws HearsayDAOException;
 
-    public List<AnnotationGeneExternalIds> findByNamespaceAndNamespaceVersion(String namespace, String version)
-            throws HearsayDAOException;
+    public List<AnnotationGeneExternalIds> findByNamespaceAndNamespaceVersion(String namespace, String version) throws HearsayDAOException;
 
 }

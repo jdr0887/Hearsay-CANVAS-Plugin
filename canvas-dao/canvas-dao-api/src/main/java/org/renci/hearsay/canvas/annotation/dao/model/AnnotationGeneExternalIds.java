@@ -79,8 +79,7 @@ public class AnnotationGeneExternalIds implements Persistable {
 
     @Override
     public String toString() {
-        return String.format("AnnotationGeneExternalIds [namespace=%s, namespaceVer=%s, id=%s]", namespace,
-                namespaceVer, id);
+        return String.format("AnnotationGeneExternalIds [namespace=%s, namespaceVer=%s, id=%s]", namespace, namespaceVer, id);
     }
 
     @Override

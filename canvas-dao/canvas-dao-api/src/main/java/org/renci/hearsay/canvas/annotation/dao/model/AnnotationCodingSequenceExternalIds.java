@@ -1,8 +1,7 @@
 package org.renci.hearsay.canvas.annotation.dao.model;
 
-import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -16,48 +15,49 @@ import javax.xml.bind.annotation.XmlType;
 @Table(schema = "annot", name = "cds_external_ids")
 public class AnnotationCodingSequenceExternalIds {
 
-    @Id
-    @Column(name = "cds_id")
-    private Integer cdsId;
-
-    @Id
-    @Column(name = "namespace", length = 31)
-    private String namespace;
-
-    @Id
-    @Column(name = "namespace_ver", length = 31)
-    private String namespaceVer;
-
-    @Id
-    @Column(name = "gene_external_id")
-    private Integer geneExternalId;
+    @EmbeddedId
+    private AnnotationCodingSequenceExternalIdsPK key;
 
     public AnnotationCodingSequenceExternalIds() {
         super();
     }
 
-    public Integer getCdsId() {
-        return cdsId;
+    public AnnotationCodingSequenceExternalIdsPK getKey() {
+        return key;
     }
 
-    public void setCdsId(Integer cdsId) {
-        this.cdsId = cdsId;
+    public void setKey(AnnotationCodingSequenceExternalIdsPK key) {
+        this.key = key;
     }
 
-    public String getNamespace() {
-        return namespace;
+    @Override
+    public String toString() {
+        return String.format("AnnotationCodingSequenceExternalIds [key=%s]", key);
     }
 
-    public void setNamespace(String namespace) {
-        this.namespace = namespace;
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((key == null) ? 0 : key.hashCode());
+        return result;
     }
 
-    public Integer getGeneExternalId() {
-        return geneExternalId;
-    }
-
-    public void setGeneExternalId(Integer geneExternalId) {
-        this.geneExternalId = geneExternalId;
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        AnnotationCodingSequenceExternalIds other = (AnnotationCodingSequenceExternalIds) obj;
+        if (key == null) {
+            if (other.key != null)
+                return false;
+        } else if (!key.equals(other.key))
+            return false;
+        return true;
     }
 
 }

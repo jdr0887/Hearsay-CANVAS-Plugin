@@ -78,8 +78,7 @@ public class AnnotationGene implements Persistable {
 
     @Override
     public String toString() {
-        return String.format("AnnotationGene [id=%s, preferredName=%s, preferredDescription=%s]", id, preferredName,
-                preferredDescription);
+        return String.format("AnnotationGene [id=%s, preferredName=%s, preferredDescription=%s]", id, preferredName, preferredDescription);
     }
 
     @Override
