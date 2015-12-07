@@ -50,8 +50,7 @@ public class MaxFreqTest {
             int count = 0;
             System.out.println(clinbinMaxFreqList.size());
             for (MaxFreq maxFreq : clinbinMaxFreqList) {
-                List<Variants_61_2> variants = variants_61_2_DAO.findByLocationVariantId(maxFreq.getLocationVariant()
-                        .getId());
+                List<Variants_61_2> variants = variants_61_2_DAO.findByLocationVariantId(maxFreq.getLocationVariant().getId());
                 assertTrue(CollectionUtils.isNotEmpty(variants));
                 System.out.println(variants.size());
                 count += variants.size();
