@@ -109,8 +109,7 @@ public class Region implements Comparable<Region> {
         // regionType.toString());
 
         return String.format("%d\t%d\t%s\t%s\t%s", genomeStart, genomeStop, regionType.toString(),
-                transcriptStart == null ? "" : transcriptStart.toString(),
-                transcriptStop == null ? "" : transcriptStop.toString());
+                transcriptStart == null ? "" : transcriptStart.toString(), transcriptStop == null ? "" : transcriptStop.toString());
     }
 
     @Override
