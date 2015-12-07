@@ -8,7 +8,7 @@ import org.renci.hearsay.dao.HearsayDAOException;
 
 public interface BinResultsFinalIncidentalXDAO extends BaseDAO<BinResultsFinalIncidentalX, Long> {
 
-    public List<BinResultsFinalIncidentalX> findByParticipantAndIncidentalBinIdAndResultVersion(String participant,
-            Integer incidentalBinId, Integer version) throws HearsayDAOException;
+    public List<BinResultsFinalIncidentalX> findByParticipantAndIncidentalBinIdAndResultVersion(String participant, Integer incidentalBinId,
+            Integer version) throws HearsayDAOException;
 
 }
