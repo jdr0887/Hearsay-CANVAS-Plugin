@@ -88,8 +88,8 @@ public class OneThousandGenomeSNPFrequencyPopulation implements Persistable {
 
     @Override
     public String toString() {
-        return String.format("SNPFrequencyPopulation [altAlleleFreq=%s, totalAlleleCount=%s, altAlleleCount=%s]",
-                altAlleleFreq, totalAlleleCount, altAlleleCount);
+        return String.format("SNPFrequencyPopulation [altAlleleFreq=%s, totalAlleleCount=%s, altAlleleCount=%s]", altAlleleFreq,
+                totalAlleleCount, altAlleleCount);
     }
 
     @Override

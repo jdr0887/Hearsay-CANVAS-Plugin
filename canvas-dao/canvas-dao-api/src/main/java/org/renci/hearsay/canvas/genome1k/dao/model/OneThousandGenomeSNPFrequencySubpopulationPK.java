@@ -49,8 +49,8 @@ public class OneThousandGenomeSNPFrequencySubpopulationPK implements Serializabl
 
     @Override
     public String toString() {
-        return String.format("SNPFrequencySubpopulationPK [locationVariant=%s, gen1000Version=%s, population=%s]",
-                locationVariant, version, population);
+        return String.format("SNPFrequencySubpopulationPK [locationVariant=%s, gen1000Version=%s, population=%s]", locationVariant, version,
+                population);
     }
 
     @Override

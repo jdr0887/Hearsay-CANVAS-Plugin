@@ -49,8 +49,8 @@ public class OneThousandGenomeSNPFrequencyPopulationPK implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("SNPFrequencyPopulationPK [locationVariant=%s, version=%s, population=%s]",
-                locationVariant, version, population);
+        return String.format("SNPFrequencyPopulationPK [locationVariant=%s, version=%s, population=%s]", locationVariant, version,
+                population);
     }
 
     @Override
