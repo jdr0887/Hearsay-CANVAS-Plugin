@@ -45,7 +45,7 @@ public class Variant_61_2Test {
             if (CollectionUtils.isNotEmpty(variants)) {
                 for (Variants_61_2 variant : variants) {
                     LocationVariant locationVariant = variant.getLocationVariant();
-                    
+
                 }
             }
         } catch (HearsayDAOException e) {
