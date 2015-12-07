@@ -41,8 +41,7 @@ public class TranscriptTest {
             if (mapResults != null && mapResults.size() > 0) {
                 for (TranscriptMaps transcriptMaps : mapResults) {
                     System.out.println(transcriptMaps.toString());
-                    List<TranscriptMapsExons> mapsExonsResults = transcriptMapsExonsDAO
-                            .findByTranscriptMapsId(transcriptMaps.getId());
+                    List<TranscriptMapsExons> mapsExonsResults = transcriptMapsExonsDAO.findByTranscriptMapsId(transcriptMaps.getId());
                     if (mapsExonsResults != null && mapsExonsResults.size() > 0) {
                         for (TranscriptMapsExons transcriptMapsExons : mapsExonsResults) {
                             System.out.println(transcriptMapsExons.toString());
