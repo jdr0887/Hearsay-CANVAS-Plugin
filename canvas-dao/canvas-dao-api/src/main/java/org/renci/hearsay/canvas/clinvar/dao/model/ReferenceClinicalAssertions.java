@@ -3,7 +3,6 @@ package org.renci.hearsay.canvas.clinvar.dao.model;
 import java.util.Date;
 import java.util.Set;
 
-import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -14,7 +13,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.Type;
 import org.renci.hearsay.canvas.dao.Persistable;
 import org.renci.hearsay.canvas.var.dao.model.LocationVariant;
 
@@ -35,11 +33,9 @@ public class ReferenceClinicalAssertions implements Persistable {
     private Integer version;
 
     @Column(name = "date_created")
-    @Type(type = "date")
     private Date created;
 
     @Column(name = "date_updated")
-    @Type(type = "date")
     private Date updated;
 
     @Column(name = "record_status")

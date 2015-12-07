@@ -11,13 +11,12 @@ public interface ReferenceClinicalAssertionsDAO extends BaseDAO<ReferenceClinica
     public List<ReferenceClinicalAssertions> findDiagnostic(Long dxId, String participant, Integer resultVersion)
             throws HearsayDAOException;
 
-    public List<ReferenceClinicalAssertions> findIncidental(Long incidentalBinId, String participant,
-            Integer resultVersion) throws HearsayDAOException;
+    public List<ReferenceClinicalAssertions> findIncidental(Long incidentalBinId, String participant, Integer resultVersion)
+            throws HearsayDAOException;
 
     public List<ReferenceClinicalAssertions> findRisk(Long incidentalBinId, String participant, Integer resultVersion)
             throws HearsayDAOException;
 
-    public List<ReferenceClinicalAssertions> findByLocationVariantIdAndVersion(Long locVarId, Integer version)
-            throws HearsayDAOException;
+    public List<ReferenceClinicalAssertions> findByLocationVariantIdAndVersion(Long locVarId, Integer version) throws HearsayDAOException;
 
 }
