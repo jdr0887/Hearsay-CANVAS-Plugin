@@ -147,10 +147,9 @@ public class AssemblyLocationVariantQC implements Persistable {
 
     @Override
     public String toString() {
-        return "AssemblyLocactionVariantQC [assembly=" + assembly + ", locationVariant=" + locationVariant + ", key="
-                + key + ", depth=" + depth + ", qd=" + qd + ", readPosRankSum=" + readPosRankSum
-                + ", fracReadsWithDels=" + fracReadsWithDels + ", hrun=" + hrun + ", strandScore=" + strandScore
-                + ", refDepth=" + refDepth + ", altDepth=" + altDepth + "]";
+        return "AssemblyLocactionVariantQC [assembly=" + assembly + ", locationVariant=" + locationVariant + ", key=" + key + ", depth="
+                + depth + ", qd=" + qd + ", readPosRankSum=" + readPosRankSum + ", fracReadsWithDels=" + fracReadsWithDels + ", hrun="
+                + hrun + ", strandScore=" + strandScore + ", refDepth=" + refDepth + ", altDepth=" + altDepth + "]";
     }
 
     @Override

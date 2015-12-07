@@ -11,8 +11,7 @@ import javax.persistence.UniqueConstraint;
 import org.renci.hearsay.canvas.dao.Persistable;
 
 @Entity
-@Table(schema = "var", name = "sample", uniqueConstraints = { @UniqueConstraint(columnNames = { "project_name",
-        "sample_name" }) })
+@Table(schema = "var", name = "sample", uniqueConstraints = { @UniqueConstraint(columnNames = { "project_name", "sample_name" }) })
 public class Sample implements Persistable {
 
     private static final long serialVersionUID = 1409603720862058803L;

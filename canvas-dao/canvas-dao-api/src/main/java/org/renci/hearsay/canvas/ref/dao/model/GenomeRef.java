@@ -17,38 +17,45 @@ import org.renci.hearsay.canvas.dao.Persistable;
 
 @Entity
 @Table(schema = "ref", name = "genome_ref")
-@NamedQueries({
-        @NamedQuery(name = "GenomeRef.findByShortName", query = "FROM GenomeRef a where a.shortName = :shortName"),
-        @NamedQuery(name = "GenomeRef.findBySeqTypeAndContig", query = "FROM GenomeRef a join a.genomeRefSeqs b where b.seqType = :seqType and b.contig = :contig") })
+@NamedQueries({ @NamedQuery(name = "GenomeRef.findAll", query = "SELECT DISTINCT a FROM GenomeRef a"),
+        @NamedQuery(name = "GenomeRef.findByShortName", query = "SELECT DISTINCT a FROM GenomeRef a where a.shortName = :shortName") })
 public class GenomeRef implements Persistable {
 
     private static final long serialVersionUID = -6241264265732175194L;
 
     @Id
     @Column(name = "ref_id")
-    protected Integer id;
+    private Integer id;
 
     @Column(name = "ref_source")
-    protected String refSource;
+    private String refSource;
 
     @Column(name = "ref_ver")
-    protected String refVer;
+    private String refVer;
 
     @Column(name = "ref_shortname", length = 50)
-    protected String shortName;
+    private String shortName;
 
     @Column(name = "basic_fasta_url", length = 1023)
-    protected String basicFastaURL;
+    private String basicFastaURL;
 
     @Column(name = "extras_fasta_url", length = 1023)
-    protected String extrasFastaURL;
+    private String extrasFastaURL;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(schema = "ref", name = "genome_ref_seqs", joinColumns = @JoinColumn(name = "ref_id"), inverseJoinColumns = @JoinColumn(name = "seq_ver_accession"))
-    protected Set<GenomeRefSeq> genomeRefSeqs;
+    @ManyToMany(targetEntity = GenomeRefSeq.class, fetch = FetchType.LAZY)
+    @JoinTable(schema = "ref", name = "genome_ref_seqs", joinColumns = @JoinColumn(name = "ref_id") , inverseJoinColumns = @JoinColumn(name = "seq_ver_accession") )
+    private Set<GenomeRefSeq> genomeRefSeqs;
 
     public GenomeRef() {
         super();
+    }
+
+    public Set<GenomeRefSeq> getGenomeRefSeqs() {
+        return genomeRefSeqs;
+    }
+
+    public void setGenomeRefSeqs(Set<GenomeRefSeq> genomeRefSeqs) {
+        this.genomeRefSeqs = genomeRefSeqs;
     }
 
     public Integer getId() {
@@ -99,19 +106,10 @@ public class GenomeRef implements Persistable {
         this.extrasFastaURL = extrasFastaURL;
     }
 
-    public Set<GenomeRefSeq> getGenomeRefSeqs() {
-        return genomeRefSeqs;
-    }
-
-    public void setGenomeRefSeqs(Set<GenomeRefSeq> genomeRefSeqs) {
-        this.genomeRefSeqs = genomeRefSeqs;
-    }
-
     @Override
     public String toString() {
-        return String.format(
-                "GenomeRef [id=%s, refSource=%s, refVer=%s, shortName=%s, basicFastaURL=%s, extrasFastaURL=%s]", id,
-                refSource, refVer, shortName, basicFastaURL, extrasFastaURL);
+        return String.format("GenomeRef [id=%s, refSource=%s, refVer=%s, shortName=%s, basicFastaURL=%s, extrasFastaURL=%s]", id, refSource,
+                refVer, shortName, basicFastaURL, extrasFastaURL);
     }
 
     @Override

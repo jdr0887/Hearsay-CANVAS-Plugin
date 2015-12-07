@@ -21,8 +21,8 @@ import org.renci.hearsay.canvas.ref.dao.model.GenomeRefSeq;
 import org.renci.hearsay.canvas.refseq.dao.model.Variants_61_2;
 
 @Entity
-@Table(schema = "var", name = "loc_var", uniqueConstraints = { @UniqueConstraint(columnNames = { "loc_var_id", "ref_id",
-        "ref_ver_accession", "pos", "type", "seq", "end_pos" }) })
+@Table(schema = "var", name = "loc_var", uniqueConstraints = {
+        @UniqueConstraint(columnNames = { "loc_var_id", "ref_id", "ref_ver_accession", "pos", "type", "seq", "end_pos" }) })
 public class LocationVariant implements Persistable {
 
     private static final long serialVersionUID = 3259272023352164114L;
@@ -159,8 +159,7 @@ public class LocationVariant implements Persistable {
 
     @Override
     public String toString() {
-        return String.format("LocationVariant [id=%s, position=%s, ref=%s, endPosition=%s, seq=%s]", id, position, ref,
-                endPosition, seq);
+        return String.format("LocationVariant [id=%s, position=%s, ref=%s, endPosition=%s, seq=%s]", id, position, ref, endPosition, seq);
     }
 
     @Override

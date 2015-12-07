@@ -57,8 +57,8 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "proteinType", propOrder = { "recommendedName", "alternativeName", "submittedName", "allergenName",
-        "biotechName", "cdAntigenName", "innName", "domain", "component" })
+@XmlType(name = "proteinType", propOrder = { "recommendedName", "alternativeName", "submittedName", "allergenName", "biotechName",
+        "cdAntigenName", "innName", "domain", "component" })
 public class ProteinType {
 
     protected ProteinType.RecommendedName recommendedName;
@@ -442,8 +442,8 @@ public class ProteinType {
      * 
      */
     @XmlAccessorType(XmlAccessType.FIELD)
-    @XmlType(name = "", propOrder = { "recommendedName", "alternativeName", "submittedName", "allergenName",
-            "biotechName", "cdAntigenName", "innName" })
+    @XmlType(name = "", propOrder = { "recommendedName", "alternativeName", "submittedName", "allergenName", "biotechName", "cdAntigenName",
+            "innName" })
     public static class Component {
 
         protected ProteinType.RecommendedName recommendedName;
@@ -657,8 +657,8 @@ public class ProteinType {
      * 
      */
     @XmlAccessorType(XmlAccessType.FIELD)
-    @XmlType(name = "", propOrder = { "recommendedName", "alternativeName", "submittedName", "allergenName",
-            "biotechName", "cdAntigenName", "innName" })
+    @XmlType(name = "", propOrder = { "recommendedName", "alternativeName", "submittedName", "allergenName", "biotechName", "cdAntigenName",
+            "innName" })
     public static class Domain {
 
         protected ProteinType.RecommendedName recommendedName;

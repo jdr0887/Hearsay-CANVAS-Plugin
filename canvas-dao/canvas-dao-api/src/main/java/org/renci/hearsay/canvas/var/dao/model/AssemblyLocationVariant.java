@@ -81,8 +81,8 @@ public class AssemblyLocationVariant implements Persistable {
 
     @Override
     public String toString() {
-        return "AssemblyLocationVariant [assembly=" + assembly + ", locationVariant=" + locationVariant + ", key=" + key
-                + ", homozygous=" + homozygous + ", genotypeQual=" + genotypeQual + "]";
+        return "AssemblyLocationVariant [assembly=" + assembly + ", locationVariant=" + locationVariant + ", key=" + key + ", homozygous="
+                + homozygous + ", genotypeQual=" + genotypeQual + "]";
     }
 
     @Override

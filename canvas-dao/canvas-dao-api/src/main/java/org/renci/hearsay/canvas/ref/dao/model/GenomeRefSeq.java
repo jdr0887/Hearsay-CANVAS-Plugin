@@ -1,8 +1,14 @@
 package org.renci.hearsay.canvas.ref.dao.model;
 
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -12,7 +18,7 @@ import org.renci.hearsay.canvas.dao.Persistable;
 
 @Entity
 @Table(schema = "ref", name = "genome_ref_seq")
-@NamedQueries({ @NamedQuery(name = "GenomeRefSeq.findAll", query = "FROM GenomeRefSeq") })
+@NamedQueries({ @NamedQuery(name = "GenomeRefSeq.findAll", query = "SELECT DISTINCT a FROM GenomeRefSeq a") })
 public class GenomeRefSeq implements Persistable {
 
     private static final long serialVersionUID = 8237639060154518282L;
@@ -30,6 +36,10 @@ public class GenomeRefSeq implements Persistable {
     @Column(name = "descr", length = 1023)
     @Transient
     private String descr;
+
+    @ManyToMany(targetEntity = GenomeRef.class, fetch = FetchType.LAZY)
+    @JoinTable(schema = "ref", name = "genome_ref_seqs", joinColumns = @JoinColumn(name = "seq_ver_accession") , inverseJoinColumns = @JoinColumn(name = "ref_id") )
+    private Set<GenomeRef> genomeRefs;
 
     public GenomeRefSeq() {
         super();
@@ -67,10 +77,17 @@ public class GenomeRefSeq implements Persistable {
         this.descr = descr;
     }
 
+    public Set<GenomeRef> getGenomeRefs() {
+        return genomeRefs;
+    }
+
+    public void setGenomeRefs(Set<GenomeRef> genomeRefs) {
+        this.genomeRefs = genomeRefs;
+    }
+
     @Override
     public String toString() {
-        return String.format("GenomeRefSeq [verAccession=%s, contig=%s, seqType=%s, descr=%s]", verAccession, contig,
-                seqType, descr);
+        return String.format("GenomeRefSeq [verAccession=%s, contig=%s, seqType=%s]", verAccession, contig, seqType);
     }
 
     @Override
@@ -78,7 +95,6 @@ public class GenomeRefSeq implements Persistable {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((contig == null) ? 0 : contig.hashCode());
-        // result = prime * result + ((descr == null) ? 0 : descr.hashCode());
         result = prime * result + ((seqType == null) ? 0 : seqType.hashCode());
         result = prime * result + ((verAccession == null) ? 0 : verAccession.hashCode());
         return result;
@@ -98,11 +114,6 @@ public class GenomeRefSeq implements Persistable {
                 return false;
         } else if (!contig.equals(other.contig))
             return false;
-        // if (descr == null) {
-        // if (other.descr != null)
-        // return false;
-        // } else if (!descr.equals(other.descr))
-        // return false;
         if (seqType == null) {
             if (other.seqType != null)
                 return false;

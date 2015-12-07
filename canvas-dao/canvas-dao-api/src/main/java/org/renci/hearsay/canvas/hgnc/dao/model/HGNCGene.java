@@ -11,7 +11,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.Type;
 import org.renci.hearsay.canvas.dao.Persistable;
 
 @Entity
@@ -46,7 +45,6 @@ public class HGNCGene implements Persistable {
     private String chromosomeRegion;
 
     @Column(name = "date_modified")
-    @Type(type = "date")
     private Date dateModified;
 
     @ManyToOne
@@ -131,9 +129,8 @@ public class HGNCGene implements Persistable {
 
     @Override
     public String toString() {
-        return String.format(
-                "HGNCGene [id=%s, symbol=%s, name=%s, chromosome=%s, chromosomeRegion=%s, dateModified=%s]", id,
-                symbol, name, chromosome, chromosomeRegion, dateModified);
+        return String.format("HGNCGene [id=%s, symbol=%s, name=%s, chromosome=%s, chromosomeRegion=%s, dateModified=%s]", id, symbol, name,
+                chromosome, chromosomeRegion, dateModified);
     }
 
     @Override

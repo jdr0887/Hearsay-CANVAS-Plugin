@@ -49,8 +49,7 @@ public class AssemblyLocationPK implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("AssemblyLocationPK [assembly=%s, versionAccession=%s, pos=%s]", assembly,
-                versionAccession, pos);
+        return String.format("AssemblyLocationPK [assembly=%s, versionAccession=%s, pos=%s]", assembly, versionAccession, pos);
     }
 
     @Override

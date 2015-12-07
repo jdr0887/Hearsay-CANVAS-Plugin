@@ -82,8 +82,8 @@ public class AssemblyLocation implements Persistable {
 
     @Override
     public String toString() {
-        return String.format("AssemblyLocation [assembly=%s, key=%s, homozygous=%s, genotypeQual=%s]", assembly, key,
-                homozygous, genotypeQual);
+        return String.format("AssemblyLocation [assembly=%s, key=%s, homozygous=%s, genotypeQual=%s]", assembly, key, homozygous,
+                genotypeQual);
     }
 
     @Override

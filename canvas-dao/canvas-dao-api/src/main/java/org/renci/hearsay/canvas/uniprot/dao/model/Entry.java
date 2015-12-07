@@ -66,8 +66,8 @@ import javax.xml.datatype.XMLGregorianCalendar;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = { "accession", "name", "protein", "gene", "organism", "organismHost", "geneLocation",
-        "reference", "comment", "dbReference", "proteinExistence", "keyword", "feature", "evidence", "sequence" })
+@XmlType(name = "", propOrder = { "accession", "name", "protein", "gene", "organism", "organismHost", "geneLocation", "reference",
+        "comment", "dbReference", "proteinExistence", "keyword", "feature", "evidence", "sequence" })
 @XmlRootElement(name = "entry")
 public class Entry {
 

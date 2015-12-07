@@ -38,8 +38,7 @@ public class AssemblyLocationVariantQCPK implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("AssemblyLocationVariantQCPK [assembly=%s, locationVariant=%s]", assembly,
-                locationVariant);
+        return String.format("AssemblyLocationVariantQCPK [assembly=%s, locationVariant=%s]", assembly, locationVariant);
     }
 
     @Override

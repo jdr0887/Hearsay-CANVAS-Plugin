@@ -179,10 +179,9 @@ public class VariantSetLoad implements Persistable {
 
     @Override
     public String toString() {
-        return "VariantSetLoad [varSet=" + varSet + ", loadFilename=" + loadFilename + ", loadUser=" + loadUser
-                + ", loadTimeStart=" + loadTimeStart + ", loadTimeStop=" + loadTimeStop + ", notes=" + notes
-                + ", numberOfSNPRows=" + numberOfSNPRows + ", numberOfDelRows=" + numberOfDelRows
-                + ", numberOfSubRows=" + numberOfSubRows + ", numberOfInsRows=" + numberOfInsRows
+        return "VariantSetLoad [varSet=" + varSet + ", loadFilename=" + loadFilename + ", loadUser=" + loadUser + ", loadTimeStart="
+                + loadTimeStart + ", loadTimeStop=" + loadTimeStop + ", notes=" + notes + ", numberOfSNPRows=" + numberOfSNPRows
+                + ", numberOfDelRows=" + numberOfDelRows + ", numberOfSubRows=" + numberOfSubRows + ", numberOfInsRows=" + numberOfInsRows
                 + ", numberOfMultiRows=" + numberOfMultiRows + ", numberOfSkippedRefRows=" + numberOfSkippedRefRows
                 + ", numberOfFilteredRows=" + numberOfFilteredRows + ", numberOfErrorRows=" + numberOfErrorRows + "]";
     }

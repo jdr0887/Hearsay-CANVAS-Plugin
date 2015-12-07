@@ -42,8 +42,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "nameListType", propOrder = { "consortiumOrPerson" })
 public class NameListType {
 
-    @XmlElements({ @XmlElement(name = "consortium", type = ConsortiumType.class),
-            @XmlElement(name = "person", type = PersonType.class) })
+    @XmlElements({ @XmlElement(name = "consortium", type = ConsortiumType.class), @XmlElement(name = "person", type = PersonType.class) })
     protected List<Object> consortiumOrPerson;
 
     /**

@@ -8,7 +8,6 @@ import org.renci.hearsay.dao.HearsayDAOException;
 
 public interface LocationVariantDAO extends BaseDAO<LocationVariant, Long> {
 
-    public List<LocationVariant> findByVersionAccesionAndPosition(String versionAccession, Integer position)
-            throws HearsayDAOException;
+    public List<LocationVariant> findByVersionAccesionAndPosition(String versionAccession, Integer position) throws HearsayDAOException;
 
 }

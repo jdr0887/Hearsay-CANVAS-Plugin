@@ -166,9 +166,9 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "commentType", propOrder = { "absorption", "kinetics", "phDependence", "redoxPotential",
-        "temperatureDependence", "molecule", "subcellularLocation", "conflict", "link", "event", "isoform",
-        "interactant", "organismsDiffer", "experiments", "disease", "location", "text" })
+@XmlType(name = "commentType", propOrder = { "absorption", "kinetics", "phDependence", "redoxPotential", "temperatureDependence",
+        "molecule", "subcellularLocation", "conflict", "link", "event", "isoform", "interactant", "organismsDiffer", "experiments",
+        "disease", "location", "text" })
 public class CommentType {
 
     protected CommentType.Absorption absorption;
