@@ -32,8 +32,7 @@ public class BinResultsFinalDiagnosticDAOTest {
         BinResultsFinalDiagnosticDAOImpl binResultsFinalDiagnosticDAO = new BinResultsFinalDiagnosticDAOImpl();
         binResultsFinalDiagnosticDAO.setEntityManager(em);
         try {
-            List<BinResultsFinalDiagnostic> results = binResultsFinalDiagnosticDAO.findByDXIdAndParticipantAndVersion(
-                    22L, "NCG_00064", 16);
+            List<BinResultsFinalDiagnostic> results = binResultsFinalDiagnosticDAO.findByDXIdAndParticipantAndVersion(22L, "NCG_00064", 16);
             assertTrue(results != null);
             assertTrue(!results.isEmpty());
         } catch (HearsayDAOException e) {
