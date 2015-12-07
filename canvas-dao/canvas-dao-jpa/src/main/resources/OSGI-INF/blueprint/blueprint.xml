@@ -1,67 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xmlns:ext="http://aries.apache.org/blueprint/xmlns/blueprint-ext/v1.0.0" xmlns:tx="http://aries.apache.org/xmlns/transactions/v2.0.0"
-  xmlns:jpa="http://aries.apache.org/xmlns/jpa/v2.0.0" default-activation="eager">
-
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0" xmlns:ext="http://aries.apache.org/blueprint/xmlns/blueprint-ext/v1.0.0"
+  xmlns:tx="http://aries.apache.org/xmlns/transactions/v2.0.0" xmlns:jpa="http://aries.apache.org/xmlns/jpa/v2.0.0">
   <jpa:enable />
   <tx:enable />
-
-  <bean id="annotationGeneDAOImpl" class="org.renci.hearsay.canvas.annotation.dao.jpa.AnnotationGeneDAOImpl" ext:field-injection="true" />
-  <service ref="annotationGeneDAOImpl" interface="org.renci.hearsay.canvas.annotation.dao.AnnotationGeneDAO" />
-
+  <bean id="annotationGeneDAOImpl" class="org.renci.hearsay.canvas.annotation.dao.jpa.AnnotationGeneDAOImpl" ext:field-injection="true">
+  </bean>
   <bean id="annotationGeneExternalIdsDAOImpl" class="org.renci.hearsay.canvas.annotation.dao.jpa.AnnotationGeneExternalIdsDAOImpl"
-    ext:field-injection="true" />
-  <service ref="annotationGeneExternalIdsDAOImpl" interface="org.renci.hearsay.canvas.annotation.dao.AnnotationGeneExternalIdsDAO" />
-
+    ext:field-injection="true">
+  </bean>
   <bean id="referenceClinicalAssertionsDAOImpl" class="org.renci.hearsay.canvas.clinvar.dao.jpa.ReferenceClinicalAssertionsDAOImpl"
-    ext:field-injection="true" />
-  <service ref="referenceClinicalAssertionsDAOImpl" interface="org.renci.hearsay.canvas.clinvar.dao.ReferenceClinicalAssertionsDAO" />
-
-  <bean id="genomeRefDAOImpl" class="org.renci.hearsay.canvas.ref.dao.jpa.GenomeRefDAOImpl" ext:field-injection="true" />
-  <service ref="genomeRefDAOImpl" interface="org.renci.hearsay.canvas.ref.dao.GenomeRefDAO" />
-
-  <bean id="genomeRefSeqDAOImpl" class="org.renci.hearsay.canvas.ref.dao.jpa.GenomeRefSeqDAOImpl" ext:field-injection="true" />
-  <service ref="genomeRefSeqDAOImpl" interface="org.renci.hearsay.canvas.ref.dao.GenomeRefSeqDAO" />
-
-  <bean id="hgncGeneDAOImpl" class="org.renci.hearsay.canvas.hgnc.dao.jpa.HGNCGeneDAOImpl" ext:field-injection="true" />
-  <service ref="hgncGeneDAOImpl" interface="org.renci.hearsay.canvas.hgnc.dao.HGNCGeneDAO" />
-
-  <bean id="featureDAOImpl" class="org.renci.hearsay.canvas.refseq.dao.jpa.FeatureDAOImpl" ext:field-injection="true" />
-  <service ref="featureDAOImpl" interface="org.renci.hearsay.canvas.refseq.dao.FeatureDAO" />
-
+    ext:field-injection="true">
+  </bean>
+  <bean id="genomeRefDAOImpl" class="org.renci.hearsay.canvas.ref.dao.jpa.GenomeRefDAOImpl" ext:field-injection="true">
+  </bean>
+  <bean id="genomeRefSeqDAOImpl" class="org.renci.hearsay.canvas.ref.dao.jpa.GenomeRefSeqDAOImpl" ext:field-injection="true">
+  </bean>
+  <bean id="hgncGeneDAOImpl" class="org.renci.hearsay.canvas.hgnc.dao.jpa.HGNCGeneDAOImpl" ext:field-injection="true">
+  </bean>
+  <bean id="featureDAOImpl" class="org.renci.hearsay.canvas.refseq.dao.jpa.FeatureDAOImpl" ext:field-injection="true">
+  </bean>
   <bean id="refSeqCodingSequenceDAOImpl" class="org.renci.hearsay.canvas.refseq.dao.jpa.RefSeqCodingSequenceDAOImpl"
-    ext:field-injection="true" />
-  <service ref="refSeqCodingSequenceDAOImpl" interface="org.renci.hearsay.canvas.refseq.dao.RefSeqCodingSequenceDAO" />
-
-  <bean id="refSeqGeneDAOImpl" class="org.renci.hearsay.canvas.refseq.dao.jpa.RefSeqGeneDAOImpl" ext:field-injection="true" />
-  <service ref="refSeqGeneDAOImpl" interface="org.renci.hearsay.canvas.refseq.dao.RefSeqGeneDAO" />
-
-  <bean id="transcriptDAOImpl" class="org.renci.hearsay.canvas.refseq.dao.jpa.TranscriptDAOImpl" ext:field-injection="true" />
-  <service ref="transcriptDAOImpl" interface="org.renci.hearsay.canvas.refseq.dao.TranscriptDAO" />
-
-  <bean id="transcriptMapsDAOImpl" class="org.renci.hearsay.canvas.refseq.dao.jpa.TranscriptMapsDAOImpl" ext:field-injection="true" />
-  <service ref="transcriptMapsDAOImpl" interface="org.renci.hearsay.canvas.refseq.dao.TranscriptMapsDAO" />
-
-  <bean id="transcriptMapsExonsDAOImpl" class="org.renci.hearsay.canvas.refseq.dao.jpa.TranscriptMapsExonsDAOImpl" ext:field-injection="true" />
-  <service ref="transcriptMapsExonsDAOImpl" interface="org.renci.hearsay.canvas.refseq.dao.TranscriptMapsExonsDAO" />
-
-  <bean id="variants_61_2_DAOImpl" class="org.renci.hearsay.canvas.refseq.dao.jpa.Variants_61_2_DAOImpl" ext:field-injection="true" />
-  <service ref="variants_61_2_DAOImpl" interface="org.renci.hearsay.canvas.refseq.dao.Variants_61_2_DAO" />
-
-  <bean id="maxVariantFrequencyDAOImpl" class="org.renci.hearsay.canvas.exac.dao.jpa.MaxVariantFrequencyDAOImpl" ext:field-injection="true" />
-  <service ref="maxVariantFrequencyDAOImpl" interface="org.renci.hearsay.canvas.exac.dao.MaxVariantFrequencyDAO" />
-
-  <bean id="maxFreqDAOImpl" class="org.renci.hearsay.canvas.clinbin.dao.jpa.MaxFreqDAOImpl" ext:field-injection="true" />
-  <service ref="maxFreqDAOImpl" interface="org.renci.hearsay.canvas.clinbin.dao.MaxFreqDAO" />
-
-  <bean id="variantFrequencyDAOImpl" class="org.renci.hearsay.canvas.exac.dao.jpa.VariantFrequencyDAOImpl" ext:field-injection="true" />
-  <service ref="variantFrequencyDAOImpl" interface="org.renci.hearsay.canvas.exac.dao.VariantFrequencyDAO" />
-
+    ext:field-injection="true">
+  </bean>
+  <bean id="refSeqGeneDAOImpl" class="org.renci.hearsay.canvas.refseq.dao.jpa.RefSeqGeneDAOImpl" ext:field-injection="true">
+  </bean>
+  <bean id="transcriptDAOImpl" class="org.renci.hearsay.canvas.refseq.dao.jpa.TranscriptDAOImpl" ext:field-injection="true">
+  </bean>
+  <bean id="transcriptMapsDAOImpl" class="org.renci.hearsay.canvas.refseq.dao.jpa.TranscriptMapsDAOImpl" ext:field-injection="true">
+  </bean>
+  <bean id="transcriptMapsExonsDAOImpl" class="org.renci.hearsay.canvas.refseq.dao.jpa.TranscriptMapsExonsDAOImpl" ext:field-injection="true">
+  </bean>
+  <bean id="variants_61_2_DAOImpl" class="org.renci.hearsay.canvas.refseq.dao.jpa.Variants_61_2_DAOImpl" ext:field-injection="true">
+  </bean>
+  <bean id="maxVariantFrequencyDAOImpl" class="org.renci.hearsay.canvas.exac.dao.jpa.MaxVariantFrequencyDAOImpl" ext:field-injection="true">
+  </bean>
+  <bean id="maxFreqDAOImpl" class="org.renci.hearsay.canvas.clinbin.dao.jpa.MaxFreqDAOImpl" ext:field-injection="true">
+  </bean>
+  <bean id="variantFrequencyDAOImpl" class="org.renci.hearsay.canvas.exac.dao.jpa.VariantFrequencyDAOImpl" ext:field-injection="true">
+  </bean>
   <bean id="oneThousandGenomeSNPFrequencyPopulationDAOImpl" class="org.renci.hearsay.canvas.genome1k.dao.jpa.OneThousandGenomeSNPFrequencyPopulationDAOImpl"
-    ext:field-injection="true" />
-  <service ref="oneThousandGenomeSNPFrequencyPopulationDAOImpl" interface="org.renci.hearsay.canvas.genome1k.dao.OneThousandGenomeSNPFrequencyPopulationDAO" />
-
-  <bean id="canvasDAOBeanService" class="org.renci.hearsay.canvas.dao.CANVASDAOBean">
+    ext:field-injection="true">
+  </bean>
+  <bean id="canvasDAOBeanService" class="org.renci.hearsay.canvas.dao.jpa.CANVASDAOBeanServiceImpl">
     <property name="annotationGeneDAO" ref="annotationGeneDAOImpl" />
     <property name="annotationGeneExternalIdsDAO" ref="annotationGeneExternalIdsDAOImpl" />
     <property name="referenceClinicalAssertionsDAO" ref="referenceClinicalAssertionsDAOImpl" />
@@ -79,6 +59,23 @@
     <property name="variantFrequencyDAO" ref="variantFrequencyDAOImpl" />
     <property name="oneThousandGenomeSNPFrequencyPopulationDAO" ref="oneThousandGenomeSNPFrequencyPopulationDAOImpl" />
   </bean>
+  <service ref="annotationGeneDAOImpl" interface="org.renci.hearsay.canvas.annotation.dao.AnnotationGeneDAO" />
+  <service ref="annotationGeneExternalIdsDAOImpl" interface="org.renci.hearsay.canvas.annotation.dao.AnnotationGeneExternalIdsDAO" />
+  <service ref="referenceClinicalAssertionsDAOImpl" interface="org.renci.hearsay.canvas.clinvar.dao.ReferenceClinicalAssertionsDAO" />
+  <service ref="genomeRefDAOImpl" interface="org.renci.hearsay.canvas.ref.dao.GenomeRefDAO" />
+  <service ref="genomeRefSeqDAOImpl" interface="org.renci.hearsay.canvas.ref.dao.GenomeRefSeqDAO" />
+  <service ref="hgncGeneDAOImpl" interface="org.renci.hearsay.canvas.hgnc.dao.HGNCGeneDAO" />
+  <service ref="featureDAOImpl" interface="org.renci.hearsay.canvas.refseq.dao.FeatureDAO" />
+  <service ref="refSeqCodingSequenceDAOImpl" interface="org.renci.hearsay.canvas.refseq.dao.RefSeqCodingSequenceDAO" />
+  <service ref="refSeqGeneDAOImpl" interface="org.renci.hearsay.canvas.refseq.dao.RefSeqGeneDAO" />
+  <service ref="transcriptDAOImpl" interface="org.renci.hearsay.canvas.refseq.dao.TranscriptDAO" />
+  <service ref="transcriptMapsDAOImpl" interface="org.renci.hearsay.canvas.refseq.dao.TranscriptMapsDAO" />
+  <service ref="transcriptMapsExonsDAOImpl" interface="org.renci.hearsay.canvas.refseq.dao.TranscriptMapsExonsDAO" />
+  <service ref="variants_61_2_DAOImpl" interface="org.renci.hearsay.canvas.refseq.dao.Variants_61_2_DAO" />
+  <service ref="maxVariantFrequencyDAOImpl" interface="org.renci.hearsay.canvas.exac.dao.MaxVariantFrequencyDAO" />
+  <service ref="maxFreqDAOImpl" interface="org.renci.hearsay.canvas.clinbin.dao.MaxFreqDAO" />
+  <service ref="variantFrequencyDAOImpl" interface="org.renci.hearsay.canvas.exac.dao.VariantFrequencyDAO" />
+  <service ref="oneThousandGenomeSNPFrequencyPopulationDAOImpl" interface="org.renci.hearsay.canvas.genome1k.dao.OneThousandGenomeSNPFrequencyPopulationDAO" />
   <service ref="canvasDAOBeanService" interface="org.renci.hearsay.canvas.dao.CANVASDAOBeanService" />
 
 </blueprint>
