@@ -12,7 +12,7 @@ import org.renci.hearsay.dao.HearsayDAOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Transactional
+@Transactional(Transactional.TxType.SUPPORTS)
 public class Variants_48_2_DAOImpl extends BaseDAOImpl<Variants_48_2, Long> implements Variants_48_2_DAO {
 
     private final Logger logger = LoggerFactory.getLogger(Variants_48_2_DAOImpl.class);
@@ -29,8 +29,7 @@ public class Variants_48_2_DAOImpl extends BaseDAOImpl<Variants_48_2, Long> impl
     @Override
     public List<Variants_48_2> findByLocationVariantId(Long id) throws HearsayDAOException {
         logger.debug("ENTERING findByName()");
-        TypedQuery<Variants_48_2> query = getEntityManager().createNamedQuery("Variants_48_2.findByLocationVariantId",
-                Variants_48_2.class);
+        TypedQuery<Variants_48_2> query = getEntityManager().createNamedQuery("Variants_48_2.findByLocationVariantId", Variants_48_2.class);
         query.setParameter("locationVariantId", id);
         List<Variants_48_2> ret = query.getResultList();
         return ret;

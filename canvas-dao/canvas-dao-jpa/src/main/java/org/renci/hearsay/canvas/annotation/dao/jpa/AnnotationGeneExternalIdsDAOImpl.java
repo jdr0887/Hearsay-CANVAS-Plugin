@@ -12,9 +12,9 @@ import org.renci.hearsay.dao.HearsayDAOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Transactional
-public class AnnotationGeneExternalIdsDAOImpl extends BaseDAOImpl<AnnotationGeneExternalIds, Integer> implements
-        AnnotationGeneExternalIdsDAO {
+@Transactional(Transactional.TxType.SUPPORTS)
+public class AnnotationGeneExternalIdsDAOImpl extends BaseDAOImpl<AnnotationGeneExternalIds, Integer>
+        implements AnnotationGeneExternalIdsDAO {
 
     private final Logger logger = LoggerFactory.getLogger(AnnotationGeneExternalIdsDAOImpl.class);
 
@@ -30,19 +30,18 @@ public class AnnotationGeneExternalIdsDAOImpl extends BaseDAOImpl<AnnotationGene
     @Override
     public List<AnnotationGeneExternalIds> findByNamespace(String namespace) throws HearsayDAOException {
         logger.debug("ENTERING findByNamespace(String)");
-        TypedQuery<AnnotationGeneExternalIds> query = getEntityManager().createNamedQuery(
-                "AnnotationGeneExternalIds.findByNamespace", AnnotationGeneExternalIds.class);
+        TypedQuery<AnnotationGeneExternalIds> query = getEntityManager().createNamedQuery("AnnotationGeneExternalIds.findByNamespace",
+                AnnotationGeneExternalIds.class);
         query.setParameter("namespace", namespace);
         List<AnnotationGeneExternalIds> ret = query.getResultList();
         return ret;
     }
 
     @Override
-    public List<AnnotationGeneExternalIds> findByNamespaceAndNamespaceVersion(String namespace, String version)
-            throws HearsayDAOException {
+    public List<AnnotationGeneExternalIds> findByNamespaceAndNamespaceVersion(String namespace, String version) throws HearsayDAOException {
         logger.debug("ENTERING findByNamespaceAndNamespaceVersion(String, String)");
-        TypedQuery<AnnotationGeneExternalIds> query = getEntityManager().createNamedQuery(
-                "AnnotationGeneExternalIds.findByNamespace", AnnotationGeneExternalIds.class);
+        TypedQuery<AnnotationGeneExternalIds> query = getEntityManager().createNamedQuery("AnnotationGeneExternalIds.findByNamespace",
+                AnnotationGeneExternalIds.class);
         query.setParameter("namespace", namespace);
         query.setParameter("namespaceVersion", version);
         List<AnnotationGeneExternalIds> ret = query.getResultList();

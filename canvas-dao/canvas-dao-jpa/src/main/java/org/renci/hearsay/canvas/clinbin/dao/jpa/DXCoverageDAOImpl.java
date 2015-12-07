@@ -27,7 +27,7 @@ import org.renci.hearsay.dao.HearsayDAOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Transactional
+@Transactional(Transactional.TxType.SUPPORTS)
 public class DXCoverageDAOImpl extends BaseDAOImpl<DXCoverage, Long> implements DXCoverageDAO {
 
     private final Logger logger = LoggerFactory.getLogger(DXCoverageDAOImpl.class);

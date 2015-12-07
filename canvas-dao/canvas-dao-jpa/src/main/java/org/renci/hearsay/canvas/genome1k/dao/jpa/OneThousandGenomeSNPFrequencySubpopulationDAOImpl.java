@@ -12,9 +12,9 @@ import org.renci.hearsay.dao.HearsayDAOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Transactional
-public class OneThousandGenomeSNPFrequencySubpopulationDAOImpl extends BaseDAOImpl<OneThousandGenomeSNPFrequencySubpopulation, Long> implements
-        OneThousandGenomeSNPFrequencySubpopulationDAO {
+@Transactional(Transactional.TxType.SUPPORTS)
+public class OneThousandGenomeSNPFrequencySubpopulationDAOImpl extends BaseDAOImpl<OneThousandGenomeSNPFrequencySubpopulation, Long>
+        implements OneThousandGenomeSNPFrequencySubpopulationDAO {
 
     private final Logger logger = LoggerFactory.getLogger(OneThousandGenomeSNPFrequencySubpopulationDAOImpl.class);
 

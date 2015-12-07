@@ -23,7 +23,7 @@ import org.renci.hearsay.dao.HearsayDAOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Transactional
+@Transactional(Transactional.TxType.SUPPORTS)
 public class FeatureDAOImpl extends BaseDAOImpl<Feature, Long> implements FeatureDAO {
 
     private final Logger logger = LoggerFactory.getLogger(FeatureDAOImpl.class);
@@ -38,8 +38,7 @@ public class FeatureDAOImpl extends BaseDAOImpl<Feature, Long> implements Featur
     }
 
     @Override
-    public List<Feature> findByRefSeqVersionAndTranscriptId(String refSeqVersion, String versionId)
-            throws HearsayDAOException {
+    public List<Feature> findByRefSeqVersionAndTranscriptId(String refSeqVersion, String versionId) throws HearsayDAOException {
         logger.debug("ENTERING findByRefSeqVersionAndTranscriptId(String, String)");
         CriteriaBuilder critBuilder = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<Feature> crit = critBuilder.createQuery(getPersistentClass());
@@ -55,7 +54,7 @@ public class FeatureDAOImpl extends BaseDAOImpl<Feature, Long> implements Featur
         predicates.add(critBuilder.equal(regionGroupTranscriptJoin.get(Transcript_.versionId), versionId));
 
         crit.where(predicates.toArray(new Predicate[predicates.size()]));
-        
+
         TypedQuery<Feature> query = getEntityManager().createQuery(crit);
         List<Feature> ret = query.getResultList();
 

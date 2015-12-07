@@ -45,7 +45,7 @@ import org.renci.hearsay.dao.HearsayDAOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Transactional
+@Transactional(Transactional.TxType.SUPPORTS)
 public class ReferenceClinicalAssertionsDAOImpl extends BaseDAOImpl<ReferenceClinicalAssertions, Long>
         implements ReferenceClinicalAssertionsDAO {
 
@@ -77,8 +77,7 @@ public class ReferenceClinicalAssertionsDAOImpl extends BaseDAOImpl<ReferenceCli
         SetJoin<Versions, DiagnosticResultVersion> versionsDiagnosticResultVersionJoin = referenceClinicalAssertionsVersionsJoin
                 .join(Versions_.diagnosticResultVersions, JoinType.LEFT);
 
-        predicates.add(critBuilder.equal(
-                versionsDiagnosticResultVersionJoin.get(DiagnosticResultVersion_.diagnosticResultVersion),
+        predicates.add(critBuilder.equal(versionsDiagnosticResultVersionJoin.get(DiagnosticResultVersion_.diagnosticResultVersion),
                 resultVersion));
 
         Join<DiagnosticResultVersion, BinResultsFinalDiagnostic> diagnosticResultVersionBinResultsFinalDiagnosticJoin = versionsDiagnosticResultVersionJoin
@@ -88,8 +87,7 @@ public class ReferenceClinicalAssertionsDAOImpl extends BaseDAOImpl<ReferenceCli
                 .join(BinResultsFinalDiagnostic_.key);
 
         predicates.add(critBuilder.equal(
-                binResultsFinalDiagnosticBinResultsFinalDiagnosticPKJoin.get(BinResultsFinalDiagnosticPK_.participant),
-                participant));
+                binResultsFinalDiagnosticBinResultsFinalDiagnosticPKJoin.get(BinResultsFinalDiagnosticPK_.participant), participant));
 
         Join<BinResultsFinalDiagnostic, DX> binResultsFinalDiagnosticDXJoin = diagnosticResultVersionBinResultsFinalDiagnosticJoin
                 .join(BinResultsFinalDiagnostic_.dx);
@@ -105,8 +103,8 @@ public class ReferenceClinicalAssertionsDAOImpl extends BaseDAOImpl<ReferenceCli
     }
 
     @Override
-    public List<ReferenceClinicalAssertions> findIncidental(Long incidentalBinId, String participant,
-            Integer resultVersion) throws HearsayDAOException {
+    public List<ReferenceClinicalAssertions> findIncidental(Long incidentalBinId, String participant, Integer resultVersion)
+            throws HearsayDAOException {
         logger.debug("ENTERING findByIncidental(Long, String, Integer)");
 
         CriteriaBuilder critBuilder = getEntityManager().getCriteriaBuilder();
@@ -120,22 +118,20 @@ public class ReferenceClinicalAssertionsDAOImpl extends BaseDAOImpl<ReferenceCli
         SetJoin<Versions, IncidentalResultVersionX> versionsIncidentalResultVersionXJoin = referenceClinicalAssertionsVersionsJoin
                 .join(Versions_.incidentalResultVersions, JoinType.LEFT);
 
-        predicates.add(critBuilder.equal(
-                versionsIncidentalResultVersionXJoin.get(IncidentalResultVersionX_.binningResultVersion),
-                resultVersion));
+        predicates.add(
+                critBuilder.equal(versionsIncidentalResultVersionXJoin.get(IncidentalResultVersionX_.binningResultVersion), resultVersion));
 
         Join<IncidentalResultVersionX, BinResultsFinalIncidentalX> incidentalResultVersionXBinResultsFinalIncidentalXJoin = versionsIncidentalResultVersionXJoin
                 .join(IncidentalResultVersionX_.binResultsFinalIncidentals, JoinType.LEFT);
         Join<BinResultsFinalIncidentalX, BinResultsFinalIncidentalXPK> binResultsFinalIncidentalXBinResultsFinalIncidentalXPKJoin = incidentalResultVersionXBinResultsFinalIncidentalXJoin
                 .join(BinResultsFinalIncidentalX_.key, JoinType.LEFT);
-        predicates.add(critBuilder.equal(binResultsFinalIncidentalXBinResultsFinalIncidentalXPKJoin
-                .get(BinResultsFinalIncidentalXPK_.participant), participant));
+        predicates.add(critBuilder.equal(
+                binResultsFinalIncidentalXBinResultsFinalIncidentalXPKJoin.get(BinResultsFinalIncidentalXPK_.participant), participant));
 
         Join<BinResultsFinalIncidentalX, IncidentalBinX> binResultsFinalIncidentalXIncidentalBinXJoin = incidentalResultVersionXBinResultsFinalIncidentalXJoin
                 .join(BinResultsFinalIncidentalX_.incidentalBin);
 
-        predicates.add(critBuilder.equal(binResultsFinalIncidentalXIncidentalBinXJoin.get(IncidentalBinX_.id),
-                incidentalBinId));
+        predicates.add(critBuilder.equal(binResultsFinalIncidentalXIncidentalBinXJoin.get(IncidentalBinX_.id), incidentalBinId));
 
         crit.distinct(true);
         crit.where(predicates.toArray(new Predicate[predicates.size()]));
@@ -159,22 +155,20 @@ public class ReferenceClinicalAssertionsDAOImpl extends BaseDAOImpl<ReferenceCli
                 .join(ReferenceClinicalAssertions_.versions, JoinType.LEFT);
         SetJoin<Versions, IncidentalResultVersionX> versionsIncidentalResultVersionXJoin = referenceClinicalAssertionsVersionsJoin
                 .join(Versions_.incidentalResultVersions, JoinType.LEFT);
-        predicates.add(critBuilder.equal(
-                versionsIncidentalResultVersionXJoin.get(IncidentalResultVersionX_.binningResultVersion),
-                resultVersion));
+        predicates.add(
+                critBuilder.equal(versionsIncidentalResultVersionXJoin.get(IncidentalResultVersionX_.binningResultVersion), resultVersion));
 
         Join<IncidentalResultVersionX, BinResultsFinalRiskX> incidentalResultVersionXBinResultsFinalRiskXJoin = versionsIncidentalResultVersionXJoin
                 .join(IncidentalResultVersionX_.binResultsFinalRisks, JoinType.LEFT);
         Join<BinResultsFinalRiskX, BinResultsFinalRiskXPK> binResultsFinalRiskXBinResultsFinalRiskXPKJoin = incidentalResultVersionXBinResultsFinalRiskXJoin
                 .join(BinResultsFinalRiskX_.key, JoinType.LEFT);
-        predicates.add(critBuilder.equal(
-                binResultsFinalRiskXBinResultsFinalRiskXPKJoin.get(BinResultsFinalRiskXPK_.participant), participant));
+        predicates.add(
+                critBuilder.equal(binResultsFinalRiskXBinResultsFinalRiskXPKJoin.get(BinResultsFinalRiskXPK_.participant), participant));
 
         Join<BinResultsFinalRiskX, IncidentalBinX> binResultsFinalIncidentalXIncidentalBinXJoin = incidentalResultVersionXBinResultsFinalRiskXJoin
                 .join(BinResultsFinalRiskX_.incidentalBin);
 
-        predicates.add(critBuilder.equal(binResultsFinalIncidentalXIncidentalBinXJoin.get(IncidentalBinX_.id),
-                incidentalBinId));
+        predicates.add(critBuilder.equal(binResultsFinalIncidentalXIncidentalBinXJoin.get(IncidentalBinX_.id), incidentalBinId));
 
         crit.distinct(true);
         crit.where(predicates.toArray(new Predicate[predicates.size()]));
@@ -185,8 +179,7 @@ public class ReferenceClinicalAssertionsDAOImpl extends BaseDAOImpl<ReferenceCli
     }
 
     @Override
-    public List<ReferenceClinicalAssertions> findByLocationVariantIdAndVersion(Long locVarId, Integer version)
-            throws HearsayDAOException {
+    public List<ReferenceClinicalAssertions> findByLocationVariantIdAndVersion(Long locVarId, Integer version) throws HearsayDAOException {
         logger.debug("ENTERING findByLocationVariantIdAndVersion(Long, Integer)");
 
         CriteriaBuilder critBuilder = getEntityManager().getCriteriaBuilder();
@@ -197,8 +190,7 @@ public class ReferenceClinicalAssertionsDAOImpl extends BaseDAOImpl<ReferenceCli
         Join<ReferenceClinicalAssertions, LocationVariant> referenceClinicalAssertionsLocationVariantJoin = root
                 .join(ReferenceClinicalAssertions_.locationVariant);
 
-        predicates.add(
-                critBuilder.equal(referenceClinicalAssertionsLocationVariantJoin.get(LocationVariant_.id), locVarId));
+        predicates.add(critBuilder.equal(referenceClinicalAssertionsLocationVariantJoin.get(LocationVariant_.id), locVarId));
 
         SetJoin<ReferenceClinicalAssertions, Versions> referenceClinicalAssertionsVersionsJoin = root
                 .join(ReferenceClinicalAssertions_.versions, JoinType.LEFT);

@@ -12,8 +12,8 @@ import org.renci.hearsay.dao.HearsayDAOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Transactional
-public class GenomeRefSeqDAOImpl extends BaseDAOImpl<GenomeRefSeq, Long> implements GenomeRefSeqDAO {
+@Transactional(Transactional.TxType.SUPPORTS)
+public class GenomeRefSeqDAOImpl extends BaseDAOImpl<GenomeRefSeq, String> implements GenomeRefSeqDAO {
 
     private final Logger logger = LoggerFactory.getLogger(GenomeRefSeqDAOImpl.class);
 
@@ -29,8 +29,7 @@ public class GenomeRefSeqDAOImpl extends BaseDAOImpl<GenomeRefSeq, Long> impleme
     @Override
     public List<GenomeRefSeq> findAll() throws HearsayDAOException {
         logger.debug("ENTERING findAll()");
-        TypedQuery<GenomeRefSeq> query = getEntityManager().createNamedQuery("GenomeRefSeq.findAll",
-                GenomeRefSeq.class);
+        TypedQuery<GenomeRefSeq> query = getEntityManager().createNamedQuery("GenomeRefSeq.findAll", GenomeRefSeq.class);
         List<GenomeRefSeq> ret = query.getResultList();
         return ret;
     }

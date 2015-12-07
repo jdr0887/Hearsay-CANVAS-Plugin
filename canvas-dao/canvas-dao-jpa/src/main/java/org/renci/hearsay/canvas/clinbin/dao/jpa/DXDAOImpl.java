@@ -12,7 +12,7 @@ import org.renci.hearsay.dao.HearsayDAOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Transactional
+@Transactional(Transactional.TxType.SUPPORTS)
 public class DXDAOImpl extends BaseDAOImpl<DX, Long> implements DXDAO {
 
     private final Logger logger = LoggerFactory.getLogger(DXDAOImpl.class);

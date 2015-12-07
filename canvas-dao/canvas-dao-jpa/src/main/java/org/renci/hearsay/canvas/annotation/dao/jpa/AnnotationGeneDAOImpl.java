@@ -8,7 +8,7 @@ import org.renci.hearsay.canvas.dao.jpa.BaseDAOImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Transactional
+@Transactional(Transactional.TxType.SUPPORTS)
 public class AnnotationGeneDAOImpl extends BaseDAOImpl<AnnotationGene, Long> implements AnnotationGeneDAO {
 
     private final Logger logger = LoggerFactory.getLogger(AnnotationGeneDAOImpl.class);

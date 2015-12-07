@@ -23,9 +23,8 @@ import org.renci.hearsay.dao.HearsayDAOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Transactional
-public class RefSeqCodingSequenceDAOImpl extends BaseDAOImpl<RefSeqCodingSequence, Long> implements
-        RefSeqCodingSequenceDAO {
+@Transactional(Transactional.TxType.SUPPORTS)
+public class RefSeqCodingSequenceDAOImpl extends BaseDAOImpl<RefSeqCodingSequence, Long> implements RefSeqCodingSequenceDAO {
 
     private final Logger logger = LoggerFactory.getLogger(RefSeqCodingSequenceDAOImpl.class);
 

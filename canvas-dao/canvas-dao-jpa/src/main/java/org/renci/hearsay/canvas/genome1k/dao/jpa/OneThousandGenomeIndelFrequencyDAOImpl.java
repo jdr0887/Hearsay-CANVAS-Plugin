@@ -12,8 +12,9 @@ import org.renci.hearsay.dao.HearsayDAOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Transactional
-public class OneThousandGenomeIndelFrequencyDAOImpl extends BaseDAOImpl<OneThousandGenomeIndelFrequency, Long> implements OneThousandGenomeIndelFrequencyDAO {
+@Transactional(Transactional.TxType.SUPPORTS)
+public class OneThousandGenomeIndelFrequencyDAOImpl extends BaseDAOImpl<OneThousandGenomeIndelFrequency, Long>
+        implements OneThousandGenomeIndelFrequencyDAO {
 
     private final Logger logger = LoggerFactory.getLogger(OneThousandGenomeIndelFrequencyDAOImpl.class);
 
@@ -30,8 +31,8 @@ public class OneThousandGenomeIndelFrequencyDAOImpl extends BaseDAOImpl<OneThous
     public List<OneThousandGenomeIndelFrequency> findByLocationVariantIdAndVersion(Long locVarId, Integer version)
             throws HearsayDAOException {
         logger.debug("ENTERING findByLocationVariantIdAndVersion(Long, Integer)");
-        TypedQuery<OneThousandGenomeIndelFrequency> query = getEntityManager().createNamedQuery(
-                "IndelFrequency.findByLocationVariantIdAndVersion", OneThousandGenomeIndelFrequency.class);
+        TypedQuery<OneThousandGenomeIndelFrequency> query = getEntityManager()
+                .createNamedQuery("IndelFrequency.findByLocationVariantIdAndVersion", OneThousandGenomeIndelFrequency.class);
         query.setParameter("locationVariantId", locVarId);
         query.setParameter("version", version);
         List<OneThousandGenomeIndelFrequency> ret = query.getResultList();

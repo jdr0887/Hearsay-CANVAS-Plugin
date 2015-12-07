@@ -12,7 +12,7 @@ import org.renci.hearsay.dao.HearsayDAOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Transactional
+@Transactional(Transactional.TxType.SUPPORTS)
 public class VariantFrequencyDAOImpl extends BaseDAOImpl<VariantFrequency, Long> implements VariantFrequencyDAO {
 
     private final Logger logger = LoggerFactory.getLogger(VariantFrequencyDAOImpl.class);
@@ -27,11 +27,10 @@ public class VariantFrequencyDAOImpl extends BaseDAOImpl<VariantFrequency, Long>
     }
 
     @Override
-    public List<VariantFrequency> findByLocationVariantIdAndVersion(Long locVarId, String version)
-            throws HearsayDAOException {
+    public List<VariantFrequency> findByLocationVariantIdAndVersion(Long locVarId, String version) throws HearsayDAOException {
         logger.debug("ENTERING findByLocationVariantIdAndVersion(Long, String)");
-        TypedQuery<VariantFrequency> query = getEntityManager().createNamedQuery(
-                "exac.VariantFrequency.findByLocationVariantIdAndVersion", VariantFrequency.class);
+        TypedQuery<VariantFrequency> query = getEntityManager().createNamedQuery("exac.VariantFrequency.findByLocationVariantIdAndVersion",
+                VariantFrequency.class);
         query.setParameter("locationVariantId", locVarId);
         query.setParameter("version", version);
         List<VariantFrequency> ret = query.getResultList();

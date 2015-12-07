@@ -25,7 +25,7 @@ import org.renci.hearsay.dao.HearsayDAOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Transactional
+@Transactional(Transactional.TxType.SUPPORTS)
 public class MaxFreqDAOImpl extends BaseDAOImpl<MaxFreq, Long> implements MaxFreqDAO {
 
     private final Logger logger = LoggerFactory.getLogger(MaxFreqDAOImpl.class);
@@ -48,11 +48,10 @@ public class MaxFreqDAOImpl extends BaseDAOImpl<MaxFreq, Long> implements MaxFre
 
         List<Predicate> predicates = new ArrayList<Predicate>();
 
-        Join<MaxFreq, LocationVariant> maxVariantFrequencyLocationVariantJoin = root.join(MaxFreq_.locationVariant,
-                JoinType.LEFT);
+        Join<MaxFreq, LocationVariant> maxVariantFrequencyLocationVariantJoin = root.join(MaxFreq_.locationVariant, JoinType.LEFT);
 
-        Join<LocationVariant, Variants_61_2> locationVariantVariantsJoin = maxVariantFrequencyLocationVariantJoin.join(
-                LocationVariant_.variants_61_2, JoinType.LEFT);
+        Join<LocationVariant, Variants_61_2> locationVariantVariantsJoin = maxVariantFrequencyLocationVariantJoin
+                .join(LocationVariant_.variants_61_2, JoinType.LEFT);
 
         predicates.add(critBuilder.equal(locationVariantVariantsJoin.get(Variants_61_2_.hgncGene), name));
 

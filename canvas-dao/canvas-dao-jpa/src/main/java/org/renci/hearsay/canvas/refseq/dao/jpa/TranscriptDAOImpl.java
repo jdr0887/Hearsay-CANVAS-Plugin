@@ -23,7 +23,7 @@ import org.renci.hearsay.dao.HearsayDAOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Transactional
+@Transactional(Transactional.TxType.SUPPORTS)
 public class TranscriptDAOImpl extends BaseDAOImpl<Transcript, String> implements TranscriptDAO {
 
     private final Logger logger = LoggerFactory.getLogger(TranscriptDAOImpl.class);
@@ -38,8 +38,7 @@ public class TranscriptDAOImpl extends BaseDAOImpl<Transcript, String> implement
     }
 
     @Override
-    public List<Transcript> findByRefSeqVersionAndGenomeRefId(String refSeqVersion, Integer genomeRefId)
-            throws HearsayDAOException {
+    public List<Transcript> findByGenomeRefIdAndRefSeqVersion(Integer genomeRefId, String refSeqVersion) throws HearsayDAOException {
         logger.debug("ENTERING findByGenomeRefAndRefSeqVersion(Integer, String)");
         CriteriaBuilder critBuilder = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<Transcript> crit = critBuilder.createQuery(getPersistentClass());
@@ -50,14 +49,11 @@ public class TranscriptDAOImpl extends BaseDAOImpl<Transcript, String> implement
         Join<Transcript, TranscriptMaps> transcriptTranscriptMapsJoin = root.join(Transcript_.transcriptMaps);
         predicates.add(critBuilder.equal(transcriptTranscriptMapsJoin.get(TranscriptMaps_.genomeRefId), genomeRefId));
 
-        Join<Transcript, TranscriptRefSeqVers> transcriptTranscriptRefseqVersJoin = root
-                .join(Transcript_.refseqVersions);
-        predicates.add(critBuilder.equal(transcriptTranscriptRefseqVersJoin.get(TranscriptRefSeqVers_.refseqVer),
-                refSeqVersion));
+        Join<Transcript, TranscriptRefSeqVers> transcriptTranscriptRefseqVersJoin = root.join(Transcript_.refseqVersions);
+        predicates.add(critBuilder.equal(transcriptTranscriptRefseqVersJoin.get(TranscriptRefSeqVers_.refseqVer), refSeqVersion));
 
         crit.where(predicates.toArray(new Predicate[predicates.size()]));
         TypedQuery<Transcript> query = getEntityManager().createQuery(crit);
-        // query.setMaxResults(100);
         List<Transcript> ret = query.getResultList();
 
         return ret;

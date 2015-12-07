@@ -25,9 +25,8 @@ import org.renci.hearsay.dao.HearsayDAOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Transactional
-public class BinResultsFinalDiagnosticDAOImpl extends BaseDAOImpl<BinResultsFinalDiagnostic, Long>
-        implements BinResultsFinalDiagnosticDAO {
+@Transactional(Transactional.TxType.SUPPORTS)
+public class BinResultsFinalDiagnosticDAOImpl extends BaseDAOImpl<BinResultsFinalDiagnostic, Long> implements BinResultsFinalDiagnosticDAO {
 
     private final Logger logger = LoggerFactory.getLogger(BinResultsFinalDiagnosticDAOImpl.class);
 
@@ -41,8 +40,8 @@ public class BinResultsFinalDiagnosticDAOImpl extends BaseDAOImpl<BinResultsFina
     }
 
     @Override
-    public List<BinResultsFinalDiagnostic> findByDXIdAndParticipantAndVersion(Long dxId, String participant,
-            Integer version) throws HearsayDAOException {
+    public List<BinResultsFinalDiagnostic> findByDXIdAndParticipantAndVersion(Long dxId, String participant, Integer version)
+            throws HearsayDAOException {
         logger.debug("ENTERING findByDXIdAndParticipantAndListVersion(Long, String, Integer)");
 
         CriteriaBuilder critBuilder = getEntityManager().getCriteriaBuilder();
@@ -54,16 +53,14 @@ public class BinResultsFinalDiagnosticDAOImpl extends BaseDAOImpl<BinResultsFina
         Join<BinResultsFinalDiagnostic, BinResultsFinalDiagnosticPK> binResultsFinalDiagnosticBinResultsFinalDiagnosticPKJoin = root
                 .join(BinResultsFinalDiagnostic_.key);
         predicates.add(critBuilder.equal(
-                binResultsFinalDiagnosticBinResultsFinalDiagnosticPKJoin.get(BinResultsFinalDiagnosticPK_.participant),
-                participant));
+                binResultsFinalDiagnosticBinResultsFinalDiagnosticPKJoin.get(BinResultsFinalDiagnosticPK_.participant), participant));
 
         Join<BinResultsFinalDiagnostic, DX> binResultsFinalDiagnosticDXJoin = root.join(BinResultsFinalDiagnostic_.dx);
         predicates.add(critBuilder.equal(binResultsFinalDiagnosticDXJoin.get(DX_.id), dxId));
 
         Join<BinResultsFinalDiagnostic, DiagnosticResultVersion> coverageExonJoin = root
                 .join(BinResultsFinalDiagnostic_.diagnosticResultVersion);
-        predicates.add(
-                critBuilder.equal(coverageExonJoin.get(DiagnosticResultVersion_.diagnosticResultVersion), version));
+        predicates.add(critBuilder.equal(coverageExonJoin.get(DiagnosticResultVersion_.diagnosticResultVersion), version));
 
         crit.distinct(true);
         crit.where(predicates.toArray(new Predicate[predicates.size()]));

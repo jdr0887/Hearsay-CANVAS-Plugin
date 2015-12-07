@@ -23,7 +23,7 @@ import org.renci.hearsay.dao.HearsayDAOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Transactional
+@Transactional(Transactional.TxType.SUPPORTS)
 public class RefSeqGeneDAOImpl extends BaseDAOImpl<RefSeqGene, Long> implements RefSeqGeneDAO {
 
     private final Logger logger = LoggerFactory.getLogger(RefSeqGeneDAOImpl.class);
@@ -53,8 +53,7 @@ public class RefSeqGeneDAOImpl extends BaseDAOImpl<RefSeqGene, Long> implements 
     }
 
     @Override
-    public List<RefSeqGene> findByRefSeqVersionAndTranscriptId(String refSeqVersion, String transcriptId)
-            throws HearsayDAOException {
+    public List<RefSeqGene> findByRefSeqVersionAndTranscriptId(String refSeqVersion, String transcriptId) throws HearsayDAOException {
         logger.debug("ENTERING findByRefSeqVersionAndTranscriptId(String, String)");
         CriteriaBuilder critBuilder = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<RefSeqGene> crit = critBuilder.createQuery(getPersistentClass());
@@ -62,12 +61,12 @@ public class RefSeqGeneDAOImpl extends BaseDAOImpl<RefSeqGene, Long> implements 
         Root<RefSeqGene> fromRefSeqGene = crit.from(getPersistentClass());
         predicates.add(critBuilder.equal(fromRefSeqGene.get(RefSeqGene_.refseqVersion), refSeqVersion));
         Join<RefSeqGene, RegionGroup> refSeqGeneRegionGroupJoin = fromRefSeqGene.join(RefSeqGene_.locations);
-        Join<RegionGroup, Transcript> regionGroupTranscriptJoin = refSeqGeneRegionGroupJoin
-                .join(RegionGroup_.transcript);
+        Join<RegionGroup, Transcript> regionGroupTranscriptJoin = refSeqGeneRegionGroupJoin.join(RegionGroup_.transcript);
         predicates.add(critBuilder.equal(regionGroupTranscriptJoin.get(Transcript_.versionId), transcriptId));
         crit.orderBy(critBuilder.asc(fromRefSeqGene.get(RefSeqGene_.name)));
         crit.where(predicates.toArray(new Predicate[predicates.size()]));
         TypedQuery<RefSeqGene> query = getEntityManager().createQuery(crit);
+        // query.setHint(QueryHints.FETCHGRAPH, getEntityManager().getEntityGraph("withLocations"));
         List<RefSeqGene> ret = query.getResultList();
         return ret;
     }

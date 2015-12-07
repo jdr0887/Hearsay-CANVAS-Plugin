@@ -27,7 +27,7 @@ import org.renci.hearsay.dao.HearsayDAOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Transactional
+@Transactional(Transactional.TxType.SUPPORTS)
 public class Variants_61_2_DAOImpl extends BaseDAOImpl<Variants_61_2, Long> implements Variants_61_2_DAO {
 
     private final Logger logger = LoggerFactory.getLogger(Variants_61_2_DAOImpl.class);
@@ -44,8 +44,7 @@ public class Variants_61_2_DAOImpl extends BaseDAOImpl<Variants_61_2, Long> impl
     @Override
     public List<Variants_61_2> findByLocationVariantId(Long id) throws HearsayDAOException {
         logger.debug("ENTERING findByLocationVariantId(Long)");
-        TypedQuery<Variants_61_2> query = getEntityManager().createNamedQuery("Variants_61_2.findByLocationVariantId",
-                Variants_61_2.class);
+        TypedQuery<Variants_61_2> query = getEntityManager().createNamedQuery("Variants_61_2.findByLocationVariantId", Variants_61_2.class);
         query.setParameter("locationVariantId", id);
         List<Variants_61_2> ret = query.getResultList();
         return ret;
@@ -54,16 +53,14 @@ public class Variants_61_2_DAOImpl extends BaseDAOImpl<Variants_61_2, Long> impl
     @Override
     public List<Variants_61_2> findByGeneName(String name) throws HearsayDAOException {
         logger.debug("ENTERING findByGeneName(String)");
-        TypedQuery<Variants_61_2> query = getEntityManager().createNamedQuery("Variants_61_2.findByGeneName",
-                Variants_61_2.class);
+        TypedQuery<Variants_61_2> query = getEntityManager().createNamedQuery("Variants_61_2.findByGeneName", Variants_61_2.class);
         query.setParameter("geneName", name);
         List<Variants_61_2> ret = query.getResultList();
         return ret;
     }
 
     @Override
-    public List<Variants_61_2> findByGeneNameAndMaxAlleleFrequency(String name, Double threshold)
-            throws HearsayDAOException {
+    public List<Variants_61_2> findByGeneNameAndMaxAlleleFrequency(String name, Double threshold) throws HearsayDAOException {
         logger.debug("ENTERING findByGeneNameAndMaxAlleleFrequency(String, Double)");
         CriteriaBuilder critBuilder = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<Variants_61_2> crit = critBuilder.createQuery(getPersistentClass());
@@ -72,21 +69,18 @@ public class Variants_61_2_DAOImpl extends BaseDAOImpl<Variants_61_2, Long> impl
 
         predicates.add(critBuilder.equal(root.get(Variants_61_2_.hgncGene), name));
 
-        Join<Variants_61_2, LocationVariant> variantsLocationVariantJoin = root.join(Variants_61_2_.locationVariant,
-                JoinType.LEFT);
+        Join<Variants_61_2, LocationVariant> variantsLocationVariantJoin = root.join(Variants_61_2_.locationVariant, JoinType.LEFT);
 
         Join<LocationVariant, MaxVariantFrequency> locationVariantMaxVariantFrequencyJoin = variantsLocationVariantJoin
                 .join(LocationVariant_.maxVariantFrequencies);
 
         Coalesce<Double> maxVariantFrequencyCoalesce = critBuilder.coalesce();
-        maxVariantFrequencyCoalesce.value(locationVariantMaxVariantFrequencyJoin
-                .get(MaxVariantFrequency_.maxAlleleFrequency));
+        maxVariantFrequencyCoalesce.value(locationVariantMaxVariantFrequencyJoin.get(MaxVariantFrequency_.maxAlleleFrequency));
         maxVariantFrequencyCoalesce.value(0D);
 
         predicates.add(critBuilder.lessThanOrEqualTo(maxVariantFrequencyCoalesce, threshold));
 
-        Join<LocationVariant, MaxFreq> locationVariantMaxFreqJoin = variantsLocationVariantJoin
-                .join(LocationVariant_.maxFreqs);
+        Join<LocationVariant, MaxFreq> locationVariantMaxFreqJoin = variantsLocationVariantJoin.join(LocationVariant_.maxFreqs);
 
         Coalesce<Double> maxFreqCoalesce = critBuilder.coalesce();
         maxFreqCoalesce.value(locationVariantMaxFreqJoin.get(MaxFreq_.maxAlleleFreq));
@@ -103,8 +97,8 @@ public class Variants_61_2_DAOImpl extends BaseDAOImpl<Variants_61_2, Long> impl
     @Override
     public List<Variants_61_2> findByTranscriptAccession(String accession) throws HearsayDAOException {
         logger.debug("ENTERING findByTranscriptAccession(String)");
-        TypedQuery<Variants_61_2> query = getEntityManager().createNamedQuery(
-                "Variants_61_2.findByTranscriptAccession", Variants_61_2.class);
+        TypedQuery<Variants_61_2> query = getEntityManager().createNamedQuery("Variants_61_2.findByTranscriptAccession",
+                Variants_61_2.class);
         query.setParameter("transcr", accession);
         List<Variants_61_2> ret = query.getResultList();
         return ret;

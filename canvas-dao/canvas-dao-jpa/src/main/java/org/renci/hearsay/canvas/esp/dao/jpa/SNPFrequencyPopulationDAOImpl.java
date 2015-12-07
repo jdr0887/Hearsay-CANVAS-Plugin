@@ -12,9 +12,8 @@ import org.renci.hearsay.dao.HearsayDAOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Transactional
-public class SNPFrequencyPopulationDAOImpl extends BaseDAOImpl<ESPSNPFrequencyPopulation, Long> implements
-        ESPSNPFrequencyPopulationDAO {
+@Transactional(Transactional.TxType.SUPPORTS)
+public class SNPFrequencyPopulationDAOImpl extends BaseDAOImpl<ESPSNPFrequencyPopulation, Long> implements ESPSNPFrequencyPopulationDAO {
 
     private final Logger logger = LoggerFactory.getLogger(SNPFrequencyPopulationDAOImpl.class);
 
@@ -28,11 +27,10 @@ public class SNPFrequencyPopulationDAOImpl extends BaseDAOImpl<ESPSNPFrequencyPo
     }
 
     @Override
-    public List<ESPSNPFrequencyPopulation> findByLocationVariantIdAndVersion(Long locVarId, Integer version)
-            throws HearsayDAOException {
+    public List<ESPSNPFrequencyPopulation> findByLocationVariantIdAndVersion(Long locVarId, Integer version) throws HearsayDAOException {
         logger.debug("ENTERING findByLocationVariantIdAndVersion(Long, Integer)");
-        TypedQuery<ESPSNPFrequencyPopulation> query = getEntityManager().createNamedQuery(
-                "esp.SNPFrequencyPopulation.findByLocationVariantIdAndVersion", ESPSNPFrequencyPopulation.class);
+        TypedQuery<ESPSNPFrequencyPopulation> query = getEntityManager()
+                .createNamedQuery("esp.SNPFrequencyPopulation.findByLocationVariantIdAndVersion", ESPSNPFrequencyPopulation.class);
         query.setParameter("locationVariantId", locVarId);
         query.setParameter("version", version);
         List<ESPSNPFrequencyPopulation> ret = query.getResultList();

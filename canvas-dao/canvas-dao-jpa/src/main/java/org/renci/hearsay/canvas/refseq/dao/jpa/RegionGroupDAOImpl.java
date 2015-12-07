@@ -24,7 +24,7 @@ import org.renci.hearsay.dao.HearsayDAOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Transactional
+@Transactional(Transactional.TxType.SUPPORTS)
 public class RegionGroupDAOImpl extends BaseDAOImpl<RegionGroup, Long> implements RegionGroupDAO {
 
     private final Logger logger = LoggerFactory.getLogger(RegionGroupDAOImpl.class);
@@ -39,8 +39,7 @@ public class RegionGroupDAOImpl extends BaseDAOImpl<RegionGroup, Long> implement
     }
 
     @Override
-    public List<RegionGroup> findByRefSeqVersionAndTranscriptId(String refSeqVersion, String transcriptId)
-            throws HearsayDAOException {
+    public List<RegionGroup> findByRefSeqVersionAndTranscriptId(String refSeqVersion, String transcriptId) throws HearsayDAOException {
         logger.debug("ENTERING findByRefSeqVersionAndTranscriptId(String, String)");
         CriteriaBuilder critBuilder = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<RegionGroup> crit = critBuilder.createQuery(getPersistentClass());

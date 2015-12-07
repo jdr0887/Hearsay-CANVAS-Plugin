@@ -25,9 +25,8 @@ import org.renci.hearsay.dao.HearsayDAOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Transactional
-public class MaxVariantFrequencyDAOImpl extends BaseDAOImpl<MaxVariantFrequency, Long> implements
-        MaxVariantFrequencyDAO {
+@Transactional(Transactional.TxType.SUPPORTS)
+public class MaxVariantFrequencyDAOImpl extends BaseDAOImpl<MaxVariantFrequency, Long> implements MaxVariantFrequencyDAO {
 
     private final Logger logger = LoggerFactory.getLogger(MaxVariantFrequencyDAOImpl.class);
 
@@ -41,11 +40,10 @@ public class MaxVariantFrequencyDAOImpl extends BaseDAOImpl<MaxVariantFrequency,
     }
 
     @Override
-    public List<MaxVariantFrequency> findByLocationVariantIdAndVersion(Long locVarId, String version)
-            throws HearsayDAOException {
+    public List<MaxVariantFrequency> findByLocationVariantIdAndVersion(Long locVarId, String version) throws HearsayDAOException {
         logger.debug("ENTERING findByLocationVariantIdAndVersion(Long, String)");
-        TypedQuery<MaxVariantFrequency> query = getEntityManager().createNamedQuery(
-                "exac.MaxVariantFrequency.findByLocationVariantIdAndVersion", MaxVariantFrequency.class);
+        TypedQuery<MaxVariantFrequency> query = getEntityManager()
+                .createNamedQuery("exac.MaxVariantFrequency.findByLocationVariantIdAndVersion", MaxVariantFrequency.class);
         query.setParameter("locationVariantId", locVarId);
         query.setParameter("version", version);
         List<MaxVariantFrequency> ret = query.getResultList();
@@ -55,16 +53,15 @@ public class MaxVariantFrequencyDAOImpl extends BaseDAOImpl<MaxVariantFrequency,
     @Override
     public List<MaxVariantFrequency> findByLocationVariantId(Long locVarId) throws HearsayDAOException {
         logger.debug("ENTERING findByLocationVariantId(Long)");
-        TypedQuery<MaxVariantFrequency> query = getEntityManager().createNamedQuery(
-                "exac.MaxVariantFrequency.findByLocationVariantId", MaxVariantFrequency.class);
+        TypedQuery<MaxVariantFrequency> query = getEntityManager().createNamedQuery("exac.MaxVariantFrequency.findByLocationVariantId",
+                MaxVariantFrequency.class);
         query.setParameter("locationVariantId", locVarId);
         List<MaxVariantFrequency> ret = query.getResultList();
         return ret;
     }
 
     @Override
-    public List<MaxVariantFrequency> findByGeneNameAndMaxAlleleFrequency(String name, Double threshold)
-            throws HearsayDAOException {
+    public List<MaxVariantFrequency> findByGeneNameAndMaxAlleleFrequency(String name, Double threshold) throws HearsayDAOException {
         logger.debug("ENTERING findByGeneNameAndMaxAlleleFrequency(String, Double)");
         CriteriaBuilder critBuilder = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<MaxVariantFrequency> crit = critBuilder.createQuery(getPersistentClass());
@@ -72,11 +69,11 @@ public class MaxVariantFrequencyDAOImpl extends BaseDAOImpl<MaxVariantFrequency,
 
         List<Predicate> predicates = new ArrayList<Predicate>();
 
-        Join<MaxVariantFrequency, LocationVariant> maxVariantFrequencyLocationVariantJoin = root.join(
-                MaxVariantFrequency_.locationVariant, JoinType.LEFT);
+        Join<MaxVariantFrequency, LocationVariant> maxVariantFrequencyLocationVariantJoin = root.join(MaxVariantFrequency_.locationVariant,
+                JoinType.LEFT);
 
-        Join<LocationVariant, Variants_61_2> locationVariantVariantsJoin = maxVariantFrequencyLocationVariantJoin.join(
-                LocationVariant_.variants_61_2, JoinType.LEFT);
+        Join<LocationVariant, Variants_61_2> locationVariantVariantsJoin = maxVariantFrequencyLocationVariantJoin
+                .join(LocationVariant_.variants_61_2, JoinType.LEFT);
 
         predicates.add(critBuilder.equal(locationVariantVariantsJoin.get(Variants_61_2_.hgncGene), name));
 

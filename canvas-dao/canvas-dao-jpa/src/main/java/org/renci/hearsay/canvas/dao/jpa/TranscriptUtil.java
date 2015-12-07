@@ -121,8 +121,7 @@ public class TranscriptUtil {
                 }
             }
 
-            if (lastRegion != null && regionStop > lastRegion.getTranscriptStop()
-                    && regionStop < lastRegion.getTranscriptStart()) {
+            if (lastRegion != null && regionStop > lastRegion.getTranscriptStop() && regionStop < lastRegion.getTranscriptStart()) {
 
                 Region utr3 = new Region();
                 utr3.setRegionType(org.renci.hearsay.dao.model.RegionType.UTR3);

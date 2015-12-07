@@ -25,7 +25,7 @@ import org.renci.hearsay.dao.HearsayDAOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Transactional
+@Transactional(Transactional.TxType.SUPPORTS)
 public class BinResultsFinalIncidentalXDAOImpl extends BaseDAOImpl<BinResultsFinalIncidentalX, Long>
         implements BinResultsFinalIncidentalXDAO {
 
@@ -41,8 +41,8 @@ public class BinResultsFinalIncidentalXDAOImpl extends BaseDAOImpl<BinResultsFin
     }
 
     @Override
-    public List<BinResultsFinalIncidentalX> findByParticipantAndIncidentalBinIdAndResultVersion(String participant,
-            Integer incidentalBinId, Integer resultVersion) throws HearsayDAOException {
+    public List<BinResultsFinalIncidentalX> findByParticipantAndIncidentalBinIdAndResultVersion(String participant, Integer incidentalBinId,
+            Integer resultVersion) throws HearsayDAOException {
         logger.debug("ENTERING findByParticipantAndIncidentalBinIdAndResultVersion(String, Integer, Integer)");
 
         CriteriaBuilder critBuilder = getEntityManager().getCriteriaBuilder();
@@ -53,18 +53,17 @@ public class BinResultsFinalIncidentalXDAOImpl extends BaseDAOImpl<BinResultsFin
 
         Join<BinResultsFinalIncidentalX, BinResultsFinalIncidentalXPK> binResultsFinalIncidentalXBinResultsFinalIncidentalXPKJoin = root
                 .join(BinResultsFinalIncidentalX_.key);
-        predicates.add(critBuilder.equal(binResultsFinalIncidentalXBinResultsFinalIncidentalXPKJoin
-                .get(BinResultsFinalIncidentalXPK_.participant), participant));
+        predicates.add(critBuilder.equal(
+                binResultsFinalIncidentalXBinResultsFinalIncidentalXPKJoin.get(BinResultsFinalIncidentalXPK_.participant), participant));
 
         Join<BinResultsFinalIncidentalX, IncidentalBinX> binResultsFinalIncidentalXIncidentalBinXJoin = root
                 .join(BinResultsFinalIncidentalX_.incidentalBin);
-        predicates.add(critBuilder.equal(binResultsFinalIncidentalXIncidentalBinXJoin.get(IncidentalBinX_.id),
-                incidentalBinId));
+        predicates.add(critBuilder.equal(binResultsFinalIncidentalXIncidentalBinXJoin.get(IncidentalBinX_.id), incidentalBinId));
 
         Join<BinResultsFinalIncidentalX, IncidentalResultVersionX> binResultsFinalIncidentalXIncidentalResultVersionXJoin = root
                 .join(BinResultsFinalIncidentalX_.incidentalResultVersion);
-        predicates.add(critBuilder.equal(binResultsFinalIncidentalXIncidentalResultVersionXJoin
-                .get(IncidentalResultVersionX_.binningResultVersion), resultVersion));
+        predicates.add(critBuilder.equal(
+                binResultsFinalIncidentalXIncidentalResultVersionXJoin.get(IncidentalResultVersionX_.binningResultVersion), resultVersion));
 
         crit.distinct(true);
         crit.where(predicates.toArray(new Predicate[predicates.size()]));

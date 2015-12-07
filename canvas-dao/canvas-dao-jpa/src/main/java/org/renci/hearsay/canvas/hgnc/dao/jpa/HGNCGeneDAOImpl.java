@@ -20,7 +20,7 @@ import org.renci.hearsay.dao.HearsayDAOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Transactional
+@Transactional(Transactional.TxType.SUPPORTS)
 public class HGNCGeneDAOImpl extends BaseDAOImpl<HGNCGene, Integer> implements HGNCGeneDAO {
 
     private final Logger logger = LoggerFactory.getLogger(HGNCGeneDAOImpl.class);
@@ -80,8 +80,7 @@ public class HGNCGeneDAOImpl extends BaseDAOImpl<HGNCGene, Integer> implements H
 
         Predicate condition1 = critBuilder.equal(fromHGNCGene.get(HGNCGene_.id),
                 fromAnnotationGeneExternalIds.get(AnnotationGeneExternalIds_.id));
-        Predicate condition2 = critBuilder.equal(
-                fromAnnotationGeneExternalIds.get(AnnotationGeneExternalIds_.namespace), namespace);
+        Predicate condition2 = critBuilder.equal(fromAnnotationGeneExternalIds.get(AnnotationGeneExternalIds_.namespace), namespace);
 
         crit.select(fromHGNCGene);
         crit.where(condition1, condition2);
