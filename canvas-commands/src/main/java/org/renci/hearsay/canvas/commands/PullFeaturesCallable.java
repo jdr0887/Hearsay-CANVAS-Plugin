@@ -51,8 +51,7 @@ public class PullFeaturesCallable implements Callable<Void> {
         if (StringUtils.isNotEmpty(geneName)) {
             List<Gene> geneList = hearsayDAOBeanService.getGeneDAO().findBySymbol(geneName);
             if (CollectionUtils.isNotEmpty(geneList)) {
-                transcriptRefSeqs
-                        .addAll(hearsayDAOBeanService.getReferenceSequenceDAO().findByGeneId(geneList.get(0).getId()));
+                transcriptRefSeqs.addAll(hearsayDAOBeanService.getReferenceSequenceDAO().findByGeneId(geneList.get(0).getId()));
             }
         } else {
             transcriptRefSeqs.addAll(hearsayDAOBeanService.getReferenceSequenceDAO().findAll());
@@ -109,8 +108,8 @@ public class PullFeaturesCallable implements Callable<Void> {
                 }
             }
 
-            List<Feature> canvasFeatures = canvasDAOBeanService.getFeatureDAO()
-                    .findByRefSeqVersionAndTranscriptId(refSeqVersion, accession);
+            List<Feature> canvasFeatures = canvasDAOBeanService.getFeatureDAO().findByRefSeqVersionAndTranscriptId(refSeqVersion,
+                    accession);
             if (canvasFeatures != null && !canvasFeatures.isEmpty()) {
                 for (Feature canvasFeature : canvasFeatures) {
                     RegionGroup regionGroup = canvasFeature.getRegionGroup();

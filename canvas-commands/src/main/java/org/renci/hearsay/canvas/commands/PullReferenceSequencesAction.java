@@ -3,10 +3,9 @@ package org.renci.hearsay.canvas.commands;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.karaf.shell.api.action.Action;
+import org.apache.karaf.shell.api.action.Argument;
 import org.apache.karaf.shell.api.action.Command;
-import org.apache.karaf.shell.api.action.Option;
 import org.apache.karaf.shell.api.action.lifecycle.Reference;
 import org.apache.karaf.shell.api.action.lifecycle.Service;
 import org.renci.hearsay.canvas.dao.CANVASDAOBeanService;
@@ -14,17 +13,17 @@ import org.renci.hearsay.dao.HearsayDAOBeanService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Command(scope = "canvas", name = "pull-features", description = "Pull Features")
+@Command(scope = "canvas", name = "pull-reference-sequences", description = "Pull ReferenceSequences")
 @Service
-public class PullFeaturesAction implements Action {
+public class PullReferenceSequencesAction implements Action {
 
-    private static final Logger logger = LoggerFactory.getLogger(PullFeaturesAction.class);
+    private static final Logger logger = LoggerFactory.getLogger(PullReferenceSequencesAction.class);
 
-    @Option(name = "--refSeqVersion", description = "RefSeq Version Identifier", required = true, multiValued = false)
+    @Argument(index = 0, name = "refSeqVersion", description = "RefSeq Version Identifier", required = true, multiValued = false)
     private String refSeqVersion;
 
-    @Option(name = "--geneName", description = "RefSeq Version Identifier", required = false, multiValued = false)
-    private String geneName;
+    @Argument(index = 1, name = "genomeRefId", description = "GenomeRef Identifier", required = true, multiValued = false)
+    private Integer genomeRefId;
 
     @Reference
     private CANVASDAOBeanService canvasDAOBeanService;
@@ -32,7 +31,7 @@ public class PullFeaturesAction implements Action {
     @Reference
     private HearsayDAOBeanService hearsayDAOBeanService;
 
-    public PullFeaturesAction() {
+    public PullReferenceSequencesAction() {
         super();
     }
 
@@ -40,25 +39,16 @@ public class PullFeaturesAction implements Action {
     public Object execute() {
         logger.debug("ENTERING execute()");
         try {
-            PullFeaturesCallable callable = new PullFeaturesCallable(canvasDAOBeanService, hearsayDAOBeanService, refSeqVersion);
-            if (StringUtils.isNotEmpty(geneName)) {
-                callable.setGeneName(geneName);
-            }
+            logger.info("genomeRefId = {}", genomeRefId);
+            logger.info("refSeqVersion = {}", refSeqVersion);
+
             ExecutorService es = Executors.newSingleThreadExecutor();
-            es.submit(callable);
+            es.submit(new PullReferenceSequencesCallable(canvasDAOBeanService, hearsayDAOBeanService, refSeqVersion, genomeRefId));
             es.shutdown();
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
-    }
-
-    public String getGeneName() {
-        return geneName;
-    }
-
-    public void setGeneName(String geneName) {
-        this.geneName = geneName;
     }
 
     public String getRefSeqVersion() {
@@ -67,6 +57,14 @@ public class PullFeaturesAction implements Action {
 
     public void setRefSeqVersion(String refSeqVersion) {
         this.refSeqVersion = refSeqVersion;
+    }
+
+    public Integer getGenomeRefId() {
+        return genomeRefId;
+    }
+
+    public void setGenomeRefId(Integer genomeRefId) {
+        this.genomeRefId = genomeRefId;
     }
 
 }

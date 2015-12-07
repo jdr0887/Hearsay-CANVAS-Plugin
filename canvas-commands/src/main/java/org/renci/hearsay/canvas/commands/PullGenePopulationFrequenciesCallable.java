@@ -29,8 +29,7 @@ public class PullGenePopulationFrequenciesCallable implements Callable<Void> {
 
     private HearsayDAOBeanService hearsayDAOBeanService;
 
-    public PullGenePopulationFrequenciesCallable(CANVASDAOBeanService canvasDAOBeanService,
-            HearsayDAOBeanService hearsayDAOBeanService) {
+    public PullGenePopulationFrequenciesCallable(CANVASDAOBeanService canvasDAOBeanService, HearsayDAOBeanService hearsayDAOBeanService) {
         super();
         this.canvasDAOBeanService = canvasDAOBeanService;
         this.hearsayDAOBeanService = hearsayDAOBeanService;
@@ -81,8 +80,7 @@ public class PullGenePopulationFrequenciesCallable implements Callable<Void> {
 
                             try {
 
-                                List<Variants_61_2> variants = canvasDAOBeanService.getVariants_61_2_DAO()
-                                        .findByGeneName(gene.getSymbol());
+                                List<Variants_61_2> variants = canvasDAOBeanService.getVariants_61_2_DAO().findByGeneName(gene.getSymbol());
 
                                 if (CollectionUtils.isNotEmpty(variants)) {
 
@@ -129,11 +127,9 @@ public class PullGenePopulationFrequenciesCallable implements Callable<Void> {
                                                     pf.setVersion(maxFreq.getKey().getVersion());
                                                     Location location = new Location(locationVariant.getPosition(),
                                                             locationVariant.getEndPosition());
-                                                    location.setId(
-                                                            hearsayDAOBeanService.getLocationDAO().save(location));
+                                                    location.setId(hearsayDAOBeanService.getLocationDAO().save(location));
                                                     pf.setPosition(location);
-                                                    pf.setId(
-                                                            hearsayDAOBeanService.getPopulationFrequencyDAO().save(pf));
+                                                    pf.setId(hearsayDAOBeanService.getPopulationFrequencyDAO().save(pf));
                                                 }
                                             }
 
