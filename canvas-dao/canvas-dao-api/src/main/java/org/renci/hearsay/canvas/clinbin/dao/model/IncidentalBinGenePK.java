@@ -49,8 +49,7 @@ public class IncidentalBinGenePK implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("IncidentalBinGenePK [incidentalBin=%s, gene=%s, disease=%s]", incidentalBin, gene,
-                disease);
+        return String.format("IncidentalBinGenePK [incidentalBin=%s, gene=%s, disease=%s]", incidentalBin, gene, disease);
     }
 
     @Override

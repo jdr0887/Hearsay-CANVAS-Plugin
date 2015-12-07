@@ -261,8 +261,8 @@ public class BinResultsFinalRiskX implements Persistable {
     public String toString() {
         return String.format(
                 "BinResultsFinalRiskX [chromosome=%s, pos=%s, type=%s, refAllele=%s, alternateAllele=%s, riskAllele=%s, numRiskAlleles=%s, numAlleles=%s, rsId=%s, vcfFile=%s, gq=%s, dp=%s, refDepth=%s, altDepth=%s]",
-                chromosome, pos, type, refAllele, alternateAllele, riskAllele, numRiskAlleles, numAlleles, rsId,
-                vcfFile, gq, dp, refDepth, altDepth);
+                chromosome, pos, type, refAllele, alternateAllele, riskAllele, numRiskAlleles, numAlleles, rsId, vcfFile, gq, dp, refDepth,
+                altDepth);
     }
 
     @Override

@@ -60,8 +60,8 @@ public class MaxFreqPK implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("MaxFreqPK [locationVariant=%s, gen1000Version=%s, maxAlleleFreq=%s, source=%s]",
-                locationVariant, gen1000Version, maxAlleleFreq, source);
+        return String.format("MaxFreqPK [locationVariant=%s, gen1000Version=%s, maxAlleleFreq=%s, source=%s]", locationVariant,
+                gen1000Version, maxAlleleFreq, source);
     }
 
     @Override

@@ -116,10 +116,9 @@ public class AnalysisClassIncidentalPK implements Serializable {
 
     @Override
     public String toString() {
-        return String
-                .format("AnalysisClassIncidentalPK [id=%s, selectedClass=%s, selectClassDescr=%s, locationVariant=%s, userName=%s, timestamp=%s, hgncGene=%s, disease=%s, bin=%s]",
-                        id, selectedClass, selectClassDescr, locationVariant, userName, timestamp, hgncGene, disease,
-                        bin);
+        return String.format(
+                "AnalysisClassIncidentalPK [id=%s, selectedClass=%s, selectClassDescr=%s, locationVariant=%s, userName=%s, timestamp=%s, hgncGene=%s, disease=%s, bin=%s]",
+                id, selectedClass, selectClassDescr, locationVariant, userName, timestamp, hgncGene, disease, bin);
     }
 
     @Override

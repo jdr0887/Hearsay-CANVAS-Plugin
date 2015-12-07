@@ -49,8 +49,8 @@ public class DiagnosticGeneGroupVersionPK implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("DiagnosticGeneGroupVersionPK [dbinGroupVersion=%s, dx=%s, diagnosticListVersion=%s]",
-                dbinGroupVersion, dx, diagnosticListVersion);
+        return String.format("DiagnosticGeneGroupVersionPK [dbinGroupVersion=%s, dx=%s, diagnosticListVersion=%s]", dbinGroupVersion, dx,
+                diagnosticListVersion);
     }
 
     @Override

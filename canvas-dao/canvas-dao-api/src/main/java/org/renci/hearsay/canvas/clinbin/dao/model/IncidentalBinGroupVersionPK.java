@@ -38,8 +38,7 @@ public class IncidentalBinGroupVersionPK implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("IncidentalBinGroupVersionPK [ibinGroupVersion=%s, incidentalBin=%s]", ibinGroupVersion,
-                incidentalBin);
+        return String.format("IncidentalBinGroupVersionPK [ibinGroupVersion=%s, incidentalBin=%s]", ibinGroupVersion, incidentalBin);
     }
 
     @Override

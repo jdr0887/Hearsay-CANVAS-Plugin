@@ -13,8 +13,8 @@ import org.renci.hearsay.canvas.annotation.dao.model.AnnotationGene;
 import org.renci.hearsay.canvas.dao.Persistable;
 
 @Entity
-@Table(schema = "clinbin", name = "diagnostic_gene", uniqueConstraints = { @UniqueConstraint(columnNames = {
-        "diagnostic_list_version", "dx_id", "gene_id", "tier", "inheritance" }) })
+@Table(schema = "clinbin", name = "diagnostic_gene", uniqueConstraints = {
+        @UniqueConstraint(columnNames = { "diagnostic_list_version", "dx_id", "gene_id", "tier", "inheritance" }) })
 public class DiagnosticGene implements Persistable {
 
     private static final long serialVersionUID = -6562946115355893577L;
@@ -96,8 +96,8 @@ public class DiagnosticGene implements Persistable {
 
     @Override
     public String toString() {
-        return String.format("DiagnosticGene [id=%s, diagnosticListVersion=%s, tier=%s, inheritance=%s]", id,
-                diagnosticListVersion, tier, inheritance);
+        return String.format("DiagnosticGene [id=%s, diagnosticListVersion=%s, tier=%s, inheritance=%s]", id, diagnosticListVersion, tier,
+                inheritance);
     }
 
     @Override

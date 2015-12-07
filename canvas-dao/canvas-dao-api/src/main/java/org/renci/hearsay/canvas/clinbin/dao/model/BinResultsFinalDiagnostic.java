@@ -550,11 +550,10 @@ public class BinResultsFinalDiagnostic implements Persistable {
     public String toString() {
         return String.format(
                 "BinResultsFinalDiagnostic [chromosome=%s, pos=%s, type=%s, refseqGene=%s, hgncGene=%s, transcrPos=%s, cdsPos=%s, aaStart=%s, aaEnd=%s, originalAa=%s, finalAa=%s, frameshift=%s, inframe=%s, intronExonDist=%s, nummaps=%s, geneId=%s, accNum=%s, maxAlleleFreq=%s, refallele=%s, altallele=%s, hgvsgenomic=%s, hgvscds=%s, hgvstranscript=%s, hgvsprotein=%s, depth=%s, qd=%s, readPosRankSum=%s, fracReadsWithDels=%s, hrun=%s, strandScore=%s, refDepth=%s, altDepth=%s, homozygous=%s, genotypeQual=%s, tier=%s, inheritance=%s, rsId=%s, exonTruncationCount=%s]",
-                chromosome, pos, type, refseqGene, hgncGene, transcrPos, cdsPos, aaStart, aaEnd, originalAa, finalAa,
-                frameshift, inframe, intronExonDist, nummaps, geneId, accNum, maxAlleleFreq, refallele, altallele,
-                hgvsgenomic, hgvscds, hgvstranscript, hgvsprotein, depth, qd, readPosRankSum, fracReadsWithDels, hrun,
-                strandScore, refDepth, altDepth, homozygous, genotypeQual, tier, inheritance, rsId,
-                exonTruncationCount);
+                chromosome, pos, type, refseqGene, hgncGene, transcrPos, cdsPos, aaStart, aaEnd, originalAa, finalAa, frameshift, inframe,
+                intronExonDist, nummaps, geneId, accNum, maxAlleleFreq, refallele, altallele, hgvsgenomic, hgvscds, hgvstranscript,
+                hgvsprotein, depth, qd, readPosRankSum, fracReadsWithDels, hrun, strandScore, refDepth, altDepth, homozygous, genotypeQual,
+                tier, inheritance, rsId, exonTruncationCount);
     }
 
     @Override

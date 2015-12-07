@@ -105,9 +105,9 @@ public class DiagnosticBinResultsPK implements Serializable {
 
     @Override
     public String toString() {
-        return String
-                .format("DiagnosticBinResultsPK [locationVariant=%s, binTimestamp=%s, binVersion=%s, dx=%s, geneId=%s, diseaseClass=%s, transcr=%s, mapnum=%s]",
-                        locationVariant, binTimestamp, binVersion, dx, geneId, diseaseClass, transcr, mapnum);
+        return String.format(
+                "DiagnosticBinResultsPK [locationVariant=%s, binTimestamp=%s, binVersion=%s, dx=%s, geneId=%s, diseaseClass=%s, transcr=%s, mapnum=%s]",
+                locationVariant, binTimestamp, binVersion, dx, geneId, diseaseClass, transcr, mapnum);
     }
 
     @Override

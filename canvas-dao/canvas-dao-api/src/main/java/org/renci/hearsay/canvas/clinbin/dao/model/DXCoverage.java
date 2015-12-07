@@ -112,9 +112,8 @@ public class DXCoverage implements Persistable {
 
     @Override
     public String toString() {
-        return String.format(
-                "DxCoverage [exon=%s, fracGt1=%s, fracGt5=%s, fracGt10=%s, fracGt15=%s, fracGt30=%s, fracGt50=%s]",
-                exon, fracGt1, fracGt5, fracGt10, fracGt15, fracGt30, fracGt50);
+        return String.format("DxCoverage [exon=%s, fracGt1=%s, fracGt5=%s, fracGt10=%s, fracGt15=%s, fracGt30=%s, fracGt50=%s]", exon,
+                fracGt1, fracGt5, fracGt10, fracGt15, fracGt30, fracGt50);
     }
 
     @Override

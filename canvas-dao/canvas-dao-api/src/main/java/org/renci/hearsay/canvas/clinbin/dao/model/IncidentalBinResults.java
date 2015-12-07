@@ -119,8 +119,8 @@ public class IncidentalBinResults implements Persistable {
 
     @Override
     public String toString() {
-        return String.format("IncidentalBinResults [binTimestamp=%s, binName=%s, disease=%s, incidentalBin=%s]",
-                binTimestamp, binName, disease, incidentalBin);
+        return String.format("IncidentalBinResults [binTimestamp=%s, binName=%s, disease=%s, incidentalBin=%s]", binTimestamp, binName,
+                disease, incidentalBin);
     }
 
     @Override

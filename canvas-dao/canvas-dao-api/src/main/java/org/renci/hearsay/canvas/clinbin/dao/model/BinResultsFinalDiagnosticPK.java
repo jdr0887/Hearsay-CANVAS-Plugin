@@ -93,9 +93,9 @@ public class BinResultsFinalDiagnosticPK implements Serializable {
 
     @Override
     public String toString() {
-        return String
-                .format("BinResultsFinalDiagnosticPK [participant=%s, dx=%s, diagnosticResultVersion=%s, assembly=%s, locationVariant=%s, mapnum=%s, transcr=%s]",
-                        participant, dx, diagnosticResultVersion, assembly, locationVariant, mapnum, transcr);
+        return String.format(
+                "BinResultsFinalDiagnosticPK [participant=%s, dx=%s, diagnosticResultVersion=%s, assembly=%s, locationVariant=%s, mapnum=%s, transcr=%s]",
+                participant, dx, diagnosticResultVersion, assembly, locationVariant, mapnum, transcr);
     }
 
     @Override

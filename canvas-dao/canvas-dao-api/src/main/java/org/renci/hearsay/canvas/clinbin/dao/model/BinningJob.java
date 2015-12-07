@@ -193,10 +193,10 @@ public class BinningJob implements Persistable {
 
     @Override
     public String toString() {
-        return String
-                .format("BinningJob [binningJobId=%s, incidentalListVersion=%s, diagnosticListVersion=%s, participant=%s, binStart=%s, binStop=%s, selectBin1=%s, selectBin2a=%s, selectBin2b=%s, selectBin2c=%s, failureMessage=%s, selectCarrier=%s, vcfFile=%s]",
-                        binningJobId, incidentalListVersion, diagnosticListVersion, participant, binStart, binStop,
-                        selectBin1, selectBin2a, selectBin2b, selectBin2c, failureMessage, selectCarrier, vcfFile);
+        return String.format(
+                "BinningJob [binningJobId=%s, incidentalListVersion=%s, diagnosticListVersion=%s, participant=%s, binStart=%s, binStop=%s, selectBin1=%s, selectBin2a=%s, selectBin2b=%s, selectBin2c=%s, failureMessage=%s, selectCarrier=%s, vcfFile=%s]",
+                binningJobId, incidentalListVersion, diagnosticListVersion, participant, binStart, binStop, selectBin1, selectBin2a,
+                selectBin2b, selectBin2c, failureMessage, selectCarrier, vcfFile);
     }
 
     @Override

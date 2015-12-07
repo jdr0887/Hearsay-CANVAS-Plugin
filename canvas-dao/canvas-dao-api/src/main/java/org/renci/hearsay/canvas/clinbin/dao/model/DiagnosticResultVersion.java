@@ -18,9 +18,9 @@ import org.renci.hearsay.canvas.dao.Persistable;
 import org.renci.hearsay.canvas.ref.dao.model.GenomeRef;
 
 @Entity
-@Table(schema = "clinbin", name = "diagnostic_result_version", uniqueConstraints = { @UniqueConstraint(columnNames = {
-        "ref_id", "refseq_version", "hgmd_version", "gen1000_snp_version", "gen1000_indel_version",
-        "dbin_group_version", "algorithm_version", "dbsnp_version", "vcf_loader_name", "vcf_loader_version" }) })
+@Table(schema = "clinbin", name = "diagnostic_result_version", uniqueConstraints = {
+        @UniqueConstraint(columnNames = { "ref_id", "refseq_version", "hgmd_version", "gen1000_snp_version", "gen1000_indel_version",
+                "dbin_group_version", "algorithm_version", "dbsnp_version", "vcf_loader_name", "vcf_loader_version" }) })
 public class DiagnosticResultVersion implements Persistable {
 
     private static final long serialVersionUID = 8183127521986516469L;
@@ -189,10 +189,10 @@ public class DiagnosticResultVersion implements Persistable {
 
     @Override
     public String toString() {
-        return String
-                .format("DiagnosticResultVersion [diagnosticResultVersion=%s, refseqVersion=%s, hgmdVersion=%s, gen1000SnpVersion=%s, gen1000IndelVersion=%s, dbinGroupVersion=%s, algorithmVersion=%s, dbsnpVersion=%s, note=%s, vcfLoaderName=%s, vcfLoaderVersion=%s]",
-                        diagnosticResultVersion, refseqVersion, hgmdVersion, gen1000SnpVersion, gen1000IndelVersion,
-                        dbinGroupVersion, algorithmVersion, dbsnpVersion, note, vcfLoaderName, vcfLoaderVersion);
+        return String.format(
+                "DiagnosticResultVersion [diagnosticResultVersion=%s, refseqVersion=%s, hgmdVersion=%s, gen1000SnpVersion=%s, gen1000IndelVersion=%s, dbinGroupVersion=%s, algorithmVersion=%s, dbsnpVersion=%s, note=%s, vcfLoaderName=%s, vcfLoaderVersion=%s]",
+                diagnosticResultVersion, refseqVersion, hgmdVersion, gen1000SnpVersion, gen1000IndelVersion, dbinGroupVersion,
+                algorithmVersion, dbsnpVersion, note, vcfLoaderName, vcfLoaderVersion);
     }
 
     @Override

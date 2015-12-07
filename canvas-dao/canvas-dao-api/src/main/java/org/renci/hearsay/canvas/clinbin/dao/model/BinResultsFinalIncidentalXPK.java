@@ -82,9 +82,9 @@ public class BinResultsFinalIncidentalXPK implements Serializable {
 
     @Override
     public String toString() {
-        return String
-                .format("BinResultsFinalIncidentalXPK [participant=%s, mapnum=%s, incidentalResultVersion=%s, incidentalBin=%s, assembly=%s, locationVariant=%s]",
-                        participant, mapnum, incidentalResultVersion, incidentalBin, assembly, locationVariant);
+        return String.format(
+                "BinResultsFinalIncidentalXPK [participant=%s, mapnum=%s, incidentalResultVersion=%s, incidentalBin=%s, assembly=%s, locationVariant=%s]",
+                participant, mapnum, incidentalResultVersion, incidentalBin, assembly, locationVariant);
     }
 
     @Override

@@ -85,7 +85,7 @@ public class BinResultsFinalIncidentalX implements Persistable {
     private LocationType locationType;
 
     @Column(name = "strand", length = 1)
-    private Character strand;
+    private String strand;
 
     @Column(name = "transcr_pos")
     private Integer transcrPos;
@@ -326,11 +326,11 @@ public class BinResultsFinalIncidentalX implements Persistable {
         this.locationType = locationType;
     }
 
-    public Character getStrand() {
+    public String getStrand() {
         return strand;
     }
 
-    public void setStrand(Character strand) {
+    public void setStrand(String strand) {
         this.strand = strand;
     }
 
@@ -607,11 +607,10 @@ public class BinResultsFinalIncidentalX implements Persistable {
         // fracReadsWithDels, hrun, strandScore, refDepth, altDepth, homozygous, genotypeQual, rsId);
         return String.format(
                 "BinResultsFinalIncidentalX [ncgAlternateFrequency=%s, ncgHWEP=%s, chromosome=%s, pos=%s, type=%s, transcr=%s, refseqGene=%s, hgncGene=%s, locationType=%s, strand=%s, transcrPos=%s, cdsPos=%s, aaStart=%s, aaEnd=%s, originalAa=%s, finalAa=%s, frameshift=%s, inframe=%s, intronExonDist=%s, nummaps=%s, geneId=%s, accNum=%s, maxAlleleFreq=%s, disease=%s, referenceAllele=%s, alternateAllele=%s, hgvsGenomic=%s, hgvsCodingSequence=%s, hgvsTranscript=%s, hgvsProtein=%s, depth=%s, qd=%s, readPosRankSum=%s, fracReadsWithDels=%s, hrun=%s, strandScore=%s, refDepth=%s, altDepth=%s, homozygous=%s, genotypeQual=%s, rsId=%s]",
-                ncgAlternateFrequency, ncgHWEP, chromosome, pos, type, transcr, refseqGene, hgncGene, locationType,
-                strand, transcrPos, cdsPos, aaStart, aaEnd, originalAa, finalAa, frameshift, inframe, intronExonDist,
-                variantEffect, nummaps, geneId, accNum, maxAlleleFreq, referenceAllele, alternateAllele, hgvsGenomic,
-                hgvsCodingSequence, hgvsTranscript, hgvsProtein, depth, qd, readPosRankSum, fracReadsWithDels, hrun,
-                strandScore, refDepth, altDepth, homozygous, genotypeQual, rsId);
+                ncgAlternateFrequency, ncgHWEP, chromosome, pos, type, transcr, refseqGene, hgncGene, locationType, strand, transcrPos,
+                cdsPos, aaStart, aaEnd, originalAa, finalAa, frameshift, inframe, intronExonDist, variantEffect, nummaps, geneId, accNum,
+                maxAlleleFreq, referenceAllele, alternateAllele, hgvsGenomic, hgvsCodingSequence, hgvsTranscript, hgvsProtein, depth, qd,
+                readPosRankSum, fracReadsWithDels, hrun, strandScore, refDepth, altDepth, homozygous, genotypeQual, rsId);
 
     }
 

@@ -11,8 +11,8 @@ import javax.persistence.UniqueConstraint;
 import org.renci.hearsay.canvas.dao.Persistable;
 
 @Entity
-@Table(schema = "clinbin", name = "dx_exons", uniqueConstraints = { @UniqueConstraint(columnNames = { "list_version",
-        "transcr", "exon", "mapnum" }) })
+@Table(schema = "clinbin", name = "dx_exons", uniqueConstraints = {
+        @UniqueConstraint(columnNames = { "list_version", "transcr", "exon", "mapnum" }) })
 public class DXExons implements Persistable {
 
     private static final long serialVersionUID = -1900172062196628883L;
@@ -124,9 +124,9 @@ public class DXExons implements Persistable {
 
     @Override
     public String toString() {
-        return String
-                .format("DXExons [id=%s, listVersion=%s, transcr=%s, exon=%s, chromosome=%s, intervalStart=%s, intervalEnd=%s, mapNum=%s]",
-                        id, listVersion, transcr, exon, chromosome, intervalStart, intervalEnd, mapNum);
+        return String.format(
+                "DXExons [id=%s, listVersion=%s, transcr=%s, exon=%s, chromosome=%s, intervalStart=%s, intervalEnd=%s, mapNum=%s]", id,
+                listVersion, transcr, exon, chromosome, intervalStart, intervalEnd, mapNum);
     }
 
     @Override

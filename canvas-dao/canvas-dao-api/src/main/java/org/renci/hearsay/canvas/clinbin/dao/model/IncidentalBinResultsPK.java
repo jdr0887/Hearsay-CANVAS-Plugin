@@ -60,8 +60,8 @@ public class IncidentalBinResultsPK implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("IncidentalBinResultsPK [locationVariant=%s, binVersion=%s, zygosityMode=%s, transcr=%s]",
-                locationVariant, binVersion, zygosityMode, transcr);
+        return String.format("IncidentalBinResultsPK [locationVariant=%s, binVersion=%s, zygosityMode=%s, transcr=%s]", locationVariant,
+                binVersion, zygosityMode, transcr);
     }
 
     @Override

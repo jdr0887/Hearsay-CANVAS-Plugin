@@ -18,9 +18,9 @@ import org.renci.hearsay.canvas.dao.Persistable;
 import org.renci.hearsay.canvas.ref.dao.model.GenomeRef;
 
 @Entity
-@Table(schema = "clinbin", name = "incidental_result_versionx", uniqueConstraints = { @UniqueConstraint(columnNames = {
-        "ref_id", "refseq_version", "hgmd_version", "gen1000_snp_version", "gen1000_indel_version",
-        "ibin_group_version", "binning_algorithm_version", "vcf_loader_name", "vcf_loader_version" }) })
+@Table(schema = "clinbin", name = "incidental_result_versionx", uniqueConstraints = {
+        @UniqueConstraint(columnNames = { "ref_id", "refseq_version", "hgmd_version", "gen1000_snp_version", "gen1000_indel_version",
+                "ibin_group_version", "binning_algorithm_version", "vcf_loader_name", "vcf_loader_version" }) })
 public class IncidentalResultVersionX implements Persistable {
 
     private static final long serialVersionUID = 8796340369982243885L;
@@ -189,10 +189,10 @@ public class IncidentalResultVersionX implements Persistable {
 
     @Override
     public String toString() {
-        return String
-                .format("IncidentalResultVersionX [binningResultVersion=%s, refseqVersion=%s, hgmdVersion=%s, gen1000SnpVersion=%s, gen1000IndelVersion=%s, ibinGroupVersion=%s, binningAlgorithmVersion=%s, note=%s, vcfLoaderName=%s, vcfLoaderVersion=%s]",
-                        binningResultVersion, refseqVersion, hgmdVersion, gen1000SnpVersion, gen1000IndelVersion,
-                        ibinGroupVersion, binningAlgorithmVersion, note, vcfLoaderName, vcfLoaderVersion);
+        return String.format(
+                "IncidentalResultVersionX [binningResultVersion=%s, refseqVersion=%s, hgmdVersion=%s, gen1000SnpVersion=%s, gen1000IndelVersion=%s, ibinGroupVersion=%s, binningAlgorithmVersion=%s, note=%s, vcfLoaderName=%s, vcfLoaderVersion=%s]",
+                binningResultVersion, refseqVersion, hgmdVersion, gen1000SnpVersion, gen1000IndelVersion, ibinGroupVersion,
+                binningAlgorithmVersion, note, vcfLoaderName, vcfLoaderVersion);
     }
 
     @Override

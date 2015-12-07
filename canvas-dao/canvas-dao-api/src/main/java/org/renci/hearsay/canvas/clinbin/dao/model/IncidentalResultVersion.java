@@ -12,9 +12,9 @@ import org.renci.hearsay.canvas.dao.Persistable;
 import org.renci.hearsay.canvas.ref.dao.model.GenomeRef;
 
 @Entity
-@Table(schema = "clinbin", name = "incidental_result_version", uniqueConstraints = { @UniqueConstraint(columnNames = {
-        "ref_id", "refseq_version", "hgmd_version", "gen1000_snp_version", "gen1000_indel_version",
-        "ibin_group_version", "binning_algorithm_version" }) })
+@Table(schema = "clinbin", name = "incidental_result_version", uniqueConstraints = {
+        @UniqueConstraint(columnNames = { "ref_id", "refseq_version", "hgmd_version", "gen1000_snp_version", "gen1000_indel_version",
+                "ibin_group_version", "binning_algorithm_version" }) })
 public class IncidentalResultVersion implements Persistable {
 
     private static final long serialVersionUID = 8796340369982243885L;
@@ -115,10 +115,10 @@ public class IncidentalResultVersion implements Persistable {
 
     @Override
     public String toString() {
-        return String
-                .format("IncidentalResultVersion [binningResultVersion=%s, refseqVersion=%s, hgmdVersion=%s, gen1000SnpVersion=%s, gen1000IndelVersion=%s, ibinGroupVersion=%s, binningAlgorithmVersion=%s]",
-                        binningResultVersion, refseqVersion, hgmdVersion, gen1000SnpVersion, gen1000IndelVersion,
-                        ibinGroupVersion, binningAlgorithmVersion);
+        return String.format(
+                "IncidentalResultVersion [binningResultVersion=%s, refseqVersion=%s, hgmdVersion=%s, gen1000SnpVersion=%s, gen1000IndelVersion=%s, ibinGroupVersion=%s, binningAlgorithmVersion=%s]",
+                binningResultVersion, refseqVersion, hgmdVersion, gen1000SnpVersion, gen1000IndelVersion, ibinGroupVersion,
+                binningAlgorithmVersion);
     }
 
     @Override

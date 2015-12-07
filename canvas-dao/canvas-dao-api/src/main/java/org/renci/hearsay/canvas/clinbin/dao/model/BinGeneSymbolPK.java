@@ -71,8 +71,8 @@ public class BinGeneSymbolPK implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("BinGeneSymbolPK [projectId=%s, versionId=%s, binId=%s, geneTypeId=%s, geneSymbol=%s]",
-                projectId, versionId, binId, geneTypeId, geneSymbol);
+        return String.format("BinGeneSymbolPK [projectId=%s, versionId=%s, binId=%s, geneTypeId=%s, geneSymbol=%s]", projectId, versionId,
+                binId, geneTypeId, geneSymbol);
     }
 
     @Override
