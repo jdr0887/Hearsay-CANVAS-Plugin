@@ -3,8 +3,10 @@
   xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd" version="2.0">
   <persistence-unit name="test-canvas" transaction-type="RESOURCE_LOCAL">
 
-    <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+    <provider>org.apache.openjpa.persistence.PersistenceProviderImpl</provider>
 
+    <class>org.renci.hearsay.canvas.annotation.dao.model.AnnotationCodingSequenceExternalIds</class>
+    <class>org.renci.hearsay.canvas.annotation.dao.model.AnnotationCodingSequenceExternalIdsPK</class>
     <class>org.renci.hearsay.canvas.annotation.dao.model.AnnotationGene</class>
     <class>org.renci.hearsay.canvas.annotation.dao.model.AnnotationGeneExternalIds</class>
     <class>org.renci.hearsay.canvas.annotation.dao.model.AnnotationGeneSynonyms</class>
@@ -117,23 +119,27 @@
     <class>org.renci.hearsay.canvas.var.dao.model.VariantType</class>
 
     <properties>
-      <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver" />
-      <property name="javax.persistence.jdbc.user" value="jdr0887" />
-      <property name="javax.persistence.jdbc.password" value="jfi101.Q" />
-      <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://genomicsdb.renci.unc.edu:5432/vardb_berg" />
-      <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL9Dialect" />
-      <property name="hibernate.hbm2ddl.auto" value="validate" />
-      <property name="hibernate.discriminator.ignore_explicit_for_joined" value="false" />
-      <property name="hibernate.show_sql" value="true" />
-      <property name="hibernate.format_sql" value="true" />
-      <property name="hibernate.connection.autocommit" value="true" />
+      <property name="openjpa.ConnectionDriverName" value="org.postgresql.Driver" />
+      <property name="openjpa.ConnectionURL" value="jdbc:postgresql://genomicsdb.renci.unc.edu:5432/vardb_berg" />
+      <property name="openjpa.ConnectionUserName" value="jdr0887" />
+      <property name="openjpa.ConnectionPassword" value="jfi101.Q" />
+      <property name="openjpa.jdbc.SchemaFactory" value="dynamic" />
+      <property name="openjpa.jdbc.MappingDefaults" value="ForeignKeyDeleteAction=restrict, JoinForeignKeyDeleteAction=restrict" />
+      <property name="openjpa.jdbc.SynchronizeMappings" value="validate" />
+      <property name="openjpa.Multithreaded" value="true" />
+      <property name="openjpa.ConnectionFactoryProperties" value="printParameters=true" />
+      <property name="openjpa.Log" value="DefaultLevel=WARN, Runtime=INFO, Tool=INFO, SQL=TRACE" />
+      <property name="openjpa.jdbc.DBDictionary" value="postgres(SearchStringEscape=\, SupportsXMLColumn=false)" />
+      <property name="openjpa.RemoteCommitProvider" value="sjvm" />
+      <property name="openjpa.DataCache" value="true" />
+      <property name="openjpa.QueryCache" value="false" />
     </properties>
 
   </persistence-unit>
 
   <persistence-unit name="test-hearsay" transaction-type="RESOURCE_LOCAL">
 
-    <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+    <provider>org.apache.openjpa.persistence.PersistenceProviderImpl</provider>
 
     <class>org.renci.hearsay.dao.model.Alignment</class>
     <class>org.renci.hearsay.dao.model.Chromosome</class>
@@ -158,18 +164,20 @@
     <class>org.renci.hearsay.dao.model.User</class>
 
     <properties>
-
-      <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver" />
-      <property name="javax.persistence.jdbc.user" value="hearsay" />
-      <property name="javax.persistence.jdbc.password" value="hearsay" />
-      <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/hearsay" />
-      <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL9Dialect" />
-      <property name="hibernate.hbm2ddl.auto" value="validate" />
-      <property name="hibernate.discriminator.ignore_explicit_for_joined" value="false" />
-      <property name="hibernate.show_sql" value="true" />
-      <property name="hibernate.format_sql" value="true" />
-      <property name="hibernate.connection.autocommit" value="true" />
-      <property name="hibernate.default_schema" value="hearsay" />
+      <property name="openjpa.ConnectionDriverName" value="org.postgresql.Driver" />
+      <property name="openjpa.ConnectionURL" value="jdbc:postgresql://localhost:5432/hearsay" />
+      <property name="openjpa.ConnectionUserName" value="hearsay" />
+      <property name="openjpa.ConnectionPassword" value="hearsay" />
+      <property name="openjpa.jdbc.SchemaFactory" value="native(ForeignKeys=true)" />
+      <property name="openjpa.jdbc.MappingDefaults" value="ForeignKeyDeleteAction=restrict, JoinForeignKeyDeleteAction=restrict" />
+      <property name="openjpa.jdbc.SynchronizeMappings" value="validate" />
+      <property name="openjpa.Multithreaded" value="true" />
+      <property name="openjpa.ConnectionFactoryProperties" value="printParameters=true" />
+      <property name="openjpa.Log" value="DefaultLevel=WARN, Runtime=INFO, Tool=INFO, SQL=TRACE" />
+      <property name="openjpa.jdbc.DBDictionary" value="postgres(SearchStringEscape=\, SupportsXMLColumn=false)" />
+      <property name="openjpa.RemoteCommitProvider" value="sjvm" />
+      <property name="openjpa.DataCache" value="false" />
+      <property name="openjpa.QueryCache" value="false" />
     </properties>
 
   </persistence-unit>
