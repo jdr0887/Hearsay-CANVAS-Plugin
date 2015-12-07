@@ -49,8 +49,8 @@ public class ESPSNPFrequencyPopulationPK implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("ESPSNPFrequencyPopulationPK [locationVariant=%s, version=%s, population=%s]",
-                locationVariant, version, population);
+        return String.format("ESPSNPFrequencyPopulationPK [locationVariant=%s, version=%s, population=%s]", locationVariant, version,
+                population);
     }
 
     @Override

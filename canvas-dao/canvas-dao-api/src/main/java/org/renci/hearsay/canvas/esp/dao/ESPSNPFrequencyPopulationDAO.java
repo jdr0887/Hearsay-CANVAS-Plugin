@@ -8,7 +8,6 @@ import org.renci.hearsay.dao.HearsayDAOException;
 
 public interface ESPSNPFrequencyPopulationDAO extends BaseDAO<ESPSNPFrequencyPopulation, Long> {
 
-    public List<ESPSNPFrequencyPopulation> findByLocationVariantIdAndVersion(Long locVarId, Integer version)
-            throws HearsayDAOException;
+    public List<ESPSNPFrequencyPopulation> findByLocationVariantIdAndVersion(Long locVarId, Integer version) throws HearsayDAOException;
 
 }
