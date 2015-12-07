@@ -104,9 +104,9 @@ public class Variants_61_2PK implements Serializable {
 
     @Override
     public String toString() {
-        return String
-                .format("Variants_61_2PK [locationVariant=%s, chromosome=%s, pos=%s, type=%s, transcr=%s, locationType=%s, variantEffect=%s, mapnum=%s]",
-                        locationVariant, chromosome, pos, type, transcr, locationType, variantEffect, mapnum);
+        return String.format(
+                "Variants_61_2PK [locationVariant=%s, chromosome=%s, pos=%s, type=%s, transcr=%s, locationType=%s, variantEffect=%s, mapnum=%s]",
+                locationVariant, chromosome, pos, type, transcr, locationType, variantEffect, mapnum);
     }
 
     @Override

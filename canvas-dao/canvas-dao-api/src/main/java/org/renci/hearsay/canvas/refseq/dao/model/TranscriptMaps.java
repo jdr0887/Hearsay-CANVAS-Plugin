@@ -4,23 +4,25 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
-import javax.persistence.Convert;
-import javax.persistence.Converter;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.apache.openjpa.persistence.FetchAttribute;
+import org.apache.openjpa.persistence.FetchGroup;
+import org.apache.openjpa.persistence.FetchGroups;
 import org.renci.hearsay.canvas.dao.Persistable;
 import org.renci.hearsay.canvas.ref.dao.model.GenomeRefSeq;
-import org.renci.hearsay.canvas.refseq.dao.RefSeqStrandTypeConverter;
 
 @Entity
 @Table(schema = "refseq", name = "transcr_maps")
-// @TypeDefs({ @TypeDef(name = StrandUserType.NAME, typeClass = StrandBasicType.class) })
+@FetchGroups({
+        @FetchGroup(name = "includeManyToOnes", attributes = { @FetchAttribute(name = "transcript"),
+                @FetchAttribute(name = "genomeRefSeq") }),
+        @FetchGroup(name = "includeAll", fetchGroups = { "includeManyToOnes" }, attributes = { @FetchAttribute(name = "exons") }) })
 public class TranscriptMaps implements Persistable {
 
     private static final long serialVersionUID = 8175717803443861686L;
@@ -39,10 +41,8 @@ public class TranscriptMaps implements Persistable {
     @Column(name = "map_count")
     private Integer mapCount;
 
-    @Column(name = "strand", columnDefinition = "strand_type")
-    // @Type(type = "org.renci.hearsay.canvas.refseq.dao.StrandBasicType")
-    @Convert(converter = RefSeqStrandTypeConverter.class)
-    private RefSeqStrandType strand;
+    @Column(name = "strand")
+    private String strand;
 
     @Column(name = "score")
     private Double score;
@@ -57,8 +57,8 @@ public class TranscriptMaps implements Persistable {
     @Column(name = "exon_count")
     private Integer exonCount;
 
-    @OneToMany(mappedBy = "transcriptMaps", fetch = FetchType.LAZY)
-    protected Set<TranscriptMapsExons> transcriptMapsExons;
+    @OneToMany(mappedBy = "transcriptMaps")
+    protected Set<TranscriptMapsExons> exons;
 
     public TranscriptMaps() {
         super();
@@ -128,30 +128,29 @@ public class TranscriptMaps implements Persistable {
         this.exonCount = exonCount;
     }
 
-    public RefSeqStrandType getStrand() {
+    public String getStrand() {
         return strand;
     }
 
-    public void setStrand(RefSeqStrandType strand) {
+    public void setStrand(String strand) {
         this.strand = strand;
     }
 
-    public Set<TranscriptMapsExons> getTranscriptMapsExons() {
-        if (this.transcriptMapsExons == null) {
-            this.transcriptMapsExons = new HashSet<TranscriptMapsExons>();
+    public Set<TranscriptMapsExons> getExons() {
+        if (this.exons == null) {
+            this.exons = new HashSet<TranscriptMapsExons>();
         }
-        return transcriptMapsExons;
+        return exons;
     }
 
-    public void setTranscriptMapsExons(Set<TranscriptMapsExons> transcriptMapsExons) {
-        this.transcriptMapsExons = transcriptMapsExons;
+    public void setTranscriptMapsExons(Set<TranscriptMapsExons> exons) {
+        this.exons = exons;
     }
 
     @Override
     public String toString() {
-        return String.format(
-                "TranscriptMaps [id=%s, transcript=%s, genomeRefId=%s, mapCount=%s, strand=%s, score=%s, ident=%s, exonCount=%s]",
-                id, transcript, genomeRefId, mapCount, strand, score, ident, exonCount);
+        return String.format("TranscriptMaps [id=%s, genomeRefId=%s, mapCount=%s, strand=%s, score=%s, ident=%s, exonCount=%s]", id,
+                genomeRefId, mapCount, strand, score, ident, exonCount);
     }
 
     @Override
@@ -165,7 +164,6 @@ public class TranscriptMaps implements Persistable {
         result = prime * result + ((mapCount == null) ? 0 : mapCount.hashCode());
         result = prime * result + ((score == null) ? 0 : score.hashCode());
         result = prime * result + ((strand == null) ? 0 : strand.hashCode());
-        result = prime * result + ((transcript == null) ? 0 : transcript.hashCode());
         return result;
     }
 
@@ -212,11 +210,6 @@ public class TranscriptMaps implements Persistable {
             if (other.strand != null)
                 return false;
         } else if (!strand.equals(other.strand))
-            return false;
-        if (transcript == null) {
-            if (other.transcript != null)
-                return false;
-        } else if (!transcript.equals(other.transcript))
             return false;
         return true;
     }

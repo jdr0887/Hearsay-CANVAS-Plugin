@@ -8,7 +8,6 @@ import org.renci.hearsay.dao.HearsayDAOException;
 
 public interface TranscriptDAO extends BaseDAO<Transcript, String> {
 
-    public List<Transcript> findByRefSeqVersionAndGenomeRefId(String refSeqVersion, Integer genomeRefId)
-            throws HearsayDAOException;
+    public List<Transcript> findByGenomeRefIdAndRefSeqVersion(Integer genomeRefId, String refSeqVersion) throws HearsayDAOException;
 
 }

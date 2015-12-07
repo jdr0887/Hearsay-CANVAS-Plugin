@@ -89,7 +89,7 @@ public class Variants_61_2 implements Persistable {
     private Integer intronExonDist;
 
     @Column(name = "strand")
-    private Character strand;
+    private String strand;
 
     @Column(name = "nummaps")
     private Integer nummaps;
@@ -263,11 +263,11 @@ public class Variants_61_2 implements Persistable {
         this.intronExonDist = intronExonDist;
     }
 
-    public Character getStrand() {
+    public String getStrand() {
         return strand;
     }
 
-    public void setStrand(Character strand) {
+    public void setStrand(String strand) {
         this.strand = strand;
     }
 
@@ -355,9 +355,9 @@ public class Variants_61_2 implements Persistable {
     public String toString() {
         return String.format(
                 "Variants_61_2 [refseqGene=%s, hgncGene=%s, transcrPos=%s, cdsPos=%s, aaStart=%s, aaEnd=%s, originalAa=%s, finalAa=%s, frameshift=%s, inframe=%s, intronExonDist=%s, strand=%s, nummaps=%s, referenceAllele=%s, alternateAllele=%s, hgvsGenomic=%s, hgvsCodingSequence=%s, hgvsTranscript=%s, hgvsProtein=%s, noncanExon=%s, featureId=%s]",
-                refseqGene, hgncGene, transcrPos, cdsPos, aaStart, aaEnd, originalAa, finalAa, frameshift, inframe,
-                intronExonDist, strand, nummaps, referenceAllele, alternateAllele, hgvsGenomic, hgvsCodingSequence,
-                hgvsTranscript, hgvsProtein, noncanExon, featureId);
+                refseqGene, hgncGene, transcrPos, cdsPos, aaStart, aaEnd, originalAa, finalAa, frameshift, inframe, intronExonDist, strand,
+                nummaps, referenceAllele, alternateAllele, hgvsGenomic, hgvsCodingSequence, hgvsTranscript, hgvsProtein, noncanExon,
+                featureId);
     }
 
     @Override

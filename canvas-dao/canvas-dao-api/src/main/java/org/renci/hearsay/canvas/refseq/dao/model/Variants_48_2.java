@@ -87,7 +87,7 @@ public class Variants_48_2 implements Persistable {
     private Integer intronExonDist;
 
     @Column(name = "strand")
-    private Character strand;
+    private String strand;
 
     @Column(name = "nummaps")
     private Integer nummaps;
@@ -261,11 +261,11 @@ public class Variants_48_2 implements Persistable {
         this.intronExonDist = intronExonDist;
     }
 
-    public Character getStrand() {
+    public String getStrand() {
         return strand;
     }
 
-    public void setStrand(Character strand) {
+    public void setStrand(String strand) {
         this.strand = strand;
     }
 

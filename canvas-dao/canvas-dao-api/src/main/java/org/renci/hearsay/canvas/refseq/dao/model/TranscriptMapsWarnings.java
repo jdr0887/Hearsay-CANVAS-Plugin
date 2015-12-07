@@ -1,40 +1,56 @@
 package org.renci.hearsay.canvas.refseq.dao.model;
 
-import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
 @Table(schema = "refseq", name = "transcr_maps_warnings")
 public class TranscriptMapsWarnings {
 
-    @Id
-    @Column(name = "refseq_transcr_maps_id")
-    private Integer refseqTranscrMapsId;
-
-    @Id
-    @Column(name = "warning_warning_name")
-    private String warningWarningName;
+    @EmbeddedId
+    private TranscriptMapsWarningsPK key;
 
     public TranscriptMapsWarnings() {
         super();
     }
 
-    public Integer getRefseqTranscrMapsId() {
-        return refseqTranscrMapsId;
+    public TranscriptMapsWarningsPK getKey() {
+        return key;
     }
 
-    public void setRefseqTranscrMapsId(Integer refseqTranscrMapsId) {
-        this.refseqTranscrMapsId = refseqTranscrMapsId;
+    public void setKey(TranscriptMapsWarningsPK key) {
+        this.key = key;
     }
 
-    public String getWarningWarningName() {
-        return warningWarningName;
+    @Override
+    public String toString() {
+        return String.format("TranscriptMapsWarnings [key=%s]", key);
     }
 
-    public void setWarningWarningName(String warningWarningName) {
-        this.warningWarningName = warningWarningName;
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((key == null) ? 0 : key.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        TranscriptMapsWarnings other = (TranscriptMapsWarnings) obj;
+        if (key == null) {
+            if (other.key != null)
+                return false;
+        } else if (!key.equals(other.key))
+            return false;
+        return true;
     }
 
 }

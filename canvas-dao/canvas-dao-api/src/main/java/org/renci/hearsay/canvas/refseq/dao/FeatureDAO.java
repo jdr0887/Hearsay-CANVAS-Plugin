@@ -8,7 +8,6 @@ import org.renci.hearsay.dao.HearsayDAOException;
 
 public interface FeatureDAO extends BaseDAO<Feature, Long> {
 
-    public List<Feature> findByRefSeqVersionAndTranscriptId(String refSeqVersion, String transcriptId)
-            throws HearsayDAOException;
+    public List<Feature> findByRefSeqVersionAndTranscriptId(String refSeqVersion, String transcriptId) throws HearsayDAOException;
 
 }

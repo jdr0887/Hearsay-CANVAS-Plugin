@@ -10,7 +10,6 @@ public interface RefSeqGeneDAO extends BaseDAO<RefSeqGene, Long> {
 
     public List<RefSeqGene> findByRefSeqVersion(String refSeqVersion) throws HearsayDAOException;
 
-    public List<RefSeqGene> findByRefSeqVersionAndTranscriptId(String refSeqVersion, String transcriptId)
-            throws HearsayDAOException;
+    public List<RefSeqGene> findByRefSeqVersionAndTranscriptId(String refSeqVersion, String transcriptId) throws HearsayDAOException;
 
 }

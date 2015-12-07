@@ -2,7 +2,6 @@ package org.renci.hearsay.canvas.refseq.dao.model;
 
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -33,7 +32,7 @@ public class RefSeqGene implements Persistable {
     @Column(name = "descr", length = 4095)
     private String description;
 
-    @ManyToMany(targetEntity = RegionGroup.class, cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
+    @ManyToMany(targetEntity = RegionGroup.class, fetch = FetchType.LAZY)
     @JoinTable(schema = "refseq", name = "gene_locs", joinColumns = {
             @JoinColumn(name = "refseq_gene_id", referencedColumnName = "refseq_gene_id") }, inverseJoinColumns = {
                     @JoinColumn(name = "loc_region_group_id", referencedColumnName = "region_group_id") })
@@ -85,8 +84,7 @@ public class RefSeqGene implements Persistable {
 
     @Override
     public String toString() {
-        return String.format("RefSeqGene [id=%s, refseqVersion=%s, name=%s, description=%s]", id, refseqVersion, name,
-                description);
+        return String.format("RefSeqGene [id=%s, refseqVersion=%s, name=%s, description=%s]", id, refseqVersion, name, description);
     }
 
     @Override

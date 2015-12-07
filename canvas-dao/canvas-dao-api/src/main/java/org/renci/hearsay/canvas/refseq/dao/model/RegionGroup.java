@@ -32,13 +32,13 @@ public class RegionGroup implements Persistable {
     @JoinColumn(name = "grouping_type")
     private GroupingType groupingType;
 
-    @OneToMany(mappedBy = "regionGroup", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "regionGroup", fetch = FetchType.LAZY)
     protected Set<RegionGroupRegion> regionGroupRegions;
 
-    @OneToMany(mappedBy = "regionGroup", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "regionGroup", fetch = FetchType.LAZY)
     protected Set<Feature> features;
 
-    @ManyToMany(mappedBy = "locations")
+    @ManyToMany(mappedBy = "locations", fetch = FetchType.LAZY)
     private Set<RefSeqGene> refSeqGenes;
 
     public RegionGroup() {

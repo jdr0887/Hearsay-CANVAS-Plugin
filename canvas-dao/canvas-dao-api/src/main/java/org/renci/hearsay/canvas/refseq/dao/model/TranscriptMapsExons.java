@@ -18,13 +18,13 @@ public class TranscriptMapsExons implements Persistable {
 
     private static final long serialVersionUID = 1925719918965835160L;
 
+    @EmbeddedId
+    private TranscriptMapsExonsPK key;
+
     @MapsId("transcriptMapsId")
     @ManyToOne
     @JoinColumn(name = "refseq_transcr_maps_id", nullable = false)
     private TranscriptMaps transcriptMaps;
-
-    @EmbeddedId
-    private TranscriptMapsExonsPK key;
 
     @Transient
     private RegionType regionType = RegionType.EXON;
@@ -45,8 +45,8 @@ public class TranscriptMapsExons implements Persistable {
         super();
     }
 
-    public TranscriptMapsExons(TranscriptMaps transcriptMaps, TranscriptMapsExonsPK key, RegionType regionType,
-            Integer transcrStart, Integer transcrEnd, Integer contigStart, Integer contigEnd) {
+    public TranscriptMapsExons(TranscriptMaps transcriptMaps, TranscriptMapsExonsPK key, RegionType regionType, Integer transcrStart,
+            Integer transcrEnd, Integer contigStart, Integer contigEnd) {
         super();
         this.transcriptMaps = transcriptMaps;
         this.key = key;
@@ -57,8 +57,7 @@ public class TranscriptMapsExons implements Persistable {
         this.contigEnd = contigEnd;
     }
 
-    public TranscriptMapsExons(RegionType regionType, Integer transcrStart, Integer transcrEnd, Integer contigStart,
-            Integer contigEnd) {
+    public TranscriptMapsExons(RegionType regionType, Integer transcrStart, Integer transcrEnd, Integer contigStart, Integer contigEnd) {
         super();
         this.regionType = regionType;
         this.transcrStart = transcrStart;
@@ -129,8 +128,7 @@ public class TranscriptMapsExons implements Persistable {
 
     @Override
     public String toString() {
-        return String.format(
-                "TranscriptMapsExons [key=%s, transcrStart=%s, transcrEnd=%s, contigStart=%s, contigEnd=%s]", key,
+        return String.format("TranscriptMapsExons [key=%s, transcrStart=%s, transcrEnd=%s, contigStart=%s, contigEnd=%s]", key,
                 transcrStart, transcrEnd, contigStart, contigEnd);
     }
 

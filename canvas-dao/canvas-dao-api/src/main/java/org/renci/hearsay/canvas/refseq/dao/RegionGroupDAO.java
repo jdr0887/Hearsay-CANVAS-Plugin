@@ -8,7 +8,6 @@ import org.renci.hearsay.dao.HearsayDAOException;
 
 public interface RegionGroupDAO extends BaseDAO<RegionGroup, Long> {
 
-    public List<RegionGroup> findByRefSeqVersionAndTranscriptId(String refSeqVersion, String transcriptId)
-            throws HearsayDAOException;
+    public List<RegionGroup> findByRefSeqVersionAndTranscriptId(String refSeqVersion, String transcriptId) throws HearsayDAOException;
 
 }

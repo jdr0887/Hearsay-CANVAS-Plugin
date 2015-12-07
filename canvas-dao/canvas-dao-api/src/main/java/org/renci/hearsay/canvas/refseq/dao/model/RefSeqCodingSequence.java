@@ -42,7 +42,7 @@ public class RefSeqCodingSequence implements Persistable {
     private String note;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(schema = "refseq", name = "cds_locs", joinColumns = @JoinColumn(name = "refseq_cds_id"), inverseJoinColumns = @JoinColumn(name = "loc_region_group_id"))
+    @JoinTable(schema = "refseq", name = "cds_locs", joinColumns = @JoinColumn(name = "refseq_cds_id") , inverseJoinColumns = @JoinColumn(name = "loc_region_group_id") )
     protected Set<RegionGroup> locations;
 
     public RefSeqCodingSequence() {
@@ -115,8 +115,8 @@ public class RefSeqCodingSequence implements Persistable {
 
     @Override
     public String toString() {
-        return String.format("CDS [id=%s, version=%s, proteinId=%s, product=%s, descr=%s, transl=%s, note=%s]", id,
-                version, proteinId, product, descr, transl, note);
+        return String.format("CDS [id=%s, version=%s, proteinId=%s, product=%s, descr=%s, transl=%s, note=%s]", id, version, proteinId,
+                product, descr, transl, note);
     }
 
     @Override

@@ -10,7 +10,9 @@ public interface TranscriptMapsDAO extends BaseDAO<TranscriptMaps, Integer> {
 
     public List<TranscriptMaps> findByTranscriptId(String versionId) throws HearsayDAOException;
 
-    public List<TranscriptMaps> findByGenomeRefIdAndRefSeqVersion(Integer genomeRefId, String refSeqVersion)
+    public List<TranscriptMaps> findByGenomeRefIdAndRefSeqVersion(Integer genomeRefId, String refSeqVersion) throws HearsayDAOException;
+
+    public List<TranscriptMaps> findByGenomeRefIdAndRefSeqVersion(String fetchGroup, Integer genomeRefId, String refSeqVersion)
             throws HearsayDAOException;
 
 }

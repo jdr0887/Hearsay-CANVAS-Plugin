@@ -5,7 +5,6 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -30,13 +29,13 @@ public class Transcript implements Persistable {
     @Transient
     protected String seq;
 
-    @OneToMany(mappedBy = "transcript", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "transcript")
     protected Set<TranscriptRefSeqVers> refseqVersions;
 
-    @OneToMany(mappedBy = "transcript", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "transcript")
     protected Set<TranscriptMaps> transcriptMaps;
 
-    @OneToMany(mappedBy = "transcript", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "transcript")
     protected Set<RegionGroup> regionGroups;
 
     public Transcript() {
@@ -102,7 +101,7 @@ public class Transcript implements Persistable {
 
     @Override
     public String toString() {
-        return String.format("Transcript [versionId=%s, accession=%s, seq=%s]", versionId, accession, seq);
+        return String.format("Transcript [versionId=%s, accession=%s]", versionId, accession);
     }
 
     @Override
@@ -110,7 +109,6 @@ public class Transcript implements Persistable {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((accession == null) ? 0 : accession.hashCode());
-        // result = prime * result + ((seq == null) ? 0 : seq.hashCode());
         result = prime * result + ((versionId == null) ? 0 : versionId.hashCode());
         return result;
     }
@@ -129,11 +127,6 @@ public class Transcript implements Persistable {
                 return false;
         } else if (!accession.equals(other.accession))
             return false;
-        // if (seq == null) {
-        // if (other.seq != null)
-        // return false;
-        // } else if (!seq.equals(other.seq))
-        // return false;
         if (versionId == null) {
             if (other.versionId != null)
                 return false;
