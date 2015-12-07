@@ -32,8 +32,7 @@ public class ReferenceClinicalAssertionsDAOTest {
         ReferenceClinicalAssertionsDAOImpl referenceClinicalAssertionsDAO = new ReferenceClinicalAssertionsDAOImpl();
         referenceClinicalAssertionsDAO.setEntityManager(em);
         try {
-            List<ReferenceClinicalAssertions> results = referenceClinicalAssertionsDAO.findDiagnostic(22L, "NCG_00064",
-                    16);
+            List<ReferenceClinicalAssertions> results = referenceClinicalAssertionsDAO.findDiagnostic(22L, "NCG_00064", 16);
             assertTrue(results != null);
             assertTrue(!results.isEmpty());
         } catch (HearsayDAOException e) {
@@ -54,7 +53,6 @@ public class ReferenceClinicalAssertionsDAOTest {
         }
     }
 
-    
     @AfterClass
     public static void tearDown() {
         em.close();
