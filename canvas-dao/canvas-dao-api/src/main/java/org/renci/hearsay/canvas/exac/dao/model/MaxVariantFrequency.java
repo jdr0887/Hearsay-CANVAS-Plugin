@@ -62,8 +62,7 @@ public class MaxVariantFrequency implements Persistable {
 
     @Override
     public String toString() {
-        return String.format("MaxVariantFrequency [locationVariant=%s, maxAlleleFrequency=%s]", locationVariant,
-                maxAlleleFrequency);
+        return String.format("MaxVariantFrequency [locationVariant=%s, maxAlleleFrequency=%s]", locationVariant, maxAlleleFrequency);
     }
 
     @Override

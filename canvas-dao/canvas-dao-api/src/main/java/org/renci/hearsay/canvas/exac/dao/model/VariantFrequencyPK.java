@@ -49,8 +49,7 @@ public class VariantFrequencyPK implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("VariantFrequencyPK [locationVariant=%s, version=%s, population=%s]", locationVariant,
-                version, population);
+        return String.format("VariantFrequencyPK [locationVariant=%s, version=%s, population=%s]", locationVariant, version, population);
     }
 
     @Override
