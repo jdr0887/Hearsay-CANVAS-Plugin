@@ -42,7 +42,7 @@ public class PullGenesRunnable implements Runnable {
                     List<Gene> alreadyPersistedGeneList = hearsayDAOBeanService.getGeneDAO().findBySymbol(refSeqGene.getName());
                     if (CollectionUtils.isNotEmpty(alreadyPersistedGeneList)) {
 
-                        Identifier identifier = new Identifier("canvas/refseq/gene", refSeqGene.getId().toString());
+                        Identifier identifier = new Identifier("canvas/refseq/gene/id", refSeqGene.getId().toString());
                         identifier.setId(hearsayDAOBeanService.getIdentifierDAO().save(identifier));
                         logger.info(identifier.toString());
 
@@ -59,7 +59,7 @@ public class PullGenesRunnable implements Runnable {
                             .findBySymbol(refSeqGene.getName());
                     if (CollectionUtils.isNotEmpty(alreadyPersistedGeneSymbolList)) {
 
-                        Identifier identifier = new Identifier("canvas/refseq/gene", refSeqGene.getId().toString());
+                        Identifier identifier = new Identifier("canvas/refseq/gene/id", refSeqGene.getId().toString());
                         identifier.setId(hearsayDAOBeanService.getIdentifierDAO().save(identifier));
                         logger.debug(identifier.toString());
 
