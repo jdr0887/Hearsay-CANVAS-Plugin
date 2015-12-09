@@ -91,6 +91,7 @@
     <class>org.renci.hearsay.canvas.refseq.dao.model.LocationType</class>
     <class>org.renci.hearsay.canvas.refseq.dao.model.RegionGroup</class>
     <class>org.renci.hearsay.canvas.refseq.dao.model.RegionGroupRegion</class>
+    <class>org.renci.hearsay.canvas.refseq.dao.model.RegionGroupRegionPK</class>
     <class>org.renci.hearsay.canvas.refseq.dao.model.RefSeqCodingSequence</class>
     <class>org.renci.hearsay.canvas.refseq.dao.model.RefSeqGene</class>
     <class>org.renci.hearsay.canvas.refseq.dao.model.Transcript</class>
