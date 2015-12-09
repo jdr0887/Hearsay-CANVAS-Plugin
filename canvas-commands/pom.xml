@@ -17,6 +17,11 @@
       <scope>provided</scope>      
     </dependency>
     <dependency>
+      <groupId>org.renci.hearsay</groupId>
+      <artifactId>hearsay-commands</artifactId>
+      <scope>provided</scope>      
+    </dependency>    
+    <dependency>
       <groupId>org.renci.hearsay.plugin.canvas.canvas-dao</groupId>
       <artifactId>canvas-dao-api</artifactId>
     </dependency>    
