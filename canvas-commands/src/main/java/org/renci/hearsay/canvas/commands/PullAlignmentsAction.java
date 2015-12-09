@@ -39,7 +39,7 @@ public class PullAlignmentsAction implements Action {
     public Object execute() {
         logger.debug("ENTERING execute()");
         ExecutorService es = Executors.newSingleThreadExecutor();
-        es.submit(new PullAlignmentsCallable(canvasDAOBeanService, hearsayDAOBeanService, refSeqVersion, genomeRefId));
+        es.submit(new PullAlignmentsRunnable(canvasDAOBeanService, hearsayDAOBeanService, refSeqVersion, genomeRefId));
         es.shutdown();
         return null;
     }
