@@ -43,22 +43,15 @@ public class RegionGroupDAOImpl extends BaseDAOImpl<RegionGroup, Long> implement
         logger.debug("ENTERING findByRefSeqVersionAndTranscriptId(String, String)");
         CriteriaBuilder critBuilder = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<RegionGroup> crit = critBuilder.createQuery(getPersistentClass());
-
         List<Predicate> predicates = new ArrayList<Predicate>();
-
         Root<RegionGroup> fromRegionGroup = crit.from(getPersistentClass());
-
         Join<RegionGroup, Transcript> regionGroupTranscriptJoin = fromRegionGroup.join(RegionGroup_.transcript);
         predicates.add(critBuilder.equal(regionGroupTranscriptJoin.get(Transcript_.versionId), transcriptId));
-
         SetJoin<RegionGroup, Feature> regionGroupFeatureJoin = fromRegionGroup.join(RegionGroup_.features);
         predicates.add(critBuilder.equal(regionGroupFeatureJoin.get(Feature_.refseqVer), refSeqVersion));
-
         crit.where(predicates.toArray(new Predicate[predicates.size()]));
-
         TypedQuery<RegionGroup> query = getEntityManager().createQuery(crit);
         List<RegionGroup> ret = query.getResultList();
-
         return ret;
     }
 
