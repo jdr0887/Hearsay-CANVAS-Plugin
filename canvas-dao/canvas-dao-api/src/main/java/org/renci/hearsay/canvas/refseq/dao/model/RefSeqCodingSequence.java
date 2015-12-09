@@ -4,17 +4,20 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import org.apache.openjpa.persistence.FetchAttribute;
+import org.apache.openjpa.persistence.FetchGroup;
+import org.apache.openjpa.persistence.FetchGroups;
 import org.renci.hearsay.canvas.dao.Persistable;
 
 @Entity
 @Table(schema = "refseq", name = "cds")
+@FetchGroups({ @FetchGroup(name = "includeAll", attributes = { @FetchAttribute(name = "locations") }) })
 public class RefSeqCodingSequence implements Persistable {
 
     private static final long serialVersionUID = -3518848421271412683L;
@@ -41,7 +44,7 @@ public class RefSeqCodingSequence implements Persistable {
     @Column(name = "note", length = 1023)
     private String note;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     @JoinTable(schema = "refseq", name = "cds_locs", joinColumns = @JoinColumn(name = "refseq_cds_id") , inverseJoinColumns = @JoinColumn(name = "loc_region_group_id") )
     protected Set<RegionGroup> locations;
 
