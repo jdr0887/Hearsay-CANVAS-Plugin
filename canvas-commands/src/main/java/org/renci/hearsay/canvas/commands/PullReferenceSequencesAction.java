@@ -43,7 +43,7 @@ public class PullReferenceSequencesAction implements Action {
             logger.info("refSeqVersion = {}", refSeqVersion);
 
             ExecutorService es = Executors.newSingleThreadExecutor();
-            es.submit(new PullReferenceSequencesCallable(canvasDAOBeanService, hearsayDAOBeanService, refSeqVersion, genomeRefId));
+            es.submit(new PullReferenceSequencesRunnable(canvasDAOBeanService, hearsayDAOBeanService, refSeqVersion, genomeRefId));
             es.shutdown();
         } catch (Exception e) {
             e.printStackTrace();
