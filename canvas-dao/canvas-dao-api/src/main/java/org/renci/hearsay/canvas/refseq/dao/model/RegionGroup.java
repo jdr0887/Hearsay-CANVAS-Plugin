@@ -12,10 +12,18 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.apache.openjpa.persistence.FetchAttribute;
+import org.apache.openjpa.persistence.FetchGroup;
+import org.apache.openjpa.persistence.FetchGroups;
 import org.renci.hearsay.canvas.dao.Persistable;
 
 @Entity
 @Table(schema = "refseq", name = "region_group")
+@FetchGroups({
+        @FetchGroup(name = "includeManyToOnes", attributes = { @FetchAttribute(name = "transcript"),
+                @FetchAttribute(name = "groupingType") }),
+        @FetchGroup(name = "includeRegionGroupRegions", fetchGroups = { "includeManyToOnes" }, attributes = {
+                @FetchAttribute(name = "regionGroupRegions") }) })
 public class RegionGroup implements Persistable {
 
     private static final long serialVersionUID = -6293737799108423842L;
