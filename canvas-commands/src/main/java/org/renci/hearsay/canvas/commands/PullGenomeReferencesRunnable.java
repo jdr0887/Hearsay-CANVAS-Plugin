@@ -49,7 +49,7 @@ public class PullGenomeReferencesRunnable implements Runnable {
                     List<GenomeReference> foundGenomeReferences = hearsayDAOBeanService.getGenomeReferenceDAO().findByName(genomeRefValue);
 
                     if (CollectionUtils.isNotEmpty(foundGenomeReferences)) {
-                        Identifier identifier = new Identifier("canvas/ref/genomeRef", genomeRef.getId().toString());
+                        Identifier identifier = new Identifier("canvas/ref/genomeRef/id", genomeRef.getId().toString());
                         identifier.setId(hearsayDAOBeanService.getIdentifierDAO().save(identifier));
                         logger.info(identifier.toString());
 
@@ -60,7 +60,7 @@ public class PullGenomeReferencesRunnable implements Runnable {
                         continue;
                     }
 
-                    Identifier identifier = new Identifier("canvas/ref/genomeRef", genomeRef.getId().toString());
+                    Identifier identifier = new Identifier("canvas/ref/genomeRef/id", genomeRef.getId().toString());
                     identifier.setId(hearsayDAOBeanService.getIdentifierDAO().save(identifier));
                     logger.info(identifier.toString());
 
