@@ -1,7 +1,7 @@
 package org.renci.hearsay.canvas.refseq.dao.model;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -58,7 +58,7 @@ public class TranscriptMaps implements Persistable {
     private Integer exonCount;
 
     @OneToMany(mappedBy = "transcriptMaps")
-    protected Set<TranscriptMapsExons> exons;
+    protected List<TranscriptMapsExons> exons;
 
     public TranscriptMaps() {
         super();
@@ -136,14 +136,14 @@ public class TranscriptMaps implements Persistable {
         this.strand = strand;
     }
 
-    public Set<TranscriptMapsExons> getExons() {
+    public List<TranscriptMapsExons> getExons() {
         if (this.exons == null) {
-            this.exons = new HashSet<TranscriptMapsExons>();
+            this.exons = new ArrayList<TranscriptMapsExons>();
         }
         return exons;
     }
 
-    public void setTranscriptMapsExons(Set<TranscriptMapsExons> exons) {
+    public void setTranscriptMapsExons(List<TranscriptMapsExons> exons) {
         this.exons = exons;
     }
 
