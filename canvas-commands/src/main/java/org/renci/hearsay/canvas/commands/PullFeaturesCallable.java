@@ -121,8 +121,8 @@ public class PullFeaturesCallable implements Callable<Void> {
                             org.renci.hearsay.dao.model.Feature hearsayFeature = new org.renci.hearsay.dao.model.Feature();
                             hearsayFeature.setNote(canvasFeature.getNote());
 
-                            Location regionLocation = new Location(regionGroupRegionArray[0].getRegionStart(),
-                                    regionGroupRegionArray[0].getRegionEnd());
+                            Location regionLocation = new Location(regionGroupRegionArray[0].getKey().getRegionStart(),
+                                    regionGroupRegionArray[0].getKey().getRegionEnd());
                             regionLocation.setId(hearsayDAOBeanService.getLocationDAO().save(regionLocation));
 
                             hearsayFeature.getLocations().add(regionLocation);
