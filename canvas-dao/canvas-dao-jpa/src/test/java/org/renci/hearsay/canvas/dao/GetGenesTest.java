@@ -58,7 +58,7 @@ public class GetGenesTest {
 
                             for (RegionGroupRegion rgr : rgrSet) {
                                 System.out.println(String.format("%s\t%s\t%s\t%s", gene.getName(), rg.getTranscript().getVersionId(),
-                                        rgr.getRegionStart().toString(), rgr.getRegionEnd().toString()));
+                                        rgr.getKey().getRegionStart().toString(), rgr.getKey().getRegionEnd().toString()));
                             }
 
                         }
