@@ -1,33 +1,42 @@
 package org.renci.hearsay.canvas.refseq.dao.model;
 
-import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
 import javax.persistence.Table;
 
+import org.apache.openjpa.persistence.FetchAttribute;
+import org.apache.openjpa.persistence.FetchGroup;
+import org.apache.openjpa.persistence.FetchGroups;
 import org.renci.hearsay.canvas.dao.Persistable;
 
 @Entity
 @Table(schema = "refseq", name = "region_group_regions")
+@FetchGroups({ @FetchGroup(name = "includeManyToOnes", attributes = { @FetchAttribute(name = "regionGroup") }) })
 public class RegionGroupRegion implements Persistable {
 
     private static final long serialVersionUID = 7705809636894949101L;
 
-    @Id
+    @EmbeddedId
+    private RegionGroupRegionPK key;
+
+    @MapsId
     @ManyToOne
     @JoinColumn(name = "region_group_id")
     private RegionGroup regionGroup;
 
-    @Column(name = "region_start")
-    private Integer regionStart;
-
-    @Column(name = "region_end")
-    private Integer regionEnd;
-
     public RegionGroupRegion() {
         super();
+    }
+
+    public RegionGroupRegionPK getKey() {
+        return key;
+    }
+
+    public void setKey(RegionGroupRegionPK key) {
+        this.key = key;
     }
 
     public RegionGroup getRegionGroup() {
@@ -38,33 +47,17 @@ public class RegionGroupRegion implements Persistable {
         this.regionGroup = regionGroup;
     }
 
-    public Integer getRegionStart() {
-        return regionStart;
-    }
-
-    public void setRegionStart(Integer regionStart) {
-        this.regionStart = regionStart;
-    }
-
-    public Integer getRegionEnd() {
-        return regionEnd;
-    }
-
-    public void setRegionEnd(Integer regionEnd) {
-        this.regionEnd = regionEnd;
-    }
-
     @Override
     public String toString() {
-        return String.format("RegionGroupRegion [regionStart=%s, regionEnd=%s]", regionStart, regionEnd);
+        return String.format("RegionGroupRegion [key=%s, regionGroup=%s]", key, regionGroup);
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((regionEnd == null) ? 0 : regionEnd.hashCode());
-        result = prime * result + ((regionStart == null) ? 0 : regionStart.hashCode());
+        result = prime * result + ((key == null) ? 0 : key.hashCode());
+        result = prime * result + ((regionGroup == null) ? 0 : regionGroup.hashCode());
         return result;
     }
 
@@ -77,15 +70,15 @@ public class RegionGroupRegion implements Persistable {
         if (getClass() != obj.getClass())
             return false;
         RegionGroupRegion other = (RegionGroupRegion) obj;
-        if (regionEnd == null) {
-            if (other.regionEnd != null)
+        if (key == null) {
+            if (other.key != null)
                 return false;
-        } else if (!regionEnd.equals(other.regionEnd))
+        } else if (!key.equals(other.key))
             return false;
-        if (regionStart == null) {
-            if (other.regionStart != null)
+        if (regionGroup == null) {
+            if (other.regionGroup != null)
                 return false;
-        } else if (!regionStart.equals(other.regionStart))
+        } else if (!regionGroup.equals(other.regionGroup))
             return false;
         return true;
     }
