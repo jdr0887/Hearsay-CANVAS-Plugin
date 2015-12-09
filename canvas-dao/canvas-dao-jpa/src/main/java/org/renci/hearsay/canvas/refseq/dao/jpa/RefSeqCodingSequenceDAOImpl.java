@@ -11,6 +11,8 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 
+import org.apache.openjpa.persistence.OpenJPAPersistence;
+import org.apache.openjpa.persistence.OpenJPAQuery;
 import org.renci.hearsay.canvas.dao.jpa.BaseDAOImpl;
 import org.renci.hearsay.canvas.refseq.dao.RefSeqCodingSequenceDAO;
 import org.renci.hearsay.canvas.refseq.dao.model.RefSeqCodingSequence;
@@ -41,33 +43,43 @@ public class RefSeqCodingSequenceDAOImpl extends BaseDAOImpl<RefSeqCodingSequenc
     public List<RefSeqCodingSequence> findByRefSeqVersionAndTranscriptId(String refSeqVersion, String transcriptId)
             throws HearsayDAOException {
         logger.debug("ENTERING findByRefSeqVersionAndTranscriptId(String, String)");
-        CriteriaBuilder critBuilder = getEntityManager().getCriteriaBuilder();
-        CriteriaQuery<RefSeqCodingSequence> crit = critBuilder.createQuery(getPersistentClass());
-        Root<RefSeqCodingSequence> root = crit.from(getPersistentClass());
-        List<Predicate> predicates = new ArrayList<Predicate>();
-
-        predicates.add(critBuilder.equal(root.get(RefSeqCodingSequence_.version), refSeqVersion));
-
-        Join<RefSeqCodingSequence, RegionGroup> locationJoin = root.join(RefSeqCodingSequence_.locations);
-        Join<RegionGroup, Transcript> transcriptJoin = locationJoin.join(RegionGroup_.transcript);
-        predicates.add(critBuilder.equal(transcriptJoin.get(Transcript_.versionId), transcriptId));
-
-        crit.where(predicates.toArray(new Predicate[predicates.size()]));
-        TypedQuery<RefSeqCodingSequence> query = getEntityManager().createQuery(crit);
-        List<RefSeqCodingSequence> ret = query.getResultList();
+        List<RefSeqCodingSequence> ret = new ArrayList<RefSeqCodingSequence>();
+        try {
+            CriteriaBuilder critBuilder = getEntityManager().getCriteriaBuilder();
+            CriteriaQuery<RefSeqCodingSequence> crit = critBuilder.createQuery(getPersistentClass());
+            Root<RefSeqCodingSequence> root = crit.from(getPersistentClass());
+            List<Predicate> predicates = new ArrayList<Predicate>();
+            predicates.add(critBuilder.equal(root.get(RefSeqCodingSequence_.version), refSeqVersion));
+            Join<RefSeqCodingSequence, RegionGroup> locationJoin = root.join(RefSeqCodingSequence_.locations);
+            Join<RegionGroup, Transcript> transcriptJoin = locationJoin.join(RegionGroup_.transcript);
+            predicates.add(critBuilder.equal(transcriptJoin.get(Transcript_.versionId), transcriptId));
+            crit.where(predicates.toArray(new Predicate[predicates.size()]));
+            TypedQuery<RefSeqCodingSequence> query = getEntityManager().createQuery(crit);
+            OpenJPAQuery<RefSeqCodingSequence> openjpaQuery = OpenJPAPersistence.cast(query);
+            openjpaQuery.getFetchPlan().addFetchGroup("includeAll");
+            ret.addAll(openjpaQuery.getResultList());
+        } catch (Exception e) {
+            throw new HearsayDAOException(e);
+        }
         return ret;
     }
 
     @Override
     public List<RefSeqCodingSequence> findByVersion(String version) throws HearsayDAOException {
         logger.debug("ENTERING findByVersion(String)");
-        CriteriaBuilder critBuilder = getEntityManager().getCriteriaBuilder();
-        CriteriaQuery<RefSeqCodingSequence> crit = critBuilder.createQuery(getPersistentClass());
-        Root<RefSeqCodingSequence> root = crit.from(getPersistentClass());
-        Predicate condition1 = critBuilder.equal(root.get(RefSeqCodingSequence_.version), version);
-        crit.where(condition1);
-        TypedQuery<RefSeqCodingSequence> query = getEntityManager().createQuery(crit);
-        List<RefSeqCodingSequence> ret = query.getResultList();
+        List<RefSeqCodingSequence> ret = new ArrayList<RefSeqCodingSequence>();
+        try {
+            CriteriaBuilder critBuilder = getEntityManager().getCriteriaBuilder();
+            CriteriaQuery<RefSeqCodingSequence> crit = critBuilder.createQuery(getPersistentClass());
+            Root<RefSeqCodingSequence> root = crit.from(getPersistentClass());
+            Predicate condition1 = critBuilder.equal(root.get(RefSeqCodingSequence_.version), version);
+            crit.where(condition1);
+            TypedQuery<RefSeqCodingSequence> query = getEntityManager().createQuery(crit);
+            OpenJPAQuery<RefSeqCodingSequence> openjpaQuery = OpenJPAPersistence.cast(query);
+            openjpaQuery.getFetchPlan().addFetchGroup("includeAll");
+        } catch (Exception e) {
+            throw new HearsayDAOException(e);
+        }
         return ret;
     }
 }
