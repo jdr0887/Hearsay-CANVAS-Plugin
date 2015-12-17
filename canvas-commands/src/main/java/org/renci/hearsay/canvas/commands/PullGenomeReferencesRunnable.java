@@ -48,21 +48,24 @@ public class PullGenomeReferencesRunnable implements Runnable {
 
                     List<GenomeReference> foundGenomeReferences = hearsayDAOBeanService.getGenomeReferenceDAO().findByName(genomeRefValue);
 
-                    if (CollectionUtils.isNotEmpty(foundGenomeReferences)) {
-                        Identifier identifier = new Identifier("canvas/ref/genomeRef/id", genomeRef.getId().toString());
+                    Identifier identifier = new Identifier("canvas/ref/genomeRef/id", genomeRef.getId().toString());
+                    List<Identifier> possibleIdentifiers = hearsayDAOBeanService.getIdentifierDAO().findByExample(identifier);
+                    if (CollectionUtils.isNotEmpty(possibleIdentifiers)) {
+                        identifier = possibleIdentifiers.get(0);
+                    } else {
                         identifier.setId(hearsayDAOBeanService.getIdentifierDAO().save(identifier));
-                        logger.info(identifier.toString());
-
+                    }
+                    logger.debug(identifier.toString());
+                    
+                    if (CollectionUtils.isNotEmpty(foundGenomeReferences)) {
                         GenomeReference genomeReference = foundGenomeReferences.get(0);
-                        genomeReference.getIdentifiers().add(identifier);
-                        hearsayDAOBeanService.getGenomeReferenceDAO().save(genomeReference);
+                        if (!genomeReference.getIdentifiers().contains(identifier)) {
+                            genomeReference.getIdentifiers().add(identifier);
+                            hearsayDAOBeanService.getGenomeReferenceDAO().save(genomeReference);
+                        }
                         logger.info(genomeReference.toString());
                         continue;
                     }
-
-                    Identifier identifier = new Identifier("canvas/ref/genomeRef/id", genomeRef.getId().toString());
-                    identifier.setId(hearsayDAOBeanService.getIdentifierDAO().save(identifier));
-                    logger.info(identifier.toString());
 
                     GenomeReference genomeReference = new GenomeReference(genomeRefValue);
                     genomeReference.getIdentifiers().add(identifier);
