@@ -33,7 +33,7 @@ public class TranscriptMapsTest {
         TranscriptMapsDAOImpl transcriptMapsDAO = new TranscriptMapsDAOImpl();
         transcriptMapsDAO.setEntityManager(em);
 
-        List<TranscriptMaps> transcriptMapsList = transcriptMapsDAO.findByVersionId("NM_014743.2");
+        List<TranscriptMaps> transcriptMapsList = transcriptMapsDAO.findByTranscriptId("NM_014743.2");
         transcriptMapsList.forEach(a -> System.out.println(a.toString()));
 
         // RefSeqCodingSequenceDAOImpl refSeqCodingSequenceDAO = new RefSeqCodingSequenceDAOImpl();

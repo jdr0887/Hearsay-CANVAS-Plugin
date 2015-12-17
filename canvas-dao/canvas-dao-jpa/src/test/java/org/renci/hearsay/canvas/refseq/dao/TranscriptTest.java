@@ -36,7 +36,8 @@ public class TranscriptTest {
         TranscriptDAOImpl transcriptDAO = new TranscriptDAOImpl();
         transcriptDAO.setEntityManager(em);
         List<Transcript> transcriptList = transcriptDAO.findByGenomeRefIdAndRefSeqVersion(2, "61");
-        transcriptList.forEach(a -> System.out.printf("%s%n", a.toString()));
+        System.out.println(transcriptList.size());
+        //transcriptList.forEach(a -> System.out.printf("%s%n", a.toString()));
     }
 
 }
