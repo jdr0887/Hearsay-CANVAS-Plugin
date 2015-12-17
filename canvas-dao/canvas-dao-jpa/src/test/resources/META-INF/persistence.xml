@@ -132,8 +132,9 @@
       <property name="openjpa.Log" value="DefaultLevel=WARN, Runtime=INFO, Tool=INFO, SQL=TRACE" />
       <property name="openjpa.jdbc.DBDictionary" value="postgres(SearchStringEscape=\, SupportsXMLColumn=false)" />
       <property name="openjpa.RemoteCommitProvider" value="sjvm" />
-      <property name="openjpa.DataCache" value="true" />
+      <property name="openjpa.DataCache" value="false" />
       <property name="openjpa.QueryCache" value="false" />
+      <!-- <property name="openjpa.FetchBatchSize" value="100" /> -->
     </properties>
 
   </persistence-unit>
