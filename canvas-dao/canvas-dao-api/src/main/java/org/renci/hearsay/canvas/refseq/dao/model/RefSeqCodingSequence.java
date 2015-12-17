@@ -4,6 +4,7 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -44,7 +45,7 @@ public class RefSeqCodingSequence implements Persistable {
     @Column(name = "note", length = 1023)
     private String note;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(schema = "refseq", name = "cds_locs", joinColumns = @JoinColumn(name = "refseq_cds_id") , inverseJoinColumns = @JoinColumn(name = "loc_region_group_id") )
     protected Set<RegionGroup> locations;
 
