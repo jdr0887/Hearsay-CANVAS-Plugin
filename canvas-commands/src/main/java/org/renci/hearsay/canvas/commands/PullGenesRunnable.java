@@ -1,11 +1,14 @@
 package org.renci.hearsay.canvas.commands;
 
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.renci.hearsay.canvas.dao.CANVASDAOBeanService;
 import org.renci.hearsay.canvas.refseq.dao.model.RefSeqGene;
 import org.renci.hearsay.dao.HearsayDAOBeanService;
+import org.renci.hearsay.dao.HearsayDAOException;
 import org.renci.hearsay.dao.model.Gene;
 import org.renci.hearsay.dao.model.GeneSymbol;
 import org.renci.hearsay.dao.model.Identifier;
@@ -36,51 +39,74 @@ public class PullGenesRunnable implements Runnable {
 
             List<RefSeqGene> refSeqGeneList = canvasDAOBeanService.getRefSeqGeneDAO().findByRefSeqVersion(refSeqVersion);
             if (CollectionUtils.isNotEmpty(refSeqGeneList)) {
+
+                for (RefSeqGene refSeqGene : refSeqGeneList) {
+                    Identifier identifier = new Identifier("canvas/refseq/gene/id", refSeqGene.getId().toString());
+                    List<Identifier> possibleIdentifiers = hearsayDAOBeanService.getIdentifierDAO().findByExample(identifier);
+                    if (CollectionUtils.isEmpty(possibleIdentifiers)) {
+                        hearsayDAOBeanService.getIdentifierDAO().save(identifier);
+                    }
+                }
+
+                ExecutorService es = Executors.newFixedThreadPool(4);
+
                 for (RefSeqGene refSeqGene : refSeqGeneList) {
 
-                    // check for existing gene by name
-                    List<Gene> alreadyPersistedGeneList = hearsayDAOBeanService.getGeneDAO().findBySymbol(refSeqGene.getName());
-                    if (CollectionUtils.isNotEmpty(alreadyPersistedGeneList)) {
+                    es.submit(new Runnable() {
 
-                        Identifier identifier = new Identifier("canvas/refseq/gene/id", refSeqGene.getId().toString());
-                        identifier.setId(hearsayDAOBeanService.getIdentifierDAO().save(identifier));
-                        logger.info(identifier.toString());
+                        @Override
+                        public void run() {
+                            try {
 
-                        Gene foundGene = alreadyPersistedGeneList.get(0);
-                        foundGene.getIdentifiers().add(identifier);
-                        hearsayDAOBeanService.getGeneDAO().save(foundGene);
-                        logger.info("Gene is already persisted: {}", foundGene.toString());
+                                Identifier identifier = new Identifier("canvas/refseq/gene/id", refSeqGene.getId().toString());
+                                List<Identifier> possibleIdentifiers = hearsayDAOBeanService.getIdentifierDAO().findByExample(identifier);
+                                if (CollectionUtils.isNotEmpty(possibleIdentifiers)) {
+                                    identifier = possibleIdentifiers.get(0);
+                                } else {
+                                    identifier.setId(hearsayDAOBeanService.getIdentifierDAO().save(identifier));
+                                }
+                                logger.debug(identifier.toString());
 
-                        continue;
-                    }
+                                // check for existing gene by name
+                                List<Gene> alreadyPersistedGeneList = hearsayDAOBeanService.getGeneDAO().findBySymbol(refSeqGene.getName());
+                                if (CollectionUtils.isNotEmpty(alreadyPersistedGeneList)) {
+                                    Gene foundGene = alreadyPersistedGeneList.get(0);
+                                    if (!foundGene.getIdentifiers().contains(identifier)) {
+                                        foundGene.getIdentifiers().add(identifier);
+                                        hearsayDAOBeanService.getGeneDAO().save(foundGene);
+                                    }
+                                    logger.info("Gene is already persisted: {}", foundGene.toString());
+                                    return;
+                                }
 
-                    // check for existing gene aliases by name
-                    List<GeneSymbol> alreadyPersistedGeneSymbolList = hearsayDAOBeanService.getGeneSymbolDAO()
-                            .findBySymbol(refSeqGene.getName());
-                    if (CollectionUtils.isNotEmpty(alreadyPersistedGeneSymbolList)) {
+                                // check for existing gene aliases by name
+                                List<GeneSymbol> alreadyPersistedGeneSymbolList = hearsayDAOBeanService.getGeneSymbolDAO()
+                                        .findBySymbol(refSeqGene.getName());
+                                if (CollectionUtils.isNotEmpty(alreadyPersistedGeneSymbolList)) {
+                                    Gene foundGene = alreadyPersistedGeneSymbolList.get(0).getGene();
+                                    if (!foundGene.getIdentifiers().contains(identifier)) {
+                                        foundGene.getIdentifiers().add(identifier);
+                                        hearsayDAOBeanService.getGeneDAO().save(foundGene);
+                                    }
+                                    logger.info("GeneSymbol is already persisted: {}", foundGene.toString());
+                                    return;
+                                }
 
-                        Identifier identifier = new Identifier("canvas/refseq/gene/id", refSeqGene.getId().toString());
-                        identifier.setId(hearsayDAOBeanService.getIdentifierDAO().save(identifier));
-                        logger.debug(identifier.toString());
+                                Gene gene = new Gene();
+                                gene.setSymbol(refSeqGene.getName());
+                                gene.setDescription(refSeqGene.getDescription());
+                                gene.setId(hearsayDAOBeanService.getGeneDAO().save(gene));
 
-                        Gene foundGene = alreadyPersistedGeneSymbolList.get(0).getGene();
-                        foundGene.getIdentifiers().add(identifier);
-                        hearsayDAOBeanService.getGeneDAO().save(foundGene);
-                        logger.info("GeneSymbol is already persisted: {}", foundGene.toString());
+                                gene.getIdentifiers().add(identifier);
+                                hearsayDAOBeanService.getGeneDAO().save(gene);
 
-                        continue;
-                    }
+                                logger.info("persisting: {}", gene.toString());
+                            } catch (HearsayDAOException e) {
+                                e.printStackTrace();
+                            }
 
-                    Identifier identifier = new Identifier("canvas/refseq/gene", refSeqGene.getId().toString());
-                    identifier.setId(hearsayDAOBeanService.getIdentifierDAO().save(identifier));
-                    logger.debug(identifier.toString());
-
-                    Gene gene = new Gene();
-                    gene.setSymbol(refSeqGene.getName());
-                    gene.setDescription(refSeqGene.getDescription());
-                    gene.getIdentifiers().add(identifier);
-                    gene.setId(hearsayDAOBeanService.getGeneDAO().save(gene));
-                    logger.info("persisting: {}", gene.toString());
+                        }
+                    });
 
                 }
             }
