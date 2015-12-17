@@ -68,7 +68,7 @@
         <version>${openjpa.version}</version>	
 	<configuration>
 	  <includes>org/renci/hearsay/canvas/*/dao/model/*.class</includes>
-	  <excludes>org/renci/hearsay/canvas/*/dao/model/*_.class,org/renci/hearsay/canvas/*/dao/model/*Type.class,org/renci/hearsay/canvas/uniprot/dao/model/*.class</excludes>
+	  <excludes>org/renci/hearsay/canvas/*/dao/model/*_.class,org/renci/hearsay/canvas/uniprot/dao/model/*.class,org/renci/hearsay/canvas/refseq/dao/model/RefSeqStrandType.class,org/renci/hearsay/canvas/refseq/dao/model/RegionType.class</excludes>
 	  <addDefaultConstructor>true</addDefaultConstructor>               
 	  <enforcePropertyRestrictions>true</enforcePropertyRestrictions>
 	</configuration>
