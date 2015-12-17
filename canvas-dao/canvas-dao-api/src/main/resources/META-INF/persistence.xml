@@ -133,7 +133,7 @@
       <property name="openjpa.Multithreaded" value="true" />
       <property name="openjpa.jdbc.DBDictionary" value="postgres(SearchStringEscape=\, SupportsXMLColumn=false)" />
       <property name="openjpa.RemoteCommitProvider" value="sjvm" />
-      <property name="openjpa.DataCache" value="true" />
+      <property name="openjpa.DataCache" value="false" />
       <property name="openjpa.QueryCache" value="false" />
     </properties>
 
