@@ -11,6 +11,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.openjpa.persistence.OpenJPAPersistence;
 import org.apache.openjpa.persistence.OpenJPAQuery;
 import org.renci.hearsay.canvas.dao.jpa.BaseDAOImpl;
@@ -43,6 +44,13 @@ public class RefSeqCodingSequenceDAOImpl extends BaseDAOImpl<RefSeqCodingSequenc
     public List<RefSeqCodingSequence> findByRefSeqVersionAndTranscriptId(String refSeqVersion, String transcriptId)
             throws HearsayDAOException {
         logger.debug("ENTERING findByRefSeqVersionAndTranscriptId(String, String)");
+        return findByRefSeqVersionAndTranscriptId(null, refSeqVersion, transcriptId);
+    }
+
+    @Override
+    public List<RefSeqCodingSequence> findByRefSeqVersionAndTranscriptId(String fetchPlan, String refSeqVersion, String transcriptId)
+            throws HearsayDAOException {
+        logger.debug("ENTERING findByRefSeqVersionAndTranscriptId(String, String)");
         List<RefSeqCodingSequence> ret = new ArrayList<RefSeqCodingSequence>();
         try {
             CriteriaBuilder critBuilder = getEntityManager().getCriteriaBuilder();
@@ -56,8 +64,11 @@ public class RefSeqCodingSequenceDAOImpl extends BaseDAOImpl<RefSeqCodingSequenc
             crit.where(predicates.toArray(new Predicate[predicates.size()]));
             TypedQuery<RefSeqCodingSequence> query = getEntityManager().createQuery(crit);
             OpenJPAQuery<RefSeqCodingSequence> openjpaQuery = OpenJPAPersistence.cast(query);
-            openjpaQuery.getFetchPlan().addFetchGroup("includeAll");
+            if (StringUtils.isNotEmpty(fetchPlan)) {
+                openjpaQuery.getFetchPlan().addFetchGroup(fetchPlan);
+            }
             ret.addAll(openjpaQuery.getResultList());
+            ret.addAll(query.getResultList());
         } catch (Exception e) {
             throw new HearsayDAOException(e);
         }
