@@ -13,4 +13,7 @@ public interface RefSeqCodingSequenceDAO extends BaseDAO<RefSeqCodingSequence, L
     public List<RefSeqCodingSequence> findByRefSeqVersionAndTranscriptId(String refSeqVersion, String transcriptId)
             throws HearsayDAOException;
 
+    public List<RefSeqCodingSequence> findByRefSeqVersionAndTranscriptId(String fetchPlan, String refSeqVersion, String transcriptId)
+            throws HearsayDAOException;
+
 }
