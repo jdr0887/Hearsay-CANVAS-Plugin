@@ -55,14 +55,14 @@ public class PullAlignmentsRunnable implements Runnable {
 
                 for (TranscriptMaps transcriptMaps : foundTranscriptReferenceSequences) {
 
-                    List<Long> referenceSequenceIdentifierIds = new ArrayList<Long>();
+                    List<Identifier> referenceSequenceIdentifierList = new ArrayList<Identifier>();
 
                     String versionedRefSeqAccession = transcriptMaps.getTranscript().getVersionId();
 
                     Identifier exampleIdentifier = new Identifier("canvas/refseq/transcript/versionId", versionedRefSeqAccession);
                     List<Identifier> foundIdentifierList = hearsayDAOBeanService.getIdentifierDAO().findByExample(exampleIdentifier);
                     if (CollectionUtils.isNotEmpty(foundIdentifierList)) {
-                        foundIdentifierList.forEach(a -> referenceSequenceIdentifierIds.add(a.getId()));
+                        foundIdentifierList.forEach(a -> referenceSequenceIdentifierList.add(a));
                     }
 
                     GenomeRefSeq genomeRefSeq = transcriptMaps.getGenomeRefSeq();
@@ -70,10 +70,10 @@ public class PullAlignmentsRunnable implements Runnable {
                     exampleIdentifier = new Identifier("canvas/ref/genomeRefSeq/verAccession", versionedGenomicAccession);
                     foundIdentifierList = hearsayDAOBeanService.getIdentifierDAO().findByExample(exampleIdentifier);
                     if (CollectionUtils.isNotEmpty(foundIdentifierList)) {
-                        foundIdentifierList.forEach(a -> referenceSequenceIdentifierIds.add(a.getId()));
+                        foundIdentifierList.forEach(a -> referenceSequenceIdentifierList.add(a));
                     }
                     List<ReferenceSequence> foundReferenceSequenceList = hearsayDAOBeanService.getReferenceSequenceDAO()
-                            .findByIdentifiers(referenceSequenceIdentifierIds);
+                            .findByIdentifiers(referenceSequenceIdentifierList);
 
                     if (CollectionUtils.isEmpty(foundReferenceSequenceList)) {
                         logger.warn("ReferenceSequence not found");
@@ -84,7 +84,7 @@ public class PullAlignmentsRunnable implements Runnable {
 
                     Alignment alignment = new Alignment();
                     List<RefSeqCodingSequence> refSeqCodingSequenceList = canvasDAOBeanService.getRefSeqCodingSequenceDAO()
-                            .findByRefSeqVersionAndTranscriptId(refSeqVersion, versionedRefSeqAccession);
+                            .findByRefSeqVersionAndTranscriptId("includeAll", refSeqVersion, versionedRefSeqAccession);
                     if (CollectionUtils.isNotEmpty(refSeqCodingSequenceList)) {
                         RefSeqCodingSequence refSeqCDS = refSeqCodingSequenceList.get(0);
                         Set<RegionGroup> regionGroupSet = refSeqCDS.getLocations();
