@@ -38,7 +38,7 @@ public class TranscriptMapsTest {
     public void testFindByGenomeRefIdAndRefSeqVersion() throws HearsayDAOException {
         TranscriptMapsDAOImpl transcriptMapsDAO = new TranscriptMapsDAOImpl();
         transcriptMapsDAO.setEntityManager(em);
-        List<TranscriptMaps> transcriptMapsList = transcriptMapsDAO.findByGenomeRefIdAndRefSeqVersion(2, "61");
+        List<TranscriptMaps> transcriptMapsList = transcriptMapsDAO.findByGenomeRefIdAndRefSeqVersion("includeAll", 2, "61");
         Set<Transcript> transcriptSet = new HashSet<Transcript>();
         transcriptMapsList.forEach(a -> {
             if (!transcriptSet.contains(a.getTranscript())) {
