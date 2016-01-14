@@ -43,4 +43,16 @@ public class TranscriptMapsExonsTest {
 
     }
 
+    @Test
+    public void testFindByGenomeRefIdAndRefSeqVersionAndAccession() throws HearsayDAOException {
+
+        TranscriptMapsExonsDAOImpl transcriptMapsExonsDAO = new TranscriptMapsExonsDAOImpl();
+        transcriptMapsExonsDAO.setEntityManager(em);
+
+        List<TranscriptMapsExons> transcriptMapsExonsList = transcriptMapsExonsDAO.findByGenomeRefIdAndRefSeqVersionAndAccession(2, "61", "NM_182701.1");
+
+        transcriptMapsExonsList.forEach(a -> System.out.printf("%s%n", a.toString()));
+
+    }
+
 }
