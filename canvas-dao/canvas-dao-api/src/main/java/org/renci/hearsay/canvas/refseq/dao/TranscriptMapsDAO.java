@@ -8,7 +8,15 @@ import org.renci.hearsay.dao.HearsayDAOException;
 
 public interface TranscriptMapsDAO extends BaseDAO<TranscriptMaps, Integer> {
 
+    public List<TranscriptMaps> findByGenomeRefIdAndRefSeqVersionAndTranscriptId(Integer genomeRefId, String refSeqVersion,
+            String versionId) throws HearsayDAOException;
+
+    public List<TranscriptMaps> findByGenomeRefIdAndRefSeqVersionAndTranscriptId(String fetchGroup, Integer genomeRefId,
+            String refSeqVersion, String versionId) throws HearsayDAOException;
+
     public List<TranscriptMaps> findByTranscriptId(String versionId) throws HearsayDAOException;
+
+    public List<TranscriptMaps> findByTranscriptId(String fetchGroup, String versionId) throws HearsayDAOException;
 
     public List<TranscriptMaps> findByGenomeRefIdAndRefSeqVersion(Integer genomeRefId, String refSeqVersion) throws HearsayDAOException;
 
