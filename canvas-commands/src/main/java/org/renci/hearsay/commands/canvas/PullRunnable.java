@@ -2,6 +2,7 @@ package org.renci.hearsay.commands.canvas;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -82,55 +83,56 @@ public class PullRunnable implements Runnable {
         // persist reference sequences
         long startPersistReferenceSequencesTime = System.currentTimeMillis();
         try {
-            ExecutorService es = Executors.newSingleThreadExecutor();
-            PullReferenceSequencesRunnable pullReferenceSequencesRunnable = new PullReferenceSequencesRunnable(canvasDAOBeanService,
-                    hearsayDAOBeanService, refSeqVersion, genomeRefId);
-            es.submit(pullReferenceSequencesRunnable);
-            es.shutdown();
-            es.awaitTermination(2L, TimeUnit.HOURS);
-        } catch (InterruptedException e) {
+            Executors.newSingleThreadExecutor()
+                    .submit(new PullReferenceSequencesRunnable(canvasDAOBeanService, hearsayDAOBeanService, refSeqVersion, genomeRefId))
+                    .get();
+        } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
         long endPersistReferenceSequencesTime = System.currentTimeMillis();
 
-        // persist alignments
-        long startPersistAlignmentsTime = System.currentTimeMillis();
-        try {
-            ExecutorService es = Executors.newSingleThreadExecutor();
-            PullAlignmentsRunnable pullAlignmentsRunnable = new PullAlignmentsRunnable(canvasDAOBeanService, hearsayDAOBeanService,
-                    refSeqVersion, genomeRefId);
-            es.submit(pullAlignmentsRunnable);
-            es.shutdown();
-            es.awaitTermination(6L, TimeUnit.HOURS);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        long endPersistAlignmentsTime = System.currentTimeMillis();
+        // // persist alignments
+        // long startPersistAlignmentsTime = System.currentTimeMillis();
+        // try {
+        // ExecutorService es = Executors.newSingleThreadExecutor();
+        // PullAlignmentsRunnable pullAlignmentsRunnable = new PullAlignmentsRunnable(canvasDAOBeanService,
+        // hearsayDAOBeanService,
+        // refSeqVersion, genomeRefId);
+        // es.submit(pullAlignmentsRunnable);
+        // es.shutdown();
+        // es.awaitTermination(6L, TimeUnit.HOURS);
+        // } catch (InterruptedException e) {
+        // e.printStackTrace();
+        // }
+        // long endPersistAlignmentsTime = System.currentTimeMillis();
+        //
+        // // add alignment UTRs
+        // long startPersistAlignmentUTRsTime = System.currentTimeMillis();
+        // try {
+        // ExecutorService es = Executors.newSingleThreadExecutor();
+        // AddAlignmentUTRsRunnable addAlignmentUTRsRunnable = new AddAlignmentUTRsRunnable(hearsayDAOBeanService);
+        // es.submit(addAlignmentUTRsRunnable);
+        // es.shutdown();
+        // es.awaitTermination(2L, TimeUnit.HOURS);
+        // } catch (InterruptedException e) {
+        // e.printStackTrace();
+        // }
+        // long endPersistAlignmentUTRsTime = System.currentTimeMillis();
 
-        // add alignment UTRs
-        long startPersistAlignmentUTRsTime = System.currentTimeMillis();
-        try {
-            ExecutorService es = Executors.newSingleThreadExecutor();
-            AddAlignmentUTRsRunnable addAlignmentUTRsRunnable = new AddAlignmentUTRsRunnable(hearsayDAOBeanService);
-            es.submit(addAlignmentUTRsRunnable);
-            es.shutdown();
-            es.awaitTermination(2L, TimeUnit.HOURS);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        long endPersistAlignmentUTRsTime = System.currentTimeMillis();
+        Long chromosomeDuration = (endPersistChromosomeTime - startPersistChromosomeTime) / 1000;
+        logger.info("duration to persist Chromosomes: {} seconds", chromosomeDuration);
+        Long genesAndGenomeReferencesDuration = (endPersistGenesAndGenomeReferencesTime - startPersistGenesAndGenomeReferencesTime) / 1000;
+        logger.info("duration to persist Genes & GenomeReferences: {} seconds", genesAndGenomeReferencesDuration);
+        Long referencesSequencesDuration = (endPersistReferenceSequencesTime - startPersistReferenceSequencesTime) / 1000;
+        logger.info("duration to persist ReferenceSequences: {} seconds", referencesSequencesDuration);
 
-        logger.info("duration to persist Chromosomes: {} seconds", (endPersistChromosomeTime - startPersistChromosomeTime) / 1000);
+        // logger.info("duration to persist Alignments: {} seconds", (endPersistAlignmentsTime -
+        // startPersistAlignmentsTime) / 1000);
+        // logger.info("duration to persist Alignment UTRs: {} seconds", (endPersistAlignmentUTRsTime -
+        // startPersistAlignmentUTRsTime) / 1000);
 
-        logger.info("duration to persist Genes & GenomeReferences: {} seconds",
-                (endPersistGenesAndGenomeReferencesTime - startPersistGenesAndGenomeReferencesTime) / 1000);
-
-        logger.info("duration to persist ReferenceSequences: {} seconds",
-                (endPersistReferenceSequencesTime - startPersistReferenceSequencesTime) / 1000);
-
-        logger.info("duration to persist Alignments: {} seconds", (endPersistAlignmentsTime - startPersistAlignmentsTime) / 1000);
-
-        logger.info("duration to persist Alignment UTRs: {} seconds", (endPersistAlignmentUTRsTime - startPersistAlignmentUTRsTime) / 1000);
+        Long totalDuration = (chromosomeDuration + genesAndGenomeReferencesDuration + referencesSequencesDuration) / 60;
+        logger.info("Total time to pull from NCBI: {} minutes", totalDuration);
 
     }
 
