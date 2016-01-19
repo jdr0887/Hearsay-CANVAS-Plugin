@@ -10,4 +10,6 @@ public interface GenomeRefSeqDAO extends BaseDAO<GenomeRefSeq, String> {
 
     public List<GenomeRefSeq> findAll() throws HearsayDAOException;
 
+    public List<GenomeRefSeq> findBySeqType(String seqType) throws HearsayDAOException;
+
 }
