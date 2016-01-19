@@ -39,4 +39,12 @@ public class GenomeRefSeqTest {
         genomeRefSeqList.forEach(a -> System.out.println(a.toString()));
     }
 
+    @Test
+    public void testFindBySeqType() throws HearsayDAOException {
+        GenomeRefSeqDAOImpl genomeRefSeqDAO = new GenomeRefSeqDAOImpl();
+        genomeRefSeqDAO.setEntityManager(em);
+        List<GenomeRefSeq> genomeRefSeqList = genomeRefSeqDAO.findBySeqType("Chromosome");
+        genomeRefSeqList.forEach(a -> System.out.println(a.toString()));
+    }
+
 }

@@ -35,6 +35,20 @@ public class TranscriptMapsTest {
     }
 
     @Test
+    public void findByGenomeRefIdAndRefSeqVersionAndTranscriptId() throws HearsayDAOException {
+        TranscriptMapsDAOImpl transcriptMapsDAO = new TranscriptMapsDAOImpl();
+        transcriptMapsDAO.setEntityManager(em);
+        List<TranscriptMaps> transcriptMapsList = transcriptMapsDAO.findByGenomeRefIdAndRefSeqVersionAndTranscriptId(2, "61",
+                "NM_000821.5");
+        transcriptMapsList.forEach(a -> {
+            System.out.println(a.getTranscript().toString());
+            System.out.println(a.getGenomeRefSeq().toString());
+            System.out.println(a.toString());
+            System.out.println("----------------");
+        });
+    }
+
+    @Test
     public void testFindByGenomeRefIdAndRefSeqVersion() throws HearsayDAOException {
         TranscriptMapsDAOImpl transcriptMapsDAO = new TranscriptMapsDAOImpl();
         transcriptMapsDAO.setEntityManager(em);
@@ -52,8 +66,10 @@ public class TranscriptMapsTest {
     public void testFindByVersionId() throws HearsayDAOException {
         TranscriptMapsDAOImpl transcriptMapsDAO = new TranscriptMapsDAOImpl();
         transcriptMapsDAO.setEntityManager(em);
-        // NM_002105.2
-        List<TranscriptMaps> transcriptMapsList = transcriptMapsDAO.findByTranscriptId("XM_005274819.1");
+        // List<TranscriptMaps> transcriptMapsList = transcriptMapsDAO.findByTranscriptId("NM_002105.2");
+        // List<TranscriptMaps> transcriptMapsList = transcriptMapsDAO.findByTranscriptId("NM_000821.5");
+        List<TranscriptMaps> transcriptMapsList = transcriptMapsDAO.findByTranscriptId("NM_016521.2");
+        // List<TranscriptMaps> transcriptMapsList = transcriptMapsDAO.findByTranscriptId("XM_005274819.1");
         transcriptMapsList.forEach(a -> {
             System.out.println(a.getTranscript().toString());
             System.out.println(a.getGenomeRefSeq().toString());
