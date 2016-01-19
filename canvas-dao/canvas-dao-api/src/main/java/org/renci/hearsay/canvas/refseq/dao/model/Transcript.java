@@ -5,15 +5,21 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.apache.openjpa.persistence.FetchAttribute;
+import org.apache.openjpa.persistence.FetchGroup;
+import org.apache.openjpa.persistence.FetchGroups;
 import org.renci.hearsay.canvas.dao.Persistable;
 
 @Entity
 @Table(schema = "refseq", name = "transcr")
+@FetchGroups({ @FetchGroup(name = "includeAll", attributes = { @FetchAttribute(name = "refseqVersions"),
+        @FetchAttribute(name = "transcriptMaps"), @FetchAttribute(name = "regionGroups") }) })
 public class Transcript implements Persistable {
 
     private static final long serialVersionUID = -2441504727987883964L;
@@ -29,17 +35,20 @@ public class Transcript implements Persistable {
     @Transient
     protected String seq;
 
-    @OneToMany(mappedBy = "transcript")
+    @OneToMany(mappedBy = "transcript", fetch = FetchType.LAZY)
     protected Set<TranscriptRefSeqVers> refseqVersions;
 
-    @OneToMany(mappedBy = "transcript")
+    @OneToMany(mappedBy = "transcript", fetch = FetchType.LAZY)
     protected Set<TranscriptMaps> transcriptMaps;
 
-    @OneToMany(mappedBy = "transcript")
+    @OneToMany(mappedBy = "transcript", fetch = FetchType.LAZY)
     protected Set<RegionGroup> regionGroups;
 
     public Transcript() {
         super();
+        this.transcriptMaps = new HashSet<TranscriptMaps>();
+        this.refseqVersions = new HashSet<TranscriptRefSeqVers>();
+        this.regionGroups = new HashSet<RegionGroup>();
     }
 
     public String getVersionId() {
@@ -67,9 +76,6 @@ public class Transcript implements Persistable {
     }
 
     public Set<TranscriptRefSeqVers> getRefseqVersions() {
-        if (this.refseqVersions == null) {
-            this.refseqVersions = new HashSet<TranscriptRefSeqVers>();
-        }
         return refseqVersions;
     }
 
@@ -78,9 +84,6 @@ public class Transcript implements Persistable {
     }
 
     public Set<TranscriptMaps> getTranscriptMaps() {
-        if (this.transcriptMaps == null) {
-            this.transcriptMaps = new HashSet<TranscriptMaps>();
-        }
         return transcriptMaps;
     }
 
@@ -89,9 +92,6 @@ public class Transcript implements Persistable {
     }
 
     public Set<RegionGroup> getRegionGroups() {
-        if (this.regionGroups == null) {
-            this.regionGroups = new HashSet<RegionGroup>();
-        }
         return regionGroups;
     }
 
