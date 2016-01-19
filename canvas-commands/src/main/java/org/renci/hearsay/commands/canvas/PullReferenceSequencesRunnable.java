@@ -130,7 +130,7 @@ public class PullReferenceSequencesRunnable implements Runnable {
                                 .findByRefSeqVersionAndTranscriptId(refSeqVersion, versionedRefSeqAccession);
                         if (CollectionUtils.isNotEmpty(refSeqCodingSequenceList)) {
                             RefSeqCodingSequence refSeqCDS = refSeqCodingSequenceList.get(0);
-                            logger.info(refSeqCDS.toString());
+                            logger.debug(refSeqCDS.toString());
                             Identifier proteinIdIdentifier = new Identifier(REFSEQ_CDS_PROTEIN_ID, refSeqCDS.getProteinId());
                             List<Identifier> foundIdentifierList = hearsayDAOBeanService.getIdentifierDAO()
                                     .findByExample(proteinIdIdentifier);
@@ -276,6 +276,9 @@ public class PullReferenceSequencesRunnable implements Runnable {
                 });
 
             }
+            transcriptES.shutdown();
+            transcriptES.awaitTermination(2L, TimeUnit.HOURS);
+
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             e.printStackTrace();
