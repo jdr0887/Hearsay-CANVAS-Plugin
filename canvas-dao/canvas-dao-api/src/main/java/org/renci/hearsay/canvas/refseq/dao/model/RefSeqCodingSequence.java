@@ -10,6 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.apache.openjpa.persistence.FetchAttribute;
 import org.apache.openjpa.persistence.FetchGroup;
@@ -37,9 +38,11 @@ public class RefSeqCodingSequence implements Persistable {
     private String product;
 
     @Column(name = "descr", length = 65535)
+    @Transient
     private String descr;
 
     @Column(name = "transl", length = 65535)
+    @Transient
     private String transl;
 
     @Column(name = "note", length = 1023)
@@ -119,21 +122,22 @@ public class RefSeqCodingSequence implements Persistable {
 
     @Override
     public String toString() {
-        return String.format("CDS [id=%s, version=%s, proteinId=%s, product=%s, descr=%s, transl=%s, note=%s]", id, version, proteinId,
-                product, descr, transl, note);
+        // return String.format("CDS [id=%s, version=%s, proteinId=%s, product=%s, descr=%s, transl=%s, note=%s]", id,
+        // version, proteinId, product, descr, transl, note);
+        return String.format("CDS [id=%s, version=%s, proteinId=%s, product=%s, note=%s]", id, version, proteinId, product, note);
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((descr == null) ? 0 : descr.hashCode());
+        // result = prime * result + ((descr == null) ? 0 : descr.hashCode());
         result = prime * result + ((id == null) ? 0 : id.hashCode());
         result = prime * result + ((note == null) ? 0 : note.hashCode());
         result = prime * result + ((product == null) ? 0 : product.hashCode());
         result = prime * result + ((proteinId == null) ? 0 : proteinId.hashCode());
         result = prime * result + ((version == null) ? 0 : version.hashCode());
-        result = prime * result + ((transl == null) ? 0 : transl.hashCode());
+        // result = prime * result + ((transl == null) ? 0 : transl.hashCode());
         return result;
     }
 
@@ -146,11 +150,11 @@ public class RefSeqCodingSequence implements Persistable {
         if (getClass() != obj.getClass())
             return false;
         RefSeqCodingSequence other = (RefSeqCodingSequence) obj;
-        if (descr == null) {
-            if (other.descr != null)
-                return false;
-        } else if (!descr.equals(other.descr))
-            return false;
+        // if (descr == null) {
+        // if (other.descr != null)
+        // return false;
+        // } else if (!descr.equals(other.descr))
+        // return false;
         if (id == null) {
             if (other.id != null)
                 return false;
@@ -176,11 +180,11 @@ public class RefSeqCodingSequence implements Persistable {
                 return false;
         } else if (!version.equals(other.version))
             return false;
-        if (transl == null) {
-            if (other.transl != null)
-                return false;
-        } else if (!transl.equals(other.transl))
-            return false;
+        // if (transl == null) {
+        // if (other.transl != null)
+        // return false;
+        // } else if (!transl.equals(other.transl))
+        // return false;
         return true;
     }
 
