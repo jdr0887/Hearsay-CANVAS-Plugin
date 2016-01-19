@@ -11,6 +11,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.openjpa.persistence.OpenJPAPersistence;
 import org.apache.openjpa.persistence.OpenJPAQuery;
 import org.renci.hearsay.canvas.dao.jpa.BaseDAOImpl;
@@ -44,6 +45,12 @@ public class TranscriptMapsDAOImpl extends BaseDAOImpl<TranscriptMaps, Integer> 
     @Override
     public List<TranscriptMaps> findByTranscriptId(String versionId) throws HearsayDAOException {
         logger.debug("ENTERING findByTranscriptId(String)");
+        return findByTranscriptId("includeManyToOnes", versionId);
+    }
+
+    @Override
+    public List<TranscriptMaps> findByTranscriptId(String fetchGroup, String versionId) throws HearsayDAOException {
+        logger.debug("ENTERING findByTranscriptId(String, String)");
         List<TranscriptMaps> ret = new ArrayList<TranscriptMaps>();
         try {
             CriteriaBuilder critBuilder = getEntityManager().getCriteriaBuilder();
@@ -55,7 +62,49 @@ public class TranscriptMapsDAOImpl extends BaseDAOImpl<TranscriptMaps, Integer> 
             crit.where(predicates.toArray(new Predicate[predicates.size()]));
             crit.distinct(true);
             TypedQuery<TranscriptMaps> query = getEntityManager().createQuery(crit);
-            ret.addAll(query.getResultList());
+            OpenJPAQuery<TranscriptMaps> openjpaQuery = OpenJPAPersistence.cast(query);
+            if (StringUtils.isNotEmpty(fetchGroup)) {
+                openjpaQuery.getFetchPlan().addFetchGroup(fetchGroup);
+            }
+            ret.addAll(openjpaQuery.getResultList());
+        } catch (Exception e) {
+            throw new HearsayDAOException(e);
+        }
+        return ret;
+    }
+
+    @Override
+    public List<TranscriptMaps> findByGenomeRefIdAndRefSeqVersionAndTranscriptId(Integer genomeRefId, String refSeqVersion,
+            String versionId) throws HearsayDAOException {
+        logger.debug("ENTERING findByGenomeRefIdAndRefSeqVersionAndTranscriptId(Integer, String, String)");
+        return findByGenomeRefIdAndRefSeqVersionAndTranscriptId("includeManyToOnes", genomeRefId, refSeqVersion, versionId);
+    }
+
+    @Override
+    public List<TranscriptMaps> findByGenomeRefIdAndRefSeqVersionAndTranscriptId(String fetchGroup, Integer genomeRefId,
+            String refSeqVersion, String versionId) throws HearsayDAOException {
+        logger.debug("ENTERING findByGenomeRefIdAndRefSeqVersionAndTranscriptId(String, Integer, String, String)");
+        List<TranscriptMaps> ret = new ArrayList<TranscriptMaps>();
+        try {
+            CriteriaBuilder critBuilder = getEntityManager().getCriteriaBuilder();
+            CriteriaQuery<TranscriptMaps> crit = critBuilder.createQuery(getPersistentClass());
+            Root<TranscriptMaps> root = crit.from(getPersistentClass());
+            List<Predicate> predicates = new ArrayList<Predicate>();
+            predicates.add(critBuilder.equal(root.get(TranscriptMaps_.genomeRefId), genomeRefId));
+            Join<TranscriptMaps, Transcript> transcriptMapsTranscriptJoin = root.join(TranscriptMaps_.transcript);
+            predicates.add(critBuilder.equal(transcriptMapsTranscriptJoin.get(Transcript_.versionId), versionId));
+            Join<Transcript, TranscriptRefSeqVers> transcriptTranscriptRefseqVersJoin = transcriptMapsTranscriptJoin
+                    .join(Transcript_.refseqVersions);
+            predicates.add(critBuilder.equal(transcriptTranscriptRefseqVersJoin.get(TranscriptRefSeqVers_.refseqVer), refSeqVersion));
+            crit.where(predicates.toArray(new Predicate[predicates.size()]));
+            crit.orderBy(critBuilder.desc(root.get(TranscriptMaps_.mapCount)));
+            crit.distinct(true);
+            TypedQuery<TranscriptMaps> query = getEntityManager().createQuery(crit);
+            OpenJPAQuery<TranscriptMaps> openjpaQuery = OpenJPAPersistence.cast(query);
+            if (StringUtils.isNotEmpty(fetchGroup)) {
+                openjpaQuery.getFetchPlan().addFetchGroup(fetchGroup);
+            }
+            ret.addAll(openjpaQuery.getResultList());
         } catch (Exception e) {
             throw new HearsayDAOException(e);
         }
@@ -64,7 +113,7 @@ public class TranscriptMapsDAOImpl extends BaseDAOImpl<TranscriptMaps, Integer> 
 
     @Override
     public List<TranscriptMaps> findByGenomeRefIdAndRefSeqVersion(Integer genomeRefId, String refSeqVersion) throws HearsayDAOException {
-        logger.info("ENTERING findByGenomeRefIdAndRefSeqVersion(Integer, String)");
+        logger.debug("ENTERING findByGenomeRefIdAndRefSeqVersion(Integer, String)");
         return findByGenomeRefIdAndRefSeqVersion("includeManyToOnes", genomeRefId, refSeqVersion);
     }
 
@@ -87,7 +136,7 @@ public class TranscriptMapsDAOImpl extends BaseDAOImpl<TranscriptMaps, Integer> 
     @Override
     public List<TranscriptMaps> findByGenomeRefIdAndRefSeqVersion(String fetchGroup, Integer genomeRefId, String refSeqVersion)
             throws HearsayDAOException {
-        logger.info("ENTERING findByGenomeRefIdAndRefSeqVersion(String, Integer, String)");
+        logger.debug("ENTERING findByGenomeRefIdAndRefSeqVersion(String, Integer, String)");
         List<TranscriptMaps> ret = new ArrayList<TranscriptMaps>();
         try {
             CriteriaBuilder critBuilder = getEntityManager().getCriteriaBuilder();
