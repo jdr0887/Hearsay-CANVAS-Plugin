@@ -62,6 +62,7 @@ public class TranscriptMaps implements Persistable {
 
     public TranscriptMaps() {
         super();
+        this.exons = new ArrayList<TranscriptMapsExons>();
     }
 
     public Integer getId() {
@@ -137,9 +138,6 @@ public class TranscriptMaps implements Persistable {
     }
 
     public List<TranscriptMapsExons> getExons() {
-        if (this.exons == null) {
-            this.exons = new ArrayList<TranscriptMapsExons>();
-        }
         return exons;
     }
 
