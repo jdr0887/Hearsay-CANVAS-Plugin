@@ -68,7 +68,6 @@ public class RefSeqCodingSequenceDAOImpl extends BaseDAOImpl<RefSeqCodingSequenc
                 openjpaQuery.getFetchPlan().addFetchGroup(fetchPlan);
             }
             ret.addAll(openjpaQuery.getResultList());
-            ret.addAll(query.getResultList());
         } catch (Exception e) {
             throw new HearsayDAOException(e);
         }
