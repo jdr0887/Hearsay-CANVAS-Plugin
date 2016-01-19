@@ -45,7 +45,7 @@ public class RefSeqCodingSequence implements Persistable {
     @Column(name = "note", length = 1023)
     private String note;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(targetEntity = RegionGroup.class, fetch = FetchType.LAZY)
     @JoinTable(schema = "refseq", name = "cds_locs", joinColumns = @JoinColumn(name = "refseq_cds_id") , inverseJoinColumns = @JoinColumn(name = "loc_region_group_id") )
     protected Set<RegionGroup> locations;
 
