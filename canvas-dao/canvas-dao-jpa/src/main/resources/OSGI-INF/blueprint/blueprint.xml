@@ -46,6 +46,7 @@
     <property name="annotationGeneExternalIdsDAO" ref="annotationGeneExternalIdsDAOImpl" />
     <property name="referenceClinicalAssertionsDAO" ref="referenceClinicalAssertionsDAOImpl" />
     <property name="genomeRefDAO" ref="genomeRefDAOImpl" />
+    <property name="genomeRefSeqDAO" ref="genomeRefSeqDAOImpl" />
     <property name="HGNCGeneDAO" ref="hgncGeneDAOImpl" />
     <property name="featureDAO" ref="featureDAOImpl" />
     <property name="refSeqCodingSequenceDAO" ref="refSeqCodingSequenceDAOImpl" />
