@@ -148,7 +148,7 @@ public class PullReferenceSequencesRunnable implements Runnable {
             es.shutdown();
             es.awaitTermination(2L, TimeUnit.HOURS);
 
-            ExecutorService transcriptES = Executors.newFixedThreadPool(8);
+            ExecutorService transcriptES = Executors.newFixedThreadPool(12);
 
             for (Transcript transcript : foundTranscripts) {
 
@@ -156,8 +156,7 @@ public class PullReferenceSequencesRunnable implements Runnable {
                     logger.info(transcript.toString());
                     try {
                         List<TranscriptMaps> foundTranscriptMaps = canvasDAOBeanService.getTranscriptMapsDAO()
-                                .findByGenomeRefIdAndRefSeqVersionAndTranscriptId("includeAll", genomeRefId, refSeqVersion,
-                                        transcript.getVersionId());
+                                .findByGenomeRefIdAndRefSeqVersionAndTranscriptId(genomeRefId, refSeqVersion, transcript.getVersionId());
 
                         if (CollectionUtils.isEmpty(foundTranscriptMaps)) {
                             logger.info("No TranscriptMaps found");
@@ -207,7 +206,7 @@ public class PullReferenceSequencesRunnable implements Runnable {
                             return;
                         }
 
-                        referenceSequenceIdentifierList.forEach(a -> logger.info(a.toString()));
+                        referenceSequenceIdentifierList.forEach(a -> logger.debug(a.toString()));
 
                         List<ReferenceSequence> foundReferenceSequenceList = hearsayDAOBeanService.getReferenceSequenceDAO()
                                 .findByIdentifiers(referenceSequenceIdentifierList);
@@ -216,7 +215,7 @@ public class PullReferenceSequencesRunnable implements Runnable {
                             logger.warn("ReferenceSequences were found...returning: {}", foundReferenceSequenceList.get(0).toString());
                             return;
                         }
-                        
+
                         // creating ReferenceSequence since it didn't already exist
                         ReferenceSequence referenceSequence = new ReferenceSequence();
                         StrandType sType = StrandType.PLUS;
@@ -258,8 +257,15 @@ public class PullReferenceSequencesRunnable implements Runnable {
                             }
                         }
 
+                        hearsayDAOBeanService.getReferenceSequenceDAO().save(referenceSequence);
+
                         // set genomic location/range
-                        List<TranscriptMapsExons> exons = transcriptMaps.getExons();
+                        List<TranscriptMapsExons> exons = canvasDAOBeanService.getTranscriptMapsExonsDAO()
+                                .findByTranscriptMapsId(transcriptMaps.getId());
+                        if (CollectionUtils.isEmpty(exons)) {
+                            logger.warn("No Exons found");
+                            return;
+                        }
                         exons.sort((a, b) -> a.getContigStart().compareTo(b.getContigStart()));
 
                         Location genomicLocation = new Location(exons.get(0).getContigStart(), exons.get(exons.size() - 1).getContigEnd());
@@ -279,7 +285,7 @@ public class PullReferenceSequencesRunnable implements Runnable {
 
             }
             transcriptES.shutdown();
-            transcriptES.awaitTermination(2L, TimeUnit.HOURS);
+            transcriptES.awaitTermination(4L, TimeUnit.HOURS);
 
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
