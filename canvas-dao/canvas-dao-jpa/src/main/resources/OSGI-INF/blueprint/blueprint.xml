@@ -24,6 +24,10 @@
   </bean>
   <bean id="refSeqGeneDAOImpl" class="org.renci.hearsay.canvas.refseq.dao.jpa.RefSeqGeneDAOImpl" ext:field-injection="true">
   </bean>
+  <bean id="regionGroupDAOImpl" class="org.renci.hearsay.canvas.refseq.dao.jpa.RegionGroupDAOImpl" ext:field-injection="true">
+  </bean>
+  <bean id="regionGroupRegionDAOImpl" class="org.renci.hearsay.canvas.refseq.dao.jpa.RegionGroupRegionDAOImpl" ext:field-injection="true">
+  </bean>
   <bean id="transcriptDAOImpl" class="org.renci.hearsay.canvas.refseq.dao.jpa.TranscriptDAOImpl" ext:field-injection="true">
   </bean>
   <bean id="transcriptMapsDAOImpl" class="org.renci.hearsay.canvas.refseq.dao.jpa.TranscriptMapsDAOImpl" ext:field-injection="true">
@@ -51,6 +55,8 @@
     <property name="featureDAO" ref="featureDAOImpl" />
     <property name="refSeqCodingSequenceDAO" ref="refSeqCodingSequenceDAOImpl" />
     <property name="refSeqGeneDAO" ref="refSeqGeneDAOImpl" />
+    <property name="regionGroupDAO" ref="regionGroupDAOImpl" />
+    <property name="regionGroupRegionDAO" ref="regionGroupRegionDAOImpl" />
     <property name="transcriptDAO" ref="transcriptDAOImpl" />
     <property name="transcriptMapsDAO" ref="transcriptMapsDAOImpl" />
     <property name="transcriptMapsExonsDAO" ref="transcriptMapsExonsDAOImpl" />
@@ -69,6 +75,8 @@
   <service ref="featureDAOImpl" interface="org.renci.hearsay.canvas.refseq.dao.FeatureDAO" />
   <service ref="refSeqCodingSequenceDAOImpl" interface="org.renci.hearsay.canvas.refseq.dao.RefSeqCodingSequenceDAO" />
   <service ref="refSeqGeneDAOImpl" interface="org.renci.hearsay.canvas.refseq.dao.RefSeqGeneDAO" />
+  <service ref="regionGroupDAOImpl" interface="org.renci.hearsay.canvas.refseq.dao.RegionGroupDAO" />
+  <service ref="regionGroupRegionDAOImpl" interface="org.renci.hearsay.canvas.refseq.dao.RegionGroupRegionDAO" />
   <service ref="transcriptDAOImpl" interface="org.renci.hearsay.canvas.refseq.dao.TranscriptDAO" />
   <service ref="transcriptMapsDAOImpl" interface="org.renci.hearsay.canvas.refseq.dao.TranscriptMapsDAO" />
   <service ref="transcriptMapsExonsDAOImpl" interface="org.renci.hearsay.canvas.refseq.dao.TranscriptMapsExonsDAO" />
