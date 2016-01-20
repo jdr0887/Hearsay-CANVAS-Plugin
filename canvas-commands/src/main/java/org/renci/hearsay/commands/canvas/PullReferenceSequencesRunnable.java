@@ -153,121 +153,123 @@ public class PullReferenceSequencesRunnable implements Runnable {
             for (Transcript transcript : foundTranscripts) {
 
                 transcriptES.submit(() -> {
-
+                    logger.info(transcript.toString());
                     try {
                         List<TranscriptMaps> foundTranscriptMaps = canvasDAOBeanService.getTranscriptMapsDAO()
                                 .findByGenomeRefIdAndRefSeqVersionAndTranscriptId("includeAll", genomeRefId, refSeqVersion,
                                         transcript.getAccession());
 
-                        if (CollectionUtils.isNotEmpty(foundTranscriptMaps)) {
-                            logger.info("foundTranscriptMaps.size(): {}", foundTranscriptMaps.size());
-                            TranscriptMaps transcriptMaps = foundTranscriptMaps.get(0);
-
-                            logger.info(transcriptMaps.toString());
-
-                            List<Identifier> referenceSequenceIdentifierList = new ArrayList<Identifier>();
-
-                            String versionedRefSeqAccession = transcriptMaps.getTranscript().getVersionId();
-                            Identifier transcriptVersionIdIdentifier = new Identifier(REFSEQ_TRANSCRIPT_VERSION_ID,
-                                    versionedRefSeqAccession);
-                            List<Identifier> foundIdentifierList = hearsayDAOBeanService.getIdentifierDAO()
-                                    .findByExample(transcriptVersionIdIdentifier);
-                            if (CollectionUtils.isNotEmpty(foundIdentifierList)) {
-                                transcriptVersionIdIdentifier = foundIdentifierList.get(0);
-                                referenceSequenceIdentifierList.add(transcriptVersionIdIdentifier);
-                            }
-
-                            GenomeRefSeq genomeRefSeq = transcriptMaps.getGenomeRefSeq();
-                            String versionedGenomicAccession = genomeRefSeq.getVerAccession();
-                            Identifier versionedGenomicAccessionIdentifier = new Identifier(REF_GENOME_REF_SEQ_VERSION_ACCESSION,
-                                    versionedGenomicAccession);
-                            foundIdentifierList = hearsayDAOBeanService.getIdentifierDAO()
-                                    .findByExample(versionedGenomicAccessionIdentifier);
-                            if (CollectionUtils.isNotEmpty(foundIdentifierList)) {
-                                versionedGenomicAccessionIdentifier = foundIdentifierList.get(0);
-                                referenceSequenceIdentifierList.add(versionedGenomicAccessionIdentifier);
-                            }
-
-                            List<RefSeqCodingSequence> refSeqCodingSequenceList = canvasDAOBeanService.getRefSeqCodingSequenceDAO()
-                                    .findByRefSeqVersionAndTranscriptId(refSeqVersion, versionedRefSeqAccession);
-                            if (CollectionUtils.isNotEmpty(refSeqCodingSequenceList)) {
-                                RefSeqCodingSequence refSeqCDS = refSeqCodingSequenceList.get(0);
-                                Identifier proteinIdIdentifier = new Identifier(REFSEQ_CDS_PROTEIN_ID, refSeqCDS.getProteinId());
-                                foundIdentifierList = hearsayDAOBeanService.getIdentifierDAO().findByExample(proteinIdIdentifier);
-                                if (CollectionUtils.isNotEmpty(foundIdentifierList)) {
-                                    proteinIdIdentifier = foundIdentifierList.get(0);
-                                    referenceSequenceIdentifierList.add(proteinIdIdentifier);
-                                }
-                            }
-
-                            if (referenceSequenceIdentifierList.size() != 3) {
-                                logger.warn("referenceSequenceIdentifierList.size() != 3");
-                                return;
-                            }
-
-                            referenceSequenceIdentifierList.forEach(a -> logger.info(a.toString()));
-
-                            List<ReferenceSequence> foundReferenceSequenceList = hearsayDAOBeanService.getReferenceSequenceDAO()
-                                    .findByIdentifiers(referenceSequenceIdentifierList);
-
-                            if (CollectionUtils.isEmpty(foundReferenceSequenceList)) {
-                                // creating ReferenceSequence since it didn't already exist
-
-                                ReferenceSequence referenceSequence = new ReferenceSequence();
-                                StrandType sType = StrandType.PLUS;
-                                if ("-".equals(transcriptMaps.getStrand())) {
-                                    sType = StrandType.MINUS;
-                                }
-                                referenceSequence.setStrandType(sType);
-
-                                // set type
-                                String prefix = versionedRefSeqAccession.substring(0, 3);
-                                for (ReferenceSequenceType referenceSequenceType : ReferenceSequenceType.values()) {
-                                    if (referenceSequenceType.getPrefixes().contains(prefix)) {
-                                        referenceSequence.setType(referenceSequenceType);
-                                        break;
-                                    }
-                                }
-
-                                referenceSequence.setGenomeReference(genomeReferences.get(0));
-                                referenceSequence.getIdentifiers().addAll(referenceSequenceIdentifierList);
-                                referenceSequence.setId(hearsayDAOBeanService.getReferenceSequenceDAO().save(referenceSequence));
-
-                                // set gene
-                                List<RefSeqGene> refSeqGeneList = canvasDAOBeanService.getRefSeqGeneDAO()
-                                        .findByRefSeqVersionAndTranscriptId(refSeqVersion, versionedRefSeqAccession);
-                                if (CollectionUtils.isNotEmpty(refSeqGeneList)) {
-                                    RefSeqGene refSeqGene = refSeqGeneList.get(0);
-                                    List<Gene> geneList = hearsayDAOBeanService.getGeneDAO().findByIdentifierSystemAndValue(REFSEQ_GENE_ID,
-                                            refSeqGene.getId().toString());
-                                    if (CollectionUtils.isNotEmpty(geneList)) {
-                                        referenceSequence.setGene(geneList.get(0));
-                                    }
-                                    // if gene is not set, could be due to being stored as an alias
-                                    if (referenceSequence.getGene() == null) {
-                                        List<GeneSymbol> geneSymbolList = hearsayDAOBeanService.getGeneSymbolDAO()
-                                                .findBySymbol(refSeqGene.getName());
-                                        if (CollectionUtils.isNotEmpty(geneSymbolList)) {
-                                            referenceSequence.setGene(geneSymbolList.get(0).getGene());
-                                        }
-                                    }
-                                }
-
-                                // set genomic location/range
-                                List<TranscriptMapsExons> exons = transcriptMaps.getExons();
-                                exons.sort((a, b) -> a.getContigStart().compareTo(b.getContigStart()));
-
-                                Location genomicLocation = new Location(exons.get(0).getContigStart(),
-                                        exons.get(exons.size() - 1).getContigEnd());
-                                genomicLocation.setId(hearsayDAOBeanService.getLocationDAO().save(genomicLocation));
-                                logger.info(genomicLocation.toString());
-                                referenceSequence.setGenomicLocation(genomicLocation);
-
-                                hearsayDAOBeanService.getReferenceSequenceDAO().save(referenceSequence);
-                                logger.info(referenceSequence.toString());
-                            }
-
+                        if (CollectionUtils.isEmpty(foundTranscriptMaps)) {
+                            logger.info("No TranscriptMaps found");
+                            return;
                         }
+
+                        logger.info("foundTranscriptMaps.size(): {}", foundTranscriptMaps.size());
+                        TranscriptMaps transcriptMaps = foundTranscriptMaps.get(0);
+
+                        logger.info(transcriptMaps.toString());
+
+                        List<Identifier> referenceSequenceIdentifierList = new ArrayList<Identifier>();
+
+                        String versionedRefSeqAccession = transcriptMaps.getTranscript().getVersionId();
+                        Identifier transcriptVersionIdIdentifier = new Identifier(REFSEQ_TRANSCRIPT_VERSION_ID, versionedRefSeqAccession);
+                        List<Identifier> foundIdentifierList = hearsayDAOBeanService.getIdentifierDAO()
+                                .findByExample(transcriptVersionIdIdentifier);
+                        if (CollectionUtils.isNotEmpty(foundIdentifierList)) {
+                            transcriptVersionIdIdentifier = foundIdentifierList.get(0);
+                            referenceSequenceIdentifierList.add(transcriptVersionIdIdentifier);
+                        }
+
+                        GenomeRefSeq genomeRefSeq = transcriptMaps.getGenomeRefSeq();
+                        String versionedGenomicAccession = genomeRefSeq.getVerAccession();
+                        Identifier versionedGenomicAccessionIdentifier = new Identifier(REF_GENOME_REF_SEQ_VERSION_ACCESSION,
+                                versionedGenomicAccession);
+                        foundIdentifierList = hearsayDAOBeanService.getIdentifierDAO().findByExample(versionedGenomicAccessionIdentifier);
+                        if (CollectionUtils.isNotEmpty(foundIdentifierList)) {
+                            versionedGenomicAccessionIdentifier = foundIdentifierList.get(0);
+                            referenceSequenceIdentifierList.add(versionedGenomicAccessionIdentifier);
+                        }
+
+                        List<RefSeqCodingSequence> refSeqCodingSequenceList = canvasDAOBeanService.getRefSeqCodingSequenceDAO()
+                                .findByRefSeqVersionAndTranscriptId(refSeqVersion, versionedRefSeqAccession);
+                        if (CollectionUtils.isNotEmpty(refSeqCodingSequenceList)) {
+                            RefSeqCodingSequence refSeqCDS = refSeqCodingSequenceList.get(0);
+                            Identifier proteinIdIdentifier = new Identifier(REFSEQ_CDS_PROTEIN_ID, refSeqCDS.getProteinId());
+                            foundIdentifierList = hearsayDAOBeanService.getIdentifierDAO().findByExample(proteinIdIdentifier);
+                            if (CollectionUtils.isNotEmpty(foundIdentifierList)) {
+                                proteinIdIdentifier = foundIdentifierList.get(0);
+                                referenceSequenceIdentifierList.add(proteinIdIdentifier);
+                            }
+                        }
+
+                        if (referenceSequenceIdentifierList.size() < 2) {
+                            logger.warn("referenceSequenceIdentifierList.size() < 2");
+                            return;
+                        }
+
+                        referenceSequenceIdentifierList.forEach(a -> logger.info(a.toString()));
+
+                        List<ReferenceSequence> foundReferenceSequenceList = hearsayDAOBeanService.getReferenceSequenceDAO()
+                                .findByIdentifiers(referenceSequenceIdentifierList);
+
+                        if (CollectionUtils.isNotEmpty(foundReferenceSequenceList)) {
+                            logger.warn("ReferenceSequences were found...returning: {}", foundReferenceSequenceList.get(0).toString());
+                            return;
+                        }
+                        
+                        // creating ReferenceSequence since it didn't already exist
+                        ReferenceSequence referenceSequence = new ReferenceSequence();
+                        StrandType sType = StrandType.PLUS;
+                        if ("-".equals(transcriptMaps.getStrand())) {
+                            sType = StrandType.MINUS;
+                        }
+                        referenceSequence.setStrandType(sType);
+
+                        // set type
+                        String prefix = versionedRefSeqAccession.substring(0, 3);
+                        for (ReferenceSequenceType referenceSequenceType : ReferenceSequenceType.values()) {
+                            if (referenceSequenceType.getPrefixes().contains(prefix)) {
+                                referenceSequence.setType(referenceSequenceType);
+                                break;
+                            }
+                        }
+
+                        referenceSequence.setGenomeReference(genomeReferences.get(0));
+                        referenceSequence.getIdentifiers().addAll(referenceSequenceIdentifierList);
+                        referenceSequence.setId(hearsayDAOBeanService.getReferenceSequenceDAO().save(referenceSequence));
+
+                        // set gene
+                        List<RefSeqGene> refSeqGeneList = canvasDAOBeanService.getRefSeqGeneDAO()
+                                .findByRefSeqVersionAndTranscriptId(refSeqVersion, versionedRefSeqAccession);
+                        if (CollectionUtils.isNotEmpty(refSeqGeneList)) {
+                            RefSeqGene refSeqGene = refSeqGeneList.get(0);
+                            List<Gene> geneList = hearsayDAOBeanService.getGeneDAO().findByIdentifierSystemAndValue(REFSEQ_GENE_ID,
+                                    refSeqGene.getId().toString());
+                            if (CollectionUtils.isNotEmpty(geneList)) {
+                                referenceSequence.setGene(geneList.get(0));
+                            }
+                            // if gene is not set, could be due to being stored as an alias
+                            if (referenceSequence.getGene() == null) {
+                                List<GeneSymbol> geneSymbolList = hearsayDAOBeanService.getGeneSymbolDAO()
+                                        .findBySymbol(refSeqGene.getName());
+                                if (CollectionUtils.isNotEmpty(geneSymbolList)) {
+                                    referenceSequence.setGene(geneSymbolList.get(0).getGene());
+                                }
+                            }
+                        }
+
+                        // set genomic location/range
+                        List<TranscriptMapsExons> exons = transcriptMaps.getExons();
+                        exons.sort((a, b) -> a.getContigStart().compareTo(b.getContigStart()));
+
+                        Location genomicLocation = new Location(exons.get(0).getContigStart(), exons.get(exons.size() - 1).getContigEnd());
+                        genomicLocation.setId(hearsayDAOBeanService.getLocationDAO().save(genomicLocation));
+                        logger.info(genomicLocation.toString());
+                        referenceSequence.setGenomicLocation(genomicLocation);
+
+                        hearsayDAOBeanService.getReferenceSequenceDAO().save(referenceSequence);
+                        logger.info(referenceSequence.toString());
+
                     } catch (Exception e) {
                         logger.error(e.getMessage(), e);
                         e.printStackTrace();
