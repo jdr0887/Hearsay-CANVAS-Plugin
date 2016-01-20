@@ -33,26 +33,26 @@ public class TranscriptMapsExonsTest {
 
     @Test
     public void testFindByGenomeRefIdAndRefSeqVersion() throws HearsayDAOException {
-
         TranscriptMapsExonsDAOImpl transcriptMapsExonsDAO = new TranscriptMapsExonsDAOImpl();
         transcriptMapsExonsDAO.setEntityManager(em);
-
         List<TranscriptMapsExons> transcriptMapsExonsList = transcriptMapsExonsDAO.findByGenomeRefIdAndRefSeqVersion(2, "61");
-
         transcriptMapsExonsList.forEach(a -> System.out.printf("%s%n", a.getKey().toString()));
-
     }
 
     @Test
     public void testFindByGenomeRefIdAndRefSeqVersionAndAccession() throws HearsayDAOException {
-
         TranscriptMapsExonsDAOImpl transcriptMapsExonsDAO = new TranscriptMapsExonsDAOImpl();
         transcriptMapsExonsDAO.setEntityManager(em);
-
         List<TranscriptMapsExons> transcriptMapsExonsList = transcriptMapsExonsDAO.findByGenomeRefIdAndRefSeqVersionAndAccession(2, "61", "NM_182701.1");
-
         transcriptMapsExonsList.forEach(a -> System.out.printf("%s%n", a.toString()));
+    }
 
+    @Test
+    public void testFindByTranscriptMapsId() throws HearsayDAOException {
+        TranscriptMapsExonsDAOImpl transcriptMapsExonsDAO = new TranscriptMapsExonsDAOImpl();
+        transcriptMapsExonsDAO.setEntityManager(em);
+        List<TranscriptMapsExons> transcriptMapsExonsList = transcriptMapsExonsDAO.findByTranscriptMapsId(365544);
+        transcriptMapsExonsList.forEach(a -> System.out.printf("%s%n", a.toString()));
     }
 
 }
