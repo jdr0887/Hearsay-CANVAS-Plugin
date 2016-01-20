@@ -41,10 +41,11 @@ public class TranscriptMapsTest {
         List<TranscriptMaps> transcriptMapsList = transcriptMapsDAO.findByGenomeRefIdAndRefSeqVersionAndTranscriptId(2, "61",
                 "NM_000821.5");
         transcriptMapsList.forEach(a -> {
-            System.out.println(a.getTranscript().toString());
-            System.out.println(a.getGenomeRefSeq().toString());
-            System.out.println(a.toString());
             System.out.println("----------------");
+            System.out.println(a.toString());
+            System.out.println(a.getGenomeRefSeq().toString());
+            System.out.println(a.getTranscript().toString());
+            System.out.println(a.getExons().size());
         });
     }
 
