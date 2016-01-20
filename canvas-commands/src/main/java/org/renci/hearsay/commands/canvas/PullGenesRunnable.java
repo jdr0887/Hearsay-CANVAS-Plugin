@@ -5,6 +5,7 @@ import static org.renci.hearsay.commands.canvas.Constants.REFSEQ_GENE_ID;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.renci.hearsay.canvas.dao.CANVASDAOBeanService;
@@ -107,6 +108,8 @@ public class PullGenesRunnable implements Runnable {
                     });
 
                 }
+                es.shutdown();
+                es.awaitTermination(20L, TimeUnit.MINUTES);
             }
         } catch (Exception e) {
             e.printStackTrace();
