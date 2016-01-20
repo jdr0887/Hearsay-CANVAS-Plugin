@@ -13,6 +13,7 @@ import org.renci.hearsay.canvas.ref.dao.GenomeRefSeqDAO;
 import org.renci.hearsay.canvas.refseq.dao.FeatureDAO;
 import org.renci.hearsay.canvas.refseq.dao.RefSeqCodingSequenceDAO;
 import org.renci.hearsay.canvas.refseq.dao.RefSeqGeneDAO;
+import org.renci.hearsay.canvas.refseq.dao.RegionGroupDAO;
 import org.renci.hearsay.canvas.refseq.dao.RegionGroupRegionDAO;
 import org.renci.hearsay.canvas.refseq.dao.TranscriptDAO;
 import org.renci.hearsay.canvas.refseq.dao.TranscriptMapsDAO;
@@ -20,10 +21,6 @@ import org.renci.hearsay.canvas.refseq.dao.TranscriptMapsExonsDAO;
 import org.renci.hearsay.canvas.refseq.dao.Variants_61_2_DAO;
 
 public interface CANVASDAOBeanService {
-
-    public RegionGroupRegionDAO getRegionGroupRegionDAO();
-
-    public void setRegionGroupRegionDAO(RegionGroupRegionDAO regionGroupRegionDAO);
 
     public MaxFreqDAO getMaxFreqDAO();
 
@@ -57,6 +54,14 @@ public interface CANVASDAOBeanService {
     public RefSeqGeneDAO getRefSeqGeneDAO();
 
     public void setRefSeqGeneDAO(RefSeqGeneDAO refSeqGeneDAO);
+
+    public RegionGroupDAO getRegionGroupDAO();
+
+    public void setRegionGroupDAO(RegionGroupDAO regionGroupDAO);
+
+    public RegionGroupRegionDAO getRegionGroupRegionDAO();
+
+    public void setRegionGroupRegionDAO(RegionGroupRegionDAO regionGroupRegionDAO);
 
     public HGNCGeneDAO getHGNCGeneDAO();
 

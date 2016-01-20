@@ -14,6 +14,7 @@ import org.renci.hearsay.canvas.ref.dao.GenomeRefSeqDAO;
 import org.renci.hearsay.canvas.refseq.dao.FeatureDAO;
 import org.renci.hearsay.canvas.refseq.dao.RefSeqCodingSequenceDAO;
 import org.renci.hearsay.canvas.refseq.dao.RefSeqGeneDAO;
+import org.renci.hearsay.canvas.refseq.dao.RegionGroupDAO;
 import org.renci.hearsay.canvas.refseq.dao.RegionGroupRegionDAO;
 import org.renci.hearsay.canvas.refseq.dao.TranscriptDAO;
 import org.renci.hearsay.canvas.refseq.dao.TranscriptMapsDAO;
@@ -29,6 +30,8 @@ public class CANVASDAOBeanServiceImpl implements CANVASDAOBeanService {
     private RefSeqCodingSequenceDAO refSeqCodingSequenceDAO;
 
     private RefSeqGeneDAO refSeqGeneDAO;
+
+    private RegionGroupDAO regionGroupDAO;
 
     private RegionGroupRegionDAO regionGroupRegionDAO;
 
@@ -60,6 +63,16 @@ public class CANVASDAOBeanServiceImpl implements CANVASDAOBeanService {
 
     public CANVASDAOBeanServiceImpl() {
         super();
+    }
+
+    @Override
+    public RegionGroupDAO getRegionGroupDAO() {
+        return regionGroupDAO;
+    }
+
+    @Override
+    public void setRegionGroupDAO(RegionGroupDAO regionGroupDAO) {
+        this.regionGroupDAO = regionGroupDAO;
     }
 
     @Override
