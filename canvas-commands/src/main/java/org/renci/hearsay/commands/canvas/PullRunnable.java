@@ -65,14 +65,8 @@ public class PullRunnable implements Runnable {
         long startPersistGenesAndGenomeReferencesTime = System.currentTimeMillis();
         try {
             ExecutorService es = Executors.newFixedThreadPool(2);
-
-            PullGenesRunnable pullGenesRunnable = new PullGenesRunnable(canvasDAOBeanService, hearsayDAOBeanService, refSeqVersion);
-            es.submit(pullGenesRunnable);
-
-            PullGenomeReferencesRunnable pullGenomeReferencesRunnable = new PullGenomeReferencesRunnable(canvasDAOBeanService,
-                    hearsayDAOBeanService);
-            es.submit(pullGenomeReferencesRunnable);
-
+            es.submit(new PullGenomeReferencesRunnable(canvasDAOBeanService, hearsayDAOBeanService));
+            es.submit(new PullGenesRunnable(canvasDAOBeanService, hearsayDAOBeanService, refSeqVersion));
             es.shutdown();
             es.awaitTermination(1L, TimeUnit.HOURS);
         } catch (InterruptedException e) {
