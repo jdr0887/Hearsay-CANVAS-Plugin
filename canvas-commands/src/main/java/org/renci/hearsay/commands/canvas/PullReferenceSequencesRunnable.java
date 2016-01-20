@@ -157,7 +157,7 @@ public class PullReferenceSequencesRunnable implements Runnable {
                     try {
                         List<TranscriptMaps> foundTranscriptMaps = canvasDAOBeanService.getTranscriptMapsDAO()
                                 .findByGenomeRefIdAndRefSeqVersionAndTranscriptId("includeAll", genomeRefId, refSeqVersion,
-                                        transcript.getAccession());
+                                        transcript.getVersionId());
 
                         if (CollectionUtils.isEmpty(foundTranscriptMaps)) {
                             logger.info("No TranscriptMaps found");
