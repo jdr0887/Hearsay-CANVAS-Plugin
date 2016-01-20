@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -57,7 +58,7 @@ public class TranscriptMaps implements Persistable {
     @Column(name = "exon_count")
     private Integer exonCount;
 
-    @OneToMany(mappedBy = "transcriptMaps")
+    @OneToMany(mappedBy = "transcriptMaps", fetch = FetchType.LAZY)
     protected List<TranscriptMapsExons> exons;
 
     public TranscriptMaps() {
