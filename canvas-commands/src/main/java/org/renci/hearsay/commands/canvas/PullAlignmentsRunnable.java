@@ -85,7 +85,7 @@ public class PullAlignmentsRunnable implements Runnable {
                             logger.warn("No TranscriptMaps found");
                             return;
                         }
-                        logger.info("transcriptMapsList.size(): {}", transcriptMapsList.size());
+                        logger.debug("transcriptMapsList.size(): {}", transcriptMapsList.size());
 
                         TranscriptMaps transcriptMaps = transcriptMapsList.get(0);
                         logger.info(transcriptMaps.toString());
