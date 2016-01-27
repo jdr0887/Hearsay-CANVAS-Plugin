@@ -89,7 +89,7 @@ public class PullFeaturesRunnable implements Runnable {
                             return;
                         }
 
-                        logger.info("canvasFeatures.size(): {}", canvasFeatures.size());
+                        logger.debug("canvasFeatures.size(): {}", canvasFeatures.size());
 
                         for (Feature canvasFeature : canvasFeatures) {
                             logger.info(canvasFeature.toString());
