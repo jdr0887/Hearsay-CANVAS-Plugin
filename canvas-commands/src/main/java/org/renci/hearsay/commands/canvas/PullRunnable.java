@@ -104,6 +104,16 @@ public class PullRunnable implements Runnable {
         }
         long endAddAlignmentUTRsTime = System.currentTimeMillis();
 
+        // add alignment UTRs
+        long startPersistFeaturesTime = System.currentTimeMillis();
+        try {
+            Executors.newSingleThreadExecutor().submit(new PullFeaturesRunnable(canvasDAOBeanService, hearsayDAOBeanService, refSeqVersion))
+                    .get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+        long endPersistFeaturesTime = System.currentTimeMillis();
+
         Long chromosomeDuration = (endPersistChromosomeTime - startPersistChromosomeTime) / 1000;
         logger.info("duration to persist Chromosomes: {} seconds", chromosomeDuration);
         Long genesAndGenomeReferencesDuration = (endPersistGenesAndGenomeReferencesTime - startPersistGenesAndGenomeReferencesTime) / 1000;
@@ -114,9 +124,11 @@ public class PullRunnable implements Runnable {
         logger.info("duration to persist Alignments: {} seconds", alignmentsDuration);
         Long addAlignmentUTRsDuration = (endAddAlignmentUTRsTime - startAddAlignmentUTRsTime) / 1000;
         logger.info("duration to persist Alignment UTRs: {} seconds", addAlignmentUTRsDuration);
+        Long featuresDuration = (endPersistFeaturesTime - startPersistFeaturesTime) / 1000;
+        logger.info("duration to persist Features: {} seconds", featuresDuration);
 
         Long totalDuration = (chromosomeDuration + genesAndGenomeReferencesDuration + referencesSequencesDuration + alignmentsDuration
-                + addAlignmentUTRsDuration) / 60;
+                + addAlignmentUTRsDuration + featuresDuration) / 60;
         logger.info("Total time to pull from CANVAS: {} minutes", totalDuration);
 
     }
