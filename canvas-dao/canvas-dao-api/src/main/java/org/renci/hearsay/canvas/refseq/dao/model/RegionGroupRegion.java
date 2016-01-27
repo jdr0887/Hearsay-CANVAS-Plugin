@@ -49,7 +49,7 @@ public class RegionGroupRegion implements Persistable {
 
     @Override
     public String toString() {
-        return String.format("RegionGroupRegion [key=%s, regionGroup=%s]", key, regionGroup);
+        return String.format("RegionGroupRegion [key=%s]", key);
     }
 
     @Override
@@ -57,7 +57,6 @@ public class RegionGroupRegion implements Persistable {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((key == null) ? 0 : key.hashCode());
-        result = prime * result + ((regionGroup == null) ? 0 : regionGroup.hashCode());
         return result;
     }
 
@@ -74,11 +73,6 @@ public class RegionGroupRegion implements Persistable {
             if (other.key != null)
                 return false;
         } else if (!key.equals(other.key))
-            return false;
-        if (regionGroup == null) {
-            if (other.regionGroup != null)
-                return false;
-        } else if (!regionGroup.equals(other.regionGroup))
             return false;
         return true;
     }
