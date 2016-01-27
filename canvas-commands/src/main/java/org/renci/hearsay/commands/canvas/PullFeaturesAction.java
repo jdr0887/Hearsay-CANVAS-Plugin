@@ -40,7 +40,7 @@ public class PullFeaturesAction implements Action {
     public Object execute() {
         logger.debug("ENTERING execute()");
         try {
-            PullFeaturesCallable callable = new PullFeaturesCallable(canvasDAOBeanService, hearsayDAOBeanService, refSeqVersion);
+            PullFeaturesRunnable callable = new PullFeaturesRunnable(canvasDAOBeanService, hearsayDAOBeanService, refSeqVersion);
             if (StringUtils.isNotEmpty(geneName)) {
                 callable.setGeneName(geneName);
             }
