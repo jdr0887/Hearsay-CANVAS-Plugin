@@ -95,12 +95,10 @@ public class PullGenesRunnable implements Runnable {
                             Gene gene = new Gene();
                             gene.setSymbol(refSeqGene.getName());
                             gene.setDescription(refSeqGene.getDescription());
+                            gene.getIdentifiers().add(identifier);
                             gene.setId(hearsayDAOBeanService.getGeneDAO().save(gene));
 
-                            gene.getIdentifiers().add(identifier);
-                            hearsayDAOBeanService.getGeneDAO().save(gene);
-
-                            logger.info("persisting: {}", gene.toString());
+                            logger.debug("persisting: {}", gene.toString());
                         } catch (HearsayDAOException e) {
                             e.printStackTrace();
                         }
