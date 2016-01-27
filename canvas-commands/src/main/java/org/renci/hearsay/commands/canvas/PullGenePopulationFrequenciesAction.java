@@ -33,7 +33,7 @@ public class PullGenePopulationFrequenciesAction implements Action {
         logger.debug("ENTERING execute()");
         try {
             ExecutorService es = Executors.newSingleThreadExecutor();
-            es.submit(new PullGenePopulationFrequenciesCallable(canvasDAOBeanService, hearsayDAOBeanService));
+            es.submit(new PullGenePopulationFrequenciesRunnable(canvasDAOBeanService, hearsayDAOBeanService));
             es.shutdown();
         } catch (Exception e) {
             e.printStackTrace();
