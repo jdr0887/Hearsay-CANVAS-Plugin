@@ -95,19 +95,14 @@ public class PullRunnable implements Runnable {
         }
         long endPersistAlignmentsTime = System.currentTimeMillis();
 
-        //
-        // // add alignment UTRs
-        // long startPersistAlignmentUTRsTime = System.currentTimeMillis();
-        // try {
-        // ExecutorService es = Executors.newSingleThreadExecutor();
-        // AddAlignmentUTRsRunnable addAlignmentUTRsRunnable = new AddAlignmentUTRsRunnable(hearsayDAOBeanService);
-        // es.submit(addAlignmentUTRsRunnable);
-        // es.shutdown();
-        // es.awaitTermination(2L, TimeUnit.HOURS);
-        // } catch (InterruptedException e) {
-        // e.printStackTrace();
-        // }
-        // long endPersistAlignmentUTRsTime = System.currentTimeMillis();
+        // add alignment UTRs
+        long startAddAlignmentUTRsTime = System.currentTimeMillis();
+        try {
+            Executors.newSingleThreadExecutor().submit(new AddAlignmentUTRsRunnable(hearsayDAOBeanService)).get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+        long endAddAlignmentUTRsTime = System.currentTimeMillis();
 
         Long chromosomeDuration = (endPersistChromosomeTime - startPersistChromosomeTime) / 1000;
         logger.info("duration to persist Chromosomes: {} seconds", chromosomeDuration);
@@ -117,10 +112,12 @@ public class PullRunnable implements Runnable {
         logger.info("duration to persist ReferenceSequences: {} seconds", referencesSequencesDuration);
         Long alignmentsDuration = (endPersistAlignmentsTime - startPersistAlignmentsTime) / 1000;
         logger.info("duration to persist Alignments: {} seconds", alignmentsDuration);
+        Long addAlignmentUTRsDuration = (endAddAlignmentUTRsTime - startAddAlignmentUTRsTime) / 1000;
+        logger.info("duration to persist Alignment UTRs: {} seconds", addAlignmentUTRsDuration);
 
-        Long totalDuration = (chromosomeDuration + genesAndGenomeReferencesDuration + referencesSequencesDuration + alignmentsDuration)
-                / 60;
-        logger.info("Total time to pull from NCBI: {} minutes", totalDuration);
+        Long totalDuration = (chromosomeDuration + genesAndGenomeReferencesDuration + referencesSequencesDuration + alignmentsDuration
+                + addAlignmentUTRsDuration) / 60;
+        logger.info("Total time to pull from CANVAS: {} minutes", totalDuration);
 
     }
 
