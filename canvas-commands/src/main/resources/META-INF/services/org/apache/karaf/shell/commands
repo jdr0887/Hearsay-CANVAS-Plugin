@@ -1,3 +1,4 @@
+org.renci.hearsay.canvas.commands.AddAlignmentUTRsAction
 org.renci.hearsay.canvas.commands.PullAction
 org.renci.hearsay.canvas.commands.PullAlignmentsAction
 org.renci.hearsay.canvas.commands.PullGenesAction
