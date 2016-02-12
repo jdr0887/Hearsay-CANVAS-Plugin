@@ -19,6 +19,7 @@ import org.renci.hearsay.canvas.refseq.dao.TranscriptDAO;
 import org.renci.hearsay.canvas.refseq.dao.TranscriptMapsDAO;
 import org.renci.hearsay.canvas.refseq.dao.TranscriptMapsExonsDAO;
 import org.renci.hearsay.canvas.refseq.dao.Variants_61_2_DAO;
+import org.renci.hearsay.canvas.var.dao.LocationVariantDAO;
 
 public interface CANVASDAOBeanService {
 
@@ -98,5 +99,9 @@ public interface CANVASDAOBeanService {
     public VariantFrequencyDAO getVariantFrequencyDAO();
 
     public void setVariantFrequencyDAO(VariantFrequencyDAO variantFrequencyDAO);
+
+    public LocationVariantDAO getLocationVariantDAO();
+
+    public void setLocationVariantDAO(LocationVariantDAO locationVariantDAO);
 
 }

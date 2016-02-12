@@ -13,6 +13,8 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 
+import org.apache.openjpa.persistence.OpenJPAPersistence;
+import org.apache.openjpa.persistence.OpenJPAQuery;
 import org.renci.hearsay.canvas.clinbin.dao.model.MaxFreq;
 import org.renci.hearsay.canvas.clinbin.dao.model.MaxFreq_;
 import org.renci.hearsay.canvas.dao.jpa.BaseDAOImpl;
@@ -44,9 +46,17 @@ public class Variants_61_2_DAOImpl extends BaseDAOImpl<Variants_61_2, Long> impl
     @Override
     public List<Variants_61_2> findByLocationVariantId(Long id) throws HearsayDAOException {
         logger.debug("ENTERING findByLocationVariantId(Long)");
-        TypedQuery<Variants_61_2> query = getEntityManager().createNamedQuery("Variants_61_2.findByLocationVariantId", Variants_61_2.class);
-        query.setParameter("locationVariantId", id);
-        List<Variants_61_2> ret = query.getResultList();
+        List<Variants_61_2> ret = new ArrayList<Variants_61_2>();
+        try {
+            TypedQuery<Variants_61_2> query = getEntityManager().createNamedQuery("Variants_61_2.findByLocationVariantId",
+                    Variants_61_2.class);
+            query.setParameter("locationVariantId", id);
+            OpenJPAQuery<Variants_61_2> openjpaQuery = OpenJPAPersistence.cast(query);
+            openjpaQuery.getFetchPlan().addFetchGroup("includeManyToOnes");
+            ret.addAll(openjpaQuery.getResultList());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return ret;
     }
 
@@ -62,35 +72,40 @@ public class Variants_61_2_DAOImpl extends BaseDAOImpl<Variants_61_2, Long> impl
     @Override
     public List<Variants_61_2> findByGeneNameAndMaxAlleleFrequency(String name, Double threshold) throws HearsayDAOException {
         logger.debug("ENTERING findByGeneNameAndMaxAlleleFrequency(String, Double)");
-        CriteriaBuilder critBuilder = getEntityManager().getCriteriaBuilder();
-        CriteriaQuery<Variants_61_2> crit = critBuilder.createQuery(getPersistentClass());
-        Root<Variants_61_2> root = crit.from(getPersistentClass());
-        List<Predicate> predicates = new ArrayList<Predicate>();
+        List<Variants_61_2> ret = new ArrayList<Variants_61_2>();
+        try {
+            CriteriaBuilder critBuilder = getEntityManager().getCriteriaBuilder();
+            CriteriaQuery<Variants_61_2> crit = critBuilder.createQuery(getPersistentClass());
+            Root<Variants_61_2> root = crit.from(getPersistentClass());
+            List<Predicate> predicates = new ArrayList<Predicate>();
 
-        predicates.add(critBuilder.equal(root.get(Variants_61_2_.hgncGene), name));
+            predicates.add(critBuilder.equal(root.get(Variants_61_2_.hgncGene), name));
 
-        Join<Variants_61_2, LocationVariant> variantsLocationVariantJoin = root.join(Variants_61_2_.locationVariant, JoinType.LEFT);
+            Join<Variants_61_2, LocationVariant> variantsLocationVariantJoin = root.join(Variants_61_2_.locationVariant, JoinType.LEFT);
 
-        Join<LocationVariant, MaxVariantFrequency> locationVariantMaxVariantFrequencyJoin = variantsLocationVariantJoin
-                .join(LocationVariant_.maxVariantFrequencies);
+            Join<LocationVariant, MaxVariantFrequency> locationVariantMaxVariantFrequencyJoin = variantsLocationVariantJoin
+                    .join(LocationVariant_.maxVariantFrequencies);
 
-        Coalesce<Double> maxVariantFrequencyCoalesce = critBuilder.coalesce();
-        maxVariantFrequencyCoalesce.value(locationVariantMaxVariantFrequencyJoin.get(MaxVariantFrequency_.maxAlleleFrequency));
-        maxVariantFrequencyCoalesce.value(0D);
+            Coalesce<Double> maxVariantFrequencyCoalesce = critBuilder.coalesce();
+            maxVariantFrequencyCoalesce.value(locationVariantMaxVariantFrequencyJoin.get(MaxVariantFrequency_.maxAlleleFrequency));
+            maxVariantFrequencyCoalesce.value(0D);
 
-        predicates.add(critBuilder.lessThanOrEqualTo(maxVariantFrequencyCoalesce, threshold));
+            predicates.add(critBuilder.lessThanOrEqualTo(maxVariantFrequencyCoalesce, threshold));
 
-        Join<LocationVariant, MaxFreq> locationVariantMaxFreqJoin = variantsLocationVariantJoin.join(LocationVariant_.maxFreqs);
+            Join<LocationVariant, MaxFreq> locationVariantMaxFreqJoin = variantsLocationVariantJoin.join(LocationVariant_.maxFreqs);
 
-        Coalesce<Double> maxFreqCoalesce = critBuilder.coalesce();
-        maxFreqCoalesce.value(locationVariantMaxFreqJoin.get(MaxFreq_.maxAlleleFreq));
-        maxFreqCoalesce.value(0D);
+            Coalesce<Double> maxFreqCoalesce = critBuilder.coalesce();
+            maxFreqCoalesce.value(locationVariantMaxFreqJoin.get(MaxFreq_.maxAlleleFreq));
+            maxFreqCoalesce.value(0D);
 
-        predicates.add(critBuilder.lessThanOrEqualTo(maxFreqCoalesce, threshold));
+            predicates.add(critBuilder.lessThanOrEqualTo(maxFreqCoalesce, threshold));
 
-        crit.where(predicates.toArray(new Predicate[predicates.size()]));
-        TypedQuery<Variants_61_2> query = getEntityManager().createQuery(crit);
-        List<Variants_61_2> ret = query.getResultList();
+            crit.where(predicates.toArray(new Predicate[predicates.size()]));
+            TypedQuery<Variants_61_2> query = getEntityManager().createQuery(crit);
+            ret.addAll(query.getResultList());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return ret;
     }
 

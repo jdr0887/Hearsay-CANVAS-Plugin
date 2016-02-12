@@ -104,7 +104,7 @@ public class PullRunnable implements Runnable {
         }
         long endAddAlignmentUTRsTime = System.currentTimeMillis();
 
-        // add alignment UTRs
+        // persist features
         long startPersistFeaturesTime = System.currentTimeMillis();
         try {
             Executors.newSingleThreadExecutor().submit(new PullFeaturesRunnable(canvasDAOBeanService, hearsayDAOBeanService, refSeqVersion))
@@ -113,6 +113,16 @@ public class PullRunnable implements Runnable {
             e.printStackTrace();
         }
         long endPersistFeaturesTime = System.currentTimeMillis();
+
+        // persist features
+        long startPersistGenePopulationFrequenciesTime = System.currentTimeMillis();
+        try {
+            Executors.newSingleThreadExecutor()
+                    .submit(new PullGenePopulationFrequenciesRunnable(canvasDAOBeanService, hearsayDAOBeanService)).get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+        long endPersistGenePopulationFrequenciesTime = System.currentTimeMillis();
 
         Long chromosomeDuration = (endPersistChromosomeTime - startPersistChromosomeTime) / 1000;
         logger.info("duration to persist Chromosomes: {} seconds", chromosomeDuration);
@@ -126,9 +136,12 @@ public class PullRunnable implements Runnable {
         logger.info("duration to persist Alignment UTRs: {} seconds", addAlignmentUTRsDuration);
         Long featuresDuration = (endPersistFeaturesTime - startPersistFeaturesTime) / 1000;
         logger.info("duration to persist Features: {} seconds", featuresDuration);
+        Long genePopulationFrequenciesDuration = (endPersistGenePopulationFrequenciesTime - startPersistGenePopulationFrequenciesTime)
+                / 1000;
+        logger.info("duration to persist Gene PopulationFrequencies: {} seconds", genePopulationFrequenciesDuration);
 
         Long totalDuration = (chromosomeDuration + genesAndGenomeReferencesDuration + referencesSequencesDuration + alignmentsDuration
-                + addAlignmentUTRsDuration + featuresDuration) / 60;
+                + addAlignmentUTRsDuration + featuresDuration + genePopulationFrequenciesDuration) / 60;
         logger.info("Total time to pull from CANVAS: {} minutes", totalDuration);
 
     }

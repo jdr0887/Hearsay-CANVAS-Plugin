@@ -11,13 +11,15 @@
   <bean id="referenceClinicalAssertionsDAOImpl" class="org.renci.hearsay.canvas.clinvar.dao.jpa.ReferenceClinicalAssertionsDAOImpl"
     ext:field-injection="true">
   </bean>
+  <bean id="featureDAOImpl" class="org.renci.hearsay.canvas.refseq.dao.jpa.FeatureDAOImpl" ext:field-injection="true">
+  </bean>
   <bean id="genomeRefDAOImpl" class="org.renci.hearsay.canvas.ref.dao.jpa.GenomeRefDAOImpl" ext:field-injection="true">
   </bean>
   <bean id="genomeRefSeqDAOImpl" class="org.renci.hearsay.canvas.ref.dao.jpa.GenomeRefSeqDAOImpl" ext:field-injection="true">
   </bean>
   <bean id="hgncGeneDAOImpl" class="org.renci.hearsay.canvas.hgnc.dao.jpa.HGNCGeneDAOImpl" ext:field-injection="true">
   </bean>
-  <bean id="featureDAOImpl" class="org.renci.hearsay.canvas.refseq.dao.jpa.FeatureDAOImpl" ext:field-injection="true">
+  <bean id="locationVariantDAOImpl" class="org.renci.hearsay.canvas.var.dao.jpa.LocationVariantDAOImpl" ext:field-injection="true">
   </bean>
   <bean id="refSeqCodingSequenceDAOImpl" class="org.renci.hearsay.canvas.refseq.dao.jpa.RefSeqCodingSequenceDAOImpl"
     ext:field-injection="true">
@@ -48,11 +50,12 @@
   <bean id="canvasDAOBeanService" class="org.renci.hearsay.canvas.dao.jpa.CANVASDAOBeanServiceImpl">
     <property name="annotationGeneDAO" ref="annotationGeneDAOImpl" />
     <property name="annotationGeneExternalIdsDAO" ref="annotationGeneExternalIdsDAOImpl" />
-    <property name="referenceClinicalAssertionsDAO" ref="referenceClinicalAssertionsDAOImpl" />
+    <property name="featureDAO" ref="featureDAOImpl" />
     <property name="genomeRefDAO" ref="genomeRefDAOImpl" />
     <property name="genomeRefSeqDAO" ref="genomeRefSeqDAOImpl" />
     <property name="HGNCGeneDAO" ref="hgncGeneDAOImpl" />
-    <property name="featureDAO" ref="featureDAOImpl" />
+    <property name="locationVariantDAO" ref="locationVariantDAOImpl" />
+    <property name="referenceClinicalAssertionsDAO" ref="referenceClinicalAssertionsDAOImpl" />
     <property name="refSeqCodingSequenceDAO" ref="refSeqCodingSequenceDAOImpl" />
     <property name="refSeqGeneDAO" ref="refSeqGeneDAOImpl" />
     <property name="regionGroupDAO" ref="regionGroupDAOImpl" />
@@ -73,6 +76,7 @@
   <service ref="genomeRefSeqDAOImpl" interface="org.renci.hearsay.canvas.ref.dao.GenomeRefSeqDAO" />
   <service ref="hgncGeneDAOImpl" interface="org.renci.hearsay.canvas.hgnc.dao.HGNCGeneDAO" />
   <service ref="featureDAOImpl" interface="org.renci.hearsay.canvas.refseq.dao.FeatureDAO" />
+  <service ref="locationVariantDAOImpl" interface="org.renci.hearsay.canvas.var.dao.LocationVariantDAO" />
   <service ref="refSeqCodingSequenceDAOImpl" interface="org.renci.hearsay.canvas.refseq.dao.RefSeqCodingSequenceDAO" />
   <service ref="refSeqGeneDAOImpl" interface="org.renci.hearsay.canvas.refseq.dao.RefSeqGeneDAO" />
   <service ref="regionGroupDAOImpl" interface="org.renci.hearsay.canvas.refseq.dao.RegionGroupDAO" />

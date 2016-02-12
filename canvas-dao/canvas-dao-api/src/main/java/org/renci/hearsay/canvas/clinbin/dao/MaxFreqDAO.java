@@ -10,4 +10,6 @@ public interface MaxFreqDAO extends BaseDAO<MaxFreq, Long> {
 
     public List<MaxFreq> findByGeneNameAndMaxAlleleFrequency(String name, Double threshold) throws HearsayDAOException;
 
+    public List<MaxFreq> findByLocationVariantId(Long locationVariantId) throws HearsayDAOException;
+
 }

@@ -11,6 +11,9 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+import org.apache.openjpa.persistence.FetchAttribute;
+import org.apache.openjpa.persistence.FetchGroup;
+import org.apache.openjpa.persistence.FetchGroups;
 import org.renci.hearsay.canvas.annotation.dao.model.AnnotationGene;
 import org.renci.hearsay.canvas.dao.Persistable;
 import org.renci.hearsay.canvas.ref.dao.model.GenomeRefSeq;
@@ -23,6 +26,9 @@ import org.renci.hearsay.canvas.var.dao.model.VariantType;
         @NamedQuery(name = "Variants_61_2.findByLocationVariantId", query = "SELECT a FROM Variants_61_2 a join a.locationVariant b where b.id = :locationVariantId"),
         @NamedQuery(name = "Variants_61_2.findByGeneName", query = "SELECT a FROM Variants_61_2 a where a.hgncGene = :geneName"),
         @NamedQuery(name = "Variants_61_2.findByTranscriptAccession", query = "SELECT a FROM Variants_61_2 a where a.key.transcr = :transcr") })
+@FetchGroups({ @FetchGroup(name = "includeManyToOnes", attributes = { @FetchAttribute(name = "locationVariant"),
+        @FetchAttribute(name = "genomeRefSeq"), @FetchAttribute(name = "type"), @FetchAttribute(name = "locationType"),
+        @FetchAttribute(name = "variantEffect"), @FetchAttribute(name = "gene") }) })
 public class Variants_61_2 implements Persistable {
 
     private static final long serialVersionUID = 7532101830529403701L;
@@ -54,6 +60,10 @@ public class Variants_61_2 implements Persistable {
     @ManyToOne
     @JoinColumn(name = "variant_effect")
     private VariantEffect variantEffect;
+
+    @ManyToOne
+    @JoinColumn(name = "gene_id")
+    private AnnotationGene gene;
 
     @Column(name = "refseq_gene")
     private String refseqGene;
@@ -93,10 +103,6 @@ public class Variants_61_2 implements Persistable {
 
     @Column(name = "nummaps")
     private Integer nummaps;
-
-    @ManyToOne
-    @JoinColumn(name = "gene_id")
-    private AnnotationGene gene;
 
     @Lob
     @Column(name = "refallele")

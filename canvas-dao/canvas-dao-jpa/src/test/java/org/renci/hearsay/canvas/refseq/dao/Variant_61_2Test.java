@@ -1,5 +1,7 @@
 package org.renci.hearsay.canvas.refseq.dao;
 
+import static org.junit.Assert.assertTrue;
+
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -36,46 +38,45 @@ public class Variant_61_2Test {
     }
 
     @Test
-    public void testFindByName() {
+    public void testFindByLocationVariantId() throws HearsayDAOException {
         Variants_61_2_DAOImpl variantDAO = new Variants_61_2_DAOImpl();
         variantDAO.setEntityManager(em);
-
-        try {
-            List<Variants_61_2> variants = variantDAO.findByGeneName("BRCA1");
-            if (CollectionUtils.isNotEmpty(variants)) {
-                for (Variants_61_2 variant : variants) {
-                    LocationVariant locationVariant = variant.getLocationVariant();
-
-                }
-            }
-        } catch (HearsayDAOException e) {
-            e.printStackTrace();
-        }
-
+        List<Variants_61_2> variants = variantDAO.findByLocationVariantId(491812292L);
+        assertTrue(CollectionUtils.isNotEmpty(variants));
+        variants.forEach(a -> {
+            System.out.println(a.toString());
+            System.out.println(a.getLocationVariant().toString());
+        });
     }
 
     @Test
-    public void testFindByGeneNameAndMaxAlleleFrequency() {
+    public void testFindByName() throws HearsayDAOException {
+        Variants_61_2_DAOImpl variantDAO = new Variants_61_2_DAOImpl();
+        variantDAO.setEntityManager(em);
+        List<Variants_61_2> variants = variantDAO.findByGeneName("BRCA1");
+        assertTrue(CollectionUtils.isNotEmpty(variants));
+        variants.forEach(a -> {
+            System.out.println(a.getLocationVariant().toString());
+        });
+    }
+
+    @Test
+    public void testFindByGeneNameAndMaxAlleleFrequency() throws HearsayDAOException {
 
         Variants_61_2_DAOImpl variantDAO = new Variants_61_2_DAOImpl();
         variantDAO.setEntityManager(em);
 
-        try {
-            List<Variants_61_2> variants = variantDAO.findByGeneNameAndMaxAlleleFrequency("BRCA1", 0.05);
-            if (CollectionUtils.isNotEmpty(variants)) {
-                int count = 0;
-                for (Variants_61_2 variant : variants) {
-                    LocationVariant locationVariant = variant.getLocationVariant();
-                    List<MaxFreq> clinbinMaxFrequencies = locationVariant.getMaxFreqs();
-                    count += clinbinMaxFrequencies.size();
-                    List<MaxVariantFrequency> exacMaxFrequencies = locationVariant.getMaxVariantFrequencies();
-                    count += exacMaxFrequencies.size();
-                }
-                System.out.println(count);
-            }
-        } catch (HearsayDAOException e) {
-            e.printStackTrace();
+        List<Variants_61_2> variants = variantDAO.findByGeneNameAndMaxAlleleFrequency("BRCA1", 0.05);
+        assertTrue(CollectionUtils.isNotEmpty(variants));
+        int count = 0;
+        for (Variants_61_2 variant : variants) {
+            LocationVariant locationVariant = variant.getLocationVariant();
+            List<MaxFreq> clinbinMaxFrequencies = locationVariant.getMaxFreqs();
+            count += clinbinMaxFrequencies.size();
+            List<MaxVariantFrequency> exacMaxFrequencies = locationVariant.getMaxVariantFrequencies();
+            count += exacMaxFrequencies.size();
         }
+        System.out.println(count);
 
     }
 

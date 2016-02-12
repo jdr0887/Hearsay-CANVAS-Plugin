@@ -13,6 +13,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import org.apache.openjpa.persistence.FetchAttribute;
+import org.apache.openjpa.persistence.FetchGroup;
+import org.apache.openjpa.persistence.FetchGroups;
 import org.renci.hearsay.canvas.clinbin.dao.model.MaxFreq;
 import org.renci.hearsay.canvas.dao.Persistable;
 import org.renci.hearsay.canvas.exac.dao.model.MaxVariantFrequency;
@@ -23,6 +26,11 @@ import org.renci.hearsay.canvas.refseq.dao.model.Variants_61_2;
 @Entity
 @Table(schema = "var", name = "loc_var", uniqueConstraints = {
         @UniqueConstraint(columnNames = { "loc_var_id", "ref_id", "ref_ver_accession", "pos", "type", "seq", "end_pos" }) })
+@FetchGroups({
+        @FetchGroup(name = "includeManyToOnes", attributes = { @FetchAttribute(name = "genomeRef"), @FetchAttribute(name = "genomeRefSeq"),
+                @FetchAttribute(name = "type") }),
+        @FetchGroup(name = "includeVariants_61_2", fetchGroups = { "includeManyToOnes" }, attributes = {
+                @FetchAttribute(name = "variants_61_2") }) })
 public class LocationVariant implements Persistable {
 
     private static final long serialVersionUID = 3259272023352164114L;
@@ -37,7 +45,7 @@ public class LocationVariant implements Persistable {
 
     @ManyToOne
     @JoinColumn(name = "ref_ver_accession")
-    private GenomeRefSeq referenceVersionAccession;
+    private GenomeRefSeq genomeRefSeq;
 
     @Column(name = "pos")
     private Integer position;
@@ -85,12 +93,12 @@ public class LocationVariant implements Persistable {
         this.genomeRef = genomeRef;
     }
 
-    public GenomeRefSeq getReferenceVersionAccession() {
-        return referenceVersionAccession;
+    public GenomeRefSeq getGenomeRefSeq() {
+        return genomeRefSeq;
     }
 
-    public void setReferenceVersionAccession(GenomeRefSeq referenceVersionAccession) {
-        this.referenceVersionAccession = referenceVersionAccession;
+    public void setGenomeRefSeq(GenomeRefSeq genomeRefSeq) {
+        this.genomeRefSeq = genomeRefSeq;
     }
 
     public Integer getPosition() {

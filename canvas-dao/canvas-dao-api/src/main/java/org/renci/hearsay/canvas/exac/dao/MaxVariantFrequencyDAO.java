@@ -12,6 +12,8 @@ public interface MaxVariantFrequencyDAO extends BaseDAO<MaxVariantFrequency, Lon
 
     public List<MaxVariantFrequency> findByLocationVariantId(Long locVarId) throws HearsayDAOException;
 
+    public List<MaxVariantFrequency> findByLocationVariantIdAndFrequencyThreshold(Long locVarId, Double threshold) throws HearsayDAOException;
+
     public List<MaxVariantFrequency> findByGeneNameAndMaxAlleleFrequency(String name, Double threshold) throws HearsayDAOException;
 
 }

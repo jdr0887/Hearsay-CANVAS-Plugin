@@ -8,11 +8,16 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.Table;
 
+import org.apache.openjpa.persistence.FetchAttribute;
+import org.apache.openjpa.persistence.FetchGroup;
+import org.apache.openjpa.persistence.FetchGroups;
 import org.renci.hearsay.canvas.dao.Persistable;
 import org.renci.hearsay.canvas.var.dao.model.LocationVariant;
 
 @Entity
 @Table(schema = "clinbin", name = "max_freq")
+@FetchGroups({ @FetchGroup(name = "includeManyToOnes", attributes = { @FetchAttribute(name = "locationVariant"),
+        @FetchAttribute(name = "source") }) })
 public class MaxFreq implements Persistable {
 
     private static final long serialVersionUID = -2401541418491242656L;

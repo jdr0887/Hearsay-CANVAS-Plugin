@@ -10,6 +10,9 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+import org.apache.openjpa.persistence.FetchAttribute;
+import org.apache.openjpa.persistence.FetchGroup;
+import org.apache.openjpa.persistence.FetchGroups;
 import org.renci.hearsay.canvas.dao.Persistable;
 import org.renci.hearsay.canvas.var.dao.model.LocationVariant;
 
@@ -17,6 +20,7 @@ import org.renci.hearsay.canvas.var.dao.model.LocationVariant;
 @Table(schema = "exac", name = "max_variant_freq")
 @NamedQueries({
         @NamedQuery(name = "exac.MaxVariantFrequency.findByLocationVariantIdAndVersion", query = "SELECT a FROM MaxVariantFrequency a join a.locationVariant b where b.id = :locationVariantId and a.key.version = :version order by a.maxAlleleFrequency desc") })
+@FetchGroups({ @FetchGroup(name = "includeManyToOnes", attributes = { @FetchAttribute(name = "locationVariant") }) })
 public class MaxVariantFrequency implements Persistable {
 
     private static final long serialVersionUID = -1388708510623130329L;
@@ -62,7 +66,7 @@ public class MaxVariantFrequency implements Persistable {
 
     @Override
     public String toString() {
-        return String.format("MaxVariantFrequency [locationVariant=%s, maxAlleleFrequency=%s]", locationVariant, maxAlleleFrequency);
+        return String.format("MaxVariantFrequency [key=%s, maxAlleleFrequency=%s]", key, maxAlleleFrequency);
     }
 
     @Override
@@ -70,7 +74,6 @@ public class MaxVariantFrequency implements Persistable {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((key == null) ? 0 : key.hashCode());
-        result = prime * result + ((locationVariant == null) ? 0 : locationVariant.hashCode());
         result = prime * result + ((maxAlleleFrequency == null) ? 0 : maxAlleleFrequency.hashCode());
         return result;
     }
@@ -88,11 +91,6 @@ public class MaxVariantFrequency implements Persistable {
             if (other.key != null)
                 return false;
         } else if (!key.equals(other.key))
-            return false;
-        if (locationVariant == null) {
-            if (other.locationVariant != null)
-                return false;
-        } else if (!locationVariant.equals(other.locationVariant))
             return false;
         if (maxAlleleFrequency == null) {
             if (other.maxAlleleFrequency != null)
